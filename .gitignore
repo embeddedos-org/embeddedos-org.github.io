@@ -1,0 +1,6 @@
+node_modules/
+tests/screenshots/
+playwright-report/
+test-results/
+lighthouse-results/
+package-lock.json

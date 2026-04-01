@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EoS Platform Flow - EmbeddedOS</title><link rel="stylesheet" href="style.css">
+<style>
+.flow-hero{background:var(--gradient-hero);padding:5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden}
+.flow-hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 40% 50%,rgba(88,166,255,.08) 0%,transparent 50%),radial-gradient(circle at 60% 50%,rgba(188,140,255,.08) 0%,transparent 50%);animation:heroGlow 8s ease-in-out infinite alternate}
+.flow-hero h1{font-size:3rem;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem;position:relative;z-index:1}
+.flow-hero>p{color:var(--text-secondary);font-size:1.15rem;position:relative;z-index:1;max-width:600px;margin:0 auto 2rem}
+.progress-bar{max-width:700px;margin:0 auto;height:6px;background:var(--bg-tertiary);border-radius:3px;overflow:hidden;position:relative;z-index:1}
+.progress-fill{height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--orange),var(--blue),var(--green),var(--purple),var(--pink),var(--cyan),var(--yellow),var(--red));animation:progressFill 4s ease-out .5s forwards}
+@keyframes progressFill{to{width:100%}}
+.build-flow{max-width:800px;margin:0 auto;padding:4rem 2rem 2rem;position:relative}
+.build-flow::before{content:'';position:absolute;left:50%;top:4rem;bottom:2rem;width:3px;background:linear-gradient(180deg,var(--orange),var(--blue),var(--green),var(--purple),var(--pink),var(--cyan),var(--yellow),var(--red));transform:translateX(-50%);opacity:.3}
+.flow-step{position:relative;padding:1.5rem;margin-bottom:2.5rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);opacity:0;transform:translateY(30px);animation:stepReveal .6s ease-out forwards;transition:all .3s}
+.flow-step:hover{transform:translateY(-2px)!important;box-shadow:var(--shadow-lg)}
+.flow-step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
+.flow-step .step-num{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;color:#fff;z-index:2}
+.flow-step h3{font-size:1.1rem;font-weight:700;margin:.5rem 0;border:none;padding:0}
+.flow-step p{color:var(--text-secondary);font-size:.88rem;margin:0 0 .5rem;line-height:1.5}
+.step-output{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:600}
+.step-ebuild::before,.step-ebuild .step-num{background:var(--orange)}.step-ebuild:hover{border-color:var(--orange)}.step-ebuild .step-output{background:var(--orange-dim);color:var(--orange)}
+.step-eos::before,.step-eos .step-num{background:var(--blue)}.step-eos:hover{border-color:var(--blue)}.step-eos .step-output{background:var(--blue-dim);color:var(--blue)}
+.step-eboot::before,.step-eboot .step-num{background:var(--green)}.step-eboot:hover{border-color:var(--green)}.step-eboot .step-output{background:var(--green-dim);color:var(--green)}
+.step-eai::before,.step-eai .step-num{background:var(--purple)}.step-eai:hover{border-color:var(--purple)}.step-eai .step-output{background:var(--purple-dim);color:var(--purple)}
+.step-eni::before,.step-eni .step-num{background:var(--pink)}.step-eni:hover{border-color:var(--pink)}.step-eni .step-output{background:var(--pink-dim);color:var(--pink)}
+.step-eipc::before,.step-eipc .step-num{background:var(--cyan)}.step-eipc:hover{border-color:var(--cyan)}.step-eipc .step-output{background:var(--cyan-dim);color:var(--cyan)}
+.step-eosuite::before,.step-eosuite .step-num{background:var(--yellow)}.step-eosuite:hover{border-color:var(--yellow)}.step-eosuite .step-output{background:var(--yellow-dim);color:var(--yellow)}
+.step-eosim::before,.step-eosim .step-num{background:var(--red)}.step-eosim:hover{border-color:var(--red)}.step-eosim .step-output{background:var(--red-dim);color:var(--red)}
+@keyframes stepReveal{to{opacity:1;transform:translateY(0)}}
+.flow-step:nth-child(1){animation-delay:.3s}.flow-step:nth-child(2){animation-delay:.7s}.flow-step:nth-child(3){animation-delay:1.1s}.flow-step:nth-child(4){animation-delay:1.5s}
+.flow-step:nth-child(5){animation-delay:1.9s}.flow-step:nth-child(6){animation-delay:2.3s}.flow-step:nth-child(7){animation-delay:2.7s}.flow-step:nth-child(8){animation-delay:3.1s}
+.flow-dot{position:absolute;left:50%;width:8px;height:8px;border-radius:50%;transform:translateX(-50%);animation:dotFlow 2s ease-in-out infinite;z-index:3}
+@keyframes dotFlow{0%{top:-10px;opacity:0}20%{opacity:1}80%{opacity:1}100%{top:calc(100% + 10px);opacity:0}}
+.flow-step:nth-child(1) .flow-dot{background:var(--orange);animation-delay:.5s}.flow-step:nth-child(2) .flow-dot{background:var(--blue);animation-delay:1s}
+.flow-step:nth-child(3) .flow-dot{background:var(--green);animation-delay:1.5s}.flow-step:nth-child(4) .flow-dot{background:var(--purple);animation-delay:2s}
+.flow-step:nth-child(5) .flow-dot{background:var(--pink);animation-delay:2.5s}.flow-step:nth-child(6) .flow-dot{background:var(--cyan);animation-delay:3s}
+.flow-step:nth-child(7) .flow-dot{background:var(--yellow);animation-delay:3.5s}.flow-step:nth-child(8) .flow-dot{background:var(--red);animation-delay:4s}
+.flow-step .tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:6px;padding:.5rem .75rem;font-size:.78rem;color:var(--text-secondary);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;z-index:10;box-shadow:var(--shadow-md)}
+.flow-step:hover .tooltip{opacity:1}
+.tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--bg-tertiary)}
+.flow-step:target{border-color:var(--blue)!important;box-shadow:0 0 30px rgba(88,166,255,.2)!important;transform:scale(1.02)!important}
+.runtime-arch,.cicd-pipeline,.hw-grid-section{max-width:900px;margin:0 auto;padding:4rem 2rem}
+.runtime-arch h2,.cicd-pipeline h2,.hw-grid-section h2{text-align:center;font-size:1.8rem;border:none;margin-bottom:.5rem}
+.arch-device{background:var(--bg-secondary);border:2px solid var(--border-color);border-radius:16px;padding:2rem;position:relative;overflow:hidden}
+.arch-device::before{content:'TARGET DEVICE (raspi4)';position:absolute;top:0;left:0;right:0;padding:.5rem 1rem;background:var(--bg-tertiary);font-size:.8rem;font-weight:700;color:var(--text-secondary);text-align:center;letter-spacing:1px;border-bottom:1px solid var(--border-color)}
+.arch-inner{margin-top:2rem}
+.arch-apps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem}
+.arch-app{padding:1rem;border-radius:6px;border:2px solid;text-align:center;font-weight:600;font-size:.85rem;animation:pulseApp 3s ease-in-out infinite;background:var(--bg-card)}
+@keyframes pulseApp{0%,100%{box-shadow:none}50%{box-shadow:0 0 15px rgba(255,255,255,.05)}}
+.app-suite{border-color:var(--yellow);color:var(--yellow)}.app-eai{border-color:var(--purple);color:var(--purple);animation-delay:.5s}.app-eni{border-color:var(--pink);color:var(--pink);animation-delay:1s}
+.arch-app small{display:block;font-weight:400;font-size:.75rem;color:var(--text-secondary);margin-top:2px}
+.arch-arrows{display:flex;justify-content:center;gap:2rem;padding:.4rem 0;color:var(--text-muted);font-size:1.2rem}
+.arch-arrows span{animation:arrowPulse 1.5s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.3}50%{opacity:1}}
+.arch-arrows span:nth-child(2){animation-delay:.3s}.arch-arrows span:nth-child(3){animation-delay:.6s}
+.arch-bidir{display:flex;justify-content:center;gap:.75rem;padding:.3rem 0;font-size:.85rem;color:var(--text-muted)}
+.arch-bidir span{animation:arrowPulse 1.5s ease-in-out infinite}
+.arch-ipc{padding:.75rem 1rem;border:2px solid var(--cyan);border-radius:6px;text-align:center;font-weight:600;font-size:.85rem;color:var(--cyan);margin-bottom:1rem;background:var(--bg-card);animation:pulseApp 3s ease-in-out 1.5s infinite}
+.arch-kernel{padding:1rem;border:2px solid var(--blue);border-radius:6px;text-align:center;margin-bottom:1rem;background:var(--bg-card);animation:pulseApp 3s ease-in-out 2s infinite}
+.kern-title{font-weight:700;color:var(--blue);font-size:.9rem;margin-bottom:.5rem}
+.kern-modules{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+.kern-mod{padding:3px 10px;background:var(--blue-dim);color:var(--blue);border-radius:4px;font-size:.72rem;font-weight:600}
+.arch-boot{padding:1rem;border:2px solid var(--green);border-radius:6px;text-align:center;margin-bottom:1rem;background:var(--bg-card);animation:pulseApp 3s ease-in-out 2.5s infinite}
+.boot-title{font-weight:700;color:var(--green);font-size:.9rem;margin-bottom:.5rem}
+.boot-flow{color:var(--text-secondary);font-size:.82rem}
+.arch-hw{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:.5rem}
+.arch-hw-label{width:100%;text-align:center;font-size:.8rem;color:var(--text-muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.25rem}
+.arch-hw-chip{padding:.4rem .8rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:4px;font-size:.78rem;font-weight:600;color:var(--text-secondary);animation:chipPulse 2s ease-in-out infinite}
+@keyframes chipPulse{0%,100%{border-color:var(--border-color)}50%{border-color:var(--text-muted)}}
+.arch-hw-chip:nth-child(2){animation-delay:.2s}.arch-hw-chip:nth-child(3){animation-delay:.4s}.arch-hw-chip:nth-child(4){animation-delay:.6s}.arch-hw-chip:nth-child(5){animation-delay:.8s}.arch-hw-chip:nth-child(6){animation-delay:1s}
+.pipeline-track{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;padding:1rem 0}
+.gate{text-align:center;flex:0 0 auto}
+.gate-circle{width:70px;height:70px;border-radius:50%;border:3px solid var(--border-color);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;color:var(--text-muted);background:var(--bg-card);position:relative;overflow:hidden}
+.gate-circle::before{content:'';position:absolute;bottom:0;left:0;right:0;height:0}
+.gate-label{font-size:.72rem;color:var(--text-secondary);margin-top:.5rem;max-width:90px}
+.gate-connector{width:40px;height:3px;background:var(--border-color);position:relative;overflow:hidden;flex-shrink:0}
+.gate-connector::after{content:'';position:absolute;left:-100%;top:0;bottom:0;width:100%}
+@keyframes fillUp{to{height:100%}}
+@keyframes connectorFlow{to{left:100%}}
+.gate-push .gate-circle{border-color:var(--text-muted)}.gate-push .gate-circle::before{background:rgba(139,148,158,.3);animation:fillUp .8s ease-out 1s forwards}
+.gate-1 .gate-circle{border-color:var(--blue)}.gate-1 .gate-circle::before{background:var(--blue-dim);animation:fillUp .8s ease-out 1.8s forwards}
+.gate-2 .gate-circle{border-color:var(--green)}.gate-2 .gate-circle::before{background:var(--green-dim);animation:fillUp .8s ease-out 2.6s forwards}
+.gate-3 .gate-circle{border-color:var(--purple)}.gate-3 .gate-circle::before{background:var(--purple-dim);animation:fillUp .8s ease-out 3.4s forwards}
+.gate-release .gate-circle{border-color:var(--orange)}.gate-release .gate-circle::before{background:var(--orange-dim);animation:fillUp .8s ease-out 4.2s forwards}
+.pipeline-track .gate-connector:nth-of-type(2)::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);animation:connectorFlow 2s linear 1.4s infinite}
+.pipeline-track .gate-connector:nth-of-type(4)::after{background:linear-gradient(90deg,transparent,var(--green),transparent);animation:connectorFlow 2s linear 2.2s infinite}
+.pipeline-track .gate-connector:nth-of-type(6)::after{background:linear-gradient(90deg,transparent,var(--purple),transparent);animation:connectorFlow 2s linear 3s infinite}
+.pipeline-track .gate-connector:nth-of-type(8)::after{background:linear-gradient(90deg,transparent,var(--orange),transparent);animation:connectorFlow 2s linear 3.8s infinite}
+.hw-row{margin-bottom:1.5rem}
+.hw-row-label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem;padding-left:.25rem}
+.hw-row-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem}
+.hw-target{padding:.75rem 1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;text-align:center;font-size:.85rem;font-weight:600;transition:all .3s}
+.hw-target:hover{transform:translateY(-2px)}
+.hw-target small{display:block;font-weight:400;font-size:.72rem;color:var(--text-secondary);margin-top:2px}
+.hw-row-mcu .hw-row-label{color:var(--green)}.hw-row-mcu .hw-target{animation:pulseGreen 3s ease-in-out infinite;border-color:rgba(63,185,80,.3)}
+@keyframes pulseGreen{0%,100%{box-shadow:0 0 3px rgba(63,185,80,.1)}50%{box-shadow:0 0 12px rgba(63,185,80,.25)}}
+.hw-row-sbc .hw-row-label{color:var(--blue)}.hw-row-sbc .hw-target{animation:pulseBlue 3s ease-in-out infinite;border-color:rgba(88,166,255,.3)}
+@keyframes pulseBlue{0%,100%{box-shadow:0 0 3px rgba(88,166,255,.1)}50%{box-shadow:0 0 12px rgba(88,166,255,.25)}}
+.hw-row-soc .hw-row-label{color:var(--purple)}.hw-row-soc .hw-target{animation:pulsePurple 3s ease-in-out infinite;border-color:rgba(188,140,255,.3)}
+@keyframes pulsePurple{0%,100%{box-shadow:0 0 3px rgba(188,140,255,.1)}50%{box-shadow:0 0 12px rgba(188,140,255,.25)}}
+.hw-row-virt .hw-row-label{color:var(--cyan)}.hw-row-virt .hw-target{animation:pulseCyan 3s ease-in-out infinite;border-color:rgba(121,192,255,.3)}
+@keyframes pulseCyan{0%,100%{box-shadow:0 0 3px rgba(121,192,255,.1)}50%{box-shadow:0 0 12px rgba(121,192,255,.25)}}
+.flow-page .footer{margin-top:0}
+@media(max-width:768px){.arch-apps{grid-template-columns:1fr}.pipeline-track{flex-direction:column}.gate-connector{width:3px;height:30px}.hw-row-cards{grid-template-columns:repeat(2,1fr)}.flow-hero h1{font-size:2.2rem}}
+</style></head>
+<body class="flow-page">
+<nav class="navbar"><div class="nav-inner">
+<a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html">Get Started</a><a href="docs/index.html">Docs</a><a href="kids.html">Kids &#127918;</a><a href="hardware-lab.html">Hardware Lab &#128268;</a><a href="flow.html" class="active">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+<section class="flow-hero">
+<h1>EoS Platform Flow</h1>
+<p>Watch how the entire embedded OS ecosystem builds, tests, and deploys &mdash; from hardware design to production.</p>
+<div class="progress-bar"><div class="progress-fill"></div></div>
+</section>
+<section class="build-flow">
+<div class="flow-step step-ebuild" id="step1"><div class="flow-dot"></div><div class="step-num">1</div>
+<span class="tooltip">Analyze board schematics and pin mappings from KiCad/YAML</span>
+<h3>&#128209; Hardware Design</h3>
+<p>KiCad schematics &amp; YAML board definitions analyzed by <code>ebuild analyze</code> to extract pin maps, peripheral configs, and memory layouts.</p>
+<span class="step-output">&#8594; Board Support Package</span></div>
+<div class="flow-step step-ebuild" id="step2"><div class="flow-dot"></div><div class="step-num">2</div>
+<span class="tooltip">Generate cross-compilation toolchain and sysroot for target</span>
+<h3>&#9881; SDK Generation</h3>
+<p><code>ebuild sdk --target raspi4</code> generates cross-compilation toolchain, sysroot, headers, and pre-built libraries.</p>
+<span class="step-output">&#8594; toolchain + sysroot</span></div>
+<div class="flow-step step-eos" id="step3"><div class="flow-dot"></div><div class="step-num">3</div>
+<span class="tooltip">Compile the core OS: HAL, kernel scheduler, and system services</span>
+<h3>&#128268; Build OS</h3>
+<p><strong style="color:var(--blue)">eos</strong> (HAL + Kernel + Services) &#8594; <code>libeos.a</code><br><strong style="color:var(--green)">eboot</strong> (Secure Bootloader) &#8594; <code>libeboot.a</code></p>
+<span class="step-output">&#8594; libeos.a + libeboot.a</span></div>
+<div class="flow-step step-eai" id="step4"><div class="flow-dot"></div><div class="step-num">4</div>
+<span class="tooltip">Build AI inference engine, neural interface, and secure IPC</span>
+<h3>&#129302; Build AI + Neural</h3>
+<p><strong style="color:var(--purple)">eai</strong> &#8594; <code>libeai.a</code> &bull; <strong style="color:var(--pink)">eni</strong> &#8594; <code>libeni.a</code> &bull; <strong style="color:var(--cyan)">eipc</strong> &#8594; <code>libeipc.a</code></p>
+<span class="step-output">&#8594; libeai.a + libeni.a + libeipc.a</span></div>
+<div class="flow-step step-eosuite" id="step5"><div class="flow-dot"></div><div class="step-num">5</div>
+<span class="tooltip">Compile eApps applications and ebot chat client</span>
+<h3>&#128736; Build Tools</h3>
+<p><strong style="color:var(--yellow)">eApps</strong> (38 GUI apps + ebot) compiled into the <code>ebot</code> binary and application suite.</p>
+<span class="step-output">&#8594; ebot binary</span></div>
+<div class="flow-step step-eipc" id="step6"><div class="flow-dot"></div><div class="step-num">6</div>
+<span class="tooltip">Assemble root filesystem image from all compiled components</span>
+<h3>&#128230; Package Image</h3>
+<p>rootfs = eos + eboot + eai + eni + eipc + eApps. All components packaged into a deployable filesystem image.</p>
+<span class="step-output">&#8594; eos-image-raspi4.cpio.gz</span></div>
+<div class="flow-step step-eosim" id="step7"><div class="flow-dot"></div><div class="step-num">7</div>
+<span class="tooltip">Boot image in virtual machine and run full test suite</span>
+<h3>&#128300; Simulate &amp; Test</h3>
+<p><strong style="color:var(--red)">EoSim</strong> boots the image in a VM. Runs <strong>583+ tests</strong> across <strong>52 platforms</strong> and <strong>14 CPU architectures</strong> (GPIO, UART, SPI, I2C, crypto, OTA, AI).</p>
+<span class="step-output">&#8594; 583 tests passed</span></div>
+<div class="flow-step step-eboot" id="step8"><div class="flow-dot"></div><div class="step-num">8</div>
+<span class="tooltip">Flash firmware to real hardware and connect to AI server</span>
+<h3>&#128640; Deploy</h3>
+<p>Flash to real hardware (RPi4, STM32, etc.). <code>ebot</code> connects to <code>eai</code> server at <code>192.168.1.100:8420</code>.</p>
+<span class="step-output">&#8594; Device online</span></div>
+</section>
+<!--RUNTIME_ARCH-->
+<section class="runtime-arch">
+<h2>Runtime Architecture</h2>
+<p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">How EoS components interact on a deployed device</p>
+<div class="arch-device"><div class="arch-inner">
+<div class="arch-apps">
+<div class="arch-app app-suite">eApps<small>(ebot)</small></div>
+<div class="arch-app app-eai">EAI<small>(server)</small></div>
+<div class="arch-app app-eni">ENI<small>(neuralink)</small></div></div>
+<div class="arch-bidir"><span>&#8595;</span><span>&#8593;</span><span>&#8595;</span><span>&#8593;</span><span>&#8595;</span><span>&#8593;</span></div>
+<div class="arch-ipc">EIPC (Secure IPC)</div>
+<div class="arch-arrows"><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span></div>
+<div class="arch-kernel"><div class="kern-title">EoS (HAL + Kernel + Services)</div>
+<div class="kern-modules"><span class="kern-mod">GPIO</span><span class="kern-mod">UART</span><span class="kern-mod">SPI</span><span class="kern-mod">I2C</span><span class="kern-mod">Timer</span><span class="kern-mod">IRQ</span></div></div>
+<div class="arch-arrows"><span>&#8595;</span><span>&#8595;</span></div>
+<div class="arch-boot"><div class="boot-title">eBoot (Bootloader)</div><div class="boot-flow">Secure Boot &#8594; A/B Slots &#8594; OTA</div></div>
+<div class="arch-arrows"><span>&#8595;</span></div>
+<div class="arch-hw"><div class="arch-hw-label">Hardware</div>
+<div class="arch-hw-chip">GPIO</div><div class="arch-hw-chip">UART</div><div class="arch-hw-chip">SPI</div><div class="arch-hw-chip">I2C</div><div class="arch-hw-chip">ETH</div></div>
+</div></div></section>
+<!--CICD_SECTION-->
+<section class="cicd-pipeline">
+<h2>CI/CD Pipeline</h2>
+<p style="text-align:center;color:var(--text-secondary);margin-bottom:2.5rem">Gated release pipeline &mdash; every commit passes 4 quality gates</p>
+<div class="pipeline-track">
+<div class="gate gate-push"><div class="gate-circle">Push</div><div class="gate-label">git push</div></div>
+<div class="gate-connector"></div>
+<div class="gate gate-1"><div class="gate-circle">G1</div><div class="gate-label">Test All 15 Repos</div></div>
+<div class="gate-connector"></div>
+<div class="gate gate-2"><div class="gate-circle">G2</div><div class="gate-label">Cross-Compile 3 Archs</div></div>
+<div class="gate-connector"></div>
+<div class="gate gate-3"><div class="gate-circle">G3</div><div class="gate-label">EoSim 21 Boards</div></div>
+<div class="gate-connector"></div>
+<div class="gate gate-release"><div class="gate-circle">&#10003;</div><div class="gate-label">Release 6 Platforms</div></div>
+</div></section>
+<!--HW_GRID-->
+<section class="hw-grid-section">
+<h2>Hardware Targets</h2>
+<p style="text-align:center;color:var(--text-secondary);margin-bottom:2.5rem">52 hardware targets across 14 CPU architectures</p>
+<div class="hw-row hw-row-mcu"><div class="hw-row-label">&#9899; MCU &mdash; 20 Platforms</div>
+<div class="hw-row-cards">
+<div class="hw-target">STM32F4<small>Cortex-M4 &bull; 180MHz</small></div>
+<div class="hw-target">STM32H7<small>Cortex-M7 &bull; 480MHz</small></div>
+<div class="hw-target">STM32L4<small>Cortex-M4 &bull; LP</small></div>
+<div class="hw-target">nRF5340<small>Cortex-M33 &bull; Dual</small></div>
+<div class="hw-target">nRF9160<small>Cortex-M33 &bull; LTE</small></div>
+<div class="hw-target">RP2040<small>Cortex-M0+ &bull; Dual</small></div>
+<div class="hw-target">K64F<small>Cortex-M4 &bull; Ethernet</small></div>
+<div class="hw-target">PSoC 6<small>M4/M0+ &bull; BLE</small></div>
+<div class="hw-target">SAMC21<small>Cortex-M0+ &bull; CAN</small></div>
+<div class="hw-target">SAMD51<small>Cortex-M4 &bull; USB</small></div>
+<div class="hw-target">RA6M5<small>Cortex-M33 &bull; TZ</small></div>
+<div class="hw-target">MSP432<small>Cortex-M4F &bull; LP</small></div>
+<div class="hw-target">ESP32<small>Xtensa &bull; Wi-Fi</small></div>
+<div class="hw-target">ESP32-C3<small>RISC-V &bull; Wi-Fi</small></div>
+<div class="hw-target">ESP32-S3<small>Xtensa &bull; AI</small></div>
+<div class="hw-target">GD32VF103<small>RISC-V &bull; 108MHz</small></div>
+<div class="hw-target">PIC32MZ<small>MIPS &bull; 200MHz</small></div>
+<div class="hw-target">K210<small>RISC-V 64 &bull; AI</small></div>
+<div class="hw-target">S32K344<small>Cortex-M7 &bull; Auto</small></div></div></div>
+</section>
+<footer class="footer"><div class="footer-inner"><div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded operating system.</p></div>
+<div><h4>Documentation</h4><ul><li><a href="docs/eos.html">EoS</a></li><li><a href="docs/eboot.html">eBoot</a></li><li><a href="docs/ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="docs/eai.html">EAI</a></li><li><a href="docs/eni.html">ENI</a></li><li><a href="docs/eipc.html">EIPC</a></li><li><a href="docs/eosuite.html">eApps</a></li><li><a href="docs/eosim.html">EoSim</a></li></ul></div>
+<div><h4>Community</h4><ul><li><a href="https://github.com/embeddedos-org">GitHub</a></li><li><a href="https://github.com/embeddedos-org/eos/discussions">Discussions</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; Licensed under MIT</div></footer>
+</body></html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started - EmbeddedOS</title><link rel="stylesheet" href="style.css">
+<style>
+.path-selector{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin:2rem 0}
+.path-btn{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1.5rem 1rem;background:var(--bg-card);border:2px solid var(--border-color);border-radius:var(--radius-lg);cursor:pointer;transition:all .3s;text-align:center;color:var(--text-primary);font-weight:600}
+.path-btn:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.path-btn.active{border-color:var(--blue);background:var(--blue-dim)}
+.path-btn .path-emoji{font-size:2rem}
+.path-btn .path-label{font-size:.85rem;color:var(--text-secondary)}
+.path-content{display:none;animation:fadeIn .3s}
+.path-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.path-btn .svg-icon{margin-bottom:0.25rem}
+.path-btn .svg-icon svg{width:48px;height:48px}
+</style></head><body>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
+<linearGradient id="gs-grad-pcb" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a5a2a"/><stop offset="100%" stop-color="#0d3318"/></linearGradient>
+</defs></svg>
+<nav class="navbar"><div class="nav-inner">
+<a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html" class="active">Get Started</a><a href="docs/index.html">Docs</a><a href="kids.html">Kids &#127918;</a><a href="hardware-lab.html">Hardware Lab &#128268;</a><a href="flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+
+<div class="content-wrapper" style="max-width:900px">
+<h1>Getting Started with EmbeddedOS <span class="version-badge">v0.1.0</span></h1>
+<p>Choose the path that fits what you have and what you want to do. Each path takes about 10 minutes!</p>
+
+<h2 style="border:none;text-align:center;font-size:1.6rem">🎯 Choose Your Path</h2>
+
+<div class="path-selector">
+<div class="path-btn active" onclick="showPath('sim')"><div class="svg-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="6" width="36" height="26" rx="3" fill="none" stroke="#3fb950" stroke-width="2"/><line x1="6" y1="10" x2="42" y2="10" stroke="#3fb950" stroke-width="0.8" opacity="0.4"/><rect x="12" y="15" width="12" height="10" rx="1" fill="url(#gs-grad-pcb)" stroke="#3fb950" stroke-width="0.8"/><rect x="15" y="18" width="5" height="4" fill="#1a1e24" stroke="#58a6ff" stroke-width="0.5"/><circle cx="34" cy="20" r="2" fill="#f85149" opacity="0.7"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/></circle><circle cx="34" cy="26" r="1.5" fill="#3fb950" opacity="0.6"/><line x1="18" y1="34" x2="30" y2="34" stroke="#3fb950" stroke-width="2" stroke-linecap="round"/><line x1="24" y1="32" x2="24" y2="34" stroke="#3fb950" stroke-width="2"/></svg></div>No Hardware<span class="path-label">Simulator only</span></div>
+<div class="path-btn" onclick="showPath('raspi')"><div class="svg-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="8" width="32" height="32" rx="3" fill="url(#gs-grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="18" y="16" width="10" height="10" rx="1.5" fill="#1a1e24" stroke="#3fb950" stroke-width="1"/><text x="23" y="23" text-anchor="middle" fill="#3fb950" font-size="4" font-family="monospace">RPi</text><rect x="34" y="12" width="6" height="5" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/><rect x="34" y="18" width="6" height="5" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/><rect x="34" y="28" width="6" height="8" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/><g><circle cx="12" cy="10" r="0.6" fill="#e3b341" opacity="0.5"/><circle cx="14" cy="10" r="0.6" fill="#e3b341" opacity="0.5"/><circle cx="16" cy="10" r="0.6" fill="#e3b341" opacity="0.5"/><circle cx="18" cy="10" r="0.6" fill="#e3b341" opacity="0.5"/><circle cx="20" cy="10" r="0.6" fill="#e3b341" opacity="0.5"/><circle cx="12" cy="12" r="0.6" fill="#e3b341" opacity="0.5"/><circle cx="14" cy="12" r="0.6" fill="#e3b341" opacity="0.5"/><circle cx="16" cy="12" r="0.6" fill="#e3b341" opacity="0.5"/><circle cx="18" cy="12" r="0.6" fill="#e3b341" opacity="0.5"/><circle cx="20" cy="12" r="0.6" fill="#e3b341" opacity="0.5"/></g><circle cx="12" cy="34" r="1.5" fill="#3fb950" opacity="0.7"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/></circle></svg></div>Raspberry Pi<span class="path-label">RPi 4 or 5</span></div>
+<div class="path-btn" onclick="showPath('stm32')"><div class="svg-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="8" width="32" height="32" rx="3" fill="url(#gs-grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="16" y="14" width="14" height="14" rx="2" fill="#1a1e24" stroke="#79c0ff" stroke-width="1"/><text x="23" y="23" text-anchor="middle" fill="#79c0ff" font-size="4" font-family="monospace">STM</text><line x1="18" y1="14" x2="18" y2="10" stroke="#8b949e" stroke-width="1.2"/><line x1="22" y1="14" x2="22" y2="10" stroke="#8b949e" stroke-width="1.2"/><line x1="26" y1="14" x2="26" y2="10" stroke="#8b949e" stroke-width="1.2"/><line x1="18" y1="28" x2="18" y2="32" stroke="#8b949e" stroke-width="1.2"/><line x1="22" y1="28" x2="22" y2="32" stroke="#8b949e" stroke-width="1.2"/><line x1="26" y1="28" x2="26" y2="32" stroke="#8b949e" stroke-width="1.2"/><circle cx="12" cy="12" r="1.5" fill="#3fb950" opacity="0.7"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/></circle><circle cx="12" cy="17" r="1.5" fill="#f85149" opacity="0.5"/><rect x="34" y="18" width="6" height="8" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/></svg></div>STM32 Board<span class="path-label">Discovery/Nucleo</span></div>
+<div class="path-btn" onclick="showPath('apps')"><div class="svg-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="4" width="18" height="30" rx="3" fill="none" stroke="#e3b341" stroke-width="1.5"/><line x1="10" y1="10" x2="28" y2="10" stroke="#e3b341" stroke-width="0.5" opacity="0.4"/><line x1="10" y1="28" x2="28" y2="28" stroke="#e3b341" stroke-width="0.5" opacity="0.4"/><rect x="13" y="13" width="5" height="5" rx="1" fill="#58a6ff" opacity="0.5"/><rect x="20" y="13" width="5" height="5" rx="1" fill="#3fb950" opacity="0.5"/><rect x="13" y="21" width="5" height="5" rx="1" fill="#f0883e" opacity="0.5"/><rect x="20" y="21" width="5" height="5" rx="1" fill="#bc8cff" opacity="0.5"/><rect x="30" y="10" width="12" height="20" rx="2" fill="none" stroke="#e3b341" stroke-width="1" opacity="0.6"/><rect x="32" y="13" width="3" height="3" rx="0.5" fill="#58a6ff" opacity="0.3"/><rect x="37" y="13" width="3" height="3" rx="0.5" fill="#3fb950" opacity="0.3"/><rect x="32" y="18" width="3" height="3" rx="0.5" fill="#f0883e" opacity="0.3"/><rect x="37" y="18" width="3" height="3" rx="0.5" fill="#bc8cff" opacity="0.3"/></svg></div>I Want Apps<span class="path-label">Build eApps</span></div>
+<div class="path-btn" onclick="showPath('design')"><div class="svg-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="6" width="36" height="28" rx="2" fill="none" stroke="#f778ba" stroke-width="1.5"/><line x1="6" y1="12" x2="42" y2="12" stroke="#f778ba" stroke-width="0.5" opacity="0.4"/><circle cx="10" cy="9" r="1" fill="#f85149" opacity="0.6"/><circle cx="14" cy="9" r="1" fill="#e3b341" opacity="0.6"/><circle cx="18" cy="9" r="1" fill="#3fb950" opacity="0.6"/><rect x="10" y="16" width="14" height="14" rx="1" fill="none" stroke="#f778ba" stroke-width="0.8" opacity="0.5"/><path d="M14 26L17 20L20 24L22 22" stroke="#f778ba" stroke-width="1" fill="none" stroke-linecap="round"/><rect x="28" y="16" width="10" height="4" rx="1" fill="#58a6ff" opacity="0.3"/><rect x="28" y="22" width="10" height="4" rx="1" fill="#bc8cff" opacity="0.3"/><rect x="28" y="28" width="10" height="4" rx="1" fill="#3fb950" opacity="0.3"/><line x1="16" y1="36" x2="32" y2="36" stroke="#f778ba" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="34" x2="24" y2="36" stroke="#f778ba" stroke-width="1.5"/></svg></div>I Want to Design<span class="path-label">EoStudio</span></div>
+</div>
+
+<!-- PATH: SIMULATOR -->
+<div id="path-sim" class="path-content active">
+<h2 style="color:var(--green)">🎮 No Hardware? No Problem!</h2>
+<p>EoSim lets you simulate any board on your computer. No soldering, no wires &mdash; just code and run!</p>
+<div class="callout callout-info"><div class="callout-title">Prerequisites</div><p>Python 3.10+ and pip installed on your computer.</p></div>
+<div class="steps step-green">
+<div class="step"><h3>Install EoSim</h3>
+<pre><code>pip install embeddedos-eosim
+eosim --version
+# EoSim v0.1.0</code></pre></div>
+<div class="step"><h3>List Available Platforms</h3>
+<pre><code>eosim list
+# stm32f4    ARM Cortex-M4 (168 MHz, 1MB Flash, 192KB RAM)
+# esp32      Xtensa LX6 (240 MHz, Wi-Fi, BLE)
+# raspi4     ARM Cortex-A72 (1.5 GHz, 8GB RAM)
+# ... 52 platforms total</code></pre></div>
+<div class="step"><h3>Run Your First Simulation</h3>
+<pre><code>eosim run --platform stm32f4 --gui
+# [EoSim] Loading platform: stm32f4
+# [EoSim] CPU: Cortex-M4 @ 168 MHz
+# [EoSim] GUI launched on :8080</code></pre></div>
+<div class="step"><h3>Try a Firmware Image</h3>
+<pre><code># Install ebuild to create a project
+pip install embeddedos-ebuild
+ebuild init my-blink --template rtos --target stm32f4
+cd my-blink &amp;&amp; ebuild build
+eosim run build/firmware.elf --platform stm32f4 --gui</code></pre></div>
+<div class="step"><h3>Explore the Dashboard</h3>
+<p>Open <code>http://localhost:8080</code> in your browser to see GPIO pins, UART output, memory, and CPU registers all simulated in real time!</p></div>
+</div>
+<div class="callout callout-tip"><div class="callout-title">What's Next?</div>
+<p>Try different platforms: <code>eosim run --platform esp32 --gui</code> or <code>--platform raspi4</code>. See the <a href="docs/eosim.html">EoSim docs</a> for all 52 platforms.</p></div>
+</div>
+
+<!-- PATH: RASPBERRY PI -->
+<div id="path-raspi" class="path-content">
+<h2 style="color:var(--blue)">🍓 I Have a Raspberry Pi</h2>
+<p>Get EmbeddedOS running on your Pi in 5 steps. You'll blink an LED and see UART output.</p>
+<div class="callout callout-info"><div class="callout-title">You'll Need</div>
+<p>Raspberry Pi 4 or 5, microSD card, USB-C power supply, keyboard/mouse, monitor. See <a href="hardware-lab.html#raspi">full shopping list</a>.</p></div>
+<div class="steps">
+<div class="step"><h3>Set Up Your Pi</h3>
+<p>Flash Raspberry Pi OS (64-bit) using <a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a>. Boot and open a terminal.</p></div>
+<div class="step"><h3>Install Build Tools</h3>
+<pre><code>sudo apt update &amp;&amp; sudo apt install -y cmake ninja-build gcc g++ git python3-pip
+pip install embeddedos-ebuild embeddedos-eosim</code></pre></div>
+<div class="step"><h3>Create a Blink Project</h3>
+<pre><code>ebuild init my-blink --template rtos --target raspi4
+cd my-blink</code></pre></div>
+<div class="step"><h3>Build and Run</h3>
+<pre><code>ebuild build
+ebuild run
+# [app] EmbeddedOS v0.1.0 starting...
+# [app] LED toggled, tick=500</code></pre></div>
+<div class="step"><h3>Monitor Output</h3>
+<pre><code>ebuild monitor --baud 115200
+# [app] LED toggled, tick=1000
+# [app] LED toggled, tick=1500</code></pre></div>
+</div>
+<div class="callout callout-tip"><div class="callout-title">Next Steps</div>
+<p>Try the <a href="hardware-lab.html#raspi">full hardware lab guide</a> or add <a href="docs/eai.html">AI features</a> to your project.</p></div>
+</div>
+
+<!-- PATH: STM32 -->
+<div id="path-stm32" class="path-content">
+<h2 style="color:var(--cyan)">⚙️ I Have an STM32 Board</h2>
+<p>Flash EmbeddedOS onto your STM32 in 5 steps using the built-in ST-Link debugger.</p>
+<div class="callout callout-info"><div class="callout-title">You'll Need</div>
+<p>STM32F4 Discovery ($20) or Nucleo board, USB cable. See <a href="hardware-lab.html#stm32">full shopping list</a>.</p></div>
+<div class="steps step-cyan">
+<div class="step"><h3>Install ARM Toolchain</h3>
+<pre><code># Ubuntu: sudo apt install gcc-arm-none-eabi
+# macOS: brew install arm-none-eabi-gcc
+# Windows: download from developer.arm.com
+arm-none-eabi-gcc --version</code></pre></div>
+<div class="step"><h3>Install ebuild + Flash Tools</h3>
+<pre><code>pip install embeddedos-ebuild
+sudo apt install openocd stlink-tools</code></pre></div>
+<div class="step"><h3>Create and Build</h3>
+<pre><code>ebuild init my-blink --template rtos --target stm32f4
+cd my-blink
+ebuild build --jobs 8</code></pre></div>
+<div class="step"><h3>Flash</h3>
+<pre><code>ebuild flash --verify
+# [ebuild] Writing firmware.bin (45,232 bytes)... OK
+# [ebuild] Flash complete. Resetting device.</code></pre></div>
+<div class="step"><h3>Monitor</h3>
+<pre><code>ebuild monitor --baud 115200
+# [app] EmbeddedOS v0.1.0 starting...
+# [app] LED toggled, tick=500</code></pre></div>
+</div>
+<div class="callout callout-tip"><div class="callout-title">Next Steps</div>
+<p>See the <a href="hardware-lab.html#stm32">full STM32 lab guide</a> with GDB debugging, or try <a href="hardware-lab.html#esp32">ESP32</a> ($5!).</p></div>
+</div>
+
+<!-- PATH: APPS -->
+<div id="path-apps" class="path-content">
+<h2 style="color:var(--yellow)">📱 I Want to Build Apps</h2>
+<p>Build and run eApps &mdash; 38 cross-platform C + LVGL apps including Snake, Calculator, and more.</p>
+<div class="callout callout-info"><div class="callout-title">Prerequisites</div>
+<p>Git, CMake 3.20+, C compiler (gcc/clang/MSVC), SDL2 development libraries.</p></div>
+<div class="steps step-yellow">
+<div class="step"><h3>Install SDL2</h3>
+<pre><code># Ubuntu: sudo apt install libsdl2-dev
+# macOS: brew install sdl2
+# Windows: download from libsdl.org</code></pre></div>
+<div class="step"><h3>Clone eApps</h3>
+<pre><code>git clone https://github.com/embeddedos-org/eApps.git
+cd eApps</code></pre></div>
+<div class="step"><h3>Build for Desktop</h3>
+<pre><code>cmake -B build -DEAPPS_PORT=sdl2
+cmake --build build --parallel</code></pre></div>
+<div class="step"><h3>Run Snake!</h3>
+<pre><code>./build/apps/snake/snake
+# A window opens with the Snake game!
+# Use arrow keys to play</code></pre></div>
+<div class="step"><h3>Try More Apps</h3>
+<pre><code>./build/apps/ecalc/ecalc    # Calculator
+./build/apps/enote/enote    # Text editor
+./build/eapps_suite          # All 38 apps</code></pre></div>
+</div>
+<div class="callout callout-tip"><div class="callout-title">Next Steps</div>
+<p>See all <a href="docs/eosuite.html">38 apps with CLI vs GUI comparison</a>. Build for <a href="docs/eosuite.html#build">Web (Emscripten)</a> or EoS (embedded).</p></div>
+</div>
+
+<!-- PATH: DESIGN -->
+<div id="path-design" class="path-content">
+<h2 style="color:var(--pink)">🎨 I Want to Design</h2>
+<p>EoStudio is an all-in-one design tool with AI tutoring. Create 3D models, games, UIs, and more.</p>
+<div class="callout callout-info"><div class="callout-title">Prerequisites</div>
+<p>Python 3.10+, 4GB RAM, OpenGL 3.3+.</p></div>
+<div class="steps step-pink">
+<div class="step"><h3>Install EoStudio</h3>
+<pre><code>pip install eostudio
+eostudio --version
+# EoStudio v0.1.0</code></pre></div>
+<div class="step"><h3>Launch</h3>
+<pre><code>eostudio
+# The main window opens with all 10 editors</code></pre></div>
+<div class="step"><h3>Create a 3D Model with AI Help</h3>
+<p>Open the 3D Modeler and click "AI Tutor". Ask: <em>"Help me create a simple robot"</em>. The AI guides you step-by-step!</p></div>
+<div class="step"><h3>Design a Game</h3>
+<p>Switch to Game Editor. Create sprites, add physics, and build a playable game &mdash; no coding required.</p></div>
+<div class="step"><h3>Generate Code</h3>
+<p>Design a UI in the UI Designer, then click "Export &rarr; Flutter" or "Export &rarr; React" to get production-ready code!</p></div>
+</div>
+<div class="callout callout-tip"><div class="callout-title">Next Steps</div>
+<p>Explore the <a href="docs/eostudio.html">EoStudio Learning Hub</a> with 4 learning paths and 50+ project templates.</p></div>
+</div>
+
+<h2 style="border:none;text-align:center;margin-top:3rem">📚 Full Documentation</h2>
+<div class="quick-links">
+<a href="docs/eos.html" class="quick-link"><div class="ql-icon" style="background:var(--blue-dim);color:var(--blue)">EoS</div><div class="ql-text">EoS Kernel API</div></a>
+<a href="docs/eai.html" class="quick-link"><div class="ql-icon" style="background:var(--purple-dim);color:var(--purple)">EAI</div><div class="ql-text">AI Framework</div></a>
+<a href="docs/eosuite.html" class="quick-link"><div class="ql-icon" style="background:var(--yellow-dim);color:var(--yellow)">Apps</div><div class="ql-text">38 eApps</div></a>
+<a href="docs/eostudio.html" class="quick-link"><div class="ql-icon" style="background:var(--pink-dim);color:var(--pink)">🎨</div><div class="ql-text">EoStudio</div></a>
+<a href="docs/eosim.html" class="quick-link"><div class="ql-icon" style="background:var(--red-dim);color:var(--red)">Sim</div><div class="ql-text">EoSim</div></a>
+<a href="hardware-lab.html" class="quick-link"><div class="ql-icon" style="background:var(--green-dim);color:var(--green)">🔌</div><div class="ql-text">Hardware Lab</div></a>
+</div>
+</div>
+
+<script>
+function showPath(id){
+document.querySelectorAll('.path-content').forEach(function(el){el.classList.remove('active')});
+document.querySelectorAll('.path-btn').forEach(function(el){el.classList.remove('active')});
+document.getElementById('path-'+id).classList.add('active');
+document.querySelector('.path-btn[onclick*="'+id+'"]').classList.add('active');
+}
+</script>
+
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3 style="margin-bottom:.5rem">EmbeddedOS</h3><p>Open-source embedded OS.</p></div>
+<div><h4>Docs</h4><ul><li><a href="docs/eos.html">EoS</a></li><li><a href="docs/eboot.html">eBoot</a></li><li><a href="docs/eai.html">EAI</a></li><li><a href="docs/ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="docs/eipc.html">EIPC</a></li><li><a href="docs/eni.html">ENI</a></li><li><a href="docs/eosuite.html">eApps</a></li><li><a href="docs/eosim.html">EoSim</a></li><li><a href="docs/eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="kids.html">Kids Guide 🎮</a></li><li><a href="hardware-lab.html">Hardware Lab 🔌</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

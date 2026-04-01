@@ -1,0 +1,526 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENI API Reference v0.1.0 - EmbeddedOS</title><link rel="stylesheet" href="../style.css"></head><body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids 🎮</a><a href="../hardware-lab.html">Hardware Lab 🔌</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div>
+</div></nav>
+<div class="doc-layout"><aside class="doc-sidebar"><div class="sidebar-section"><div class="sidebar-title">ENI Modules</div>
+<a href="#provider" class="sidebar-link active">Provider Contract</a><a href="#event" class="sidebar-link">Events</a>
+<a href="#policy" class="sidebar-link">Safety Policy</a><a href="#filter" class="sidebar-link">Filter (Min)</a>
+<a href="#normalizer" class="sidebar-link">Normalizer (Min)</a><a href="#neuralink" class="sidebar-link">Neuralink Adapter</a>
+<a href="#calibration" class="sidebar-link">Calibration</a><a href="#implguide" class="sidebar-link">Provider Guide</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eos.html" class="sidebar-link">EoS</a><a href="eboot.html" class="sidebar-link">eBoot</a>
+<a href="eai.html" class="sidebar-link">EAI</a><a href="eipc.html" class="sidebar-link">EIPC</a>
+<a href="ebuild.html" class="sidebar-link">ebuild</a><a href="eosim.html" class="sidebar-link">EoSim</a>
+<a href="eosuite.html" class="sidebar-link">eApps</a><a href="eostudio.html" class="sidebar-link">EoStudio</a></div></aside>
+<main class="doc-content">
+<h1>ENI Developer Documentation <span class="version-badge">v0.1.0</span></h1>
+<p>Embedded Neural Interface framework with provider contracts, event processing, safety policies, signal filtering, and Neuralink BCI integration. Headers: <code>&lt;eni/provider_contract.h&gt;</code>, <code>&lt;eni/event.h&gt;</code>, <code>&lt;eni/policy.h&gt;</code>, <code>&lt;eni_min/filter.h&gt;</code>, <code>&lt;eni_min/normalizer.h&gt;</code>, <code>&lt;eni/neuralink.h&gt;</code></p>
+
+<div id="event" class="module-section"><h2 style="color:var(--pink)">&#128161; Event System</h2>
+<p class="module-desc">Structured events for neural data, intents, and features. Header: <code>&lt;eni/event.h&gt;</code></p></div>
+
+<div class="struct-card"><h4>eni_event_t</h4><table>
+<tr><td><code>id</code></td><td><code>uint32_t</code></td><td>Unique event ID (auto-assigned).</td></tr>
+<tr><td><code>version</code></td><td><code>uint32_t</code></td><td>Event schema version.</td></tr>
+<tr><td><code>type</code></td><td><code>eni_event_type_t</code></td><td>ENI_EVENT_INTENT, ENI_EVENT_FEATURES, ENI_EVENT_RAW, ENI_EVENT_CONTROL.</td></tr>
+<tr><td><code>timestamp</code></td><td><code>eni_timestamp_t</code></td><td>Event creation time (microseconds).</td></tr>
+<tr><td><code>source[64]</code></td><td><code>char</code></td><td>Provider name that generated this event.</td></tr>
+<tr><td><code>payload</code></td><td><code>union</code></td><td>Intent (.intent), features (.features), or raw data (.raw).</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eni_intent_t</h4><table>
+<tr><td><code>name[64]</code></td><td><code>char</code></td><td>Intent name (e.g., "move_left", "select", "scroll_down").</td></tr>
+<tr><td><code>confidence</code></td><td><code>float</code></td><td>Confidence score 0.0-1.0.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eni_feature_t / eni_feature_set_t</h4><table>
+<tr><td><code>name[32]</code></td><td><code>char</code></td><td>Feature name (e.g., "alpha_power", "beta_coherence").</td></tr>
+<tr><td><code>value</code></td><td><code>float</code></td><td>Feature value.</td></tr>
+<tr><td><code>features[32]</code></td><td><code>eni_feature_t</code></td><td>Array of up to 32 features in a set.</td></tr>
+<tr><td><code>count</code></td><td><code>int</code></td><td>Number of features in the set.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eni_event_type_t</h4><table>
+<tr><td><code>ENI_EVENT_INTENT</code></td><td><code>0</code></td><td>Decoded user intent with confidence.</td></tr>
+<tr><td><code>ENI_EVENT_FEATURES</code></td><td><code>1</code></td><td>Extracted neural features (alpha, beta, gamma power).</td></tr>
+<tr><td><code>ENI_EVENT_RAW</code></td><td><code>2</code></td><td>Raw byte payload (up to 4096 bytes).</td></tr>
+<tr><td><code>ENI_EVENT_CONTROL</code></td><td><code>3</code></td><td>System control event (calibration, config change).</td></tr>
+</table></div>
+
+<div class="api-card accent-pink"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_event_init</span>(<span class="param">eni_event_t *ev, eni_event_type_t type, const char *source</span>)</code></div>
+<p class="api-desc">Initialize an event with type, source name, auto-generated ID, current timestamp, and zeroed payload. Must be called before setting intent/features/raw data.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>ev</code></td><td><code>eni_event_t *</code></td><td>Event to initialize.</td></tr>
+<tr><td><code>type</code></td><td><code>eni_event_type_t</code></td><td>Event type.</td></tr>
+<tr><td><code>source</code></td><td><code>const char *</code></td><td>Provider name (max 63 chars).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> on success. <code>ENI_ERR_INVALID</code> if ev or source is NULL.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eni_event_t ev;
+eni_event_init(&amp;ev, ENI_EVENT_INTENT, "neuralink_n1");
+eni_event_set_intent(&amp;ev, "move_cursor_left", 0.92f);
+eni_event_print(&amp;ev);</code></pre></div></div>
+
+<div class="api-card accent-pink"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_event_set_intent</span>(<span class="param">eni_event_t *ev, const char *intent, float confidence</span>)</code></div>
+<p class="api-desc">Set intent payload on an ENI_EVENT_INTENT event. Copies intent name and confidence score.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>ev</code></td><td><code>eni_event_t *</code></td><td>Event (must be type INTENT).</td></tr>
+<tr><td><code>intent</code></td><td><code>const char *</code></td><td>Intent name (max 63 chars).</td></tr>
+<tr><td><code>confidence</code></td><td><code>float</code></td><td>Confidence 0.0-1.0.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-pink"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_event_add_feature</span>(<span class="param">eni_event_t *ev, const char *name, float value</span>)</code></div>
+<p class="api-desc">Add a feature to an ENI_EVENT_FEATURES event. Up to ENI_EVENT_FEATURES_MAX (32) features per event.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>ev</code></td><td><code>eni_event_t *</code></td><td>Event (must be type FEATURES).</td></tr>
+<tr><td><code>name</code></td><td><code>const char *</code></td><td>Feature name (max 31 chars).</td></tr>
+<tr><td><code>value</code></td><td><code>float</code></td><td>Feature value.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> on success. <code>ENI_ERR_FULL</code> if 32 features reached.</p></div></div>
+
+<div class="api-card accent-pink"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_event_set_raw</span>(<span class="param">eni_event_t *ev, const uint8_t *data, size_t len</span>)</code></div>
+<p class="api-desc">Set raw byte payload on an ENI_EVENT_RAW event. Max ENI_EVENT_PAYLOAD_MAX (4096) bytes.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>ev</code></td><td><code>eni_event_t *</code></td><td>Event (must be type RAW).</td></tr>
+<tr><td><code>data</code></td><td><code>const uint8_t *</code></td><td>Raw data buffer.</td></tr>
+<tr><td><code>len</code></td><td><code>size_t</code></td><td>Data length in bytes.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> on success. <code>ENI_ERR_INVALID</code> if len exceeds 4096.</p></div></div>
+
+<div class="api-card accent-pink"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eni_event_print</span>(<span class="param">const eni_event_t *ev</span>)</code></div>
+<p class="api-desc">Print event details to stdout for debugging: type, source, timestamp, and payload contents.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>ev</code></td><td><code>const eni_event_t *</code></td><td>Event to print.</td></tr>
+</table></div></div>
+<div id="provider" class="module-section"><h2 style="color:var(--cyan)">&#128268; Provider Contract API</h2>
+<p class="module-desc">Interface for neural data providers. Header: <code>&lt;eni/provider_contract.h&gt;</code></p></div>
+
+<div class="struct-card"><h4>eni_provider_ops_t</h4>
+<p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:0.5rem">Virtual function table that all providers must implement.</p>
+<table>
+<tr><td><code>name</code></td><td><code>const char *</code></td><td>Provider name (e.g., "neuralink_n1", "emotiv_epoc").</td></tr>
+<tr><td><code>init</code></td><td><code>fn(prov, config) → status</code></td><td>Initialize with device-specific config.</td></tr>
+<tr><td><code>poll</code></td><td><code>fn(prov, ev) → status</code></td><td>Poll for next event (non-blocking).</td></tr>
+<tr><td><code>start</code></td><td><code>fn(prov) → status</code></td><td>Start data acquisition.</td></tr>
+<tr><td><code>stop</code></td><td><code>fn(prov) → status</code></td><td>Stop data acquisition.</td></tr>
+<tr><td><code>shutdown</code></td><td><code>fn(prov)</code></td><td>Release all resources.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eni_provider_t</h4><table>
+<tr><td><code>name[64]</code></td><td><code>char</code></td><td>Instance name.</td></tr>
+<tr><td><code>ops</code></td><td><code>const eni_provider_ops_t *</code></td><td>Pointer to vtable.</td></tr>
+<tr><td><code>ctx</code></td><td><code>void *</code></td><td>Provider-specific context data.</td></tr>
+<tr><td><code>running</code></td><td><code>bool</code></td><td>Whether provider is actively streaming.</td></tr>
+<tr><td><code>transport</code></td><td><code>eni_transport_t</code></td><td>Communication transport (BLE, USB, SPI, etc.).</td></tr>
+</table></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_provider_init</span>(<span class="param">eni_provider_t *prov, const eni_provider_ops_t *ops, const char *name, const void *config</span>)</code></div>
+<p class="api-desc">Initialize a provider instance with its vtable, name, and device-specific configuration. Calls the provider's <code>ops-&gt;init()</code> callback.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>prov</code></td><td><code>eni_provider_t *</code></td><td>Provider instance to initialize.</td></tr>
+<tr><td><code>ops</code></td><td><code>const eni_provider_ops_t *</code></td><td>Provider vtable (must remain valid for lifetime).</td></tr>
+<tr><td><code>name</code></td><td><code>const char *</code></td><td>Instance name (max 63 chars).</td></tr>
+<tr><td><code>config</code></td><td><code>const void *</code></td><td>Device-specific config (cast inside init callback).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> on success. Provider-specific error codes.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eni_provider_t prov;
+eni_nl_config_t nl_cfg = {
+    .mode = ENI_NL_MODE_INTENT,
+    .channels = 256,
+    .sample_rate = 30000,
+    .device_addr = "NL-001-ABC",
+    .signal_threshold = 0.3f,
+    .auto_calibrate = 1
+};
+eni_provider_init(&amp;prov, eni_neuralink_get_provider(),
+                  "neuralink_primary", &amp;nl_cfg);</code></pre></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_provider_start</span>(<span class="param">eni_provider_t *prov</span>)</code></div>
+<p class="api-desc">Start the provider's data acquisition. After this call, <code>eni_provider_poll()</code> will return events.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>prov</code></td><td><code>eni_provider_t *</code></td><td>Initialized provider.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_provider_poll</span>(<span class="param">eni_provider_t *prov, eni_event_t *ev</span>)</code></div>
+<p class="api-desc">Poll for the next available event. Non-blocking: returns ENI_ERR_EMPTY if no event is ready. Call in a loop from your main task or timer callback.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>prov</code></td><td><code>eni_provider_t *</code></td><td>Running provider.</td></tr>
+<tr><td><code>ev</code></td><td><code>eni_event_t *</code></td><td>Output event buffer.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> if event available. <code>ENI_ERR_EMPTY</code> if no event ready.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>// Main polling loop
+eni_event_t ev;
+while (running) {
+    if (eni_provider_poll(&amp;prov, &amp;ev) == ENI_OK) {
+        if (ev.type == ENI_EVENT_INTENT) {
+            printf("Intent: %s (%.1f%%)\n",
+                   ev.payload.intent.name,
+                   ev.payload.intent.confidence * 100.0f);
+            if (ev.payload.intent.confidence &gt; 0.8f) {
+                execute_action(ev.payload.intent.name);
+            }
+        }
+    }
+    eos_task_delay_ms(10);  // Yield to other tasks
+}</code></pre></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_provider_stop</span>(<span class="param">eni_provider_t *prov</span>)</code></div>
+<p class="api-desc">Stop data acquisition. Provider remains initialized and can be restarted.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>prov</code></td><td><code>eni_provider_t *</code></td><td>Running provider.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eni_provider_shutdown</span>(<span class="param">eni_provider_t *prov</span>)</code></div>
+<p class="api-desc">Fully shut down the provider and release all resources. Must not be used after this call.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>prov</code></td><td><code>eni_provider_t *</code></td><td>Provider to shut down.</td></tr>
+</table></div></div>
+
+<div id="policy" class="module-section"><h2 style="color:var(--orange)">&#128737; Safety Policy Engine</h2>
+<p class="module-desc">Action classification and permission control. Header: <code>&lt;eni/policy.h&gt;</code></p></div>
+
+<div class="struct-card"><h4>eni_action_class_t</h4><table>
+<tr><td><code>ENI_ACTION_SAFE</code></td><td><code>0</code></td><td>Low-risk action (cursor movement, scrolling).</td></tr>
+<tr><td><code>ENI_ACTION_CONTROLLED</code></td><td><code>1</code></td><td>Medium-risk (typing, file operations).</td></tr>
+<tr><td><code>ENI_ACTION_RESTRICTED</code></td><td><code>2</code></td><td>High-risk (motor control, network access, system commands).</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eni_policy_verdict_t</h4><table>
+<tr><td><code>ENI_POLICY_ALLOW</code></td><td><code>0</code></td><td>Action permitted.</td></tr>
+<tr><td><code>ENI_POLICY_DENY</code></td><td><code>1</code></td><td>Action blocked.</td></tr>
+<tr><td><code>ENI_POLICY_CONFIRM</code></td><td><code>2</code></td><td>Action requires user confirmation.</td></tr>
+</table></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_policy_init</span>(<span class="param">eni_policy_engine_t *engine</span>)</code></div>
+<p class="api-desc">Initialize policy engine with no rules and default_deny=false. Maximum ENI_POLICY_MAX_RULES (64) rules.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>engine</code></td><td><code>eni_policy_engine_t *</code></td><td>Policy engine to initialize.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_policy_add_rule</span>(<span class="param">eni_policy_engine_t *engine, const char *action, eni_policy_verdict_t verdict, eni_action_class_t action_class</span>)</code></div>
+<p class="api-desc">Add a policy rule mapping an action name to a verdict and classification.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>engine</code></td><td><code>eni_policy_engine_t *</code></td><td>Policy engine.</td></tr>
+<tr><td><code>action</code></td><td><code>const char *</code></td><td>Action name (max 63 chars), e.g., "move_cursor", "emergency_stop".</td></tr>
+<tr><td><code>verdict</code></td><td><code>eni_policy_verdict_t</code></td><td>ALLOW, DENY, or CONFIRM.</td></tr>
+<tr><td><code>action_class</code></td><td><code>eni_action_class_t</code></td><td>SAFE, CONTROLLED, or RESTRICTED.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code> on success. <code>ENI_ERR_FULL</code> if 64 rules reached.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eni_policy_engine_t policy;
+eni_policy_init(&amp;policy);
+eni_policy_set_default_deny(&amp;policy, true);
+
+// Safe actions - always allowed
+eni_policy_add_rule(&amp;policy, "move_cursor",  ENI_POLICY_ALLOW, ENI_ACTION_SAFE);
+eni_policy_add_rule(&amp;policy, "scroll",       ENI_POLICY_ALLOW, ENI_ACTION_SAFE);
+
+// Controlled - require confirmation
+eni_policy_add_rule(&amp;policy, "click",        ENI_POLICY_CONFIRM, ENI_ACTION_CONTROLLED);
+eni_policy_add_rule(&amp;policy, "type_text",    ENI_POLICY_CONFIRM, ENI_ACTION_CONTROLLED);
+
+// Restricted - denied by default
+eni_policy_add_rule(&amp;policy, "motor_start",  ENI_POLICY_DENY, ENI_ACTION_RESTRICTED);</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_policy_verdict_t</span> <span class="fn">eni_policy_evaluate</span>(<span class="param">const eni_policy_engine_t *engine, const char *action</span>)</code></div>
+<p class="api-desc">Evaluate an action against the policy rules. Returns the verdict for the first matching rule, or DENY if default_deny is true and no rule matches, or ALLOW otherwise.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>engine</code></td><td><code>const eni_policy_engine_t *</code></td><td>Policy engine.</td></tr>
+<tr><td><code>action</code></td><td><code>const char *</code></td><td>Action name to evaluate.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_POLICY_ALLOW</code>, <code>ENI_POLICY_DENY</code>, or <code>ENI_POLICY_CONFIRM</code>.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eni_status_t</span> <span class="fn">eni_policy_set_default_deny</span>(<span class="param">eni_policy_engine_t *engine, bool deny</span>)</code></div>
+<p class="api-desc">Set whether unmatched actions are denied (true) or allowed (false). Recommended: true for safety-critical applications.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>engine</code></td><td><code>eni_policy_engine_t *</code></td><td>Policy engine.</td></tr>
+<tr><td><code>deny</code></td><td><code>bool</code></td><td>Default deny flag.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ENI_OK</code>.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eni_policy_dump</span>(<span class="param">const eni_policy_engine_t *engine</span>)</code></div>
+<p class="api-desc">Print all policy rules to stdout for debugging.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>engine</code></td><td><code>const eni_policy_engine_t *</code></td><td>Policy engine.</td></tr>
+</table></div></div> Sets up signal filters, callbacks, and prepares for connection. Does not connect to the device.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>cfg</code></td><td><code>const eni_nl_config_t *</code></td><td>Configuration including mode, channels, sample rate, filters, and callbacks.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success. <code>-1</code> on invalid config. <code>-2</code> on resource allocation failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void on_intent(const char *intent, float conf, void *ctx) {
+    printf("Intent: %s (%.0f%%)\n", intent, conf * 100);
+}
+
+eni_nl_config_t cfg = {
+    .mode = ENI_NL_MODE_INTENT,
+    .channels = 256,
+    .sample_rate = 30000,
+    .device_addr = "NL-001-ABC",
+    .signal_threshold = 0.3f,
+    .auto_calibrate = 1,
+    .filter_enabled = 1,
+    .bandpass_low_hz = 0.5f,
+    .bandpass_high_hz = 300.0f,
+    .notch_freq_hz = 60.0f,
+    .on_intent = on_intent,
+    .user_ctx = NULL
+};
+eni_neuralink_init(&amp;cfg);</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eni_neuralink_deinit</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Deinitialize the Neuralink adapter. Disconnects if connected and releases all resources.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eni_neuralink_connect</span>(<span class="param">const char *device_addr</span>)</code></div>
+<p class="api-desc">Connect to a Neuralink device by address. Blocks until connected or timeout. If auto_calibrate is set, runs calibration after connecting.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>device_addr</code></td><td><code>const char *</code></td><td>Device address/ID string (e.g., "NL-001-ABC").</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success. <code>-1</code> on connection failure. <code>-2</code> on timeout.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eni_neuralink_disconnect</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Disconnect from the current device. Stops streaming if active.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eni_neuralink_start_stream</span>(<span class="param">void</span>) / <span class="fn">eni_neuralink_stop_stream</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Start or stop neural data streaming. Once started, packets arrive via the <code>on_packet</code> callback or can be read with <code>eni_neuralink_read_packet()</code>.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success. <code>-1</code> if not connected.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eni_neuralink_read_packet</span>(<span class="param">eni_nl_packet_t *pkt</span>)</code></div>
+<p class="api-desc">Read the next available neural data packet. Non-blocking: returns -1 if no packet ready. Each packet contains up to 256 float samples from one electrode.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>pkt</code></td><td><code>eni_nl_packet_t *</code></td><td>Output packet buffer.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success (packet available). <code>-1</code> if no data ready.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eni_neuralink_connect("NL-001-ABC");
+eni_neuralink_start_stream();
+
+eni_nl_packet_t pkt;
+while (running) {
+    if (eni_neuralink_read_packet(&amp;pkt) == 0) {
+        printf("Electrode %d: %u samples, quality=%.2f\n",
+               pkt.electrode_id, pkt.channel_count, pkt.signal_quality);
+        // Process neural data...
+        for (uint32_t i = 0; i &lt; pkt.channel_count; i++) {
+            float uv = pkt.channel_data[i];  // microvolts
+            process_sample(pkt.electrode_id, uv);
+        }
+    }
+    eos_task_delay_ms(1);
+}</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eni_neuralink_calibrate</span>(<span class="param">uint32_t duration_ms</span>)</code></div>
+<p class="api-desc">Run calibration for the specified duration. The device collects baseline neural signals and computes noise thresholds. Must be connected and not streaming.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>duration_ms</code></td><td><code>uint32_t</code></td><td>Calibration duration (recommended: 5000-30000 ms).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success. <code>-1</code> if not connected or already streaming.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eni_neuralink_set_threshold</span>(<span class="param">float threshold</span>)</code></div>
+<p class="api-desc">Set the signal quality threshold for filtering noisy packets. Packets below this threshold are dropped.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>threshold</code></td><td><code>float</code></td><td>Threshold 0.0-1.0 (e.g., 0.3 for 30% minimum quality).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eni_neuralink_decode_intent</span>(<span class="param">const eni_nl_packet_t *pkt, char *intent, int maxlen, float *confidence</span>)</code></div>
+<p class="api-desc">Decode a user intent from a neural data packet using the on-device decoder model. Returns intent name and confidence score.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>pkt</code></td><td><code>const eni_nl_packet_t *</code></td><td>Input neural data packet.</td></tr>
+<tr><td><code>intent</code></td><td><code>char *</code></td><td>Output intent name buffer.</td></tr>
+<tr><td><code>maxlen</code></td><td><code>int</code></td><td>Max length of intent buffer.</td></tr>
+<tr><td><code>confidence</code></td><td><code>float *</code></td><td>Output confidence score (0.0-1.0).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success. <code>-1</code> if packet quality too low for decoding.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eni_neuralink_get_status</span>(<span class="param">eni_nl_status_t *status</span>)</code></div>
+<p class="api-desc">Get comprehensive device status including battery, temperature, packet stats, and latency.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>status</code></td><td><code>eni_nl_status_t *</code></td><td>Output status buffer.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success. <code>-1</code> if not connected.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eni_nl_status_t status;
+if (eni_neuralink_get_status(&amp;status) == 0) {
+    printf("Device: %s (FW %s)\n", status.device_id, status.firmware_version);
+    printf("Battery: %.0f%%, Temp: %.1fC\n", status.battery_pct, status.temperature_c);
+    printf("Packets: %llu recv, %llu dropped\n",
+           status.packets_received, status.packets_dropped);
+    printf("Latency: %.1f ms avg\n", status.avg_latency_ms);
+}</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">const eni_provider_ops_t *</span> <span class="fn">eni_neuralink_get_provider</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Get the ENI provider vtable for Neuralink. Use with <code>eni_provider_init()</code> to integrate into the ENI provider framework.</p>
+<div class="api-returns"><h5>Returns</h5><p>Pointer to static provider ops vtable.</p></div></div>
+
+<div id="calibration" class="module-section"><h2 style="color:var(--cyan)">&#127919; Calibration Workflow</h2></div>
+<div class="struct-card">
+<pre><code style="color:var(--text-secondary);font-size:0.82rem">// Complete Neuralink calibration and intent decoding workflow
+eni_nl_config_t cfg = {
+    .mode = ENI_NL_MODE_INTENT,
+    .channels = 256,
+    .sample_rate = 30000,
+    .device_addr = "NL-001-ABC",
+    .signal_threshold = 0.3f,
+    .auto_calibrate = 0,  // Manual calibration
+    .filter_enabled = 1,
+    .bandpass_low_hz = 0.5f,
+    .bandpass_high_hz = 300.0f,
+    .notch_freq_hz = 60.0f
+};
+
+// 1. Initialize and connect
+eni_neuralink_init(&amp;cfg);
+eni_neuralink_connect("NL-001-ABC");
+
+// 2. Run calibration (user should remain still)
+printf("Calibrating... please remain still for 10 seconds\n");
+eni_neuralink_calibrate(10000);  // 10 second calibration
+printf("Calibration complete!\n");
+
+// 3. Set up policy for intent safety
+eni_policy_engine_t policy;
+eni_policy_init(&amp;policy);
+eni_policy_set_default_deny(&amp;policy, true);
+eni_policy_add_rule(&amp;policy, "move_cursor",  ENI_POLICY_ALLOW, ENI_ACTION_SAFE);
+eni_policy_add_rule(&amp;policy, "click",        ENI_POLICY_CONFIRM, ENI_ACTION_CONTROLLED);
+eni_policy_add_rule(&amp;policy, "motor_start",  ENI_POLICY_DENY, ENI_ACTION_RESTRICTED);
+
+// 4. Set up filter
+eni_min_filter_t filter;
+eni_min_filter_init(&amp;filter, 0.80f, 200);
+
+// 5. Start streaming and process intents
+eni_neuralink_start_stream();
+
+eni_nl_packet_t pkt;
+char intent[64];
+float confidence;
+
+while (running) {
+    if (eni_neuralink_read_packet(&amp;pkt) == 0) {
+        if (eni_neuralink_decode_intent(&amp;pkt, intent, sizeof(intent), &amp;confidence) == 0) {
+            // Create event for filtering
+            eni_event_t ev;
+            eni_event_init(&amp;ev, ENI_EVENT_INTENT, "neuralink_n1");
+            eni_event_set_intent(&amp;ev, intent, confidence);
+
+            if (eni_min_filter_accept(&amp;filter, &amp;ev)) {
+                // Check policy
+                eni_policy_verdict_t v = eni_policy_evaluate(&amp;policy, intent);
+                if (v == ENI_POLICY_ALLOW) {
+                    execute_action(intent);
+                } else if (v == ENI_POLICY_CONFIRM) {
+                    if (user_confirms(intent)) execute_action(intent);
+                }
+                // DENY actions are silently dropped
+            }
+        }
+    }
+    eos_task_delay_ms(1);
+}
+
+eni_neuralink_stop_stream();
+eni_neuralink_disconnect();
+eni_neuralink_deinit();</code></pre></div>
+
+<div id="implguide" class="module-section"><h2 style="color:var(--orange)">&#128295; Provider Implementation Guide</h2></div>
+<div class="struct-card">
+<h4>Implementing a Custom Provider</h4>
+<pre><code style="color:var(--text-secondary);font-size:0.82rem">// Example: Custom EMG (Electromyography) provider
+
+typedef struct {
+    uint8_t spi_port;
+    uint16_t channels;
+} emg_config_t;
+
+typedef struct {
+    emg_config_t cfg;
+    bool streaming;
+} emg_ctx_t;
+
+static eni_status_t emg_init(eni_provider_t *prov, const void *config) {
+    emg_ctx_t *ctx = (emg_ctx_t *)prov-&gt;ctx;
+    memcpy(&amp;ctx-&gt;cfg, config, sizeof(emg_config_t));
+    eos_spi_config_t spi = { .port = ctx-&gt;cfg.spi_port, .clock_hz = 4000000 };
+    eos_spi_init(&amp;spi);
+    return ENI_OK;
+}
+
+static eni_status_t emg_poll(eni_provider_t *prov, eni_event_t *ev) {
+    emg_ctx_t *ctx = (emg_ctx_t *)prov-&gt;ctx;
+    if (!ctx-&gt;streaming) return ENI_ERR_EMPTY;
+    uint8_t raw[64];
+    if (eos_spi_read(ctx-&gt;cfg.spi_port, raw, sizeof(raw)) &lt; 0)
+        return ENI_ERR_EMPTY;
+    eni_event_init(ev, ENI_EVENT_RAW, "emg_sensor");
+    eni_event_set_raw(ev, raw, sizeof(raw));
+    return ENI_OK;
+}
+
+static eni_status_t emg_start(eni_provider_t *prov) {
+    ((emg_ctx_t *)prov-&gt;ctx)-&gt;streaming = true;
+    return ENI_OK;
+}
+
+static eni_status_t emg_stop(eni_provider_t *prov) {
+    ((emg_ctx_t *)prov-&gt;ctx)-&gt;streaming = false;
+    return ENI_OK;
+}
+
+static void emg_shutdown(eni_provider_t *prov) {
+    emg_ctx_t *ctx = (emg_ctx_t *)prov-&gt;ctx;
+    eos_spi_deinit(ctx-&gt;cfg.spi_port);
+}
+
+static const eni_provider_ops_t emg_ops = {
+    .name = "emg_sensor",
+    .init = emg_init, .poll = emg_poll,
+    .start = emg_start, .stop = emg_stop, .shutdown = emg_shutdown
+};
+
+// Usage:
+emg_ctx_t emg_ctx;
+eni_provider_t prov;
+prov.ctx = &amp;emg_ctx;
+emg_config_t emg_cfg = { .spi_port = 0, .channels = 8 };
+eni_provider_init(&amp;prov, &amp;emg_ops, "arm_emg", &amp;emg_cfg);
+eni_provider_start(&amp;prov);</code></pre></div>
+
+<p style="color:var(--text-muted);margin-top:3rem;font-size:0.85rem">Thread Safety: Provider poll() is NOT thread-safe per instance. Use one provider per task. The policy engine is read-only after initialization and can be shared. Neuralink callbacks fire from an internal reception thread — keep callback processing minimal.</p>
+
+</main></div><footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

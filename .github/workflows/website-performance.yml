@@ -1,0 +1,216 @@
+name: Website Performance (Lighthouse)
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  lighthouse-desktop:
+    name: Lighthouse Desktop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli http-server
+
+      - name: Start local server
+        run: |
+          http-server . -p 8080 -s &
+          sleep 3
+
+      - name: Run Lighthouse (Desktop - Key Pages)
+        run: |
+          PAGES=(
+            "http://localhost:8080/index.html"
+            "http://localhost:8080/getting-started.html"
+            "http://localhost:8080/docs/index.html"
+            "http://localhost:8080/flow.html"
+            "http://localhost:8080/kids.html"
+            "http://localhost:8080/hardware-lab.html"
+          )
+          mkdir -p lighthouse-results/desktop
+
+          for URL in "${PAGES[@]}"; do
+            PAGE=$(basename "$URL" .html)
+            echo "=== Testing Desktop: $PAGE ==="
+            lhci collect \
+              --url="$URL" \
+              --settings.preset=desktop \
+              --settings.onlyCategories='["performance","accessibility","best-practices","seo"]' \
+              --settings.output=json \
+              --settings.outputPath="lighthouse-results/desktop/${PAGE}.json" \
+              || true
+          done
+
+      - name: Parse Desktop Results
+        run: |
+          python3 << 'PYEOF'
+          import json, os, sys
+
+          results_dir = "lighthouse-results/desktop"
+          failures = []
+          thresholds = {"performance": 0.70, "accessibility": 0.80, "best-practices": 0.80, "seo": 0.80}
+
+          print("=" * 60)
+          print("  LIGHTHOUSE DESKTOP RESULTS")
+          print("=" * 60)
+
+          for fname in sorted(os.listdir(results_dir)):
+              if not fname.endswith('.json'):
+                  continue
+              path = os.path.join(results_dir, fname)
+              try:
+                  with open(path) as f:
+                      data = json.load(f)
+                  cats = data.get('categories', {})
+                  page = fname.replace('.json', '')
+                  print(f"\n  {page}:")
+                  for cat, threshold in thresholds.items():
+                      score = cats.get(cat, {}).get('score', 0)
+                      status = "PASS" if score >= threshold else "FAIL"
+                      icon = "OK" if score >= threshold else "XX"
+                      print(f"    [{icon}] {cat}: {score*100:.0f}% (min: {threshold*100:.0f}%)")
+                      if score < threshold:
+                          failures.append(f"{page}/{cat}: {score*100:.0f}% < {threshold*100:.0f}%")
+              except Exception as e:
+                  print(f"  {fname}: Could not parse ({e})")
+
+          print("\n" + "=" * 60)
+          if failures:
+              print("PERFORMANCE FAILURES:")
+              for f in failures:
+                  print(f"  - {f}")
+              sys.exit(1)
+          else:
+              print("All desktop performance checks passed")
+          PYEOF
+
+      - name: Upload Desktop Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-desktop
+          path: lighthouse-results/desktop/
+
+  lighthouse-mobile:
+    name: Lighthouse Mobile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli http-server
+
+      - name: Start local server
+        run: |
+          http-server . -p 8080 -s &
+          sleep 3
+
+      - name: Run Lighthouse (Mobile - Key Pages)
+        run: |
+          PAGES=(
+            "http://localhost:8080/index.html"
+            "http://localhost:8080/getting-started.html"
+            "http://localhost:8080/docs/index.html"
+            "http://localhost:8080/kids.html"
+          )
+          mkdir -p lighthouse-results/mobile
+
+          for URL in "${PAGES[@]}"; do
+            PAGE=$(basename "$URL" .html)
+            echo "=== Testing Mobile: $PAGE ==="
+            lhci collect \
+              --url="$URL" \
+              --settings.preset=mobile \
+              --settings.onlyCategories='["performance","accessibility","best-practices","seo"]' \
+              --settings.output=json \
+              --settings.outputPath="lighthouse-results/mobile/${PAGE}.json" \
+              || true
+          done
+
+      - name: Parse Mobile Results
+        run: |
+          python3 << 'PYEOF'
+          import json, os, sys
+
+          results_dir = "lighthouse-results/mobile"
+          failures = []
+          thresholds = {"performance": 0.50, "accessibility": 0.75, "best-practices": 0.75, "seo": 0.75}
+
+          print("=" * 60)
+          print("  LIGHTHOUSE MOBILE RESULTS")
+          print("=" * 60)
+
+          for fname in sorted(os.listdir(results_dir)):
+              if not fname.endswith('.json'):
+                  continue
+              path = os.path.join(results_dir, fname)
+              try:
+                  with open(path) as f:
+                      data = json.load(f)
+                  cats = data.get('categories', {})
+                  page = fname.replace('.json', '')
+                  print(f"\n  {page}:")
+                  for cat, threshold in thresholds.items():
+                      score = cats.get(cat, {}).get('score', 0)
+                      status = "PASS" if score >= threshold else "FAIL"
+                      icon = "OK" if score >= threshold else "XX"
+                      print(f"    [{icon}] {cat}: {score*100:.0f}% (min: {threshold*100:.0f}%)")
+                      if score < threshold:
+                          failures.append(f"{page}/{cat}: {score*100:.0f}% < {threshold*100:.0f}%")
+              except Exception as e:
+                  print(f"  {fname}: Could not parse ({e})")
+
+          print("\n" + "=" * 60)
+          if failures:
+              print("MOBILE PERFORMANCE FAILURES:")
+              for f in failures:
+                  print(f"  - {f}")
+              sys.exit(1)
+          else:
+              print("All mobile performance checks passed")
+          PYEOF
+
+      - name: Upload Mobile Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-mobile
+          path: lighthouse-results/mobile/
+
+  performance-gate:
+    name: Performance Gate
+    if: always()
+    needs: [lighthouse-desktop, lighthouse-mobile]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Results
+        run: |
+          echo "========================================="
+          echo "  Performance Results"
+          echo "========================================="
+          echo "Desktop Lighthouse: ${{ needs.lighthouse-desktop.result }}"
+          echo "Mobile Lighthouse:  ${{ needs.lighthouse-mobile.result }}"
+          echo "========================================="
+
+          if [ "${{ needs.lighthouse-desktop.result }}" != "success" ] || \
+             [ "${{ needs.lighthouse-mobile.result }}" != "success" ]; then
+            echo "PERFORMANCE GATE FAILED"
+            exit 1
+          fi
+          echo "ALL PERFORMANCE CHECKS PASSED"
