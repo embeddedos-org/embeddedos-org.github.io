@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EIPC API Reference v0.1.0 - EmbeddedOS</title><link rel="stylesheet" href="../style.css"></head><body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids 🎮</a><a href="../hardware-lab.html">Hardware Lab 🔌</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div>
+</div></nav>
+<div class="doc-layout"><aside class="doc-sidebar"><div class="sidebar-section"><div class="sidebar-title">EIPC Modules</div>
+<a href="#frame" class="sidebar-link active">Frame Codec</a><a href="#hmac" class="sidebar-link">HMAC Security</a>
+<a href="#transport" class="sidebar-link">Transport</a><a href="#client" class="sidebar-link">Client API</a>
+<a href="#server" class="sidebar-link">Server API</a><a href="#json" class="sidebar-link">JSON Helpers</a>
+<a href="#wireformat" class="sidebar-link">Wire Format</a><a href="#goexample" class="sidebar-link">Go Examples</a>
+<a href="#cexample" class="sidebar-link">C SDK Examples</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eos.html" class="sidebar-link">EoS</a><a href="eboot.html" class="sidebar-link">eBoot</a>
+<a href="eai.html" class="sidebar-link">EAI</a><a href="eni.html" class="sidebar-link">ENI</a>
+<a href="ebuild.html" class="sidebar-link">ebuild</a><a href="eosim.html" class="sidebar-link">EoSim</a>
+<a href="eosuite.html" class="sidebar-link">eApps</a><a href="eostudio.html" class="sidebar-link">EoStudio</a></div></aside>
+<main class="doc-content">
+<h1>EIPC Developer Documentation <span class="version-badge">v0.1.0</span></h1>
+<p>Inter-process communication protocol for EmbeddedOS components. Length-prefixed binary framing with JSON payloads, HMAC-SHA256 authentication, and transport over TCP or Unix sockets. C SDK header: <code>&lt;eipc.h&gt;</code>. Go server in <code>eipc/server/</code>.</p>
+
+<div id="wireformat" class="module-section"><h2 style="color:var(--blue)">&#128230; Wire Format</h2></div>
+<div class="struct-card">
+<h4>EIPC Frame Layout</h4>
+<pre><code style="color:var(--text-secondary);font-size:0.82rem"> 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Frame Length (4 bytes)                      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    Version    |     Type      |          Flags (2 bytes)      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                   Sequence Number (4 bytes)                    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|               Header Length (2 bytes)                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    JSON Header (variable)                      |
+|                          ...                                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                 Payload Length (4 bytes)                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    JSON Payload (variable)                     |
+|                          ...                                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                 HMAC-SHA256 (32 bytes, optional)               |
+|                          ...                                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</code></pre>
+<table>
+<tr><td><strong>Field</strong></td><td><strong>Size</strong></td><td><strong>Description</strong></td></tr>
+<tr><td>Frame Length</td><td>4 bytes</td><td>Total frame size (big-endian, excludes this field).</td></tr>
+<tr><td>Version</td><td>1 byte</td><td>Protocol version (currently 1).</td></tr>
+<tr><td>Type</td><td>1 byte</td><td>0=Intent, 1=Ack, 2=ToolRequest, 3=ToolResult, 4=Heartbeat, 5=Error.</td></tr>
+<tr><td>Flags</td><td>2 bytes</td><td>Bit 0: HMAC present, Bit 1: compressed, Bit 2: encrypted.</td></tr>
+<tr><td>Sequence</td><td>4 bytes</td><td>Monotonic sequence number for ordering.</td></tr>
+<tr><td>Header JSON</td><td>variable</td><td>JSON object: service_id, request_id, timestamp, source.</td></tr>
+<tr><td>Payload JSON</td><td>variable</td><td>Message-type-specific JSON payload.</td></tr>
+<tr><td>HMAC</td><td>32 bytes</td><td>HMAC-SHA256 over version+type+flags+seq+header+payload (if flag set).</td></tr>
+</table></div>
+
+<div id="frame" class="module-section"><h2 style="color:var(--cyan)">&#128230; Frame Codec API</h2>
+<p class="module-desc">Encode/decode EIPC frames. Header: <code>&lt;eipc.h&gt;</code></p></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_frame_encode</span>(<span class="param">const eipc_frame_t *frame, uint8_t *buf, size_t buf_size, size_t *out_len</span>)</code></div>
+<p class="api-desc">Encode an EIPC frame into a byte buffer for transmission. Serializes header JSON, payload JSON, and optionally appends HMAC.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>frame</code></td><td><code>const eipc_frame_t *</code></td><td>Frame to encode.</td></tr>
+<tr><td><code>buf</code></td><td><code>uint8_t *</code></td><td>Output buffer.</td></tr>
+<tr><td><code>buf_size</code></td><td><code>size_t</code></td><td>Buffer capacity.</td></tr>
+<tr><td><code>out_len</code></td><td><code>size_t *</code></td><td>Actual encoded length written.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success. <code>EIPC_ERR_BUFFER</code> if buffer too small. <code>EIPC_ERR_INVALID</code> on bad frame data.</p></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_frame_decode</span>(<span class="param">const uint8_t *buf, size_t buf_len, eipc_frame_t *frame</span>)</code></div>
+<p class="api-desc">Decode a byte buffer into an EIPC frame. Parses header JSON, payload JSON, and validates HMAC if present.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>buf</code></td><td><code>const uint8_t *</code></td><td>Input buffer.</td></tr>
+<tr><td><code>buf_len</code></td><td><code>size_t</code></td><td>Buffer length.</td></tr>
+<tr><td><code>frame</code></td><td><code>eipc_frame_t *</code></td><td>Output frame.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success. <code>EIPC_ERR_PARSE</code> on malformed data. <code>EIPC_ERR_HMAC</code> if HMAC verification fails.</p></div></div>
+
+<div id="hmac" class="module-section"><h2 style="color:var(--orange)">&#128274; HMAC Security</h2>
+<p class="module-desc">HMAC-SHA256 message authentication for frame integrity and authenticity.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eipc_hmac_sign</span>(<span class="param">const uint8_t *key, size_t key_len, const uint8_t *data, size_t data_len, uint8_t mac[32]</span>)</code></div>
+<p class="api-desc">Compute HMAC-SHA256 over the signable portion of a frame. The signable bytes include version, type, flags, sequence, header JSON, and payload JSON (excludes frame length and the MAC field itself).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>key</code></td><td><code>const uint8_t *</code></td><td>HMAC key (recommended: 32+ bytes).</td></tr>
+<tr><td><code>key_len</code></td><td><code>size_t</code></td><td>Key length in bytes.</td></tr>
+<tr><td><code>data</code></td><td><code>const uint8_t *</code></td><td>Data to sign (from eipc_frame_signable_bytes).</td></tr>
+<tr><td><code>data_len</code></td><td><code>size_t</code></td><td>Data length.</td></tr>
+<tr><td><code>mac</code></td><td><code>uint8_t[32]</code></td><td>Output: 32-byte HMAC.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>const uint8_t key[] = "my-secret-hmac-key-at-least-32-bytes!!";
+uint8_t signable[4096];
+size_t sig_len = eipc_frame_signable_bytes(&amp;frame, signable, sizeof(signable));
+uint8_t mac[32];
+eipc_hmac_sign(key, strlen((char*)key), signable, sig_len, mac);
+memcpy(frame.hmac, mac, 32);
+frame.flags |= EIPC_FLAG_HMAC;</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">bool</span> <span class="fn">eipc_hmac_verify</span>(<span class="param">const uint8_t *key, size_t key_len, const uint8_t *data, size_t data_len, const uint8_t mac[32]</span>)</code></div>
+<p class="api-desc">Verify HMAC-SHA256. Returns true if the computed MAC matches the provided MAC (constant-time comparison).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>key/key_len</code></td><td><code>uint8_t*/size_t</code></td><td>HMAC key.</td></tr>
+<tr><td><code>data/data_len</code></td><td><code>uint8_t*/size_t</code></td><td>Signed data.</td></tr>
+<tr><td><code>mac</code></td><td><code>uint8_t[32]</code></td><td>MAC to verify against.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>true</code> if valid. <code>false</code> if mismatch.</p></div></div>
+<div id="transport" class="module-section"><h2 style="color:var(--green)">&#128268; Transport API</h2>
+<p class="module-desc">TCP and Unix socket transport with length-prefixed framing.</p></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_transport_connect</span>(<span class="param">eipc_socket_t *sock, const char *address</span>)</code></div>
+<p class="api-desc">Connect to an EIPC server. Address format: <code>"tcp://host:port"</code> or <code>"unix:///path/to/socket"</code>.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>sock</code></td><td><code>eipc_socket_t *</code></td><td>Output socket handle.</td></tr>
+<tr><td><code>address</code></td><td><code>const char *</code></td><td>Server address.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success. <code>EIPC_ERR_CONNECT</code> on failure. <code>EIPC_ERR_RESOLVE</code> if hostname unresolvable.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_transport_listen</span>(<span class="param">eipc_socket_t *sock, const char *address</span>)</code></div>
+<p class="api-desc">Bind and listen on an address for incoming EIPC connections.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>sock</code></td><td><code>eipc_socket_t *</code></td><td>Output listening socket.</td></tr>
+<tr><td><code>address</code></td><td><code>const char *</code></td><td>Bind address (e.g., <code>"tcp://0.0.0.0:8421"</code>).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_transport_accept</span>(<span class="param">eipc_socket_t listen_sock, eipc_socket_t *client_sock, char *remote_addr, size_t remote_addr_size</span>)</code></div>
+<p class="api-desc">Accept a new client connection. Blocking call that returns when a client connects.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>listen_sock</code></td><td><code>eipc_socket_t</code></td><td>Listening socket from eipc_transport_listen.</td></tr>
+<tr><td><code>client_sock</code></td><td><code>eipc_socket_t *</code></td><td>Output client socket.</td></tr>
+<tr><td><code>remote_addr</code></td><td><code>char *</code></td><td>Output remote address string (can be NULL).</td></tr>
+<tr><td><code>remote_addr_size</code></td><td><code>size_t</code></td><td>Buffer size for remote_addr.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_transport_send_frame</span>(<span class="param">eipc_socket_t sock, const eipc_frame_t *frame</span>) / <span class="fn">eipc_transport_recv_frame</span>(<span class="param">eipc_socket_t sock, eipc_frame_t *frame</span>)</code></div>
+<p class="api-desc">Send or receive a complete EIPC frame over a socket. Handles length-prefix framing automatically. <code>recv_frame</code> blocks until a complete frame is received.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>sock</code></td><td><code>eipc_socket_t</code></td><td>Connected socket.</td></tr>
+<tr><td><code>frame</code></td><td><code>eipc_frame_t *</code></td><td>Frame to send or output frame buffer.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success. <code>EIPC_ERR_IO</code> on network error. <code>EIPC_ERR_CLOSED</code> if peer disconnected.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eipc_transport_close</span>(<span class="param">eipc_socket_t sock</span>)</code></div>
+<p class="api-desc">Close a socket and free associated resources.</p></div>
+
+<div id="client" class="module-section"><h2 style="color:var(--purple)">&#128187; Client API</h2>
+<p class="module-desc">High-level client for sending intents, tool requests, and heartbeats.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_client_init</span>(<span class="param">eipc_client_t *c, const char *service_id</span>)</code></div>
+<p class="api-desc">Initialize a client with a service identifier. The service_id is included in all message headers for routing.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>c</code></td><td><code>eipc_client_t *</code></td><td>Client to initialize.</td></tr>
+<tr><td><code>service_id</code></td><td><code>const char *</code></td><td>Service identifier (e.g., "eni-provider-1", "eai-agent").</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_client_connect</span>(<span class="param">eipc_client_t *c, const char *address, const char *hmac_key</span>)</code></div>
+<p class="api-desc">Connect to an EIPC server with optional HMAC authentication. If hmac_key is non-NULL, all subsequent messages are HMAC-signed.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>c</code></td><td><code>eipc_client_t *</code></td><td>Initialized client.</td></tr>
+<tr><td><code>address</code></td><td><code>const char *</code></td><td>Server address (e.g., "tcp://192.168.1.100:8421").</td></tr>
+<tr><td><code>hmac_key</code></td><td><code>const char *</code></td><td>HMAC key (NULL to disable signing).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success. <code>EIPC_ERR_CONNECT</code> on failure.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_client_send_intent</span>(<span class="param">eipc_client_t *c, const char *intent, float confidence</span>)</code></div>
+<p class="api-desc">Send a decoded intent event to the server. Used by ENI providers to forward neural intents.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>c</code></td><td><code>eipc_client_t *</code></td><td>Connected client.</td></tr>
+<tr><td><code>intent</code></td><td><code>const char *</code></td><td>Intent name.</td></tr>
+<tr><td><code>confidence</code></td><td><code>float</code></td><td>Confidence score 0.0-1.0.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_client_send_tool_request</span>(<span class="param">eipc_client_t *c, const char *tool, const eipc_kv_t *args, int arg_count</span>)</code></div>
+<p class="api-desc">Send a tool execution request to the server. The server routes to the appropriate tool handler.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>c</code></td><td><code>eipc_client_t *</code></td><td>Connected client.</td></tr>
+<tr><td><code>tool</code></td><td><code>const char *</code></td><td>Tool name.</td></tr>
+<tr><td><code>args</code></td><td><code>const eipc_kv_t *</code></td><td>Key-value argument pairs.</td></tr>
+<tr><td><code>arg_count</code></td><td><code>int</code></td><td>Number of arguments.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_client_send_heartbeat</span>(<span class="param">eipc_client_t *c</span>) / <span class="fn">eipc_client_receive</span>(<span class="param">eipc_client_t *c, eipc_message_t *msg</span>) / <span class="fn">eipc_client_close</span>(<span class="param">eipc_client_t *c</span>)</code></div>
+<p class="api-desc"><code>send_heartbeat</code>: Send keepalive. <code>receive</code>: Blocking receive of next message. <code>close</code>: Disconnect and free resources.</p></div>
+
+<div id="server" class="module-section"><h2 style="color:var(--orange)">&#127760; Server API</h2></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_server_init</span>(<span class="param">eipc_server_t *s</span>) / <span class="fn">eipc_server_listen</span>(<span class="param">eipc_server_t *s, const char *address, const char *hmac_key</span>)</code></div>
+<p class="api-desc">Initialize and start listening for connections. HMAC key enables mandatory authentication for all clients.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_server_accept</span>(<span class="param">eipc_server_t *s, eipc_conn_t *conn</span>)</code></div>
+<p class="api-desc">Accept a client connection. Blocking call.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>s</code></td><td><code>eipc_server_t *</code></td><td>Listening server.</td></tr>
+<tr><td><code>conn</code></td><td><code>eipc_conn_t *</code></td><td>Output connection handle.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EIPC_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_server_receive</span>(<span class="param">eipc_conn_t *conn, eipc_message_t *msg</span>) / <span class="fn">eipc_server_send_ack</span>(<span class="param">eipc_conn_t *conn, const char *request_id, const char *status</span>) / <span class="fn">eipc_server_send_message</span>(<span class="param">eipc_conn_t *conn, const eipc_message_t *msg</span>)</code></div>
+<p class="api-desc"><code>receive</code>: Read next message from client. <code>send_ack</code>: Send acknowledgment with request_id and status. <code>send_message</code>: Send arbitrary message to client.</p></div>
+
+<div id="json" class="module-section"><h2 style="color:var(--cyan)">&#128196; JSON Helpers</h2></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eipc_status_t</span> <span class="fn">eipc_header_to_json</span>/<span class="fn">eipc_header_from_json</span> / <span class="fn">eipc_intent_to_json</span>/<span class="fn">eipc_intent_from_json</span> / <span class="fn">eipc_ack_to_json</span>/<span class="fn">eipc_ack_from_json</span> / <span class="fn">eipc_tool_request_to_json</span> / <span class="fn">eipc_heartbeat_to_json</span></code></div>
+<p class="api-desc">Serialize/deserialize EIPC header, intent, ack, tool request, and heartbeat structures to/from JSON strings. Minimal JSON implementation with no external dependencies.</p>
+<div class="api-example"><h5>Intent JSON Format</h5><pre><code>// eipc_intent_to_json output:
+{
+  "intent": "move_cursor_left",
+  "confidence": 0.92,
+  "source": "neuralink_n1",
+  "timestamp": "2026-03-31T01:30:00Z"
+}
+
+// eipc_ack_to_json output:
+{
+  "request_id": "req-abc123",
+  "status": "ok",
+  "timestamp": "2026-03-31T01:30:00Z"
+}
+
+// eipc_tool_request_to_json output:
+{
+  "tool": "gpio_write",
+  "args": {"pin": "12", "value": "true"},
+  "request_id": "req-def456"
+}</code></pre></div></div>
+
+<div id="goexample" class="module-section"><h2 style="color:var(--green)">&#128187; Go Server/Client Examples</h2></div>
+<div class="struct-card"><h4>Go Server</h4><pre><code style="color:var(--text-secondary);font-size:0.82rem">package main
+
+import (
+    "fmt"
+    "github.com/embeddedos-org/eipc/server"
+)
+
+func main() {
+    srv := server.New(server.Config{
+        Address:  "tcp://0.0.0.0:8421",
+        HMACKey:  "my-secret-key-32-bytes-minimum!!",
+    })
+
+    srv.OnIntent(func(conn *server.Conn, intent string, confidence float64) {
+        fmt.Printf("[%s] Intent: %s (%.0f%%)\n", conn.ServiceID, intent, confidence*100)
+        conn.SendAck(conn.LastRequestID(), "ok")
+    })
+
+    srv.OnToolRequest(func(conn *server.Conn, tool string, args map[string]string) {
+        fmt.Printf("[%s] Tool: %s args=%v\n", conn.ServiceID, tool, args)
+        result := executeLocalTool(tool, args)
+        conn.SendMessage(server.ToolResult{
+            RequestID: conn.LastRequestID(),
+            Result:    result,
+        })
+    })
+
+    fmt.Println("EIPC server listening on :8421")
+    srv.ListenAndServe()
+}</code></pre></div>
+
+<div class="struct-card"><h4>Go Client</h4><pre><code style="color:var(--text-secondary);font-size:0.82rem">package main
+
+import (
+    "fmt"
+    "github.com/embeddedos-org/eipc/client"
+)
+
+func main() {
+    c := client.New("eni-neuralink-1")
+    err := c.Connect("tcp://192.168.1.100:8421", "my-secret-key-32-bytes-minimum!!")
+    if err != nil {
+        panic(err)
+    }
+    defer c.Close()
+
+    // Send decoded neural intent
+    c.SendIntent("move_cursor_left", 0.92)
+
+    // Send tool request and wait for result
+    result, err := c.SendToolRequest("gpio_write", map[string]string{
+        "pin":   "12",
+        "value": "true",
+    })
+    fmt.Printf("Tool result: %s\n", result)
+
+    // Heartbeat loop
+    go func() {
+        for {
+            c.SendHeartbeat()
+            time.Sleep(5 * time.Second)
+        }
+    }()
+}</code></pre></div>
+
+<div id="cexample" class="module-section"><h2 style="color:var(--blue)">&#128295; C SDK Example</h2></div>
+<div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:0.82rem">// C SDK client - connects to EIPC server and sends intents
+#include &lt;eipc.h&gt;
+
+int main(void) {
+    eipc_client_t client;
+    eipc_client_init(&amp;client, "eni-sensor-1");
+
+    eipc_status_t rc = eipc_client_connect(&amp;client,
+        "tcp://192.168.1.100:8421",
+        "my-secret-key-32-bytes-minimum!!");
+    if (rc != EIPC_OK) {
+        fprintf(stderr, "Connect failed: %d\n", rc);
+        return 1;
+    }
+
+    // Send intent
+    eipc_client_send_intent(&amp;client, "move_cursor_left", 0.92f);
+
+    // Send tool request
+    eipc_kv_t args[] = {
+        {"pin", "12"}, {"value", "true"}
+    };
+    eipc_client_send_tool_request(&amp;client, "gpio_write", args, 2);
+
+    // Receive response
+    eipc_message_t msg;
+    if (eipc_client_receive(&amp;client, &amp;msg) == EIPC_OK) {
+        printf("Response type=%d\n", msg.type);
+    }
+
+    eipc_client_close(&amp;client);
+    return 0;
+}</code></pre></div>
+
+<p style="color:var(--text-muted);margin-top:3rem;font-size:0.85rem">Thread Safety: Transport layer is NOT thread-safe per socket. Use one socket per thread. HMAC functions are stateless and thread-safe. Client/Server APIs are NOT thread-safe per instance.</p>
+
+</main></div><footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

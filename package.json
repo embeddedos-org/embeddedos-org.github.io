@@ -1,0 +1,14 @@
+{
+  "name": "embeddedos-website-tests",
+  "private": true,
+  "scripts": {
+    "test": "npx playwright test tests/",
+    "test:headed": "npx playwright test tests/ --headed",
+    "serve": "npx http-server . -p 8080 -s",
+    "lighthouse": "npx @lhci/cli collect --url=http://localhost:8080/index.html --settings.preset=desktop"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.0",
+    "http-server": "^14.1.0"
+  }
+}

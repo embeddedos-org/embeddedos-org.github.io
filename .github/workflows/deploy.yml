@@ -1,0 +1,95 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  pre-deploy-checks:
+    name: Pre-Deploy Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify all required files exist and are non-empty
+        run: |
+          REQUIRED=(
+            index.html getting-started.html kids.html hardware-lab.html flow.html style.css
+            docs/index.html docs/eos.html docs/eboot.html docs/ebuild.html
+            docs/eai.html docs/eipc.html docs/eni.html docs/eosim.html
+            docs/eosuite.html docs/eostudio.html
+          )
+          EXIT=0
+          for f in "${REQUIRED[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "FAIL: Missing $f"; EXIT=1
+            else
+              SIZE=$(stat -c%s "$f")
+              if [ "$SIZE" -lt 100 ]; then
+                echo "FAIL: $f is too small ($SIZE bytes)"; EXIT=1
+              else
+                echo "  OK: $f ($SIZE bytes)"
+              fi
+            fi
+          done
+          exit $EXIT
+
+      - name: Check no duplicate DOCTYPE
+        run: |
+          EXIT=0
+          for f in $(find . -name '*.html' -not -path './.git/*' -not -path './node_modules/*'); do
+            COUNT=$(grep -c '<!DOCTYPE' "$f" 2>/dev/null || echo 0)
+            if [ "$COUNT" -gt 1 ]; then
+              echo "FAIL: $f has $COUNT <!DOCTYPE> (duplicated content!)"; EXIT=1
+            fi
+          done
+          exit $EXIT
+
+      - name: Check internal links
+        run: |
+          python3 -c "
+          import os, re, sys
+          errors = []
+          for root, dirs, files in os.walk('.'):
+              if '.git' in root or 'node_modules' in root: continue
+              for f in files:
+                  if not f.endswith('.html'): continue
+                  path = os.path.join(root, f)
+                  content = open(path).read()
+                  for m in re.finditer(r'href=\"([^\"]*\.html)', content):
+                      href = m.group(1)
+                      if href.startswith(('http','#')): continue
+                      target = os.path.normpath(os.path.join(os.path.dirname(path), href.split('#')[0]))
+                      if not os.path.exists(target):
+                          errors.append(f'{path}: broken -> {href}')
+          if errors:
+              for e in errors: print('FAIL:', e)
+              sys.exit(1)
+          print('All links valid')
+          "
+
+  deploy:
+    name: Deploy
+    needs: pre-deploy-checks
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

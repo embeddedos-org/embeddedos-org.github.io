@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eApps - 38 Cross-Platform Apps - EmbeddedOS</title>
+<meta name="description" content="38 cross-platform C + LVGL applications for embedded, desktop, and web.">
+<link rel="stylesheet" href="../style.css">
+<style>
+.cat-section{margin:2rem 0;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md)}
+.cat-section h3{border:none;margin-top:0}
+.app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin:1rem 0}
+.app-item{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1rem;transition:all .2s}
+.app-item:hover{border-color:var(--blue);transform:translateY(-2px)}
+.app-item h4{margin-bottom:.3rem;font-size:.95rem}
+.app-item p{color:var(--text-secondary);font-size:.82rem;margin:0}
+</style></head><body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+
+<div class="doc-layout"><aside class="doc-sidebar sidebar-yellow">
+<h4>eApps</h4><ul>
+<li><a href="#overview" class="active">Overview</a></li>
+<li><a href="#productivity">Productivity (12)</a></li>
+<li><a href="#media">Media (5)</a></li>
+<li><a href="#games">Games (11)</a></li>
+<li><a href="#connectivity">Connectivity (7)</a></li>
+<li><a href="#security">Security (3)</a></li>
+<li><a href="#cli-gui">CLI vs GUI</a></li>
+<li><a href="#platforms">Platform Matrix</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#build">Build Commands</a></li>
+<li><a href="#usecases">Use Cases</a></li>
+</ul><h4>Products</h4><ul>
+<li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li>
+<li><a href="eipc.html">EIPC</a></li><li><a href="ebuild.html">ebuild</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li>
+</ul></aside>
+
+<main class="doc-content">
+<div class="doc-hero doc-hero-yellow">
+<h1>eApps &mdash; 38 Cross-Platform Applications <span class="version-badge">v0.1.0</span></h1>
+<p>Complete suite of C + LVGL apps for embedded, desktop, and web. GUI (touchscreen) and CLI (terminal) modes.</p>
+<div class="doc-hero-meta"><span class="badge badge-yellow">38 Apps</span><span class="badge badge-green">C + LVGL</span><span class="badge badge-blue">5 Platforms</span><span class="badge badge-purple">GUI + CLI</span></div>
+</div>
+
+<div id="overview" class="module-section"><h2 style="color:var(--yellow)">Overview</h2></div>
+<p>38 apps in 5 categories. All written in C with LVGL for GUI. Cross-compiled to Windows, Linux, macOS, EoS, and Web (WASM).</p>
+
+<div id="productivity" class="cat-section" style="border-left:4px solid var(--blue)">
+<h3 style="color:var(--blue)">&#128295; Productivity (12 Apps)</h3>
+<div class="app-grid">
+<div class="app-item"><h4>&#128221; eNote</h4><p>Text editor: syntax highlighting, tabs, search/replace, auto-save</p></div>
+<div class="app-item"><h4>&#129518; eCalc</h4><p>Scientific calculator: expression parser, history, unit conversion, hex/bin/oct</p></div>
+<div class="app-item"><h4>&#128197; eCal</h4><p>Calendar and scheduler: events, reminders, week/month/agenda views</p></div>
+<div class="app-item"><h4>&#128194; eFiles</h4><p>File manager: tree view, copy/move/delete, preview, storage stats</p></div>
+<div class="app-item"><h4>&#128260; eConverter</h4><p>Unit converter: length, weight, temp, voltage, frequency, hex/dec/bin</p></div>
+<div class="app-item"><h4>&#128203; eBuffer</h4><p>Clipboard manager: history, pinned items, cross-device sync, search</p></div>
+<div class="app-item"><h4>&#9200; eClock</h4><p>World clock, alarm, stopwatch, timer, countdown, time zones</p></div>
+<div class="app-item"><h4>&#129529; eCleaner</h4><p>Storage analyzer: scan temp files, logs, duplicates, free space</p></div>
+<div class="app-item"><h4>&#128295; eTools</h4><p>System info, process list, memory viewer, hex editor</p></div>
+<div class="app-item"><h4>&#128228; eFTP</h4><p>File transfer: FTP/SFTP, drag-drop, progress bar, resume</p></div>
+<div class="app-item"><h4>&#127912; ePaint</h4><p>Drawing editor: brushes, layers, shapes, color picker, PNG export</p></div>
+<div class="app-item"><h4>&#128230; eZip</h4><p>Archive manager: ZIP, TAR, GZ, BZ2. Create, extract, browse</p></div>
+</div></div>
+
+<div id="media" class="cat-section" style="border-left:4px solid var(--green)">
+<h3 style="color:var(--green)">&#127916; Media (5 Apps)</h3>
+<div class="app-grid">
+<div class="app-item"><h4>&#127925; eMusic</h4><p>Audio player: playlist, equalizer, album art, gapless playback</p></div>
+<div class="app-item"><h4>&#127916; eVideo</h4><p>Video player: HW decoding, subtitles, playlist, fullscreen</p></div>
+<div class="app-item"><h4>&#128444; eGallery</h4><p>Image viewer: thumbnails, slideshow, zoom/pan, EXIF</p></div>
+<div class="app-item"><h4>&#128196; ePDF</h4><p>PDF viewer: page nav, zoom, text search, bookmarks</p></div>
+<div class="app-item"><h4>&#9654; ePlay</h4><p>Unified media center: music, video, gallery in one hub</p></div>
+</div></div>
+
+<div id="games" class="cat-section" style="border-left:4px solid var(--purple)">
+<h3 style="color:var(--purple)">&#127918; Games (11 Apps)</h3>
+<div class="app-grid">
+<div class="app-item"><h4>&#128013; Snake</h4><p>Classic snake: speed progression, score, touch/keyboard</p></div>
+<div class="app-item"><h4>&#11035; Tetris</h4><p>Falling blocks: rotation, line clear, levels, next-piece</p></div>
+<div class="app-item"><h4>&#128163; Minesweeper</h4><p>Mine-clearing: flags, timer, 3 difficulty grids</p></div>
+<div class="app-item"><h4>&#127922; Dice</h4><p>Dice roller: 1-10 dice, custom sides, history, stats</p></div>
+<div class="app-item"><h4>&#9823; eChess</h4><p>Chess: AI opponent (minimax), history, undo, themes</p></div>
+<div class="app-item"><h4>&#127939; eRunner</h4><p>Endless runner: obstacles, power-ups, parallax</p></div>
+<div class="app-item"><h4>&#127852; eCrush</h4><p>Match-3 puzzle: combos, special tiles, levels</p></div>
+<div class="app-item"><h4>&#128038; eBirds</h4><p>Physics launcher: destructible environments, projectiles</p></div>
+<div class="app-item"><h4>&#129521; eBlocks</h4><p>Block-breaker: paddle, power-ups, ball physics</p></div>
+<div class="app-item"><h4>&#127817; eSlice</h4><p>Swipe-to-slice: fruits, bombs, combos, gestures</p></div>
+<div class="app-item"><h4>&#129440; eVirusTower</h4><p>Tower defense: virus waves, upgrades, strategy</p></div>
+</div></div>
+
+<div id="connectivity" class="cat-section" style="border-left:4px solid var(--cyan)">
+<h3 style="color:var(--cyan)">&#127760; Connectivity (7 Apps)</h3>
+<div class="app-grid">
+<div class="app-item"><h4>&#128172; eChat</h4><p>Messaging: EIPC transport, groups, file sharing, encryption</p></div>
+<div class="app-item"><h4>&#128268; eSSH</h4><p>SSH terminal: tabs, key auth, session save, SFTP</p></div>
+<div class="app-item"><h4>&#128421; eVNC</h4><p>VNC remote desktop: encodings, clipboard, scaling</p></div>
+<div class="app-item"><h4>&#127760; eWeb</h4><p>Browser: HTML rendering, bookmarks, tabs, downloads</p></div>
+<div class="app-item"><h4>&#128225; eSerial</h4><p>Serial monitor: baud config, hex view, logging, macros</p></div>
+<div class="app-item"><h4>&#128274; eVPN</h4><p>VPN: WireGuard/OpenVPN, server list, kill switch</p></div>
+<div class="app-item"><h4>&#128647; eTunnel</h4><p>SSH tunneling: local/remote/dynamic SOCKS proxy</p></div>
+</div></div>
+
+<div id="security" class="cat-section" style="border-left:4px solid var(--red)">
+<h3 style="color:var(--red)">&#128737; Security and System (3 Apps)</h3>
+<div class="app-grid">
+<div class="app-item"><h4>&#128737; eGuard</h4><p>Firewall: rule editor, connection monitor, IP block/allow</p></div>
+<div class="app-item"><h4>&#127919; Suite</h4><p>App launcher hub: search, favorites, categories</p></div>
+<div class="app-item"><h4>&#129302; eBot</h4><p>AI chat client: EAI LLM, tool calls, model switching</p></div>
+</div></div>
+
+<div id="cli-gui" class="module-section"><h2 style="color:var(--orange)">CLI vs GUI Comparison</h2></div>
+<div style="overflow-x:auto"><table class="table-yellow">
+<thead><tr><th>#</th><th>App</th><th>GUI</th><th>CLI</th><th>What GUI Adds</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>eNote</td><td>&#9989;</td><td>&#9989; <code>enote file.txt</code></td><td>Syntax highlighting, tabs</td></tr>
+<tr><td>2</td><td>eCalc</td><td>&#9989;</td><td>&#9989; <code>ecalc "2+3"</code></td><td>Visual buttons, history</td></tr>
+<tr><td>3</td><td>eCal</td><td>&#9989;</td><td>&#9989; <code>ecal --list</code></td><td>Month grid, drag-create</td></tr>
+<tr><td>4</td><td>eFiles</td><td>&#9989;</td><td>&#9989; <code>efiles /path</code></td><td>Thumbnails, drag-drop</td></tr>
+<tr><td>5</td><td>eConverter</td><td>&#9989;</td><td>&#9989; <code>econverter 5 km mi</code></td><td>Visual unit picker</td></tr>
+<tr><td>6</td><td>eBuffer</td><td>&#9989;</td><td>&#9989; <code>ebuffer --paste</code></td><td>History with preview</td></tr>
+<tr><td>7</td><td>eClock</td><td>&#9989;</td><td>&#9989; <code>eclock --timer 5m</code></td><td>Analog clock, timer</td></tr>
+<tr><td>8</td><td>eCleaner</td><td>&#9989;</td><td>&#9989; <code>ecleaner --scan</code></td><td>Storage pie chart</td></tr>
+<tr><td>9</td><td>eTools</td><td>&#9989;</td><td>&#9989; <code>etools --sysinfo</code></td><td>Live graphs, panels</td></tr>
+<tr><td>10</td><td>eFTP</td><td>&#9989;</td><td>&#9989; <code>eftp put file.bin</code></td><td>Drag-drop, queue</td></tr>
+<tr><td>11</td><td>ePaint</td><td>&#9989;</td><td>&#10060;</td><td>Requires display</td></tr>
+<tr><td>12</td><td>eZip</td><td>&#9989;</td><td>&#9989; <code>ezip extract f.zip</code></td><td>Browse contents</td></tr>
+<tr><td>13</td><td>eMusic</td><td>&#9989;</td><td>&#9989; <code>emusic play s.mp3</code></td><td>Album art, equalizer</td></tr>
+<tr><td>14</td><td>eVideo</td><td>&#9989;</td><td>&#9989; <code>evideo play c.mp4</code></td><td>Seek bar, subtitles</td></tr>
+<tr><td>15</td><td>eGallery</td><td>&#9989;</td><td>&#9989; <code>egallery --list</code></td><td>Thumbnails, slideshow</td></tr>
+<tr><td>16</td><td>ePDF</td><td>&#9989;</td><td>&#9989; <code>epdf --text f.pdf</code></td><td>Page rendering, zoom</td></tr>
+<tr><td>17</td><td>ePlay</td><td>&#9989;</td><td>&#9989; <code>eplay scan /media</code></td><td>Unified media center</td></tr>
+<tr><td>18</td><td>Snake</td><td>&#9989;</td><td>&#9989; ASCII terminal</td><td>Color graphics, touch</td></tr>
+<tr><td>19</td><td>Tetris</td><td>&#9989;</td><td>&#9989; ASCII terminal</td><td>Colorful blocks, touch</td></tr>
+<tr><td>20</td><td>Minesweeper</td><td>&#9989;</td><td>&#9989; ASCII + coords</td><td>Mouse click, flags</td></tr>
+<tr><td>21</td><td>Dice</td><td>&#9989;</td><td>&#9989; <code>dice roll 2d6</code></td><td>Animated 3D dice</td></tr>
+<tr><td>22</td><td>eChess</td><td>&#9989;</td><td>&#9989; <code>echess --ai</code></td><td>Drag-drop pieces</td></tr>
+<tr><td>23</td><td>eRunner</td><td>&#9989;</td><td>&#10060;</td><td>Requires display</td></tr>
+<tr><td>24</td><td>eCrush</td><td>&#9989;</td><td>&#10060;</td><td>Requires display</td></tr>
+<tr><td>25</td><td>eBirds</td><td>&#9989;</td><td>&#10060;</td><td>Requires display</td></tr>
+<tr><td>26</td><td>eBlocks</td><td>&#9989;</td><td>&#10060;</td><td>Requires display</td></tr>
+<tr><td>27</td><td>eSlice</td><td>&#9989;</td><td>&#10060;</td><td>Requires display</td></tr>
+<tr><td>28</td><td>eVirusTower</td><td>&#9989;</td><td>&#10060;</td><td>Requires display</td></tr>
+<tr><td>29</td><td>eChat</td><td>&#9989;</td><td>&#9989; <code>echat send "hi"</code></td><td>Bubbles, emoji</td></tr>
+<tr><td>30</td><td>eSSH</td><td>&#9989;</td><td>&#9989; <code>essh user@host</code></td><td>Tabs, split panes</td></tr>
+<tr><td>31</td><td>eVNC</td><td>&#9989;</td><td>&#10060;</td><td>Requires display</td></tr>
+<tr><td>32</td><td>eWeb</td><td>&#9989;</td><td>&#9989; <code>eweb --dump URL</code></td><td>Rendered HTML, tabs</td></tr>
+<tr><td>33</td><td>eSerial</td><td>&#9989;</td><td>&#9989; <code>eserial /dev/ttyUSB0</code></td><td>Hex view pane</td></tr>
+<tr><td>34</td><td>eVPN</td><td>&#9989;</td><td>&#9989; <code>evpn connect us-1</code></td><td>Map view</td></tr>
+<tr><td>35</td><td>eTunnel</td><td>&#9989;</td><td>&#9989; <code>etunnel -L 8080:h:80</code></td><td>Tunnel diagram</td></tr>
+<tr><td>36</td><td>eGuard</td><td>&#9989;</td><td>&#9989; <code>eguard --status</code></td><td>Traffic graph</td></tr>
+<tr><td>37</td><td>Suite</td><td>&#9989;</td><td>&#9989; <code>suite --list</code></td><td>App grid icons</td></tr>
+<tr><td>38</td><td>eBot</td><td>&#9989;</td><td>&#9989; <code>ebot chat "msg"</code></td><td>Rich chat, tool viz</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">Summary</div>
+<p><strong>Both GUI + CLI:</strong> 30 apps. <strong>GUI only:</strong> 8 apps (ePaint, eRunner, eCrush, eBirds, eBlocks, eSlice, eVirusTower, eVNC)</p></div>
+
+<div id="platforms" class="module-section"><h2 style="color:var(--green)">Platform Matrix</h2></div>
+<div style="overflow-x:auto"><table class="table-green">
+<thead><tr><th>Category / App</th><th>Win</th><th>Linux</th><th>macOS</th><th>EoS</th><th>Web</th></tr></thead>
+<tbody>
+<tr><td colspan="6" style="color:var(--blue);font-weight:700;background:var(--blue-dim)">Productivity</td></tr>
+<tr><td>eNote, eCalc, eCal, eConverter, eClock, ePaint, eZip</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td></tr>
+<tr><td>eFiles, eTools</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9888;</td></tr>
+<tr><td>eBuffer, eCleaner, eFTP</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#10060;</td></tr>
+<tr><td colspan="6" style="color:var(--green);font-weight:700;background:var(--green-dim)">Media</td></tr>
+<tr><td>eMusic, eGallery, ePDF</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td></tr>
+<tr><td>eVideo, ePlay</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9888;</td></tr>
+<tr><td colspan="6" style="color:var(--purple);font-weight:700;background:var(--purple-dim)">Games (all 11)</td></tr>
+<tr><td>Snake, Tetris, Minesweeper, Dice, eChess, eRunner, eCrush, eBirds, eBlocks, eSlice, eVirusTower</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td></tr>
+<tr><td colspan="6" style="color:var(--cyan);font-weight:700;background:var(--cyan-dim)">Connectivity</td></tr>
+<tr><td>eChat, eVNC</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td></tr>
+<tr><td>eSSH, eWeb, eSerial, eVPN, eTunnel</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#10060;</td></tr>
+<tr><td colspan="6" style="color:var(--red);font-weight:700;background:var(--red-dim)">Security</td></tr>
+<tr><td>Suite, eBot</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td></tr>
+<tr><td>eGuard</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#9989;</td><td>&#10060;</td></tr>
+</tbody></table></div>
+<p style="font-size:.85rem;color:var(--text-muted)">&#9989; Full support &#9888; Partial (browser limits) &#10060; Not available</p>
+
+<div id="architecture" class="module-section"><h2 style="color:var(--cyan)">Architecture</h2></div>
+<div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:.82rem">eApps/
+  apps/          38 applications (snake/, ecalc/, enote/, essh/, ebot/ ...)
+  core/
+    common/      registry, math, expr parser
+    ui/          theme, canvas, widgets
+    storage/     prefs, filesystem helpers
+    network/     HTTP, FTP, SSH, VPN wrappers
+  port/
+    sdl2/        Desktop (Windows, Linux, macOS)
+    eos/         EoS native (embedded)
+    web/         Emscripten / WASM
+  extern/
+    lvgl/        LVGL graphics library</code></pre></div>
+
+<div id="build" class="module-section"><h2 style="color:var(--orange)">Build Commands</h2></div>
+<h3>Desktop (SDL2)</h3>
+<pre><code>git clone https://github.com/embeddedos-org/eApps.git
+cd eApps
+cmake -B build -DEAPPS_PORT=sdl2
+cmake --build build --parallel
+./build/eapps_suite          # All apps
+./build/apps/snake/snake     # Just Snake</code></pre>
+<h3>Web (Emscripten)</h3>
+<pre><code>source ~/emsdk/emsdk_env.sh
+cmake -B build-web -DEAPPS_PORT=web \
+  -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
+cmake --build build-web --parallel</code></pre>
+<h3>EoS (Native Embedded)</h3>
+<pre><code>cmake -B build-eos -DEAPPS_PORT=eos \
+  -DCMAKE_TOOLCHAIN_FILE=cmake/eos.cmake -DEOS_TARGET=stm32f4
+cmake --build build-eos --parallel</code></pre>
+
+<div id="usecases" class="module-section"><h2 style="color:var(--purple)">Real-World Use Cases</h2></div>
+<table class="table-purple">
+<thead><tr><th>Scenario</th><th>Apps</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Calculator on RPi touchscreen</td><td>eCalc</td><td>Deploy with LVGL to RPi 7" touchscreen</td></tr>
+<tr><td>Snake game over SSH</td><td>Snake</td><td>Play in ASCII mode, no display needed</td></tr>
+<tr><td>File manager for embedded</td><td>eFiles</td><td>Browse files on EoS with touch or terminal</td></tr>
+<tr><td>AI assistant on edge</td><td>eBot</td><td>Chat with on-device LLM via touch or CLI</td></tr>
+<tr><td>Remote device management</td><td>eSSH + eVNC</td><td>Terminal or GUI remote access</td></tr>
+<tr><td>IoT dashboard</td><td>eTools + eGuard</td><td>Monitor resources and network traffic</td></tr>
+<tr><td>Educational kiosk</td><td>Suite + Games</td><td>Full suite on kiosk for students</td></tr>
+<tr><td>Serial debugging</td><td>eSerial</td><td>UART with hex view, logging, macros</td></tr>
+</tbody></table>
+
+<div class="doc-nav">
+<a href="ebuild.html"><span class="nav-label">Previous</span><span class="nav-title">ebuild CLI</span></a>
+<a href="eostudio.html" class="next"><span class="nav-label">Next</span><span class="nav-title">EoStudio</span></a>
+</div>
+</main></div>
+
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide &#127918;</a></li><li><a href="../hardware-lab.html">Hardware Lab &#128268;</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

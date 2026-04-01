@@ -1,0 +1,446 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eBoot API Reference v0.1.0 - EmbeddedOS</title><link rel="stylesheet" href="../style.css"></head><body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids 🎮</a><a href="../hardware-lab.html">Hardware Lab 🔌</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div>
+</div></nav>
+<div class="doc-layout"><aside class="doc-sidebar"><div class="sidebar-section"><div class="sidebar-title">eBoot Modules</div>
+<a href="#bootctl" class="sidebar-link active">Boot Control</a><a href="#slots" class="sidebar-link">Slot Manager</a>
+<a href="#bootlog" class="sidebar-link">Boot Log</a><a href="#struct" class="sidebar-link">Structures</a>
+<a href="#enums" class="sidebar-link">Enums &amp; Constants</a><a href="#bootflow" class="sidebar-link">Boot Flow</a>
+<a href="#porting" class="sidebar-link">Board Porting</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eos.html" class="sidebar-link">EoS</a><a href="eai.html" class="sidebar-link">EAI</a>
+<a href="eni.html" class="sidebar-link">ENI</a><a href="eipc.html" class="sidebar-link">EIPC</a>
+<a href="ebuild.html" class="sidebar-link">ebuild</a><a href="eosim.html" class="sidebar-link">EoSim</a>
+<a href="eosuite.html" class="sidebar-link">eApps</a><a href="eostudio.html" class="sidebar-link">EoStudio</a></div></aside>
+<main class="doc-content">
+<h1>eBoot Developer Documentation <span class="version-badge">v0.1.0</span></h1>
+<p>Secure A/B bootloader with CRC-protected boot control, slot management, image verification, rollback support, structured boot logging, and recovery mode. Headers: <code>&lt;eos_bootctl.h&gt;</code>, <code>&lt;eos_slot_manager.h&gt;</code>, <code>&lt;eos_boot_log.h&gt;</code></p>
+
+<div id="struct" class="module-section"><h2 style="color:var(--orange)">&#128220; Structures &amp; Types</h2>
+<p class="module-desc">Core data structures used throughout eBoot. Stored in flash, survive resets.</p></div>
+
+<div class="struct-card"><h4>eos_bootctl_t</h4>
+<p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:0.75rem">Persistent boot control block stored in a dedicated flash sector with CRC protection and dual-copy redundancy. All fields are 32-bit aligned for direct flash read/write.</p>
+<table>
+<tr><td><code>magic</code></td><td><code>uint32_t</code></td><td>Must equal <code>EOS_BOOTCTL_MAGIC</code> (0x45425443).</td></tr>
+<tr><td><code>version</code></td><td><code>uint32_t</code></td><td>Format version. Current: <code>EOS_BOOTCTL_VERSION</code> (1).</td></tr>
+<tr><td><code>active_slot</code></td><td><code>uint32_t</code></td><td>Currently active slot. Cast to <code>eos_slot_t</code>: EOS_SLOT_A(0) or EOS_SLOT_B(1).</td></tr>
+<tr><td><code>pending_slot</code></td><td><code>uint32_t</code></td><td>Slot marked for test boot. EOS_SLOT_NONE(0xFF) if none.</td></tr>
+<tr><td><code>confirmed_slot</code></td><td><code>uint32_t</code></td><td>Last confirmed-good slot after app calls <code>eos_bootctl_confirm()</code>.</td></tr>
+<tr><td><code>boot_attempts</code></td><td><code>uint32_t</code></td><td>Consecutive boot attempts since last confirmation.</td></tr>
+<tr><td><code>max_attempts</code></td><td><code>uint32_t</code></td><td>Max allowed attempts before rollback. Default: 3.</td></tr>
+<tr><td><code>last_reset_reason</code></td><td><code>uint32_t</code></td><td>Last reset cause (eos_reset_reason_t).</td></tr>
+<tr><td><code>flags</code></td><td><code>uint32_t</code></td><td>EOS_FLAG_TEST_BOOT(0x01), RECOVERY(0x02), FACTORY_RESET(0x04), SECURE_BOOT(0x08).</td></tr>
+<tr><td><code>img_a_version</code></td><td><code>uint32_t</code></td><td>Firmware version in Slot A.</td></tr>
+<tr><td><code>img_b_version</code></td><td><code>uint32_t</code></td><td>Firmware version in Slot B.</td></tr>
+<tr><td><code>img_a_crc</code></td><td><code>uint32_t</code></td><td>CRC32 of Slot A image.</td></tr>
+<tr><td><code>img_b_crc</code></td><td><code>uint32_t</code></td><td>CRC32 of Slot B image.</td></tr>
+<tr><td><code>log_head</code></td><td><code>uint32_t</code></td><td>Ring buffer write pointer for boot log.</td></tr>
+<tr><td><code>boot_count</code></td><td><code>uint32_t</code></td><td>Total boot count since factory (never reset).</td></tr>
+<tr><td><code>reserved[7]</code></td><td><code>uint32_t[7]</code></td><td>Reserved. Must be zero.</td></tr>
+<tr><td><code>crc32</code></td><td><code>uint32_t</code></td><td>CRC32 of all preceding fields.</td></tr>
+</table></div>
+
+<div id="enums" class="module-section"><h2 style="color:var(--orange)">&#128203; Enums &amp; Constants</h2></div>
+
+<div class="struct-card"><h4>eos_slot_t</h4><table>
+<tr><td><code>EOS_SLOT_A</code></td><td><code>0</code></td><td>Primary firmware slot.</td></tr>
+<tr><td><code>EOS_SLOT_B</code></td><td><code>1</code></td><td>Secondary firmware slot (OTA target).</td></tr>
+<tr><td><code>EOS_SLOT_NONE</code></td><td><code>0xFF</code></td><td>No slot selected.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eos_slot_state_t</h4><table>
+<tr><td><code>EOS_SLOT_EMPTY</code></td><td><code>0</code></td><td>Erased, no firmware.</td></tr>
+<tr><td><code>EOS_SLOT_VALID</code></td><td><code>1</code></td><td>Verified firmware image.</td></tr>
+<tr><td><code>EOS_SLOT_INVALID</code></td><td><code>2</code></td><td>Corrupt or incomplete image.</td></tr>
+<tr><td><code>EOS_SLOT_UPDATING</code></td><td><code>3</code></td><td>Being written during OTA.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eos_reset_reason_t</h4><table>
+<tr><td><code>EOS_RESET_POWER_ON</code></td><td><code>0</code></td><td>Cold power-on.</td></tr>
+<tr><td><code>EOS_RESET_WATCHDOG</code></td><td><code>1</code></td><td>Watchdog expiration.</td></tr>
+<tr><td><code>EOS_RESET_SOFTWARE</code></td><td><code>2</code></td><td>Software reset.</td></tr>
+<tr><td><code>EOS_RESET_PIN</code></td><td><code>3</code></td><td>External reset pin.</td></tr>
+<tr><td><code>EOS_RESET_BROWNOUT</code></td><td><code>4</code></td><td>Brownout detection.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>Return Codes</h4><table>
+<tr><td><code>EOS_OK</code></td><td><code>0</code></td><td>Success.</td></tr>
+<tr><td><code>EOS_ERR_CRC</code></td><td><code>-1</code></td><td>CRC validation failed.</td></tr>
+<tr><td><code>EOS_ERR_FLASH</code></td><td><code>-2</code></td><td>Flash operation failed.</td></tr>
+<tr><td><code>EOS_ERR_NO_IMAGE</code></td><td><code>-3</code></td><td>No valid image in slot.</td></tr>
+<tr><td><code>EOS_ERR_INVALID</code></td><td><code>-4</code></td><td>Invalid parameter.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>Boot Log Events</h4><table>
+<tr><td><code>EOS_LOG_BOOT_START</code></td><td><code>0</code></td><td>Boot cycle started.</td></tr>
+<tr><td><code>EOS_LOG_SLOT_SELECT</code></td><td><code>1</code></td><td>Slot selected for boot.</td></tr>
+<tr><td><code>EOS_LOG_IMG_VERIFY</code></td><td><code>2</code></td><td>Image CRC verification passed.</td></tr>
+<tr><td><code>EOS_LOG_IMG_FAIL</code></td><td><code>3</code></td><td>Image verification failed.</td></tr>
+<tr><td><code>EOS_LOG_ROLLBACK</code></td><td><code>4</code></td><td>Rollback to confirmed slot.</td></tr>
+<tr><td><code>EOS_LOG_RECOVERY</code></td><td><code>5</code></td><td>Entered recovery mode.</td></tr>
+<tr><td><code>EOS_LOG_OTA_START</code></td><td><code>6</code></td><td>OTA update started.</td></tr>
+<tr><td><code>EOS_LOG_OTA_DONE</code></td><td><code>7</code></td><td>OTA update completed.</td></tr>
+<tr><td><code>EOS_LOG_CONFIRM</code></td><td><code>8</code></td><td>Slot confirmed as good.</td></tr>
+</table></div>
+<div id="bootctl" class="module-section"><h2 style="color:var(--orange)">&#128274; Boot Control API</h2>
+<p class="module-desc">Persistent boot state management. Header: <code>&lt;eos_bootctl.h&gt;</code>. All functions operate on <code>eos_bootctl_t</code> stored in flash with CRC protection and dual-copy redundancy.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_bootctl_load</span>(<span class="param">eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Load the boot control block from flash. Reads the primary copy first; if CRC is invalid, falls back to the backup copy. Typically the first eBoot function called during boot.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to structure to populate. Must not be NULL. All fields overwritten on success.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> (0) on success. <code>EOS_ERR_CRC</code> (-1) if both copies are corrupt. <code>EOS_ERR_FLASH</code> (-2) on flash read failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_bootctl_t bctl;
+int rc = eos_bootctl_load(&amp;bctl);
+if (rc == EOS_ERR_CRC) {
+    eos_bootctl_init_defaults(&amp;bctl);
+    eos_bootctl_save(&amp;bctl);
+} else if (rc != EOS_OK) {
+    enter_recovery_mode();
+}
+printf("Active: slot %s, boots: %u\n",
+       bctl.active_slot == EOS_SLOT_A ? "A" : "B", bctl.boot_count);</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_bootctl_save</span>(<span class="param">eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Save the boot control block to flash. Computes CRC32, then writes both primary and backup copies. Write order: erase primary, write primary, erase backup, write backup. Power-loss safe: at least one copy survives.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to structure to save. <code>crc32</code> field is computed by this function.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> (0) on success. <code>EOS_ERR_FLASH</code> (-2) on write/erase failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_bootctl_t bctl;
+eos_bootctl_load(&amp;bctl);
+bctl.active_slot = EOS_SLOT_B;
+bctl.boot_count++;
+if (eos_bootctl_save(&amp;bctl) != EOS_OK) {
+    eos_boot_log_append(EOS_LOG_IMG_FAIL, EOS_SLOT_NONE, -2);
+}</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eos_bootctl_init_defaults</span>(<span class="param">eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Initialize with factory defaults: magic=EOS_BOOTCTL_MAGIC, version=1, active_slot=A, max_attempts=3, all counters=0, flags cleared. Does NOT write to flash.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to structure. All fields overwritten.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>None (void).</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_bootctl_t bctl;
+eos_bootctl_init_defaults(&amp;bctl);
+eos_bootctl_save(&amp;bctl);   // Persist to flash
+eos_boot_log_clear();       // Clear old log
+NVIC_SystemReset();         // Reboot fresh</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">bool</span> <span class="fn">eos_bootctl_validate</span>(<span class="param">const eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Validate CRC of a boot control block in memory. Computes CRC32 over all fields except <code>crc32</code> and compares. Useful for verifying flash-loaded copies before modifying.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>const eos_bootctl_t *</code></td><td>Pointer to structure to validate. Not modified.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>true</code> if CRC matches. <code>false</code> if mismatch or NULL.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_bootctl_increment_attempts</span>(<span class="param">eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Increment boot_attempts by one and save. Called early in boot before jumping to application. If boot_attempts exceeds max_attempts, bootloader should rollback.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to boot control block. <code>boot_attempts</code> incremented and saved.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success. <code>EOS_ERR_FLASH</code> on save failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_bootctl_t bctl;
+eos_bootctl_load(&amp;bctl);
+eos_bootctl_increment_attempts(&amp;bctl);
+if (bctl.boot_attempts > bctl.max_attempts) {
+    eos_boot_log_append(EOS_LOG_ROLLBACK, bctl.active_slot, bctl.boot_attempts);
+    bctl.active_slot = bctl.confirmed_slot;
+    bctl.flags &amp;= ~EOS_FLAG_TEST_BOOT;
+    eos_bootctl_reset_attempts(&amp;bctl);
+    eos_bootctl_save(&amp;bctl);
+}
+jump_to_slot(bctl.active_slot);</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_bootctl_reset_attempts</span>(<span class="param">eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Reset boot_attempts to zero and save. Called after successful rollback or slot confirmation.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to boot control block.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success. <code>EOS_ERR_FLASH</code> on failure.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_bootctl_set_pending</span>(<span class="param">eos_bootctl_t *bctl, eos_slot_t slot</span>)</code></div>
+<p class="api-desc">Mark a slot for test boot after OTA. On next reset, bootloader boots the pending slot with EOS_FLAG_TEST_BOOT. App must call <code>eos_bootctl_confirm()</code> within max_attempts boots or rollback occurs.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to boot control block.</td></tr>
+<tr><td><code>slot</code></td><td><code>eos_slot_t</code></td><td>Target slot: EOS_SLOT_A (0) or EOS_SLOT_B (1).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success. <code>EOS_ERR_INVALID</code> if slot invalid.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>// After OTA completes
+eos_bootctl_t bctl;
+eos_bootctl_load(&amp;bctl);
+eos_slot_t target = eos_bootctl_other_slot(bctl.active_slot);
+eos_bootctl_set_pending(&amp;bctl, target);
+eos_bootctl_save(&amp;bctl);
+eos_boot_log_append(EOS_LOG_OTA_DONE, target, new_version);
+NVIC_SystemReset();</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_bootctl_clear_pending</span>(<span class="param">eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Clear pending slot after failed verification. Sets pending_slot to EOS_SLOT_NONE and clears test boot flag.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to boot control block.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_bootctl_confirm</span>(<span class="param">eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Confirm active slot as known-good. <strong>Application firmware MUST call this</strong> after successful self-test to prevent rollback. Clears EOS_FLAG_TEST_BOOT, sets confirmed_slot, resets boot_attempts.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to boot control block.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success. <code>EOS_ERR_FLASH</code> on failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void app_main(void) {
+    eos_bootctl_t bctl;
+    eos_bootctl_load(&amp;bctl);
+    if (self_test_passed()) {
+        eos_bootctl_confirm(&amp;bctl);
+        EOS_INFO("Boot confirmed on slot %s",
+                 bctl.active_slot == EOS_SLOT_A ? "A" : "B");
+    } else {
+        EOS_ERROR("Self-test failed - rollback on next reboot");
+    }
+}</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_bootctl_request_recovery</span>(<span class="param">eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Set EOS_FLAG_RECOVERY. Next boot enters recovery mode (serial/USB reflash interface).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to boot control block.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_bootctl_request_factory_reset</span>(<span class="param">eos_bootctl_t *bctl</span>)</code></div>
+<p class="api-desc">Set EOS_FLAG_FACTORY_RESET. Next boot erases user data, reinitializes defaults, and boots Slot A.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>bctl</code></td><td><code>eos_bootctl_t *</code></td><td>Pointer to boot control block.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eos_slot_t</span> <span class="fn">eos_bootctl_other_slot</span>(<span class="param">eos_slot_t slot</span>)</code></div>
+<p class="api-desc">Get the alternate slot. Returns B if given A, A if given B, NONE if invalid.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>slot</code></td><td><code>eos_slot_t</code></td><td>Current slot: EOS_SLOT_A(0) or EOS_SLOT_B(1).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>The other slot, or <code>EOS_SLOT_NONE</code> (0xFF) if invalid input.</p></div></div>
+<div id="slots" class="module-section"><h2 style="color:var(--cyan)">&#128451; Slot Manager API</h2>
+<p class="module-desc">Firmware slot inspection and management. Header: <code>&lt;eos_slot_manager.h&gt;</code></p></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_slot_scan_all</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Scan all firmware slots, read image headers, validate CRCs, and cache slot states. Must be called before any other slot manager function. Re-scanning is safe and updates cached state.</p>
+<div class="api-returns"><h5>Returns</h5><p>Number of valid slots found (0-2), or negative error code on flash failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>int valid = eos_slot_scan_all();
+printf("Found %d valid firmware slots\n", valid);
+if (valid == 0) {
+    enter_recovery_mode();  // No bootable image
+}</code></pre></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">bool</span> <span class="fn">eos_slot_is_valid</span>(<span class="param">eos_slot_t slot</span>)</code></div>
+<p class="api-desc">Check if a slot contains a valid firmware image (header magic OK, CRC matches). Requires prior <code>eos_slot_scan_all()</code>.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>slot</code></td><td><code>eos_slot_t</code></td><td>Slot to check: EOS_SLOT_A or EOS_SLOT_B.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>true</code> if slot has a valid image. <code>false</code> if empty, corrupt, or invalid slot ID.</p></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">uint32_t</span> <span class="fn">eos_slot_get_version</span>(<span class="param">eos_slot_t slot</span>)</code></div>
+<p class="api-desc">Get firmware version number from a slot's image header. Returns 0 if the slot is empty or invalid.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>slot</code></td><td><code>eos_slot_t</code></td><td>Slot to query.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Version number (e.g., 0x010200 for v1.2.0), or 0 if invalid.</p></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_slot_get_header</span>(<span class="param">eos_slot_t slot, eos_image_header_t *out</span>)</code></div>
+<p class="api-desc">Read the full image header from a slot. Contains version, size, CRC, build timestamp, and hardware compatibility info.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>slot</code></td><td><code>eos_slot_t</code></td><td>Slot to read from.</td></tr>
+<tr><td><code>out</code></td><td><code>eos_image_header_t *</code></td><td>Output buffer for image header.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success. <code>EOS_ERR_NO_IMAGE</code> if slot is empty.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_image_header_t hdr;
+if (eos_slot_get_header(EOS_SLOT_A, &amp;hdr) == EOS_OK) {
+    printf("Slot A: v%u.%u.%u, size=%u bytes\n",
+           (hdr.version >> 16) &amp; 0xFF,
+           (hdr.version >> 8) &amp; 0xFF,
+           hdr.version &amp; 0xFF, hdr.image_size);
+}</code></pre></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eos_slot_state_t</span> <span class="fn">eos_slot_get_state</span>(<span class="param">eos_slot_t slot</span>)</code></div>
+<p class="api-desc">Get the current state of a firmware slot: EMPTY, VALID, INVALID, or UPDATING.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>slot</code></td><td><code>eos_slot_t</code></td><td>Slot to query.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>eos_slot_state_t</code> enum value.</p></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_slot_erase</span>(<span class="param">eos_slot_t slot</span>)</code></div>
+<p class="api-desc">Erase a firmware slot. Sets all bytes to 0xFF. Used before writing a new OTA image.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>slot</code></td><td><code>eos_slot_t</code></td><td>Slot to erase.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success. <code>EOS_ERR_FLASH</code> on failure.</p></div></div>
+
+<div id="bootlog" class="module-section"><h2 style="color:var(--green)">&#128214; Boot Log API</h2>
+<p class="module-desc">Persistent ring-buffer boot log in flash. Header: <code>&lt;eos_boot_log.h&gt;</code>. Survives resets. Readable by application firmware.</p></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_boot_log_init</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Initialize boot log subsystem. Reads log region from flash, validates header, locates write position. Formats with fresh header if corrupt or uninitialized.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success. <code>EOS_ERR_FLASH</code> on read failure.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eos_boot_log_append</span>(<span class="param">uint32_t event, uint32_t slot, uint32_t detail</span>)</code></div>
+<p class="api-desc">Append a timestamped entry to the boot log ring buffer. When full, oldest entry is overwritten. Flushed to flash immediately.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>event</code></td><td><code>uint32_t</code></td><td>Event code: EOS_LOG_BOOT_START(0)..EOS_LOG_CONFIRM(8).</td></tr>
+<tr><td><code>slot</code></td><td><code>uint32_t</code></td><td>Associated slot (EOS_SLOT_A, EOS_SLOT_B, or EOS_SLOT_NONE).</td></tr>
+<tr><td><code>detail</code></td><td><code>uint32_t</code></td><td>Event-specific: version number, error code, CRC, etc.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_boot_log_init();
+eos_boot_log_append(EOS_LOG_BOOT_START, EOS_SLOT_NONE, 0);
+eos_boot_log_append(EOS_LOG_SLOT_SELECT, EOS_SLOT_A, 0x010200);
+eos_boot_log_append(EOS_LOG_IMG_VERIFY, EOS_SLOT_A, computed_crc);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_boot_log_read</span>(<span class="param">eos_boot_log_entry_t *entries, uint32_t max_count</span>)</code></div>
+<p class="api-desc">Read all boot log entries in chronological order (oldest first).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>entries</code></td><td><code>eos_boot_log_entry_t *</code></td><td>Output buffer.</td></tr>
+<tr><td><code>max_count</code></td><td><code>uint32_t</code></td><td>Max entries buffer can hold.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Number of entries read, or negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_boot_log_entry_t log[64];
+int n = eos_boot_log_read(log, 64);
+for (int i = 0; i &lt; n; i++) {
+    printf("[%u ms] %s slot=%u detail=0x%08X\n",
+           log[i].timestamp,
+           eos_boot_log_event_name(log[i].event),
+           log[i].slot, log[i].detail);
+}</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">uint32_t</span> <span class="fn">eos_boot_log_count</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Get number of entries currently stored in the boot log.</p>
+<div class="api-returns"><h5>Returns</h5><p>Entry count (0 to EOS_BOOT_LOG_MAX).</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_boot_log_clear</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Clear all boot log entries. Erases log flash sector and writes fresh header.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success. <code>EOS_ERR_FLASH</code> on erase failure.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_boot_log_flush</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Flush buffered entries to flash. Call before jumping to application to ensure persistence.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eos_boot_log_get_latest</span>(<span class="param">eos_boot_log_entry_t *entry</span>)</code></div>
+<p class="api-desc">Get the most recent log entry.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>entry</code></td><td><code>eos_boot_log_entry_t *</code></td><td>Output buffer.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_OK</code> on success. <code>EOS_ERR_NO_IMAGE</code> if log is empty.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">const char *</span> <span class="fn">eos_boot_log_event_name</span>(<span class="param">uint32_t event</span>)</code></div>
+<p class="api-desc">Convert event code to human-readable string (e.g., "BOOT_START", "ROLLBACK").</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>event</code></td><td><code>uint32_t</code></td><td>Event code (EOS_LOG_*).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Static string describing the event, or "UNKNOWN".</p></div></div>
+
+<div id="bootflow" class="module-section"><h2 style="color:var(--blue)">&#128260; Boot Flow</h2></div>
+<div class="struct-card">
+<pre><code style="color:var(--text-secondary);font-size:0.82rem">RESET
+  |
+  v
+eos_boot_log_init()
+eos_bootctl_load(&amp;bctl)  --- CRC fail ---> eos_bootctl_init_defaults() ---> save
+  |
+  v
+Check flags: FACTORY_RESET? ---> erase all, init defaults, reboot
+             RECOVERY?      ---> enter_recovery_mode()
+  |
+  v
+eos_bootctl_increment_attempts(&amp;bctl)
+  |
+  v
+boot_attempts > max_attempts? ---> ROLLBACK to confirmed_slot
+  |                                 log EOS_LOG_ROLLBACK
+  v                                 reset attempts, reboot
+pending_slot != NONE?
+  YES: active_slot = pending_slot, set TEST_BOOT flag
+  NO:  use current active_slot
+  |
+  v
+eos_slot_scan_all()
+eos_slot_is_valid(active_slot)? ---> NO: try other slot, or recovery
+  |
+  v
+log EOS_LOG_SLOT_SELECT, EOS_LOG_IMG_VERIFY
+eos_boot_log_flush()
+jump_to_slot(active_slot)
+  |
+  v
+APPLICATION FIRMWARE
+  |
+  v
+self_test_passed()? ---> eos_bootctl_confirm()  // CRITICAL!
+                         log EOS_LOG_CONFIRM</code></pre></div>
+
+<div id="porting" class="module-section"><h2 style="color:var(--purple)">&#128295; Board Porting Guide</h2></div>
+<div class="struct-card">
+<h4>Flash Layout Requirements</h4>
+<p style="color:var(--text-secondary);font-size:0.88rem">eBoot requires the following flash regions configured in your linker script:</p>
+<table>
+<tr><td><strong>Region</strong></td><td><strong>Size</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>BOOTLOADER</code></td><td>32-64 KB</td><td>eBoot code (starts at 0x08000000 on STM32).</td></tr>
+<tr><td><code>BOOTCTL_PRIMARY</code></td><td>4 KB (1 sector)</td><td>Primary boot control block.</td></tr>
+<tr><td><code>BOOTCTL_BACKUP</code></td><td>4 KB (1 sector)</td><td>Backup boot control block.</td></tr>
+<tr><td><code>BOOT_LOG</code></td><td>4 KB (1 sector)</td><td>Boot log ring buffer (EOS_BOOT_LOG_SECTOR_SIZE).</td></tr>
+<tr><td><code>SLOT_A</code></td><td>Variable</td><td>Primary firmware image (typically 256KB-1MB).</td></tr>
+<tr><td><code>SLOT_B</code></td><td>Variable</td><td>Secondary firmware image (same size as SLOT_A).</td></tr>
+</table>
+<h4 style="margin-top:1.5rem">Porting Steps</h4>
+<ol style="color:var(--text-secondary);font-size:0.88rem">
+<li>Define flash addresses in <code>board_config.h</code>: <code>BOOTCTL_FLASH_ADDR</code>, <code>BOOTCTL_BACKUP_ADDR</code>, <code>BOOT_LOG_FLASH_ADDR</code>, <code>SLOT_A_ADDR</code>, <code>SLOT_B_ADDR</code>, <code>SLOT_SIZE</code>.</li>
+<li>Implement flash HAL: <code>eos_flash_read()</code>, <code>eos_flash_write()</code>, <code>eos_flash_erase_sector()</code>.</li>
+<li>Implement <code>jump_to_slot(eos_slot_t slot)</code> — set VTOR, load SP from slot start, jump to reset vector.</li>
+<li>Add watchdog initialization before jumping (to catch hung firmware).</li>
+<li>Call <code>eos_bootctl_confirm()</code> from your application after self-test passes.</li>
+</ol>
+<div class="api-example"><h5>Example: board_config.h</h5><pre><code>#define BOOTCTL_FLASH_ADDR     0x08010000
+#define BOOTCTL_BACKUP_ADDR    0x08011000
+#define BOOT_LOG_FLASH_ADDR    0x08012000
+#define SLOT_A_ADDR            0x08020000
+#define SLOT_B_ADDR            0x08060000
+#define SLOT_SIZE              0x00040000  // 256KB per slot</code></pre></div>
+</div>
+
+<p style="color:var(--text-muted);margin-top:3rem;font-size:0.85rem">Thread Safety: Boot control functions are NOT thread-safe. All calls should be made from the bootloader main context before the RTOS starts, or from a single application task with appropriate locking.</p>
+
+</main></div><footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

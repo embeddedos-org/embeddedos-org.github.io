@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EoStudio Learning Hub - EmbeddedOS</title><link rel="stylesheet" href="../style.css">
+<style>
+.path-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:2rem;margin:1.5rem 0;transition:all .3s}
+.path-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}.path-card h3{border:none;margin-top:0}
+.editor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin:1.5rem 0}
+.editor-item{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;transition:all .2s}
+.editor-item:hover{border-color:var(--pink);transform:translateY(-2px)}
+.editor-item h4{margin-bottom:.3rem}.editor-item p{color:var(--text-secondary);font-size:.88rem;margin-bottom:.5rem}
+.career-link{color:var(--cyan);font-size:.82rem;font-weight:600}
+</style></head><body>
+<nav class="navbar"><div class="nav-inner"><a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+<div class="doc-layout"><aside class="doc-sidebar sidebar-pink"><h4>EoStudio</h4><ul>
+<li><a href="#overview" class="active">Overview</a></li><li><a href="#why">Why EoStudio?</a></li><li><a href="#editors">10 Editors</a></li><li><a href="#paths">Learning Paths</a></li><li><a href="#codegen">Code Generation</a></li><li><a href="#ai-tutor">AI Tutor</a></li><li><a href="#install">Installation</a></li></ul>
+<h4>Products</h4><ul><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="ebuild.html">ebuild</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eosuite.html">eApps</a></li></ul></aside>
+<main class="doc-content"><div class="doc-hero doc-hero-pink"><h1>EoStudio &mdash; Design, Learn, Build <span class="version-badge">v0.1.0</span></h1>
+<p>All-in-one design studio with 10 editors, AI tutoring, and automatic code generation. Runs natively on <strong>EoS Desktop</strong>, Windows, macOS, and Linux.</p>
+<div class="doc-hero-meta"><span class="badge badge-pink">10 Editors</span><span class="badge badge-purple">AI Tutor</span><span class="badge badge-green">Code Gen</span><span class="badge badge-blue">4 Paths</span></div></div>
+<div id="why" class="module-section"><h2 style="color:var(--pink)">Why EoStudio?</h2></div>
+<h3>For Students</h3><p>Learn 3D modeling, CAD, game dev, UML, physics simulation in one tool. AI tutor guides step-by-step.</p>
+<h3>For Teachers</h3><p>AI tutor generates lessons, quizzes, badges. Track progress. Age 8 to university.</p>
+<h3>For Makers</h3><p>Design, Generate Code, Deploy. 3D to STL, UI to Flutter/React. Concept to production.</p>
+<h3>For Kids</h3><p>AI teaches step-by-step. Earn badges. Design 3D animals, build games, create apps!</p>
+<div id="editors" class="module-section"><h2 style="color:var(--purple)">10 Editors</h2></div><div class="editor-grid">
+<div class="editor-item" style="border-top:3px solid var(--blue)"><h4>3D Modeler</h4><p>Meshes, materials, lighting, UV. OBJ/STL/glTF.</p><p class="career-link">Career: Pixar, game studios</p></div>
+<div class="editor-item" style="border-top:3px solid var(--green)"><h4>CAD Designer</h4><p>Parametric 2D/3D, constraints. DXF/STEP.</p><p class="career-link">Career: Mechanical engineering</p></div>
+<div class="editor-item" style="border-top:3px solid var(--purple)"><h4>Game Editor</h4><p>Sprites, tilemaps, scripting, physics.</p><p class="career-link">Career: Game development</p></div>
+<div class="editor-item" style="border-top:3px solid var(--cyan)"><h4>Image Editor</h4><p>Layers, brushes, filters. PNG/JPG/SVG.</p><p class="career-link">Career: Graphic design, UX</p></div>
+<div class="editor-item" style="border-top:3px solid var(--orange)"><h4>UI Designer</h4><p>Drag-drop interface builder.</p><p class="career-link">Career: App dev, UX/UI</p></div>
+<div class="editor-item" style="border-top:3px solid var(--yellow)"><h4>UML Editor</h4><p>Class, sequence, state diagrams.</p><p class="career-link">Career: Software architecture</p></div>
+<div class="editor-item" style="border-top:3px solid var(--red)"><h4>Simulation</h4><p>Physics sim, rigid bodies, particles.</p><p class="career-link">Career: Robotics, aerospace</p></div>
+<div class="editor-item" style="border-top:3px solid var(--pink)"><h4>Database Editor</h4><p>Visual schema, SQL/ORM codegen.</p><p class="career-link">Career: Data engineering</p></div>
+<div class="editor-item" style="border-top:3px solid var(--green)"><h4>Interior Designer</h4><p>Floor plans, furniture, materials.</p><p class="career-link">Career: Architecture</p></div>
+<div class="editor-item" style="border-top:3px solid var(--blue)"><h4>Hardware Editor</h4><p>PCB schematic, routing, Gerber.</p><p class="career-link">Career: Electrical engineering</p></div>
+</div>
+<div id="paths" class="module-section"><h2 style="color:var(--green)">4 Learning Paths</h2></div>
+<div class="path-card" style="border-left:4px solid var(--pink)"><h3 style="color:var(--pink)">Creative Designer</h3><p><strong>Editors:</strong> 3D Modeler, Image Editor, Game Editor</p><p>Sculpt 3D, texturing, 2D art, build games.</p></div>
+<div class="path-card" style="border-left:4px solid var(--blue)"><h3 style="color:var(--blue)">Engineer</h3><p><strong>Editors:</strong> CAD Designer, UML Editor, Simulation</p><p>CAD parts, UML architecture, physics validation.</p></div>
+<div class="path-card" style="border-left:4px solid var(--orange)"><h3 style="color:var(--orange)">App Developer</h3><p><strong>Editors:</strong> UI Designer, Database, Code Gen</p><p>Design UIs, model data, generate Flutter/React/Python.</p></div>
+<div class="path-card" style="border-left:4px solid var(--purple)"><h3 style="color:var(--purple)">Game Maker</h3><p><strong>Editors:</strong> Game Editor, 3D Modeler, Simulation</p><p>2D/3D games with physics mechanics.</p></div>
+<div id="codegen" class="module-section"><h2 style="color:var(--orange)">Code Generation</h2></div>
+<p>Design your UI or 3D model, then EoStudio generates production-ready code.</p>
+<h3>UI Designer to Flutter</h3><pre><code>class MyApp extends StatelessWidget {
+  Widget build(BuildContext c) =&gt; MaterialApp(home: Scaffold(
+    appBar: AppBar(title: Text("EoStudio App")),
+    body: Column(children: [Text("Welcome!")])));
+}</code></pre>
+<h3>UML to Python</h3><pre><code>class SensorManager:
+    def __init__(self):
+        self.sensors: list[Sensor] = []
+    def register(self, sensor): ...
+    def read_all(self) -&gt; dict: ...</code></pre>
+<div id="ai-tutor" class="module-section"><h2 style="color:var(--purple)">AI Tutor</h2></div>
+<table class="table-purple"><thead><tr><th>Feature</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>Lessons</strong></td><td>AI breaks complex tasks into simple steps</td></tr>
+<tr><td><strong>Context Help</strong></td><td>Ask questions, AI guides in editor</td></tr>
+<tr><td><strong>Quizzes</strong></td><td>Multiple-choice and hands-on challenges</td></tr>
+<tr><td><strong>Badges</strong></td><td>First Model, Game Creator, CAD Master</td></tr>
+<tr><td><strong>Adaptation</strong></td><td>Adjusts for age 8 to university</td></tr>
+<tr><td><strong>Templates</strong></td><td>50+ starters: robot, game, app, PCB</td></tr></tbody></table>
+<div id="install" class="module-section"><h2 style="color:var(--green)">Installation</h2></div>
+<h3>On EoS Desktop (Native)</h3>
+<pre><code># ebuild handles all dependencies automatically
+ebuild init my-studio --platform desktop --with-eostudio
+ebuild build
+ebuild run
+
+# ebuild resolves: Python 3.10+, OpenGL 3.3+, GPU drivers, etc.</code></pre>
+<div class="callout callout-tip"><div class="callout-title">Zero-Config on EoS</div>
+<p>When running on <strong>EoS Desktop</strong>, <code>ebuild</code> automatically resolves and installs all dependencies &mdash; Python 3.10+, OpenGL 3.3+, Mesa/GPU drivers, and pip packages. You just declare <code>--with-eostudio</code> and everything is handled.</p></div>
+<h3>On Windows, macOS, Linux</h3>
+<pre><code>pip install eostudio
+eostudio
+eostudio --editor 3d-modeler</code></pre>
+<div class="callout callout-tip"><div class="callout-title">Requirements</div><p>Python 3.10+, 4GB RAM, OpenGL 3.3+. Windows, macOS, Linux, or <strong>EoS Desktop</strong>.</p></div>
+<div class="doc-nav"><a href="eosuite.html"><span class="nav-label">Prev</span><span class="nav-title">eApps</span></a><a href="eosim.html" class="next"><span class="nav-label">Next</span><span class="nav-title">EoSim</span></a></div>
+</main></div>
+<footer class="footer"><div class="footer-inner"><div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li></ul></div>
+</div><div class="footer-bottom">2025 EmbeddedOS Project - MIT License</div></footer></body></html>

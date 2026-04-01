@@ -1,0 +1,427 @@
+name: Website Sanity Check
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  html-validation:
+    name: HTML Structure Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install html5validator
+        run: pip install html5validator
+
+      - name: Validate HTML (W3C)
+        run: |
+          html5validator --root . --also-check-css \
+            --ignore 'Consider adding a "lang"' \
+            --ignore 'The "type" attribute is unnecessary' \
+            --log INFO \
+            || true
+
+      - name: Check for duplicate DOCTYPE (critical bug detector)
+        run: |
+          echo "=== Checking for duplicate <!DOCTYPE> in HTML files ==="
+          EXIT=0
+          for f in $(find . -name '*.html' -not -path './.git/*'); do
+            COUNT=$(grep -c '<!DOCTYPE' "$f" 2>/dev/null || echo 0)
+            if [ "$COUNT" -gt 1 ]; then
+              echo "FAIL: $f has $COUNT <!DOCTYPE> declarations (file is duplicated!)"
+              EXIT=1
+            else
+              echo "  OK: $f"
+            fi
+          done
+          exit $EXIT
+
+      - name: Check for unclosed HTML tags (structure validation)
+        run: |
+          python3 << 'PYEOF'
+          import os, re, sys
+
+          errors = []
+          SELF_CLOSING = {'area','base','br','col','embed','hr','img','input',
+                          'link','meta','param','source','track','wbr'}
+
+          for root, dirs, files in os.walk('.'):
+              if '.git' in root or 'node_modules' in root:
+                  continue
+              for fname in files:
+                  if not fname.endswith('.html'):
+                      continue
+                  path = os.path.join(root, fname)
+                  with open(path) as fh:
+                      content = fh.read()
+
+                  # Check matching <html> and </html>
+                  opens = len(re.findall(r'<html[\s>]', content, re.I))
+                  closes = len(re.findall(r'</html>', content, re.I))
+                  if opens != closes:
+                      errors.append(f"{path}: mismatched <html> tags (open={opens}, close={closes})")
+
+                  # Check matching <body> and </body>
+                  opens = len(re.findall(r'<body[\s>]', content, re.I))
+                  closes = len(re.findall(r'</body>', content, re.I))
+                  if opens != closes:
+                      errors.append(f"{path}: mismatched <body> tags (open={opens}, close={closes})")
+
+                  # Check matching <head> and </head>
+                  opens = len(re.findall(r'<head[\s>]', content, re.I))
+                  closes = len(re.findall(r'</head>', content, re.I))
+                  if opens != closes:
+                      errors.append(f"{path}: mismatched <head> tags (open={opens}, close={closes})")
+
+                  # Check <div> balance (allow small mismatch for complex pages)
+                  opens = len(re.findall(r'<div[\s>]', content, re.I))
+                  closes = len(re.findall(r'</div>', content, re.I))
+                  if abs(opens - closes) > 2:
+                      errors.append(f"{path}: <div> imbalance (open={opens}, close={closes}, diff={opens-closes})")
+
+                  # Check no empty/tiny files
+                  size = len(content)
+                  if size < 100:
+                      errors.append(f"{path}: suspiciously small ({size} bytes)")
+
+          if errors:
+              print("STRUCTURE VALIDATION FAILED:")
+              for e in errors:
+                  print(f"  FAIL: {e}")
+              sys.exit(1)
+          else:
+              print("All HTML structure checks passed")
+          PYEOF
+
+      - name: Verify required files exist
+        run: |
+          REQUIRED=(
+            index.html
+            getting-started.html
+            kids.html
+            hardware-lab.html
+            flow.html
+            style.css
+            docs/index.html
+            docs/eos.html
+            docs/eboot.html
+            docs/ebuild.html
+            docs/eai.html
+            docs/eipc.html
+            docs/eni.html
+            docs/eosim.html
+            docs/eosuite.html
+            docs/eostudio.html
+          )
+          EXIT=0
+          for f in "${REQUIRED[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "FAIL: Missing required file: $f"
+              EXIT=1
+            else
+              SIZE=$(stat -c%s "$f")
+              echo "  OK: $f ($SIZE bytes)"
+            fi
+          done
+          exit $EXIT
+
+      - name: Check required meta tags
+        run: |
+          python3 << 'PYEOF'
+          import os, re, sys
+
+          errors = []
+          for root, dirs, files in os.walk('.'):
+              if '.git' in root or 'node_modules' in root:
+                  continue
+              for fname in files:
+                  if not fname.endswith('.html'):
+                      continue
+                  path = os.path.join(root, fname)
+                  with open(path) as fh:
+                      content = fh.read()
+
+                  if '<meta charset' not in content.lower() and 'charset=utf-8' not in content.lower():
+                      errors.append(f"{path}: missing charset meta tag")
+                  if '<meta name="viewport"' not in content:
+                      errors.append(f"{path}: missing viewport meta tag (breaks mobile!)")
+                  if '<title>' not in content:
+                      errors.append(f"{path}: missing <title> tag")
+                  if '<link rel="stylesheet"' not in content:
+                      errors.append(f"{path}: missing stylesheet link")
+
+          if errors:
+              print("META TAG VALIDATION FAILED:")
+              for e in errors:
+                  print(f"  FAIL: {e}")
+              sys.exit(1)
+          else:
+              print("All meta tag checks passed")
+          PYEOF
+
+  link-check:
+    name: Internal Link Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check internal links
+        run: |
+          python3 << 'PYEOF'
+          import os, re, sys
+
+          errors = []
+          warnings = []
+          link_count = 0
+
+          for root, dirs, files in os.walk('.'):
+              if '.git' in root or 'node_modules' in root:
+                  continue
+              for fname in files:
+                  if not fname.endswith('.html'):
+                      continue
+                  path = os.path.join(root, fname)
+                  with open(path) as fh:
+                      content = fh.read()
+
+                  # Check href links to local .html files
+                  for m in re.finditer(r'href="([^"]*)"', content):
+                      href = m.group(1)
+                      if href.startswith(('http://', 'https://', '#', 'mailto:', 'javascript:')):
+                          continue
+                      link_count += 1
+                      # Strip anchor
+                      href_file = href.split('#')[0]
+                      if not href_file:
+                          continue
+                      target = os.path.normpath(os.path.join(os.path.dirname(path), href_file))
+                      if not os.path.exists(target):
+                          errors.append(f"{path}: broken link -> {href} (target: {target})")
+
+                  # Check src links (images, scripts)
+                  for m in re.finditer(r'src="([^"]*)"', content):
+                      src = m.group(1)
+                      if src.startswith(('http://', 'https://', 'data:')):
+                          continue
+                      link_count += 1
+                      target = os.path.normpath(os.path.join(os.path.dirname(path), src))
+                      if not os.path.exists(target):
+                          warnings.append(f"{path}: missing asset -> {src}")
+
+          print(f"Checked {link_count} internal links")
+          if warnings:
+              print(f"\nWARNINGS ({len(warnings)}):")
+              for w in warnings:
+                  print(f"  WARN: {w}")
+          if errors:
+              print(f"\nERRORS ({len(errors)}):")
+              for e in errors:
+                  print(f"  FAIL: {e}")
+              sys.exit(1)
+          else:
+              print("All internal links valid")
+          PYEOF
+
+  css-validation:
+    name: CSS Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check CSS syntax
+        run: |
+          python3 << 'PYEOF'
+          import re, sys
+
+          with open('style.css') as f:
+              css = f.read()
+
+          errors = []
+
+          # Check balanced braces
+          opens = css.count('{')
+          closes = css.count('}')
+          if opens != closes:
+              errors.append(f"Unbalanced braces: {{ = {opens}, }} = {closes}")
+
+          # Check no empty rules
+          for m in re.finditer(r'\{[\s]*\}', css):
+              pos = css[:m.start()].count('\n') + 1
+              errors.append(f"Empty CSS rule at line ~{pos}")
+
+          # Check CSS custom properties are defined
+          used_vars = set(re.findall(r'var\(--([a-z0-9-]+)\)', css))
+          defined_vars = set(re.findall(r'--([a-z0-9-]+)\s*:', css))
+          undefined = used_vars - defined_vars
+          if undefined:
+              errors.append(f"Undefined CSS variables: {', '.join(sorted(undefined))}")
+
+          # Check responsive breakpoints exist
+          has_mobile = bool(re.search(r'@media.*max-width.*768px', css))
+          has_tablet = bool(re.search(r'@media.*max-width.*1024px', css))
+          has_print = bool(re.search(r'@media.*print', css))
+
+          print(f"CSS file: {len(css)} chars, {css.count(chr(10))} lines")
+          print(f"Responsive: mobile={has_mobile}, tablet={has_tablet}, print={has_print}")
+
+          if not has_mobile:
+              errors.append("Missing mobile breakpoint (@media max-width: 768px)")
+
+          if errors:
+              print("\nCSS VALIDATION FAILED:")
+              for e in errors:
+                  print(f"  FAIL: {e}")
+              sys.exit(1)
+          else:
+              print("CSS validation passed")
+          PYEOF
+
+  mobile-compat:
+    name: Mobile Compatibility Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify mobile-critical elements
+        run: |
+          python3 << 'PYEOF'
+          import os, re, sys
+
+          errors = []
+
+          for root, dirs, files in os.walk('.'):
+              if '.git' in root or 'node_modules' in root:
+                  continue
+              for fname in files:
+                  if not fname.endswith('.html'):
+                      continue
+                  path = os.path.join(root, fname)
+                  with open(path) as fh:
+                      content = fh.read()
+
+                  # Must have viewport meta
+                  if 'viewport' not in content:
+                      errors.append(f"{path}: missing viewport meta (breaks mobile layout)")
+
+                  # Must have hamburger menu (nav-toggle) for mobile nav
+                  if 'class="navbar"' in content or "class='navbar'" in content:
+                      if 'nav-toggle' not in content:
+                          errors.append(f"{path}: has navbar but missing nav-toggle hamburger (mobile nav broken)")
+
+                  # Check for fixed-width elements that break mobile
+                  for m in re.finditer(r'width\s*[:=]\s*(\d+)px', content):
+                      px = int(m.group(1))
+                      if px > 500:
+                          line = content[:m.start()].count('\n') + 1
+                          errors.append(f"{path}:{line}: fixed width {px}px may overflow on mobile")
+
+          if errors:
+              print("MOBILE COMPATIBILITY CHECK FAILED:")
+              for e in errors:
+                  print(f"  FAIL: {e}")
+              sys.exit(1)
+          else:
+              print("All mobile compatibility checks passed")
+          PYEOF
+
+  consistency:
+    name: Cross-Page Consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check nav links and footer consistency
+        run: |
+          python3 << 'PYEOF'
+          import os, re, sys
+
+          errors = []
+          warnings = []
+
+          # Collect all footers
+          footer_licenses = {}
+          nav_link_sets = {}
+
+          for root, dirs, files in os.walk('.'):
+              if '.git' in root or 'node_modules' in root:
+                  continue
+              for fname in files:
+                  if not fname.endswith('.html'):
+                      continue
+                  path = os.path.join(root, fname)
+                  with open(path) as fh:
+                      content = fh.read()
+
+                  # Check footer license consistency
+                  license_match = re.search(r'(MIT|Apache 2\.0|GPL|BSD)', content[content.rfind('footer'):] if 'footer' in content else '')
+                  if license_match:
+                      footer_licenses[path] = license_match.group(1)
+
+                  # Check nav links exist
+                  nav_match = re.search(r'class="nav-links"[^>]*>(.*?)</div>', content, re.S)
+                  if nav_match:
+                      links = re.findall(r'href="([^"]*)"', nav_match.group(1))
+                      nav_link_sets[path] = set(os.path.basename(l) for l in links if not l.startswith('http'))
+
+          # All footers should have same license
+          licenses = set(footer_licenses.values())
+          if len(licenses) > 1:
+              errors.append(f"Inconsistent licenses across pages: {dict(footer_licenses)}")
+
+          # All nav bars should have similar link sets
+          if nav_link_sets:
+              ref_set = list(nav_link_sets.values())[0]
+              for path, links in nav_link_sets.items():
+                  missing = ref_set - links
+                  if missing and len(missing) > 2:
+                      warnings.append(f"{path}: nav is missing links present on other pages: {missing}")
+
+          if warnings:
+              for w in warnings:
+                  print(f"  WARN: {w}")
+          if errors:
+              print("CONSISTENCY CHECK FAILED:")
+              for e in errors:
+                  print(f"  FAIL: {e}")
+              sys.exit(1)
+          else:
+              print("Cross-page consistency checks passed")
+          PYEOF
+
+  sanity-gate:
+    name: Sanity Gate
+    if: always()
+    needs: [html-validation, link-check, css-validation, mobile-compat, consistency]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all results
+        run: |
+          echo "========================================="
+          echo "  Website Sanity Check Results"
+          echo "========================================="
+          echo "HTML Validation:   ${{ needs.html-validation.result }}"
+          echo "Link Check:        ${{ needs.link-check.result }}"
+          echo "CSS Validation:    ${{ needs.css-validation.result }}"
+          echo "Mobile Compat:     ${{ needs.mobile-compat.result }}"
+          echo "Consistency:       ${{ needs.consistency.result }}"
+          echo "========================================="
+
+          FAILED=0
+          for result in "${{ needs.html-validation.result }}" \
+                        "${{ needs.link-check.result }}" \
+                        "${{ needs.css-validation.result }}" \
+                        "${{ needs.mobile-compat.result }}" \
+                        "${{ needs.consistency.result }}"; do
+            if [ "$result" != "success" ]; then
+              FAILED=1
+            fi
+          done
+
+          if [ "$FAILED" -eq 1 ]; then
+            echo "SANITY CHECK FAILED"
+            exit 1
+          fi
+          echo "ALL SANITY CHECKS PASSED"
