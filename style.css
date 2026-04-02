@@ -39,8 +39,8 @@
   --nav-height: 64px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
-body { font-family: var(--font-sans); background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+body { font-family: var(--font-sans); background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 a { color: var(--cyan); text-decoration: none; transition: color 0.2s; }
 a:hover { color: var(--blue); text-decoration: underline; }
 img { max-width: 100%; }
@@ -306,6 +306,11 @@ details[open] summary { border-bottom: 1px solid var(--border-color); }
   .footer-inner { grid-template-columns: 1fr; }
   .doc-nav { grid-template-columns: 1fr; }
   .arch-row { flex-direction: column; align-items: center; }
+  .section { padding: 3rem 1rem; }
+  .hero { padding: 4rem 1rem 3rem; }
+  table { display: block; overflow-x: auto; max-width: 100%; }
+  .api-card { margin: 1rem 0; padding: 1rem; }
+  .navbar { padding: 0 1rem; }
 }
 @media print {
   .navbar, .doc-sidebar, .edit-link, .doc-nav { display: none; }
