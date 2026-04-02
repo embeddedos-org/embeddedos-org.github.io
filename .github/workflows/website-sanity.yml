@@ -312,7 +312,7 @@ jobs:
                           errors.append(f"{path}: has navbar but missing nav-toggle hamburger (mobile nav broken)")
 
                   # Check for fixed-width elements that break mobile
-                  for m in re.finditer(r'width\s*[:=]\s*(\d+)px', content):
+                  for m in re.finditer(r'(?<!max-)(?<!min-)width\s*[:=]\s*(\d+)px', content):
                       px = int(m.group(1))
                       if px > 500:
                           line = content[:m.start()].count('\n') + 1
