@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EmbeddedOS - Open-Source Embedded Operating System</title>
-<meta name="description" content="A modular, real-time embedded operating system with AI, IPC, networking, simulation, and comprehensive tooling.">
+<meta name="description" content="A modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and comprehensive tooling for 52+ platforms.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -46,17 +46,18 @@
 <div class="hero-content">
   <div class="hero-text">
   <h1>The Operating System for Every Device</h1>
-  <p class="subtitle">A modular, multi-platform OS with AI inference, secure IPC, OTA updates, and simulation &mdash; from microcontrollers to desktops, TVs, and beyond.</p>
+  <p class="subtitle">A modular, multi-platform OS with AI inference, secure IPC, OTA updates, browser engine, database, office suite, mobile apps, and simulation &mdash; from microcontrollers to desktops, TVs, and beyond.</p>
   <div class="hero-buttons">
     <a href="getting-started.html" class="btn btn-primary">&#9654; Get Started</a>
     <a href="docs/index.html" class="btn btn-secondary">&#128214; Documentation</a>
     <a href="https://github.com/embeddedos-org" class="btn btn-outline">&#9733; Star on GitHub</a>
   </div>
   <div class="hero-stats">
-    <div class="stat"><span class="stat-number" style="color:var(--blue)">10</span><span class="stat-label">Components</span></div>
-    <div class="stat"><span class="stat-number" style="color:var(--green)">52</span><span class="stat-label">Platforms</span></div>
-    <div class="stat"><span class="stat-number" style="color:var(--purple)">100+</span><span class="stat-label">APIs</span></div>
-    <div class="stat"><span class="stat-number" style="color:var(--orange)">38</span><span class="stat-label">Apps</span></div>
+    <div class="stat"><span class="stat-number" style="color:var(--blue)">14</span><span class="stat-label">Components</span></div>
+    <div class="stat"><span class="stat-number" style="color:var(--green)">52+</span><span class="stat-label">Platforms</span></div>
+    <div class="stat"><span class="stat-number" style="color:var(--purple)">300+</span><span class="stat-label">APIs</span></div>
+    <div class="stat"><span class="stat-number" style="color:var(--orange)">41</span><span class="stat-label">Product Profiles</span></div>
+    <div class="stat"><span class="stat-number" style="color:var(--pink)">49</span><span class="stat-label">Apps</span></div>
   </div>
   </div>
   <div class="hero-illustration svg-float">
@@ -91,7 +92,7 @@
 <section class="section-full section-alt">
 <div class="section">
   <h2 class="section-title">The EmbeddedOS Ecosystem</h2>
-  <p class="section-subtitle">Ten integrated components covering every aspect of embedded development</p>
+  <p class="section-subtitle">14 integrated components covering every aspect of embedded &amp; application development</p>
   <div style="height:3px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--pink));border-radius:2px;max-width:80px;margin:0 auto 3rem;"></div>
 </div>
 
@@ -100,7 +101,7 @@
   <div class="product-card card-eos">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="8" width="16" height="16" rx="2" fill="none" stroke="#58a6ff" stroke-width="1.5"/><rect x="11" y="11" width="10" height="10" rx="1" fill="url(#grad-blue)" opacity="0.6"/><line x1="12" y1="8" x2="12" y2="4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="8" x2="16" y2="4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="8" x2="20" y2="4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="24" x2="12" y2="28" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="24" x2="16" y2="28" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="24" x2="20" y2="28" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="12" x2="4" y2="12" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="16" x2="4" y2="16" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="20" x2="4" y2="20" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="12" x2="28" y2="12" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="16" x2="28" y2="16" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="20" x2="28" y2="20" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
     <h3>EoS</h3>
-    <p>Modular multi-platform operating system kernel with HAL, crypto, OTA, sensors, motor control, filesystem, and power management.</p>
+    <p>Universal embedded OS framework supporting <strong>41 product categories</strong> with 33 HAL peripherals, RTOS kernel with SMP/AMP multicore, power management, networking (TCP/HTTP/MQTT), crypto (SHA-256, AES, RSA/ECC), OTA updates, sensor framework, motor control, and filesystem.</p>
     <div class="card-tags">
       <span class="badge badge-blue">Multi-Platform</span>
       <span class="badge badge-cyan">HAL</span>
@@ -115,7 +116,7 @@
   <div class="product-card card-eboot">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4L20 14L24 14L16 22L18 15L14 15Z" fill="url(#grad-green)" stroke="#3fb950" stroke-width="1" stroke-linejoin="round"/><circle cx="16" cy="26" r="3" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.6"/><path d="M13 27Q16 32 19 27" stroke="#3fb950" stroke-width="1" fill="none" opacity="0.4"/></svg></div>
     <h3>eBoot</h3>
-    <p>Secure bootloader with A/B slot management, verified boot chain, rollback protection, and boot-time diagnostics logging.</p>
+    <p>Production-grade bootloader supporting <strong>24 board ports</strong> across 10 architectures. Staged boot (stage-0 + stage-1), A/B slots with automatic rollback, secure boot chain, stream-based firmware update, SMP/AMP/lockstep multicore boot, UEFI-style device table, and recovery mode.</p>
     <div class="card-tags">
       <span class="badge badge-green">Bootloader</span>
       <span class="badge badge-blue">A/B Slots</span>
@@ -130,7 +131,7 @@
   <div class="product-card card-ebuild">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="10" fill="none" stroke="#f0883e" stroke-width="1.5"/><circle cx="16" cy="16" r="4" fill="url(#grad-orange)" opacity="0.6"/><path d="M16 6V8 M16 24V26 M6 16H8 M24 16H26 M9 9L10.5 10.5 M21.5 21.5L23 23 M9 23L10.5 21.5 M21.5 10.5L23 9" stroke="#f0883e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
     <h3>ebuild</h3>
-    <p>Build system, SDK generator, and release packager. Auto-resolves all dependencies per platform.</p>
+    <p>Unified build system with <strong>18 CLI commands</strong>. Cross-compilation across CMake/Make/Meson/Cargo/Kbuild, hardware schematic analysis (KiCad/YAML), Yocto-style SDK generation, package management with YAML recipes, 6 project templates, and deployable OS image creation for 14+ targets.</p>
     <div class="card-tags">
       <span class="badge badge-orange">CLI</span>
       <span class="badge badge-yellow">SDK</span>
@@ -145,7 +146,7 @@
   <div class="product-card card-eipc">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="8" cy="16" r="3" fill="url(#grad-cyan)" opacity="0.7"/><circle cx="24" cy="8" r="3" fill="url(#grad-cyan)" opacity="0.7"/><circle cx="24" cy="24" r="3" fill="url(#grad-cyan)" opacity="0.7"/><line x1="11" y1="15" x2="21" y2="9" stroke="#79c0ff" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="17" x2="21" y2="23" stroke="#79c0ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="11" x2="24" y2="21" stroke="#79c0ff" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/></svg></div>
     <h3>EIPC</h3>
-    <p>Inter-process communication framework with Go and C SDKs. Shared memory, message queues, pub/sub broker, and mTLS security.</p>
+    <p>Secure, real-time IPC framework with Go &amp; C SDKs. Pluggable transports (TCP, Unix sockets, shared memory, Windows pipes), HMAC-SHA256 integrity, capability-based auth, pub/sub broker, policy engine, replay protection, keyring management, and JSON-line audit logging.</p>
     <div class="card-tags">
       <span class="badge badge-cyan">Go</span>
       <span class="badge badge-blue">C SDK</span>
@@ -160,7 +161,7 @@
   <div class="product-card card-eai">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4C10 4 6 10 6 16C6 20 8 24 12 26L12 28L20 28L20 26C24 24 26 20 26 16C26 10 22 4 16 4Z" fill="none" stroke="#bc8cff" stroke-width="1.5"/><path d="M11 14Q16 8 21 14" stroke="#bc8cff" stroke-width="1" fill="none" opacity="0.6"/><path d="M11 18Q16 12 21 18" stroke="#bc8cff" stroke-width="1" fill="none" opacity="0.4"/><circle cx="12" cy="16" r="1.5" fill="#bc8cff" opacity="0.8"/><circle cx="20" cy="16" r="1.5" fill="#bc8cff" opacity="0.8"/><circle cx="16" cy="13" r="1.5" fill="#bc8cff" opacity="0.8"/><line x1="12" y1="28" x2="20" y2="28" stroke="#bc8cff" stroke-width="1.5"/></svg></div>
     <h3>EAI</h3>
-    <p>Edge AI inference engine with agent framework, memory, tool use, model catalog of 12 models, and REST API via Ebot server.</p>
+    <p>C11 embedded AI framework with <strong>two tiers</strong>: EAI-Min (50KB RAM, MCUs) and EAI-Framework (enterprise). 12 curated LLMs (TinyLlama to Qwen2.5 7B), ReAct agents with tool calling, LoRA fine-tuning, federated learning, 8-layer security, power-aware inference, and 5 deployment profiles.</p>
     <div class="card-tags">
       <span class="badge badge-purple">AI/ML</span>
       <span class="badge badge-pink">Agents</span>
@@ -175,7 +176,7 @@
   <div class="product-card card-eni">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="#f778ba" stroke-width="1.2"/><ellipse cx="16" cy="16" rx="11" ry="5" fill="none" stroke="#f778ba" stroke-width="0.8" opacity="0.6"/><ellipse cx="16" cy="16" rx="5" ry="11" fill="none" stroke="#f778ba" stroke-width="0.8" opacity="0.6"/><circle cx="16" cy="16" r="2" fill="#f778ba" opacity="0.5"/><path d="M24 6Q28 6 28 10" stroke="#f778ba" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M26 4Q30 4 30 8" stroke="#f778ba" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/></svg></div>
     <h3>ENI</h3>
-    <p>Embedded Neural Interface for brain-computer interfaces (BCI), neural decoders, and assistive input &mdash; with Neuralink adapter, signal processing, and intent classification.</p>
+    <p>Embedded Neural Interface for brain-computer interfaces. Neuralink 1024-channel adapter at 30kHz, EEG headset provider, DSP (FIR/IIR/FFT), lightweight neural network, intent decoder, neurofeedback, stimulation output with safety interlocks, and EIPC bridge to EAI agents.</p>
     <div class="card-tags">
       <span class="badge badge-pink">Neural Interface</span>
       <span class="badge badge-cyan">BCI</span>
@@ -190,7 +191,7 @@
   <div class="product-card card-eosuite">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="11" height="11" rx="3" fill="url(#grad-yellow)" opacity="0.5" stroke="#e3b341" stroke-width="1"/><rect x="17" y="4" width="11" height="11" rx="3" fill="url(#grad-blue)" opacity="0.5" stroke="#58a6ff" stroke-width="1"/><rect x="4" y="17" width="11" height="11" rx="3" fill="url(#grad-green)" opacity="0.5" stroke="#3fb950" stroke-width="1"/><rect x="17" y="17" width="11" height="11" rx="3" fill="url(#grad-purple)" opacity="0.5" stroke="#bc8cff" stroke-width="1"/></svg></div>
     <h3>eApps</h3>
-    <p>38 cross-platform C + LVGL applications &mdash; productivity, media, games, connectivity, and security.</p>
+    <p><strong>38 cross-platform apps</strong> in pure C + LVGL: 13 productivity tools (eNote, eCalc, ePDF, eFiles), 5 media apps, 11 games (Snake, Tetris, Chess), 7 connectivity tools (eSSH, eVPN, eChat), and a security firewall. Runs on Windows, Linux, macOS, EoS, and Web (WASM).</p>
     <div class="card-tags">
       <span class="badge badge-yellow">38 Apps</span>
       <span class="badge badge-green">C + LVGL</span>
@@ -205,7 +206,7 @@
   <div class="product-card card-eosim">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="24" height="18" rx="2" fill="none" stroke="#f85149" stroke-width="1.5"/><line x1="4" y1="7" x2="28" y2="7" stroke="#f85149" stroke-width="0.5" opacity="0.4"/><rect x="8" y="10" width="7" height="8" rx="1" fill="url(#grad-pcb)" stroke="#3fb950" stroke-width="0.8" opacity="0.8"/><rect x="10" y="12" width="3" height="3" fill="#1a1e24" stroke="#58a6ff" stroke-width="0.5"/><circle cx="22" cy="14" r="1.5" fill="#f85149" opacity="0.8"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle><line x1="12" y1="24" x2="20" y2="24" stroke="#f85149" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="22" x2="16" y2="24" stroke="#f85149" stroke-width="1.5"/></svg></div>
     <h3>EoSim</h3>
-    <p>Full-system simulator with native CPU/memory/peripheral engines, 52 platforms, cluster simulation, and cloud orchestration.</p>
+    <p>Simulation and validation platform supporting <strong>52+ platforms</strong> across 12 architectures. Native Python engine, Renode, QEMU binary emulation, and HIL bridge. GPIO/UART/Timer register maps, GUI dashboard with 3D renderers, cluster simulation, and CI-native testing.</p>
     <div class="card-tags">
       <span class="badge badge-red">Simulator</span>
       <span class="badge badge-blue">52 Platforms</span>
@@ -220,7 +221,7 @@
   <div class="product-card" style="border-top:3px solid var(--pink)">
     <div class="card-icon" style="background:var(--pink-dim);color:var(--pink)"><svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="18" rx="12" ry="9" fill="none" stroke="#f778ba" stroke-width="1.5"/><ellipse cx="16" cy="18" rx="12" ry="9" fill="url(#grad-pink)" opacity="0.15"/><circle cx="10" cy="15" r="2.5" fill="#58a6ff"/><circle cx="18" cy="13" r="2.5" fill="#3fb950"/><circle cx="22" cy="18" r="2.5" fill="#e3b341"/><circle cx="14" cy="21" r="2.5" fill="#bc8cff"/><ellipse cx="6" cy="18" rx="2" ry="3" fill="none" stroke="#f778ba" stroke-width="1" opacity="0.5"/></svg></div>
     <h3>EoStudio</h3>
-    <p>All-in-one design IDE with 10 editors: 3D modeler, game editor, UI designer, code editor, and AI tutor.</p>
+    <p>Unified design suite with <strong>12 editors</strong>: 3D modeler, CAD designer, image editor, game editor, UI/UX designer, UML modeler, simulation editor, database designer, hardware PCB editor, and IDE. <strong>30+ code generators</strong> for React, Flutter, Godot, OpenSCAD, and more. LLM-powered AI assistance.</p>
     <div class="card-tags">
       <span class="badge badge-pink">Design</span>
       <span class="badge badge-purple">AI Tutor</span>
@@ -229,6 +230,62 @@
     <div class="card-buttons">
       <a href="docs/eostudio.html" class="btn btn-sm" style="background:var(--pink);color:#fff">Docs</a>
       <a href="https://github.com/embeddedos-org/EoStudio" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--green)">
+    <div class="card-icon" style="background:var(--green-dim);color:var(--green)">&#128451;</div>
+    <h3>eDB</h3>
+    <p>Unified multi-model database combining <strong>SQL + Document/NoSQL + Key-Value</strong> in one engine. Built on SQLite with zero dependencies. REST API via FastAPI, JWT auth, RBAC, AES-256 encryption at rest, tamper-resistant audit logging, full-text search, graph queries, and eBot AI natural language interface.</p>
+    <div class="card-tags">
+      <span class="badge badge-green">Multi-Model</span>
+      <span class="badge badge-blue">REST API</span>
+      <span class="badge badge-purple">AI Queries</span>
+    </div>
+    <div class="card-buttons">
+      <a href="https://github.com/embeddedos-org/eDB" class="btn btn-sm btn-green">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--cyan)">
+    <div class="card-icon" style="background:var(--cyan-dim);color:var(--cyan)">&#127760;</div>
+    <h3>eBowser</h3>
+    <p>Lightweight <strong>web browser engine</strong> for embedded and IoT devices. HTML5/CSS rendering, optional JavaScript engine, modular architecture with separate rendering/network/input layers, platform abstraction for Linux/RTOS/bare-metal, and zero-prerequisite setup scripts. 130+ test cases across 7 test suites.</p>
+    <div class="card-tags">
+      <span class="badge badge-cyan">Browser</span>
+      <span class="badge badge-blue">HTML/CSS</span>
+      <span class="badge badge-orange">Embedded</span>
+    </div>
+    <div class="card-buttons">
+      <a href="https://github.com/embeddedos-org/eBowser" class="btn btn-sm" style="background:var(--cyan);color:#fff">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--orange)">
+    <div class="card-icon" style="background:var(--orange-dim);color:var(--orange)">&#128188;</div>
+    <h3>eOffice</h3>
+    <p>Complete <strong>office suite with 11 apps</strong>: eDocs (word processing), eSheets (spreadsheets), eSlides (presentations), eNotes (notebooks), eMail, eDB, eDrive (cloud storage), eConnect (collaboration), eForms, eSway, and ePlanner. Powered by <strong>eBot</strong> AI assistant for text rewriting, formula suggestions, and semantic search.</p>
+    <div class="card-tags">
+      <span class="badge badge-orange">11 Apps</span>
+      <span class="badge badge-purple">eBot AI</span>
+      <span class="badge badge-blue">Real-time</span>
+    </div>
+    <div class="card-buttons">
+      <a href="https://github.com/embeddedos-org/eOffice" class="btn btn-sm" style="background:var(--orange);color:#fff">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--pink)">
+    <div class="card-icon" style="background:var(--pink-dim);color:var(--pink)">&#128241;</div>
+    <h3>eServiceApps</h3>
+    <p><strong>4 mobile service apps</strong> built with Flutter: eSocial (social networking + dating), eTravel (bookings + transport), eRide (ride-hailing with GPS), and eTrack (food/parcel delivery tracking). Unified wallet, central notifications, micro-fee sustainability model, and Firebase/Supabase backend.</p>
+    <div class="card-tags">
+      <span class="badge badge-pink">Flutter</span>
+      <span class="badge badge-green">4 Apps</span>
+      <span class="badge badge-yellow">Wallet</span>
+    </div>
+    <div class="card-buttons">
+      <a href="https://github.com/embeddedos-org/eServiceApps" class="btn btn-sm" style="background:var(--pink);color:#fff">GitHub</a>
     </div>
   </div>
 
@@ -249,32 +306,156 @@
 </div>
 </section>
 
+<!-- WHY EMBEDDEDOS -->
+<section class="section">
+  <h2 class="section-title">Why EmbeddedOS?</h2>
+  <p class="section-subtitle">One unified platform from bootloader to browser</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:2rem">
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--blue)">
+      <h3 style="color:var(--blue);margin-top:0;border:none;font-size:1.1rem">&#9889; Universal</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">One OS framework for 41 product categories &mdash; smartwatches to spacecraft, gaming consoles to 5G base stations, medical devices to autonomous vehicles.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--green)">
+      <h3 style="color:var(--green);margin-top:0;border:none;font-size:1.1rem">&#128274; Secure by Default</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">Secure boot chain, SHA-256/AES crypto, A/B firmware updates with rollback, mTLS IPC, JWT auth, RBAC, 8-layer AI security, and tamper-resistant audit logs.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--purple)">
+      <h3 style="color:var(--purple);margin-top:0;border:none;font-size:1.1rem">&#129302; AI-Native</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">On-device LLM inference with 12 curated models (TinyLlama to Llama 3.2), autonomous agents, LoRA fine-tuning, federated learning &mdash; zero cloud dependency.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--orange)">
+      <h3 style="color:var(--orange);margin-top:0;border:none;font-size:1.1rem">&#128736; Full Stack</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">Complete ecosystem: kernel, bootloader, build system, IPC, AI, neural interface, simulator, browser, database, office suite, 49 apps, design IDE, and mobile services.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--cyan)">
+      <h3 style="color:var(--cyan);margin-top:0;border:none;font-size:1.1rem">&#128640; Multi-Arch</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">ARM Cortex-M/A/R, RISC-V 32/64, Xtensa, x86_64, PowerPC, MIPS, MicroBlaze, ARC &mdash; 52+ platform definitions with QEMU and Renode simulation.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--pink)">
+      <h3 style="color:var(--pink);margin-top:0;border:none;font-size:1.1rem">&#127891; Standards Compliant</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">ISO 26262 (automotive), DO-178C (aerospace), IEC 61508 (safety), ISO 27001 (security), FIPS 140-3, POSIX, SBOM (SPDX, CycloneDX), WCAG 2.1.</p>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="section-full section-alt">
+<div class="section">
+  <h2 class="section-title">Who Uses EmbeddedOS?</h2>
+  <p class="section-subtitle">Real-world use cases across industries</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:2rem">
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--blue)">&#128663; Automotive OEM</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Vehicle ECU with sensor fusion + CAN bus. Uses <code>automotive</code> profile with HAL (CAN, ADC, PWM), kernel, motor control, and watchdog.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--green)">&#127973; Medical Device Maker</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Patient monitor with BLE + encrypted storage. Uses <code>medical</code> profile with HAL (BLE, ADC), crypto (AES), secure storage, and audit.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--purple)">&#129302; Robotics Company</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Industrial robot arm with 6-axis control. Uses <code>robot</code> profile with motor control, IMU, camera, and EAI on-device agent.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--orange)">&#128752; IoT Startup</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">WiFi sensor node reporting to cloud. Uses <code>iot</code> profile with HAL (WiFi, ADC), OTA update, power management, and eDB for local storage.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--cyan)">&#127968; Smart Home Vendor</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Hub controlling lights, locks, cameras. Uses <code>smart_home</code> profile with HAL (WiFi, BLE, IR), networking (MQTT), and eBowser for web UI.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--pink)">&#128640; Aerospace Firm</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Satellite attitude controller. Uses <code>satellite</code> profile with HAL (IMU, GNSS), crypto, watchdog, redundancy, and DO-178C compliance.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--yellow)">&#127918; Gaming Console</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Handheld with GPU + haptics. Uses <code>gaming</code> profile with eApps (11 games), EoStudio for game design, multicore GPU, and HDMI.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--red)">&#9889; EV Manufacturer</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Battery management + motor control. Uses <code>ev</code> profile with HAL (CAN, ADC), motor, power, multicore SMP, and eOffice for fleet management.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- QUICK START -->
+<section class="section">
+  <h2 class="section-title">Quick Start</h2>
+  <p class="section-subtitle">Get running in minutes</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:1.5rem;margin-top:2rem">
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--blue);margin-top:0;border:none;font-size:1rem">&#9654; Build EoS Kernel</h3>
+      <pre style="margin:.5rem 0 0"><code>cmake -B build -DEOS_PRODUCT=robot
+cmake --build build</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--orange);margin-top:0;border:none;font-size:1rem">&#9654; Build with ebuild</h3>
+      <pre style="margin:.5rem 0 0"><code>pip install -e .
+ebuild build --target raspi4 --with eai,eni</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--red);margin-top:0;border:none;font-size:1rem">&#9654; Simulate with EoSim</h3>
+      <pre style="margin:.5rem 0 0"><code>pip install eosim
+eosim run stm32f4</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--yellow);margin-top:0;border:none;font-size:1rem">&#9654; Launch eApps</h3>
+      <pre style="margin:.5rem 0 0"><code>cmake -B build -DEAPPS_PORT=sdl2
+cmake --build build
+./build/eapps_suite</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--green);margin-top:0;border:none;font-size:1rem">&#9654; Start eDB Server</h3>
+      <pre style="margin:.5rem 0 0"><code>pip install -e ".[dev]"
+edb init &amp;&amp; edb serve --port 8000</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--cyan);margin-top:0;border:none;font-size:1rem">&#9654; Launch eBowser</h3>
+      <pre style="margin:.5rem 0 0"><code>git clone --recursive ...eBowser.git
+cd eBowser &amp;&amp; ./setup.sh</code></pre>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <h2 class="section-title">System Architecture</h2>
-  <p class="section-subtitle">How EmbeddedOS components work together</p>
+  <p class="section-subtitle">How all 14 EmbeddedOS components work together</p>
   <div class="arch-diagram">
     <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--orange);color:var(--orange)">eOffice (11 Apps)</div>
+      <div class="arch-box" style="border-color:var(--pink);color:var(--pink)">eServiceApps (4 Mobile)</div>
       <div class="arch-box" style="border-color:var(--yellow);color:var(--yellow)">eApps (38 Apps)</div>
-      <div class="arch-box" style="border-color:var(--purple);color:var(--purple)">EAI (AI/ML)</div>
-      <div class="arch-box" style="border-color:var(--red);color:var(--red)">EoSim (Simulator)</div>
     </div>
     <div class="arch-arrow">&darr;&darr;&darr;</div>
     <div class="arch-row">
-      <div class="arch-box" style="border-color:var(--cyan);color:var(--cyan)">EIPC (IPC)</div>
-      <div class="arch-box" style="border-color:var(--pink);color:var(--pink)">ENI (Network)</div>
+      <div class="arch-box" style="border-color:var(--cyan);color:var(--cyan)">eBowser (Browser)</div>
+      <div class="arch-box" style="border-color:var(--green);color:var(--green)">eDB (Database)</div>
+      <div class="arch-box" style="border-color:#bc8cff;color:#bc8cff">EoStudio (12 Editors)</div>
     </div>
-    <div class="arch-arrow">&darr;&darr;</div>
+    <div class="arch-arrow">&darr;&darr;&darr;</div>
     <div class="arch-row">
-      <div class="arch-box" style="border-color:var(--blue);color:var(--blue);min-width:300px">EoS Kernel (Multi-Platform OS + HAL + Drivers)</div>
+      <div class="arch-box" style="border-color:var(--purple);color:var(--purple)">EAI (AI/ML &bull; 12 LLMs)</div>
+      <div class="arch-box" style="border-color:var(--pink);color:var(--pink)">ENI (Neural/BCI)</div>
+      <div class="arch-box" style="border-color:var(--red);color:var(--red)">EoSim (52+ Platforms)</div>
+    </div>
+    <div class="arch-arrow">&darr;&darr;&darr;</div>
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--cyan);color:var(--cyan);min-width:200px">EIPC (IPC &bull; Go + C)</div>
     </div>
     <div class="arch-arrow">&darr;</div>
     <div class="arch-row">
-      <div class="arch-box" style="border-color:var(--green);color:var(--green)">eBoot (Bootloader)</div>
-      <div class="arch-box" style="border-color:var(--orange);color:var(--orange)">ebuild (Build System)</div>
+      <div class="arch-box" style="border-color:var(--blue);color:var(--blue);min-width:350px">EoS Kernel (41 Profiles &bull; 33 HAL &bull; Multicore SMP/AMP)</div>
     </div>
     <div class="arch-arrow">&darr;</div>
     <div class="arch-row">
-      <div class="arch-box" style="border-color:var(--text-muted);color:var(--text-secondary);min-width:400px">Hardware: ARM &bull; RISC-V &bull; x86 &bull; Xtensa &bull; MIPS</div>
+      <div class="arch-box" style="border-color:var(--green);color:var(--green)">eBoot (24 Boards &bull; Secure Boot)</div>
+      <div class="arch-box" style="border-color:var(--orange);color:var(--orange)">ebuild (18 CLI &bull; SDK Gen)</div>
+    </div>
+    <div class="arch-arrow">&darr;</div>
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--text-muted);color:var(--text-secondary);min-width:450px">Hardware: ARM Cortex-M/A/R &bull; RISC-V &bull; x86 &bull; Xtensa &bull; MIPS &bull; PowerPC &bull; ARC</div>
     </div>
   </div>
 </section>
@@ -358,6 +539,11 @@
       <li><a href="docs/eni.html">ENI</a></li>
       <li><a href="docs/eosuite.html">eApps</a></li>
       <li><a href="docs/eosim.html">EoSim</a></li>
+      <li><a href="docs/eostudio.html">EoStudio</a></li>
+      <li><a href="https://github.com/embeddedos-org/eDB">eDB</a></li>
+      <li><a href="https://github.com/embeddedos-org/eBowser">eBowser</a></li>
+      <li><a href="https://github.com/embeddedos-org/eOffice">eOffice</a></li>
+      <li><a href="https://github.com/embeddedos-org/eServiceApps">eServiceApps</a></li>
     </ul>
   </div>
   <div>
