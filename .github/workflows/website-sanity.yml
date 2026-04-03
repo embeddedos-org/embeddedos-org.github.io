@@ -11,7 +11,7 @@ jobs:
     name: HTML Structure Validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install html5validator
         run: pip install html5validator
@@ -166,7 +166,7 @@ jobs:
     name: Internal Link Validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Check internal links
         run: |
@@ -229,7 +229,7 @@ jobs:
     name: CSS Validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Check CSS syntax
         run: |
@@ -283,7 +283,7 @@ jobs:
     name: Mobile Compatibility Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Verify mobile-critical elements
         run: |
@@ -331,7 +331,7 @@ jobs:
     name: Cross-Page Consistency
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Check nav links and footer consistency
         run: |

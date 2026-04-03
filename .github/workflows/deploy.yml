@@ -18,7 +18,7 @@ jobs:
     name: Pre-Deploy Validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Verify all required files exist and are non-empty
         run: |
@@ -85,7 +85,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
