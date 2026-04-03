@@ -97,7 +97,7 @@ jobs:
 
       - name: Upload Desktop Results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lighthouse-desktop
           path: lighthouse-results/desktop/
@@ -188,7 +188,7 @@ jobs:
 
       - name: Upload Mobile Results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lighthouse-mobile
           path: lighthouse-results/mobile/
