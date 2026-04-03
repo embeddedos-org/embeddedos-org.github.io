@@ -50,14 +50,37 @@
 <h2>Tools &amp; Simulation</h2>
 <div class="product-grid">
 <div class="product-card card-eosim"><div class="card-icon">Sim</div><h3>EoSim Simulator</h3>
-<p>Multi-architecture simulation with native Python engine, QEMU binary emulation, and HIL bridge. 52 platform definitions, GPIO/UART/Timer register maps, platform YAML format, CLI commands with output, and GUI dashboard.</p>
-<div class="card-tags"><span class="badge badge-green">Simulator</span><span class="badge badge-blue">52 Platforms</span><span class="badge badge-orange">15 KB</span></div>
+<p>Multi-architecture simulation with native Python engine, QEMU binary emulation, Renode, and HIL bridge. 63 platform definitions across 12 architectures, 7 simulation engines, GPIO/UART/Timer register maps, and GUI dashboard.</p>
+<div class="card-tags"><span class="badge badge-green">Simulator</span><span class="badge badge-blue">63 Platforms</span><span class="badge badge-orange">7 Engines</span></div>
 <div class="card-buttons"><a href="eosim.html" class="btn btn-sm btn-primary">CLI Reference</a></div></div>
 
-<div class="product-card card-eosuite"><div class="card-icon">Apps</div><h3>eApps (38 Apps)</h3>
-<p>Desktop companion with ebot AI chat client (C API + CLI), device management GUI (firewall, storage, clipboard), file utilities, YAML configuration, and 8 Tkinter desktop apps with console CLI equivalents.</p>
-<div class="card-tags"><span class="badge badge-purple">Desktop</span><span class="badge badge-cyan">AI Chat</span><span class="badge badge-green">15 KB</span></div>
+<div class="product-card card-eosuite"><div class="card-icon">Apps</div><h3>eApps (43 Apps)</h3>
+<p>Cross-platform embedded applications in pure C + LVGL v9.1: 13 productivity tools (eNote, eCalc, ePDF, eFiles), 5 media apps, 11 games (Snake, Tetris, Chess), 7 connectivity tools (eSSH, eVPN, eChat), and a security firewall. Runs on 7 platforms.</p>
+<div class="card-tags"><span class="badge badge-purple">C + LVGL</span><span class="badge badge-cyan">43 Apps</span><span class="badge badge-green">7 Platforms</span></div>
 <div class="card-buttons"><a href="eosuite.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+</div>
+
+<h2>Database, Browser &amp; Office</h2>
+<div class="product-grid">
+<div class="product-card" style="border-top:3px solid var(--green)"><div class="card-icon">eDB</div><h3>eDB Database</h3>
+<p>Unified multi-model database combining SQL, Document/NoSQL, and Key-Value storage. Built on SQLite with zero dependencies. REST API via FastAPI, JWT auth, RBAC, AES-256-GCM encryption, full-text search, and eBot AI natural language interface.</p>
+<div class="card-tags"><span class="badge badge-green">Multi-Model</span><span class="badge badge-blue">REST API</span><span class="badge badge-purple">Python</span></div>
+<div class="card-buttons"><a href="edb.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+
+<div class="product-card" style="border-top:3px solid var(--cyan)"><div class="card-icon">eBw</div><h3>eBowser Browser</h3>
+<p>Lightweight web browser engine for embedded/IoT devices. HTML5/CSS rendering, modular architecture with rendering/network/input layers, platform abstraction for SDL2, EoS, and WASM. 130+ test cases across 7 suites.</p>
+<div class="card-tags"><span class="badge badge-cyan">Browser</span><span class="badge badge-orange">HTML5/CSS</span><span class="badge badge-blue">C/C++</span></div>
+<div class="card-buttons"><a href="ebowser.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+
+<div class="product-card" style="border-top:3px solid var(--orange)"><div class="card-icon">eOf</div><h3>eOffice Suite</h3>
+<p>AI-powered office suite with 11 apps: eDocs, eSheets, eSlides, eNotes, eMail, eDrive, eConnect, eForms, eSway, ePlanner. Powered by eBot AI for text rewriting, formula suggestions, and slide generation. Browser, Electron, Docker deployment.</p>
+<div class="card-tags"><span class="badge badge-orange">11 Apps</span><span class="badge badge-purple">eBot AI</span><span class="badge badge-blue">TypeScript</span></div>
+<div class="card-buttons"><a href="eoffice.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+
+<div class="product-card" style="border-top:3px solid var(--pink)"><div class="card-icon">eSA</div><h3>eServiceApps Mobile</h3>
+<p>Feature-modular Flutter mobile super app with 4 service modules: social networking, ride-sharing, travel planning, and delivery. Riverpod state management, GoRouter navigation, Material 3 design, Firebase backend.</p>
+<div class="card-tags"><span class="badge badge-pink">Flutter</span><span class="badge badge-green">4 Modules</span><span class="badge badge-yellow">Firebase</span></div>
+<div class="card-buttons"><a href="eserviceapps.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
 </div>
 
 <h2 style="margin-top:3rem">Quick Reference</h2>
@@ -73,7 +96,11 @@
 <tr><td>EIPC</td><td>C/Go</td><td><code>&lt;eipc.h&gt;</code></td><td>eipc_client_connect, eipc_client_send_intent, eipc_hmac_sign</td></tr>
 <tr><td>ebuild</td><td>Go</td><td>CLI</td><td>ebuild init, build, flash, monitor, test</td></tr>
 <tr><td>EoSim</td><td>Python</td><td>CLI</td><td>eosim list, search, run, stats, gui</td></tr>
-<tr><td>eApps</td><td>C + LVGL</td><td><code>eapps/registry.h</code></td><td>38 apps: Snake, eCalc, eSSH, eBot, eGuard</td></tr>
+<tr><td>eApps</td><td>C + LVGL</td><td><code>eapps/registry.h</code></td><td>43 apps: Snake, eCalc, eSSH, eBot, eGuard</td></tr>
+<tr><td>eDB</td><td>Python</td><td><code>edb.core</code></td><td>SQL, Document, Key-Value, REST API, eBot AI</td></tr>
+<tr><td>eBowser</td><td>C/C++</td><td><code>ebowser.h</code></td><td>eb_create, eb_navigate, eb_run, eb_destroy</td></tr>
+<tr><td>eOffice</td><td>TypeScript</td><td>React + Node.js</td><td>11 apps: eDocs, eSheets, eSlides, eBot AI</td></tr>
+<tr><td>eServiceApps</td><td>Dart/Flutter</td><td>lib/main.dart</td><td>4 modules: Social, Ride, Travel, Delivery</td></tr>
 </table></div>
 
 </div>
