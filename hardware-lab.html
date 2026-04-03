@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hardware Lab Guide 🔌 - EmbeddedOS</title><link rel="stylesheet" href="style.css">
+<style>
+.board-section{margin:3rem 0;padding:2rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg)}
+.board-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.board-header h2{border:none;margin:0;padding:0}
+.board-price{background:var(--green-dim);color:var(--green);padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+.board-tag{padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600;text-transform:uppercase}
+.shopping-list{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.25rem;margin:1rem 0}
+.shopping-list h4{color:var(--yellow);margin-bottom:.75rem}
+.board-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:2rem 0}
+.board-nav a{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1.25rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);transition:all .3s;text-align:center;color:var(--text-primary);font-weight:600;font-size:.95rem}
+.board-nav a:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);text-decoration:none}
+.board-nav .board-emoji{font-size:2rem}
+.troubleshoot{background:var(--orange-dim);border:1px solid rgba(240,136,62,.3);border-radius:var(--radius-md);padding:1.25rem;margin:1rem 0}
+.troubleshoot h4{color:var(--orange);margin-bottom:.5rem}
+.troubleshoot li{font-size:.9rem}
+</style></head><body>
+<nav class="navbar"><div class="nav-inner">
+<a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html">Get Started</a><a href="docs/index.html">Docs</a><a href="kids.html">Kids 🎮</a><a href="hardware-lab.html" class="active">Hardware Lab 🔌</a><a href="flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+
+<section class="hero" style="padding:4rem 2rem 3rem"><div class="hero-content">
+<h1 style="font-size:2.5rem">Hardware Lab Guide 🔌</h1>
+<p class="subtitle">Pick your board, follow the steps, and get EmbeddedOS running on real hardware. Each guide includes a shopping list, setup commands, first project, and troubleshooting.</p>
+</div></section>
+
+<div class="content-wrapper" style="max-width:1000px">
+<h2 style="border:none;text-align:center">Choose Your Board</h2>
+<div class="board-nav">
+<a href="#raspi" style="border-color:var(--green)"><span class="board-emoji">🍓</span>Raspberry Pi 4/5<span class="board-price">$35–$80</span></a>
+<a href="#beagle" style="border-color:var(--blue)"><span class="board-emoji">🐕</span>BeagleBone<span class="board-price">$55–$120</span></a>
+<a href="#stm32" style="border-color:var(--cyan)"><span class="board-emoji">⚙️</span>STM32<span class="board-price">$15–$40</span></a>
+<a href="#nxp" style="border-color:var(--purple)"><span class="board-emoji">🔲</span>NXP FRDM/i.MX<span class="board-price">$30–$200</span></a>
+<a href="#esp32" style="border-color:var(--orange)"><span class="board-emoji">📶</span>ESP32 DevKit<span class="board-price">$5–$15</span></a>
+<a href="#sifive" style="border-color:var(--pink)"><span class="board-emoji">🔷</span>SiFive HiFive<span class="board-price">$60–$700</span></a>
+</div>
+
+<!-- RASPBERRY PI -->
+<div id="raspi" class="board-section" style="border-left:4px solid var(--green)">
+<div class="board-header"><h2 style="color:var(--green)">🍓 Raspberry Pi 4 / 5</h2><span class="board-price">$35–$80</span>
+<span class="board-tag" style="background:var(--green-dim);color:var(--green)">Most Accessible</span></div>
+<p>The most beginner-friendly board. Full Linux support, HDMI, USB, Wi-Fi, and GPIO pins. Perfect first board for kids and beginners.</p>
+<div class="shopping-list"><h4>🛒 Shopping List</h4><ul>
+<li><strong>Raspberry Pi 4 (4GB)</strong> — $55 or <strong>Pi 5 (4GB)</strong> — $60</li>
+<li><strong>microSD card</strong> — 32GB+, Class 10 ($8)</li>
+<li><strong>USB-C power supply</strong> — 5V 3A (Pi 4) or 5V 5A (Pi 5) ($10)</li>
+<li><strong>HDMI cable</strong> — micro-HDMI to HDMI ($5)</li>
+<li><strong>Keyboard &amp; mouse</strong> ($15)</li>
+<li><em>Optional:</em> breadboard + jumper wires + LEDs ($10)</li>
+</ul></div>
+<h3>📦 Setup Steps</h3>
+<div class="steps step-green">
+<div class="step"><h3>Install Raspberry Pi OS</h3><p>Download <a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a>, flash Raspberry Pi OS (64-bit) to your microSD card, and boot.</p></div>
+<div class="step"><h3>Install EmbeddedOS Tools</h3>
+<pre><code>sudo apt update &amp;&amp; sudo apt install -y cmake ninja-build gcc g++ git python3-pip
+pip install embeddedos-ebuild embeddedos-eosim</code></pre></div>
+<div class="step"><h3>Clone and Build EoS</h3>
+<pre><code>git clone https://github.com/embeddedos-org/eos.git
+cd eos
+ebuild init my-blink --template rtos --target raspi4
+cd my-blink &amp;&amp; ebuild build</code></pre></div>
+<div class="step"><h3>Run Your First Project</h3>
+<pre><code>ebuild run
+# Or simulate: eosim run build/firmware.elf --platform raspi4 --gui</code></pre></div>
+<div class="step"><h3>✅ Verify It Works</h3>
+<pre><code>ebuild monitor --baud 115200
+# [app] EmbeddedOS v0.1.0 starting...
+# [app] LED toggled, tick=500</code></pre></div>
+</div>
+<div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
+<li><strong>Pi won't boot:</strong> Re-flash the SD card. Try a different card. Ensure enough amps from power supply.</li>
+<li><strong>No display:</strong> Check micro-HDMI is in HDMI0 port (closest to USB-C).</li>
+<li><strong>pip fails:</strong> Use <code>pip install --break-system-packages embeddedos-ebuild</code> on Bookworm, or use a venv.</li>
+<li><strong>GPIO permissions:</strong> <code>sudo usermod -aG gpio $USER</code></li>
+</ul></div></div>
+
+<!-- BEAGLEBONE -->
+<div id="beagle" class="board-section" style="border-left:4px solid var(--blue)">
+<div class="board-header"><h2 style="color:var(--blue)">🐕 BeagleBone Black / AI-64</h2><span class="board-price">$55–$120</span>
+<span class="board-tag" style="background:var(--blue-dim);color:var(--blue)">PRU Coprocessors</span></div>
+<p>Industrial-grade with real-time PRU coprocessors. AI-64 adds TI TDA4VM with deep learning accelerators.</p>
+<div class="shopping-list"><h4>🛒 Shopping List</h4><ul>
+<li><strong>BeagleBone Black</strong> — $55 or <strong>AI-64</strong> — $120</li>
+<li><strong>microSD card</strong> — 16GB+ ($6), <strong>USB cable</strong> ($5), <strong>5V 2A barrel jack</strong> ($8)</li>
+<li><em>Optional:</em> USB-to-serial adapter ($10)</li>
+</ul></div>
+<h3>📦 Setup Steps</h3>
+<div class="steps">
+<div class="step"><h3>Flash the Board</h3><p>Download Debian image from <a href="https://beagleboard.org/latest-images">beagleboard.org</a>. Flash to microSD with Balena Etcher.</p></div>
+<div class="step"><h3>Connect via USB</h3>
+<pre><code>ssh debian@192.168.7.2
+# Default password: temppwd</code></pre></div>
+<div class="step"><h3>Install Tools &amp; Build</h3>
+<pre><code>sudo apt update &amp;&amp; sudo apt install -y cmake ninja-build gcc git python3-pip
+pip install embeddedos-ebuild
+ebuild init my-project --template rtos --target beaglebone
+cd my-project &amp;&amp; ebuild build &amp;&amp; ebuild flash</code></pre></div>
+<div class="step"><h3>✅ Monitor</h3>
+<pre><code>screen /dev/ttyUSB0 115200
+# Or on Windows: use PuTTY on the COM port</code></pre></div>
+</div>
+<div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
+<li><strong>USB network not detected:</strong> Install BeagleBone USB drivers from beagleboard.org/getting-started.</li>
+<li><strong>Can't SSH:</strong> Try <code>192.168.6.2</code>. Check USB cable supports data (not charge-only).</li>
+<li><strong>Won't boot from SD:</strong> Hold BOOT button while powering on.</li>
+</ul></div></div>
+
+<!-- STM32 -->
+<div id="stm32" class="board-section" style="border-left:4px solid var(--cyan)">
+<div class="board-header"><h2 style="color:var(--cyan)">⚙️ STM32 Discovery / Nucleo</h2><span class="board-price">$15–$40</span>
+<span class="board-tag" style="background:var(--cyan-dim);color:var(--cyan)">ARM Cortex-M4/M7</span>
+<span class="board-tag" style="background:var(--green-dim);color:var(--green)">Built-in ST-Link</span></div>
+<p>Professional MCU boards with built-in ST-Link debugger. STM32F4 Discovery ($20) or Nucleo ($15) — plug-and-play flash and debug.</p>
+<div class="shopping-list"><h4>🛒 Shopping List</h4><ul>
+<li><strong>STM32F4 Discovery</strong> (STM32F407VG) — $20 or <strong>Nucleo-F446RE</strong> — $15</li>
+<li><strong>USB micro-B cable</strong> ($3)</li>
+<li><em>Optional:</em> STM32H7 Discovery ($40), breadboard + LEDs ($10)</li>
+</ul></div>
+<h3>📦 Setup Steps</h3>
+<div class="steps step-cyan">
+<div class="step"><h3>Install ARM Toolchain</h3>
+<pre><code># Ubuntu/Debian
+sudo apt install gcc-arm-none-eabi
+# macOS
+brew install arm-none-eabi-gcc
+# Windows: download from developer.arm.com/downloads
+arm-none-eabi-gcc --version</code></pre></div>
+<div class="step"><h3>Install Flash Tools</h3>
+<pre><code>sudo apt install openocd stlink-tools
+pip install embeddedos-ebuild</code></pre></div>
+<div class="step"><h3>Create and Build</h3>
+<pre><code>ebuild init my-blink --template rtos --target stm32f4
+cd my-blink
+ebuild configure --target stm32f4 --build-type release
+ebuild build --jobs 8</code></pre></div>
+<div class="step"><h3>Flash via ST-Link</h3>
+<pre><code>ebuild flash --verify
+# [ebuild] Writing firmware.bin (45,232 bytes)... OK</code></pre></div>
+<div class="step"><h3>✅ Debug</h3>
+<pre><code>ebuild monitor --baud 115200
+# GDB: openocd -f interface/stlink.cfg -f target/stm32f4x.cfg &amp;
+# arm-none-eabi-gdb build/firmware.elf → target remote :3333</code></pre></div>
+</div>
+<div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
+<li><strong>ST-Link not detected:</strong> Install USB drivers. Linux: add udev rules for stlink.</li>
+<li><strong>Flash fails:</strong> Try <code>st-flash erase</code> first. Check write protection.</li>
+<li><strong>"No device found":</strong> Try different USB cable/port (charge-only cables won't work).</li>
+</ul></div></div>
+
+<!-- NXP -->
+<div id="nxp" class="board-section" style="border-left:4px solid var(--purple)">
+<div class="board-header"><h2 style="color:var(--purple)">🔲 NXP FRDM-K64F / i.MX 8M EVK</h2><span class="board-price">$30–$200</span>
+<span class="board-tag" style="background:var(--purple-dim);color:var(--purple)">MCU + Linux Paths</span></div>
+<p><strong>FRDM-K64F</strong> ($30) for bare-metal MCU (Cortex-M4, Ethernet, OpenSDA debugger). <strong>i.MX 8M EVK</strong> ($200) for Linux+EoS with NPU.</p>
+<div class="shopping-list"><h4>🛒 Shopping List (MCU)</h4><ul>
+<li><strong>FRDM-K64F</strong> — $30, <strong>USB micro-B</strong> ($3)</li>
+</ul><h4>🛒 Shopping List (App Processor)</h4><ul>
+<li><strong>i.MX 8M Mini EVK</strong> — $200 (includes USB-C + 12V PSU), <strong>microSD</strong> ($6)</li>
+</ul></div>
+<h3>📦 Setup (FRDM-K64F)</h3>
+<div class="steps step-purple">
+<div class="step"><h3>Install &amp; Build</h3>
+<pre><code>sudo apt install gcc-arm-none-eabi cmake ninja-build
+pip install embeddedos-ebuild
+ebuild init my-project --template rtos --target k64f
+cd my-project &amp;&amp; ebuild build</code></pre></div>
+<div class="step"><h3>Flash via OpenSDA</h3>
+<pre><code># K64F appears as USB drive — drag and drop!
+cp build/firmware.bin /media/$USER/FRDM-K64F/
+# Or: ebuild flash --verify</code></pre></div>
+<div class="step"><h3>✅ Verify</h3>
+<pre><code>ebuild monitor --baud 115200
+# [app] EmbeddedOS v0.1.0 starting on K64F</code></pre></div>
+</div>
+<div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
+<li><strong>OpenSDA not visible:</strong> Update OpenSDA firmware from nxp.com. Hold RESET while plugging USB.</li>
+<li><strong>Drag-and-drop fails:</strong> Use <code>.bin</code> not <code>.elf</code>. Try <code>ebuild flash</code> instead.</li>
+</ul></div></div>
+
+<!-- ESP32 -->
+<div id="esp32" class="board-section" style="border-left:4px solid var(--orange)">
+<div class="board-header"><h2 style="color:var(--orange)">📶 ESP32 DevKit</h2><span class="board-price">$5–$15</span>
+<span class="board-tag" style="background:var(--orange-dim);color:var(--orange)">Cheapest Entry</span>
+<span class="board-tag" style="background:var(--green-dim);color:var(--green)">Wi-Fi + BLE</span></div>
+<p>Cheapest way to start! Built-in Wi-Fi &amp; Bluetooth, dual-core, USB programming. Perfect for IoT.</p>
+<div class="shopping-list"><h4>🛒 Shopping List</h4><ul>
+<li><strong>ESP32 DevKit V1</strong> — $5–$10 (Xtensa LX6, 240 MHz, Wi-Fi, BLE)</li>
+<li><strong>USB micro-B cable</strong> ($3)</li>
+<li><em>Optional:</em> ESP32-S3 ($8, USB-C) or ESP32-C3 ($5, RISC-V)</li>
+</ul></div>
+<h3>📦 Setup Steps</h3>
+<div class="steps step-orange">
+<div class="step"><h3>Install Xtensa Toolchain</h3>
+<pre><code>git clone --recursive https://github.com/espressif/esp-idf.git ~/esp-idf
+cd ~/esp-idf &amp;&amp; ./install.sh &amp;&amp; source export.sh
+xtensa-esp32-elf-gcc --version
+pip install embeddedos-ebuild</code></pre></div>
+<div class="step"><h3>Create &amp; Build</h3>
+<pre><code>ebuild init my-iot --template rtos --target esp32
+cd my-iot &amp;&amp; ebuild build</code></pre></div>
+<div class="step"><h3>Flash via USB</h3>
+<pre><code>ebuild flash --port /dev/ttyUSB0
+# Windows: --port COM3  |  macOS: --port /dev/cu.usbserial-0001</code></pre></div>
+<div class="step"><h3>✅ Monitor</h3>
+<pre><code>ebuild monitor --port /dev/ttyUSB0 --baud 115200
+# [app] EmbeddedOS v0.1.0 starting on ESP32
+# [app] LED toggled, tick=500</code></pre></div>
+</div>
+<div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
+<li><strong>Port not found:</strong> Install CP2102/CH340 drivers. <code>dmesg | grep tty</code></li>
+<li><strong>"Failed to connect":</strong> Hold BOOT button during flash, then release.</li>
+<li><strong>Permission denied:</strong> <code>sudo usermod -aG dialout $USER</code> and re-login.</li>
+<li><strong>Brownout detector:</strong> Use better USB cable or powered hub.</li>
+</ul></div></div>
+
+<!-- SIFIVE -->
+<div id="sifive" class="board-section" style="border-left:4px solid var(--pink)">
+<div class="board-header"><h2 style="color:var(--pink)">🔷 SiFive HiFive</h2><span class="board-price">$60–$700</span>
+<span class="board-tag" style="background:var(--pink-dim);color:var(--pink)">RISC-V</span>
+<span class="board-tag" style="background:var(--blue-dim);color:var(--blue)">Open ISA</span></div>
+<p>The future of open hardware! RISC-V is a free, open ISA. SiFive HiFive boards run EmbeddedOS on the first truly open CPU architecture.</p>
+<div class="shopping-list"><h4>🛒 Shopping List</h4><ul>
+<li><strong>HiFive1 Rev B</strong> — $60 (FE310, 320 MHz, Arduino form factor)</li>
+<li><strong>HiFive Unmatched</strong> — $700 (U74 quad-core, Linux-capable, mini-ITX)</li>
+<li><strong>USB-C cable</strong> ($5)</li>
+</ul></div>
+<h3>📦 Setup Steps</h3>
+<div class="steps step-pink">
+<div class="step"><h3>Install RISC-V Toolchain</h3>
+<pre><code>sudo apt install gcc-riscv64-unknown-elf
+pip install embeddedos-ebuild</code></pre></div>
+<div class="step"><h3>Build &amp; Flash</h3>
+<pre><code>ebuild init my-riscv --template rtos --target sifive-hifive1
+cd my-riscv &amp;&amp; ebuild build &amp;&amp; ebuild flash --verify</code></pre></div>
+<div class="step"><h3>✅ Monitor</h3>
+<pre><code>ebuild monitor --baud 115200
+# [app] EmbeddedOS v0.1.0 on RISC-V (FE310)</code></pre></div>
+</div>
+<div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
+<li><strong>J-Link not detected:</strong> Install J-Link Software from segger.com.</li>
+<li><strong>Toolchain build slow:</strong> Needs 10GB+ disk, 8GB+ RAM, takes 30-60 min.</li>
+</ul></div></div>
+
+<!-- COMPARISON TABLE -->
+<h2 style="border:none;text-align:center;font-size:1.8rem">📊 Board Comparison</h2>
+<div style="overflow-x:auto">
+<table class="table-blue">
+<thead><tr><th>Feature</th><th>Raspberry Pi</th><th>BeagleBone</th><th>STM32</th><th>NXP K64F</th><th>ESP32</th><th>SiFive</th></tr></thead>
+<tbody>
+<tr><td><strong>Price</strong></td><td>$35–$80</td><td>$55–$120</td><td>$15–$40</td><td>$30–$200</td><td>$5–$15</td><td>$60–$700</td></tr>
+<tr><td><strong>CPU</strong></td><td>A72/A76</td><td>A72/TDA4VM</td><td>Cortex-M4/M7</td><td>Cortex-M4/A53</td><td>Xtensa LX6</td><td>RISC-V</td></tr>
+<tr><td><strong>Wi-Fi</strong></td><td>✅ Built-in</td><td>❌ (AI-64: ✅)</td><td>❌</td><td>❌</td><td>✅ Built-in</td><td>❌</td></tr>
+<tr><td><strong>Debugger</strong></td><td>GDB/SSH</td><td>SSH/JTAG</td><td>ST-Link ✅</td><td>OpenSDA ✅</td><td>USB Serial</td><td>J-Link ✅</td></tr>
+<tr><td><strong>Best For</strong></td><td>Beginners</td><td>Industrial</td><td>Pro MCU</td><td>Enterprise</td><td>IoT/$5 start</td><td>Open HW</td></tr>
+<tr><td><strong>Kid-Friendly</strong></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐</td></tr>
+</tbody></table></div>
+
+<div class="callout callout-tip" style="margin-top:2rem"><div class="callout-title">Which board should I pick?</div>
+<p><strong>Just starting out?</strong> Get a <a href="#raspi">Raspberry Pi</a> ($35) or <a href="#esp32">ESP32</a> ($5).<br>
+<strong>Want professional MCU dev?</strong> Get an <a href="#stm32">STM32 Discovery</a> ($20).<br>
+<strong>Interested in open hardware?</strong> Try the <a href="#sifive">SiFive HiFive</a>.<br>
+<strong>No hardware at all?</strong> Use <a href="getting-started.html">EoSim</a> to simulate any board on your computer!</p></div>
+
+</div>
+
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3 style="margin-bottom:.5rem">EmbeddedOS</h3><p>An open-source embedded OS for the next generation of intelligent devices.</p>
+<div style="display:flex;gap:.5rem;flex-wrap:wrap"><span class="badge badge-blue">MIT</span><span class="badge badge-green">Open Source</span></div></div>
+<div><h4>Documentation</h4><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="docs/eos.html">EoS Kernel</a></li><li><a href="docs/eboot.html">eBoot</a></li><li><a href="docs/ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="docs/eipc.html">EIPC</a></li><li><a href="docs/eai.html">EAI</a></li><li><a href="docs/eni.html">ENI</a></li><li><a href="docs/eosuite.html">eApps</a></li><li><a href="docs/eosim.html">EoSim</a></li><li><a href="docs/eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="kids.html">Kids Guide 🎮</a></li><li><a href="hardware-lab.html">Hardware Lab 🔌</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License &bull; Built with ❤️ for hardware hackers</div></footer>
+</body></html>

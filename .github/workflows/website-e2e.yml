@@ -1,0 +1,161 @@
+name: Website E2E & Responsive Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  responsive-tests:
+    name: Responsive Layout Tests (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          npm install playwright @playwright/test http-server
+          npx playwright install chromium --with-deps
+
+      - name: Start local server
+        run: |
+          npx http-server . -p 8080 -s &
+          sleep 3
+
+      - name: Run Responsive Tests
+        run: npx playwright test tests/ --reporter=list
+        env:
+          BASE_URL: http://localhost:8080
+
+      - name: Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: responsive-screenshots
+          path: tests/screenshots/
+
+      - name: Upload Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+
+  visual-diff:
+    name: Visual Sanity (Screenshot Comparison)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          npm install playwright @playwright/test http-server
+          npx playwright install chromium --with-deps
+
+      - name: Start local server
+        run: |
+          npx http-server . -p 8080 -s &
+          sleep 3
+
+      - name: Capture Screenshots (Mobile + Desktop)
+        run: |
+          node << 'JSEOF'
+          const { chromium } = require('playwright');
+          const fs = require('fs');
+          const path = require('path');
+
+          const viewports = {
+            'mobile-375':  { width: 375,  height: 812 },
+            'mobile-414':  { width: 414,  height: 896 },
+            'tablet-768':  { width: 768,  height: 1024 },
+            'desktop-1280': { width: 1280, height: 800 },
+            'desktop-1920': { width: 1920, height: 1080 },
+          };
+
+          const pages = [
+            { name: 'home',         path: '/index.html' },
+            { name: 'get-started',  path: '/getting-started.html' },
+            { name: 'docs',         path: '/docs/index.html' },
+            { name: 'flow',         path: '/flow.html' },
+            { name: 'kids',         path: '/kids.html' },
+            { name: 'hardware-lab', path: '/hardware-lab.html' },
+          ];
+
+          (async () => {
+            const dir = 'tests/screenshots';
+            fs.mkdirSync(dir, { recursive: true });
+
+            const browser = await chromium.launch();
+            let failures = [];
+
+            for (const [vpName, vpSize] of Object.entries(viewports)) {
+              for (const page of pages) {
+                const ctx = await browser.newContext({ viewport: vpSize });
+                const p = await ctx.newPage();
+                const url = `http://localhost:8080${page.path}`;
+
+                try {
+                  await p.goto(url, { waitUntil: 'networkidle', timeout: 15000 });
+                  await p.waitForTimeout(500);
+
+                  const fname = `${page.name}-${vpName}.png`;
+                  await p.screenshot({ path: path.join(dir, fname), fullPage: true });
+                  console.log(`  OK: ${fname}`);
+
+                  // Check for horizontal overflow (mobile-breaking bug)
+                  const hasOverflow = await p.evaluate(() => {
+                    return document.documentElement.scrollWidth > document.documentElement.clientWidth + 5;
+                  });
+                  if (hasOverflow && vpSize.width <= 768) {
+                    failures.push(`${page.name} at ${vpName}: horizontal overflow detected (content wider than viewport)`);
+                  }
+
+                  // Check hero text is visible
+                  const heroVisible = await p.evaluate(() => {
+                    const h1 = document.querySelector('h1');
+                    if (!h1) return true;
+                    const rect = h1.getBoundingClientRect();
+                    return rect.width > 0 && rect.height > 0;
+                  });
+                  if (!heroVisible) {
+                    failures.push(`${page.name} at ${vpName}: h1 not visible`);
+                  }
+
+                } catch (err) {
+                  failures.push(`${page.name} at ${vpName}: page load failed (${err.message})`);
+                }
+                await ctx.close();
+              }
+            }
+
+            await browser.close();
+
+            console.log('\n========================================');
+            if (failures.length > 0) {
+              console.log('VISUAL SANITY FAILURES:');
+              failures.forEach(f => console.log(`  FAIL: ${f}`));
+              process.exit(1);
+            } else {
+              console.log('All visual sanity checks passed');
+              console.log(`${Object.keys(viewports).length} viewports x ${pages.length} pages = ${Object.keys(viewports).length * pages.length} screenshots`);
+            }
+          })();
+          JSEOF
+
+      - name: Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-screenshots
+          path: tests/screenshots/

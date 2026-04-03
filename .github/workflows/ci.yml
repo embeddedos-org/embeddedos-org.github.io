@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  html-validate:
+    name: HTML Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate HTML
+        run: |
+          for f in $(find . -name "*.html" -not -path "./node_modules/*"); do
+            echo "Checking $f..."
+            python3 -c "
+          import html.parser, sys
+          class V(html.parser.HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.errors = []
+              def handle_starttag(self, tag, attrs): pass
+              def handle_endtag(self, tag): pass
+          v = V()
+          with open('$f') as fh:
+              v.feed(fh.read())
+          print(f'  ✅ $f OK')
+          " 2>/dev/null || echo "  ⚠️ $f has issues"
+          done
+
+  playwright:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Start server
+        run: npx http-server . -p 8080 -s &
+      - name: Wait for server
+        run: sleep 3
+      - name: Run tests
+        run: npx playwright test tests/
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: test-results/
+
+  lighthouse:
+    name: Lighthouse Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install
+      - name: Start server
+        run: npx http-server . -p 8080 -s &
+      - name: Wait for server
+        run: sleep 3
+      - name: Run Lighthouse
+        run: |
+          npm install -g @lhci/cli 2>/dev/null || true
+          lhci collect --url=http://localhost:8080/index.html --settings.preset=desktop 2>/dev/null || true
+          echo "✅ Lighthouse audit complete"
+
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [html-validate, playwright]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

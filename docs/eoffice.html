@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eOffice - AI-Powered Office Suite - EmbeddedOS</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links">
+<a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+</div></div></nav>
+<div class="doc-layout">
+<aside class="doc-sidebar"><div class="sidebar-section">
+<div class="sidebar-title">eOffice Modules</div>
+<a href="#architecture" class="sidebar-link">Architecture</a><a href="#edocs" class="sidebar-link">eDocs</a><a href="#esheets" class="sidebar-link">eSheets</a><a href="#eslides" class="sidebar-link">eSlides</a><a href="#enotes" class="sidebar-link">eNotes</a><a href="#email" class="sidebar-link">eMail</a><a href="#edrive" class="sidebar-link">eDrive</a><a href="#econnect" class="sidebar-link">eConnect</a><a href="#eforms" class="sidebar-link">eForms</a><a href="#ebot-ai" class="sidebar-link">eBot AI</a><a href="#deployment" class="sidebar-link">Deployment</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eboot.html" class="sidebar-link">eBoot</a><a href="eai.html" class="sidebar-link">EAI</a>
+<a href="eni.html" class="sidebar-link">ENI</a><a href="ebuild.html" class="sidebar-link">ebuild</a>
+<a href="eipc.html" class="sidebar-link">EIPC</a><a href="eosuite.html" class="sidebar-link">eApps</a>
+<a href="eosim.html" class="sidebar-link">EoSim</a><a href="eostudio.html" class="sidebar-link">EoStudio</a>
+<a href="edb.html" class="sidebar-link">eDB</a><a href="ebowser.html" class="sidebar-link">eBowser</a>
+<a href="eoffice.html" class="sidebar-link">eOffice</a><a href="eserviceapps.html" class="sidebar-link">eServiceApps</a>
+</div></aside>
+<main class="doc-content">
+<h1>eOffice &mdash; AI-Powered Office Suite <span class="version-badge">v0.1.0</span></h1>
+<p>Full-featured office productivity suite with integrated AI assistant (eBot). Built with TypeScript and React, eOffice provides word processing, spreadsheets, presentations, notebooks, email, cloud storage, collaboration, and forms &mdash; all powered by EAI.</p>
+<p><strong>Stack:</strong> <code>TypeScript + React 18</code> | <strong>AI:</strong> <code>EAI Server</code> | <strong>Collab:</strong> <code>CRDT / OT</code> | <strong>License:</strong> MIT</p>
+<div class="callout callout-info"><div class="callout-title">Suite Components</div><p><strong>eDocs</strong> &mdash; Word processing with rich text, templates, AI rewrite.<br><strong>eSheets</strong> &mdash; Spreadsheets with formulas, charts, AI analysis.<br><strong>eSlides</strong> &mdash; Presentations with layouts, animations, AI generation.<br><strong>eNotes</strong> &mdash; Markdown notebooks with tags, search, AI summarization.<br><strong>eMail</strong> &mdash; Email client with folders, search, AI compose.<br><strong>eDrive</strong> &mdash; Cloud storage with sharing and versioning.<br><strong>eConnect</strong> &mdash; Real-time messaging and collaboration.<br><strong>eForms</strong> &mdash; Drag-and-drop form builder with response analytics.</p></div>
+<div id="architecture" class="module-section"><h2 style="color:var(--cyan)">&#127959; Architecture</h2>
+<p class="module-desc">Multi-tenant, real-time collaborative office platform with centralized AI layer.</p></div>
+<h3>System Overview</h3>
+<div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:.82rem">Client Apps: eDocs | eSheets | eSlides | eNotes | eMail | eDrive | eConnect | eForms
+eBot AI Layer: /v1/chat, /v1/complete, /v1/summarize, /v1/task-extract, /v1/search
+EAI Server: Model Router | Prompt Cache | Rate Limiter
+WebSocket Collab: CRDT (text docs) | OT (structured data) | Cursor Presence
+Storage: S3/MinIO (documents) | PostgreSQL (users, metadata, audit)</code></pre></div>
+<h3>Multi-Tenant Architecture</h3>
+<p>Isolated tenants with per-org data separation, own storage namespace and config scope.</p>
+<div class="struct-card"><h4>TenantConfig</h4><table>
+<tr><td><code>tenantId</code></td><td><code>string</code></td><td>UUID v4</td></tr>
+<tr><td><code>orgName</code></td><td><code>string</code></td><td>Organization name</td></tr>
+<tr><td><code>storageBucket</code></td><td><code>string</code></td><td>Isolated S3 bucket</td></tr>
+<tr><td><code>maxUsers</code></td><td><code>number</code></td><td>Max seats</td></tr>
+<tr><td><code>features</code></td><td><code>FeatureFlags</code></td><td>Enabled modules</td></tr>
+<tr><td><code>retentionDays</code></td><td><code>number</code></td><td>Audit retention</td></tr>
+</table></div>
+<h3>Real-Time Collaboration (CRDT / OT)</h3>
+<p><strong>CRDTs</strong> for text documents. <strong>OT</strong> for structured data. Engine auto-selected by document type.</p>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">CollabSession</span> <span class="fn">createCollabSession</span>(<span class="param">docId: string, userId: string, transport: WebSocket</span>)</code></div>
+<p class="api-desc">Bind a user to a document over WebSocket for real-time co-editing with cursor presence.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>docId</td><td>string</td><td>Document ID.</td></tr><tr><td>userId</td><td>string</td><td>Authenticated user.</td></tr><tr><td>transport</td><td>WebSocket</td><td>WebSocket connection.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>CollabSession</code></p></div>
+<div class="api-example"><h5>Example</h5><pre><code>const ws = new WebSocket('wss://office.eos.dev/collab');
+const session = createCollabSession('doc-abc', 'user-42', ws);
+session.on('update', (ops) =&gt; applyOps(editor, ops));</code></pre></div></div>
+<h3>Data Model</h3>
+<div class="struct-card"><h4>DocumentVersion</h4><table>
+<tr><td><code>versionId</code></td><td><code>string</code></td><td>Version ID</td></tr>
+<tr><td><code>docId</code></td><td><code>string</code></td><td>Parent doc</td></tr>
+<tr><td><code>authorId</code></td><td><code>string</code></td><td>Author</td></tr>
+<tr><td><code>timestamp</code></td><td><code>Date</code></td><td>ISO 8601</td></tr>
+<tr><td><code>ops</code></td><td><code>Operation[]</code></td><td>CRDT/OT ops</td></tr>
+<tr><td><code>snapshot</code></td><td><code>Uint8Array|null</code></td><td>Every 100 versions</td></tr>
+</table></div>
+<div class="struct-card"><h4>AuditLogEntry</h4><table>
+<tr><td><code>action</code></td><td><code>AuditAction</code></td><td>CREATE, READ, UPDATE, DELETE, SHARE, EXPORT</td></tr>
+<tr><td><code>userId</code></td><td><code>string</code></td><td>Actor</td></tr>
+<tr><td><code>resourceType</code></td><td><code>string</code></td><td>doc, sheet, slide, note, email, file, form</td></tr>
+<tr><td><code>piiRedacted</code></td><td><code>boolean</code></td><td>PII stripped</td></tr>
+</table></div>
+<div class="callout callout-tip"><div class="callout-title">PII Redaction</div><p>Audit logs are PII-redacted. <code>EOFFICE_PII_REDACT=true</code> by default.</p></div>
+<div id="edocs" class="module-section"><h2 style="color:var(--blue)">&#128196; eDocs &mdash; Word Processing</h2>
+<p class="module-desc">Rich text editor with templates, collaboration, and AI writing tools.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">EditorInstance</span> <span class="fn">createDocsEditor</span>(<span class="param">container: HTMLElement, config: DocsConfig</span>)</code></div>
+<p class="api-desc">Rich text editor: Markdown, headings, lists, tables, images, code blocks.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>container</td><td>HTMLElement</td><td>Mount target.</td></tr><tr><td>config</td><td>DocsConfig</td><td>toolbar, spellcheck, locale, collaboration.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EditorInstance</code></p></div>
+<div class="api-example"><h5>Example</h5><pre><code>import { createDocsEditor } from '@eoffice/docs';
+const editor = createDocsEditor(el, {
+  toolbar: ['bold','italic','heading','list','table','image','code'],
+  spellcheck: true, collaboration: { enabled: true }
+});</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;string&gt;</span> <span class="fn">applyTemplate</span>(<span class="param">templateId: string, vars: Record&lt;string, string&gt;</span>)</code></div>
+<p class="api-desc">Apply template. Built-in: memo, report, letter, resume, invoice, meeting-notes.</p></div>
+<h3>eBot AI for eDocs</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;string&gt;</span> <span class="fn">ebotRewrite</span>(<span class="param">text: string, tone: RewriteTone</span>)</code></div>
+<p class="api-desc">Rewrite text. Tones: formal, casual, concise, expanded, technical.</p>
+<div class="api-example"><h5>Example</h5><pre><code>const r = await ebotRewrite(sel, 'formal');
+editor.replaceSelection(r);</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;string&gt;</span> <span class="fn">ebotSummarize</span>(<span class="param">text: string, maxLen?: number</span>)</code></div>
+<p class="api-desc">Summarize text. Default 200 words.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;string&gt;</span> <span class="fn">ebotTranslate</span>(<span class="param">text: string, lang: string</span>)</code></div>
+<p class="api-desc">Translate to 40+ languages. ISO 639-1 codes.</p></div>
+<div id="esheets" class="module-section"><h2 style="color:var(--green)">&#128202; eSheets &mdash; Spreadsheets</h2>
+<p class="module-desc">Cell engine with formulas, charts, pivot tables, and AI data analysis.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">SpreadsheetInstance</span> <span class="fn">createSheet</span>(<span class="param">container: HTMLElement, config: SheetConfig</span>)</code></div>
+<p class="api-desc">Grid up to 1M rows x 16K cols with virtual scrolling.</p>
+<div class="api-example"><h5>Example</h5><pre><code>import { createSheet } from '@eoffice/sheets';
+const sheet = createSheet(el, { formulaEngine: true });
+sheet.setCell('A1','Revenue'); sheet.setCell('B1',150000);
+sheet.setCell('B3','=SUM(B1:B2)');</code></pre></div></div>
+<div class="struct-card"><h4>Formula Categories</h4><table>
+<tr><td><code>Math</code></td><td>SUM, AVERAGE, MIN, MAX, COUNT, ROUND</td><td></td></tr>
+<tr><td><code>Text</code></td><td>CONCAT, LEFT, RIGHT, MID, LEN, UPPER, LOWER</td><td></td></tr>
+<tr><td><code>Logical</code></td><td>IF, AND, OR, NOT, IFERROR, SWITCH</td><td></td></tr>
+<tr><td><code>Lookup</code></td><td>VLOOKUP, HLOOKUP, INDEX, MATCH, XLOOKUP</td><td></td></tr>
+<tr><td><code>Date</code></td><td>NOW, TODAY, DATEVALUE, YEAR, MONTH, DAY</td><td></td></tr>
+<tr><td><code>Financial</code></td><td>PMT, FV, PV, NPV, IRR, RATE</td><td></td></tr>
+</table></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">ChartInstance</span> <span class="fn">createChart</span>(<span class="param">range: CellRange, type: ChartType</span>)</code></div>
+<p class="api-desc">Types: bar, line, pie, scatter, area, radar, histogram.</p>
+<div class="api-example"><h5>Example</h5><pre><code>sheet.createChart('A1:B12','bar',{title:'Monthly Revenue'});</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">PivotTable</span> <span class="fn">createPivotTable</span>(<span class="param">src: CellRange, cfg: PivotConfig</span>)</code></div>
+<p class="api-desc">Pivot with rows, columns, values (SUM/COUNT/AVG), filters.</p></div>
+<h3>eBot AI for eSheets</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;string&gt;</span> <span class="fn">ebotSuggestFormula</span>(<span class="param">desc: string, ctx: CellContext</span>)</code></div>
+<p class="api-desc">Natural language to formula.</p>
+<div class="api-example"><h5>Example</h5><pre><code>await ebotSuggestFormula('Avg B excl zeros', ctx);</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;AnalysisResult&gt;</span> <span class="fn">ebotAnalyzeData</span>(<span class="param">range: CellRange, q?: string</span>)</code></div>
+<p class="api-desc">AI analysis: insights, trends, outliers, chart suggestions.</p></div>
+<div id="eslides" class="module-section"><h2 style="color:var(--purple)">&#127916; eSlides &mdash; Presentations</h2>
+<p class="module-desc">Slide editor with layouts, animations, themes, and AI generation.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">PresentationInstance</span> <span class="fn">createPresentation</span>(<span class="param">container: HTMLElement, config: SlideConfig</span>)</code></div>
+<p class="api-desc">Master slides, speaker notes, presenter view.</p>
+<div class="api-example"><h5>Example</h5><pre><code>const pres = createPresentation(el,{theme:'modern-dark',aspectRatio:'16:9'});
+pres.addSlide('title',{title:'Q4 Results',subtitle:'Engineering'});
+pres.addSlide('two-column',{title:'Metrics',
+  left:{type:'bullet-list',items:['Revenue +25%','Users +40%']},
+  right:{type:'chart',chartId:'rev-chart'}});</code></pre></div></div>
+<div class="struct-card"><h4>Built-in Layouts</h4><table>
+<tr><td><code>title</code></td><td>Title + subtitle</td><td>Opening</td></tr>
+<tr><td><code>title-content</code></td><td>Title + content area</td><td>Standard</td></tr>
+<tr><td><code>two-column</code></td><td>Two columns</td><td>Comparisons</td></tr>
+<tr><td><code>section-header</code></td><td>Large centered title</td><td>Dividers</td></tr>
+<tr><td><code>image-full</code></td><td>Full-bleed image</td><td>Visual impact</td></tr>
+<tr><td><code>blank</code></td><td>Empty canvas</td><td>Custom</td></tr>
+</table></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">addAnimation</span>(<span class="param">elementId: string, anim: AnimationConfig</span>)</code></div>
+<p class="api-desc">Animations: fade-in, slide-up, zoom-in, bounce, typewriter, wipe-left.</p></div>
+<h3>eBot AI for eSlides</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;Slide[]&gt;</span> <span class="fn">ebotGenerateSlides</span>(<span class="param">prompt: string, count?: number</span>)</code></div>
+<p class="api-desc">Generate deck from text with titles, bullets, notes, layouts.</p>
+<div class="api-example"><h5>Example</h5><pre><code>const slides = await ebotGenerateSlides('Microservice patterns',10);
+slides.forEach(s =&gt; pres.addSlide(s.layout,s.content));</code></pre></div></div>
+<div id="enotes" class="module-section"><h2 style="color:var(--orange)">&#128221; eNotes &mdash; Notebooks</h2>
+<p class="module-desc">Markdown editor with tags, full-text search, and AI task extraction.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">NotebookInstance</span> <span class="fn">createNotebook</span>(<span class="param">container: HTMLElement, config: NotesConfig</span>)</code></div>
+<p class="api-desc">Markdown live preview, LaTeX math, code highlighting, sidebar nav.</p>
+<div class="api-example"><h5>Example</h5><pre><code>const nb = createNotebook(el,{storage:'local',syncInterval:5000});
+nb.createNote({title:'Sprint Review',body:'## Agenda\n- Demo\n- Retro',tags:['meeting']});</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Note[]</span> <span class="fn">searchNotes</span>(<span class="param">query: string, filters?: SearchFilters</span>)</code></div>
+<p class="api-desc">Full-text search. Filters: tags, dateRange, notebook, hasAttachments.</p></div>
+<h3>eBot AI for eNotes</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;string&gt;</span> <span class="fn">ebotSummarizeNote</span>(<span class="param">noteId: string</span>)</code></div>
+<p class="api-desc">Summarize note preserving key decisions and action items.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;Task[]&gt;</span> <span class="fn">ebotExtractTasks</span>(<span class="param">noteId: string</span>)</code></div>
+<p class="api-desc">Extract tasks with title, assignee, due date, priority.</p>
+<div class="api-example"><h5>Example</h5><pre><code>const t = await ebotExtractTasks('note-sprint');
+// [{title:'Update docs',assignee:'alice',priority:'high'}]</code></pre></div></div>
+<div id="email" class="module-section"><h2 style="color:var(--red)">&#128231; eMail &mdash; Email Client</h2>
+<p class="module-desc">IMAP/SMTP email with folders, threading, search, and AI compose.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">MailClient</span> <span class="fn">createMailClient</span>(<span class="param">config: MailConfig</span>)</code></div>
+<p class="api-desc">IMAP/SMTP client. Multiple accounts, folders, labels, search.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>config</td><td>MailConfig</td><td>IMAP/SMTP host, port, credentials, TLS.</td></tr></table></div>
+<div class="api-example"><h5>Example</h5><pre><code>const mail = createMailClient({
+  imap:{host:'imap.eos.dev',port:993,tls:true},
+  smtp:{host:'smtp.eos.dev',port:587,tls:true},
+  credentials:{user:'alice@eos.dev',password:process.env.MAIL_PASS}
+});
+await mail.send({to:['bob@eos.dev'],subject:'Update',body:'Done.'});</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Message[]</span> <span class="fn">fetchMessages</span>(<span class="param">folder: string, opts?: FetchOptions</span>)</code></div>
+<p class="api-desc">Fetch messages. Options: limit, offset, unreadOnly, since, search.</p></div>
+<h3>eBot AI for eMail</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;string&gt;</span> <span class="fn">ebotCompose</span>(<span class="param">prompt: string, tone?: RewriteTone</span>)</code></div>
+<p class="api-desc">Generate email draft from natural language prompt.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;string[]&gt;</span> <span class="fn">ebotReplySuggestions</span>(<span class="param">messageId: string</span>)</code></div>
+<p class="api-desc">3 reply suggestions: brief, detailed, follow-up.</p>
+<div class="api-example"><h5>Example</h5><pre><code>const s = await ebotReplySuggestions('msg-123');
+// ['Thanks, will review.','Detailed feedback...','Clarify timeline?']</code></pre></div></div>
+<div id="edrive" class="module-section"><h2 style="color:var(--cyan)">&#128193; eDrive &mdash; Cloud Storage</h2>
+<p class="module-desc">File upload/download, sharing, versioning, quota management.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;FileEntry&gt;</span> <span class="fn">uploadFile</span>(<span class="param">file: File, path: string, opts?: UploadOptions</span>)</code></div>
+<p class="api-desc">Upload file. Resumable for &gt;10MB. Options: overwrite, encrypted, tags.</p>
+<div class="api-example"><h5>Example</h5><pre><code>await drive.uploadFile(file,'/projects/report.pdf',{encrypted:true});</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;Blob&gt;</span> <span class="fn">downloadFile</span>(<span class="param">fileId: string, version?: number</span>)</code></div>
+<p class="api-desc">Download file, optionally a historical version.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;ShareLink&gt;</span> <span class="fn">shareFile</span>(<span class="param">fileId: string, config: ShareConfig</span>)</code></div>
+<p class="api-desc">Share link. Config: access (view/edit), expiry, password, allowDownload.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">FileVersion[]</span> <span class="fn">listVersions</span>(<span class="param">fileId: string</span>)</code></div>
+<p class="api-desc">List all versions with author, timestamp, size.</p></div>
+<div id="econnect" class="module-section"><h2 style="color:var(--pink)">&#128172; eConnect &mdash; Collaboration</h2>
+<p class="module-desc">Real-time messaging, channels, threads, and file sharing.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">ChatClient</span> <span class="fn">createChatClient</span>(<span class="param">config: ConnectConfig</span>)</code></div>
+<p class="api-desc">Channels, DMs, threads, reactions, file sharing.</p>
+<div class="api-example"><h5>Example</h5><pre><code>const chat = createChatClient({serverUrl:'wss://connect.eos.dev',authToken:token});
+chat.joinChannel('engineering');
+chat.sendMessage('engineering','Deploy complete!');</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">sendMessage</span>(<span class="param">channelId: string, content: string, attachments?: File[]</span>)</code></div>
+<p class="api-desc">Send message with optional attachments.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Message[]</span> <span class="fn">getHistory</span>(<span class="param">channelId: string, opts?: HistoryOptions</span>)</code></div>
+<p class="api-desc">Message history. Options: limit, before, after, search.</p></div>
+<div id="eforms" class="module-section"><h2 style="color:var(--yellow)">&#128203; eForms &mdash; Form Builder</h2>
+<p class="module-desc">Drag-and-drop form creation with conditional logic and response analytics.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">FormBuilder</span> <span class="fn">createFormBuilder</span>(<span class="param">container: HTMLElement, config?: FormConfig</span>)</code></div>
+<p class="api-desc">Fields: text, number, email, select, checkbox, radio, date, file, rating, matrix.</p>
+<div class="api-example"><h5>Example</h5><pre><code>const b = createFormBuilder(el);
+b.addField({type:'text',label:'Name',required:true});
+b.addField({type:'rating',label:'Satisfaction',max:5});</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;FormResponse[]&gt;</span> <span class="fn">getResponses</span>(<span class="param">formId: string, opts?: ResponseOptions</span>)</code></div>
+<p class="api-desc">Fetch form responses with pagination and filtering.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Analytics</span> <span class="fn">getAnalytics</span>(<span class="param">formId: string</span>)</code></div>
+<p class="api-desc">Response analytics: completion rate, avg time, field distributions.</p></div>
+<div id="ebot-ai" class="module-section"><h2 style="color:var(--blue)">&#129302; eBot AI API</h2>
+<p class="module-desc">Central AI assistant powering all eOffice modules via EAI Server.</p></div>
+<div class="callout callout-info"><div class="callout-title">Endpoints</div><p><code>POST /v1/chat</code> &mdash; Multi-turn conversation<br><code>POST /v1/complete</code> &mdash; Text completion<br><code>POST /v1/summarize</code> &mdash; Document summarization<br><code>POST /v1/task-extract</code> &mdash; Extract tasks from text<br><code>POST /v1/search</code> &mdash; Semantic search across documents</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Promise&lt;ChatResponse&gt;</span> <span class="fn">ebotChat</span>(<span class="param">messages: ChatMessage[], opts?: ChatOptions</span>)</code></div>
+<p class="api-desc">Multi-turn conversation with eBot.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>messages</td><td>ChatMessage[]</td><td>Array of {role, content}.</td></tr><tr><td>opts</td><td>ChatOptions</td><td>model, temperature, maxTokens.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>ChatResponse</code></p></div>
+<div class="api-example"><h5>Example</h5><pre><code>const res = await ebotChat([
+  {role:'system',content:'Document assistant.'},
+  {role:'user',content:'Summarize this report.'}
+],{model:'eai-large',temperature:0.3});</code></pre></div></div>
+<div class="struct-card"><h4>ChatMessage</h4><table>
+<tr><td><code>role</code></td><td><code>string</code></td><td>system, user, or assistant</td></tr>
+<tr><td><code>content</code></td><td><code>string</code></td><td>Message content</td></tr>
+</table></div>
+<div class="struct-card"><h4>ChatResponse</h4><table>
+<tr><td><code>content</code></td><td><code>string</code></td><td>Generated text</td></tr>
+<tr><td><code>usage</code></td><td><code>{prompt, completion, total}</code></td><td>Token usage</td></tr>
+<tr><td><code>model</code></td><td><code>string</code></td><td>Model used</td></tr>
+<tr><td><code>finishReason</code></td><td><code>string</code></td><td>stop, length, tool_calls</td></tr>
+</table></div>
+<div id="deployment" class="module-section"><h2 style="color:var(--green)">&#128640; Deployment</h2>
+<p class="module-desc">Browser, Desktop (Electron), and Docker deployment options.</p></div>
+<div class="callout callout-info"><div class="callout-title">Dev Servers</div><p><code>npm run dev:docs</code> &mdash; port 5173<br><code>npm run dev:sheets</code> &mdash; port 5174<br><code>npm run dev:server</code> &mdash; port 3001<br><code>npm run dev:all</code> &mdash; All services concurrently</p></div>
+<h3>Browser</h3>
+<pre><code>git clone https://github.com/embeddedos-org/eOffice.git
+cd eOffice &amp;&amp; npm install
+npm run dev:all</code></pre>
+<h3>Desktop (Electron)</h3>
+<pre><code>npm run build
+npm run electron:build</code></pre>
+<h3>Docker Compose</h3>
+<pre><code>docker compose up -d
+# eoffice-web (80), eoffice-api (3001), eoffice-collab (3002)
+# eoffice-eai (3003), postgres (5432), minio (9000)</code></pre>
+<div class="struct-card"><h4>Environment Variables</h4><table>
+<tr><td><code>EOFFICE_DB_URL</code></td><td><code>string</code></td><td>PostgreSQL connection string</td></tr>
+<tr><td><code>EOFFICE_S3_ENDPOINT</code></td><td><code>string</code></td><td>S3/MinIO endpoint</td></tr>
+<tr><td><code>EOFFICE_EAI_URL</code></td><td><code>string</code></td><td>EAI server URL</td></tr>
+<tr><td><code>EOFFICE_JWT_SECRET</code></td><td><code>string</code></td><td>JWT signing secret</td></tr>
+<tr><td><code>EOFFICE_PII_REDACT</code></td><td><code>boolean</code></td><td>Enable PII redaction (default: true)</td></tr>
+</table></div>
+
+</main></div>
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

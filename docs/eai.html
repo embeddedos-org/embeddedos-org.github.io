@@ -1,0 +1,499 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAI API Reference v0.1.0 - EmbeddedOS</title><link rel="stylesheet" href="../style.css"></head><body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+<div class="doc-layout"><aside class="doc-sidebar"><div class="sidebar-section"><div class="sidebar-title">EAI Modules</div>
+<a href="#config" class="sidebar-link active">Config</a><a href="#tool" class="sidebar-link">Tool Registry</a>
+<a href="#agent" class="sidebar-link">Agent (EAI-Min)</a><a href="#memory" class="sidebar-link">Memory Lite</a>
+<a href="#models" class="sidebar-link">Models</a><a href="#modeltable" class="sidebar-link">Model Table</a>
+<a href="#agentloop" class="sidebar-link">Agent Loop</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eos.html" class="sidebar-link">EoS</a><a href="eboot.html" class="sidebar-link">eBoot</a>
+<a href="eni.html" class="sidebar-link">ENI</a><a href="eipc.html" class="sidebar-link">EIPC</a>
+<a href="ebuild.html" class="sidebar-link">ebuild</a><a href="eosim.html" class="sidebar-link">EoSim</a>
+<a href="eosuite.html" class="sidebar-link">eApps</a><a href="eostudio.html" class="sidebar-link">EoStudio</a></div></aside>
+<main class="doc-content">
+<h1>EAI Developer Documentation <span class="version-badge">v0.1.0</span></h1>
+<p>Embedded AI framework for on-device LLM inference, tool-calling agents, model management, and runtime configuration. Headers: <code>&lt;eai/config.h&gt;</code>, <code>&lt;eai/tool.h&gt;</code>, <code>&lt;eai_min/agent.h&gt;</code>, <code>&lt;eai_min/memory_lite.h&gt;</code>, <code>&lt;eai/models.h&gt;</code></p>
+
+<div id="config" class="module-section"><h2 style="color:var(--purple)">&#9881; Configuration API</h2>
+<p class="module-desc">Runtime configuration for EAI variants. Header: <code>&lt;eai/config.h&gt;</code></p></div>
+
+<div class="struct-card"><h4>eai_config_t</h4>
+<p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:0.5rem">Master configuration for EAI runtime.</p>
+<table>
+<tr><td><code>variant</code></td><td><code>eai_variant_t</code></td><td>EAI variant: Min, Framework.</td></tr>
+<tr><td><code>mode</code></td><td><code>eai_mode_t</code></td><td>Execution mode (online/offline/hybrid).</td></tr>
+<tr><td><code>runtime_single</code></td><td><code>eai_runtime_config_single_t</code></td><td>EAI-Min: single provider name string.</td></tr>
+<tr><td><code>runtime_multi</code></td><td><code>eai_runtime_config_multi_t</code></td><td>EAI-Framework: up to 8 providers.</td></tr>
+<tr><td><code>tools[32]</code></td><td><code>const char *</code></td><td>Enabled tool names (max 32).</td></tr>
+<tr><td><code>tool_count</code></td><td><code>int</code></td><td>Number of enabled tools.</td></tr>
+<tr><td><code>connectors[16]</code></td><td><code>const char *</code></td><td>Connector names (Framework only, max 16).</td></tr>
+<tr><td><code>connector_count</code></td><td><code>int</code></td><td>Number of connectors.</td></tr>
+<tr><td><code>policy.cloud_fallback</code></td><td><code>bool</code></td><td>Allow cloud API fallback when local inference fails.</td></tr>
+<tr><td><code>observability</code></td><td><code>bool</code></td><td>Enable tracing and metrics collection.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eai_status_t (Return Codes)</h4><table>
+<tr><td><code>EAI_OK</code></td><td><code>0</code></td><td>Success.</td></tr>
+<tr><td><code>EAI_ERR</code></td><td><code>-1</code></td><td>Generic error.</td></tr>
+<tr><td><code>EAI_ERR_OOM</code></td><td><code>-2</code></td><td>Out of memory.</td></tr>
+<tr><td><code>EAI_ERR_NOT_FOUND</code></td><td><code>-3</code></td><td>Tool/model/key not found.</td></tr>
+<tr><td><code>EAI_ERR_FULL</code></td><td><code>-4</code></td><td>Registry or memory full.</td></tr>
+<tr><td><code>EAI_ERR_INVALID</code></td><td><code>-5</code></td><td>Invalid parameter.</td></tr>
+</table></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_config_init</span>(<span class="param">eai_config_t *cfg</span>)</code></div>
+<p class="api-desc">Initialize configuration with safe defaults: variant=Min, mode=offline, no tools, no connectors, cloud_fallback=false, observability=false.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>cfg</code></td><td><code>eai_config_t *</code></td><td>Config struct to initialize. All fields zeroed and set to defaults.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> on success. <code>EAI_ERR_INVALID</code> if cfg is NULL.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eai_config_t cfg;
+eai_config_init(&amp;cfg);
+cfg.variant = EAI_VARIANT_MIN;
+cfg.runtime_single.provider = "llama_cpp";
+cfg.tools[0] = "gpio_control";
+cfg.tools[1] = "sensor_read";
+cfg.tool_count = 2;</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_config_load_file</span>(<span class="param">eai_config_t *cfg, const char *path</span>)</code></div>
+<p class="api-desc">Load configuration from a YAML or JSON file. Supports all eai_config_t fields. File format auto-detected by extension (.yml/.yaml/.json).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>cfg</code></td><td><code>eai_config_t *</code></td><td>Config struct to populate (should be pre-initialized).</td></tr>
+<tr><td><code>path</code></td><td><code>const char *</code></td><td>Path to config file (absolute or relative to CWD).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> on success. <code>EAI_ERR_NOT_FOUND</code> if file missing. <code>EAI_ERR</code> on parse error.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eai_config_t cfg;
+eai_config_init(&amp;cfg);
+if (eai_config_load_file(&amp;cfg, "/etc/eai/config.yml") != EAI_OK) {
+    EOS_WARN("Config load failed, using defaults");
+}
+eai_config_dump(&amp;cfg);  // Print loaded config</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_config_load_profile</span>(<span class="param">eai_config_t *cfg, const char *profile_name</span>)</code></div>
+<p class="api-desc">Load a named profile such as "production", "debug", or "minimal". Profiles are pre-defined configurations optimized for specific use cases.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>cfg</code></td><td><code>eai_config_t *</code></td><td>Config struct to populate.</td></tr>
+<tr><td><code>profile_name</code></td><td><code>const char *</code></td><td>Profile name: "production", "debug", "minimal", "benchmark".</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> on success. <code>EAI_ERR_NOT_FOUND</code> if profile unknown.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eai_config_dump</span>(<span class="param">const eai_config_t *cfg</span>)</code></div>
+<p class="api-desc">Print all configuration fields to stdout for debugging. Shows variant, mode, provider, tools, connectors, and policy settings.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>cfg</code></td><td><code>const eai_config_t *</code></td><td>Config to dump. Not modified.</td></tr>
+</table></div></div>
+
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eai_config_free</span>(<span class="param">eai_config_t *cfg</span>)</code></div>
+<p class="api-desc">Free any heap-allocated resources within the config struct (e.g., strings loaded from file).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>cfg</code></td><td><code>eai_config_t *</code></td><td>Config to free. Safe to call on stack-allocated configs.</td></tr>
+</table></div></div>
+<div id="tool" class="module-section"><h2 style="color:var(--cyan)">&#128295; Tool Registry API</h2>
+<p class="module-desc">Register callable tools for AI agents. Header: <code>&lt;eai/tool.h&gt;</code></p></div>
+
+<div class="struct-card"><h4>eai_tool_t</h4><table>
+<tr><td><code>name[64]</code></td><td><code>char</code></td><td>Tool name (e.g., "gpio_control", "sensor_read").</td></tr>
+<tr><td><code>description</code></td><td><code>const char *</code></td><td>Human-readable description for the LLM.</td></tr>
+<tr><td><code>params[16]</code></td><td><code>eai_tool_param_t</code></td><td>Parameter definitions (name, type, required).</td></tr>
+<tr><td><code>param_count</code></td><td><code>int</code></td><td>Number of parameters.</td></tr>
+<tr><td><code>permissions[8]</code></td><td><code>const char *</code></td><td>Required permissions (e.g., "hw.gpio", "net.send").</td></tr>
+<tr><td><code>permission_count</code></td><td><code>int</code></td><td>Number of permissions.</td></tr>
+<tr><td><code>exec</code></td><td><code>eai_tool_exec_fn</code></td><td>Execution callback function pointer.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eai_param_type_t</h4><table>
+<tr><td><code>EAI_PARAM_STRING</code></td><td><code>0</code></td><td>String parameter.</td></tr>
+<tr><td><code>EAI_PARAM_INT</code></td><td><code>1</code></td><td>Integer parameter.</td></tr>
+<tr><td><code>EAI_PARAM_FLOAT</code></td><td><code>2</code></td><td>Float parameter.</td></tr>
+<tr><td><code>EAI_PARAM_BOOL</code></td><td><code>3</code></td><td>Boolean parameter.</td></tr>
+<tr><td><code>EAI_PARAM_BYTES</code></td><td><code>4</code></td><td>Binary data parameter.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eai_tool_result_t</h4><table>
+<tr><td><code>data[4096]</code></td><td><code>char</code></td><td>Result data buffer (JSON or text).</td></tr>
+<tr><td><code>len</code></td><td><code>size_t</code></td><td>Length of result data.</td></tr>
+<tr><td><code>status</code></td><td><code>eai_status_t</code></td><td>Execution status.</td></tr>
+</table></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_tool_registry_init</span>(<span class="param">eai_tool_registry_t *reg</span>)</code></div>
+<p class="api-desc">Initialize a tool registry. Zeroes all slots and sets count to 0. Maximum EAI_TOOL_REGISTRY_MAX (64) tools.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>reg</code></td><td><code>eai_tool_registry_t *</code></td><td>Registry to initialize.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_tool_register</span>(<span class="param">eai_tool_registry_t *reg, const eai_tool_t *tool</span>)</code></div>
+<p class="api-desc">Register a tool in the registry. Copies the tool definition. The tool's exec callback will be invoked when the agent calls this tool.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>reg</code></td><td><code>eai_tool_registry_t *</code></td><td>Target registry.</td></tr>
+<tr><td><code>tool</code></td><td><code>const eai_tool_t *</code></td><td>Tool definition to register.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> on success. <code>EAI_ERR_FULL</code> if registry has 64 tools.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eai_status_t gpio_exec(const eai_kv_t *args, int n, eai_tool_result_t *r) {
+    int pin = atoi(eai_kv_get(args, n, "pin"));
+    bool val = strcmp(eai_kv_get(args, n, "value"), "true") == 0;
+    eos_gpio_write(pin, val);
+    snprintf(r-&gt;data, sizeof(r-&gt;data), "{\"ok\":true,\"pin\":%d}", pin);
+    r-&gt;len = strlen(r-&gt;data);
+    r-&gt;status = EAI_OK;
+    return EAI_OK;
+}
+
+eai_tool_t gpio_tool = {
+    .name = "gpio_write",
+    .description = "Set a GPIO pin HIGH or LOW",
+    .params = {
+        { .name = "pin",   .type = EAI_PARAM_INT,  .required = true },
+        { .name = "value", .type = EAI_PARAM_BOOL, .required = true }
+    },
+    .param_count = 2,
+    .permissions = { "hw.gpio" },
+    .permission_count = 1,
+    .exec = gpio_exec
+};
+
+eai_tool_registry_t reg;
+eai_tool_registry_init(&amp;reg);
+eai_tool_register(&amp;reg, &amp;gpio_tool);</code></pre></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_tool_t *</span> <span class="fn">eai_tool_find</span>(<span class="param">eai_tool_registry_t *reg, const char *name</span>)</code></div>
+<p class="api-desc">Find a tool by name. Returns pointer to the registered tool or NULL if not found.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>reg</code></td><td><code>eai_tool_registry_t *</code></td><td>Registry to search.</td></tr>
+<tr><td><code>name</code></td><td><code>const char *</code></td><td>Tool name to find.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Pointer to <code>eai_tool_t</code>, or <code>NULL</code> if not found.</p></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_tool_exec</span>(<span class="param">eai_tool_t *tool, const eai_kv_t *args, int arg_count, eai_tool_result_t *result</span>)</code></div>
+<p class="api-desc">Execute a tool with the given arguments. Calls the tool's exec callback. The result buffer is populated with the tool's output (typically JSON).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>tool</code></td><td><code>eai_tool_t *</code></td><td>Tool to execute.</td></tr>
+<tr><td><code>args</code></td><td><code>const eai_kv_t *</code></td><td>Array of key-value argument pairs.</td></tr>
+<tr><td><code>arg_count</code></td><td><code>int</code></td><td>Number of arguments.</td></tr>
+<tr><td><code>result</code></td><td><code>eai_tool_result_t *</code></td><td>Output buffer for result (4096 bytes max).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> on success. Tool-specific error codes possible.</p></div></div>
+
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eai_tool_registry_list</span>(<span class="param">const eai_tool_registry_t *reg</span>)</code></div>
+<p class="api-desc">Print all registered tools with their names, descriptions, and parameter lists to stdout.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>reg</code></td><td><code>const eai_tool_registry_t *</code></td><td>Registry to list.</td></tr>
+</table></div></div>
+
+<div id="agent" class="module-section"><h2 style="color:var(--green)">&#129302; Agent API (EAI-Min)</h2>
+<p class="module-desc">Lightweight ReAct agent loop for embedded devices. Header: <code>&lt;eai_min/agent.h&gt;</code></p></div>
+
+<div class="struct-card"><h4>eai_min_agent_t</h4><table>
+<tr><td><code>runtime</code></td><td><code>eai_min_runtime_t *</code></td><td>Pointer to LLM runtime (llama.cpp, ONNX, TFLite).</td></tr>
+<tr><td><code>tools</code></td><td><code>eai_tool_registry_t *</code></td><td>Pointer to tool registry.</td></tr>
+<tr><td><code>memory</code></td><td><code>eai_mem_lite_t *</code></td><td>Pointer to key-value memory store.</td></tr>
+<tr><td><code>state</code></td><td><code>eai_agent_state_t</code></td><td>Current state: IDLE, THINKING, TOOL_CALL, DONE, ERROR.</td></tr>
+<tr><td><code>iteration</code></td><td><code>int</code></td><td>Current iteration count.</td></tr>
+<tr><td><code>last_output[4096]</code></td><td><code>char</code></td><td>Last output from the agent.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eai_agent_state_t</h4><table>
+<tr><td><code>EAI_AGENT_IDLE</code></td><td><code>0</code></td><td>Agent initialized, not running.</td></tr>
+<tr><td><code>EAI_AGENT_THINKING</code></td><td><code>1</code></td><td>LLM is generating a response.</td></tr>
+<tr><td><code>EAI_AGENT_TOOL_CALL</code></td><td><code>2</code></td><td>Agent is executing a tool call.</td></tr>
+<tr><td><code>EAI_AGENT_DONE</code></td><td><code>3</code></td><td>Task completed successfully.</td></tr>
+<tr><td><code>EAI_AGENT_ERROR</code></td><td><code>4</code></td><td>Error occurred.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eai_agent_task_t</h4><table>
+<tr><td><code>goal</code></td><td><code>const char *</code></td><td>Task description / user prompt.</td></tr>
+<tr><td><code>offline_only</code></td><td><code>bool</code></td><td>Restrict to offline tools only.</td></tr>
+<tr><td><code>max_iterations</code></td><td><code>int</code></td><td>Max ReAct iterations (default: EAI_AGENT_MAX_ITERATIONS=10).</td></tr>
+</table></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_min_agent_init</span>(<span class="param">eai_min_agent_t *agent, eai_min_runtime_t *runtime, eai_tool_registry_t *tools, eai_mem_lite_t *memory</span>)</code></div>
+<p class="api-desc">Initialize an EAI-Min agent with a runtime, tool registry, and memory store. Sets state to IDLE. All three subsystems must be initialized before calling this.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>agent</code></td><td><code>eai_min_agent_t *</code></td><td>Agent to initialize.</td></tr>
+<tr><td><code>runtime</code></td><td><code>eai_min_runtime_t *</code></td><td>Initialized LLM runtime.</td></tr>
+<tr><td><code>tools</code></td><td><code>eai_tool_registry_t *</code></td><td>Initialized tool registry with registered tools.</td></tr>
+<tr><td><code>memory</code></td><td><code>eai_mem_lite_t *</code></td><td>Initialized memory store (can be NULL for stateless mode).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> on success. <code>EAI_ERR_INVALID</code> if agent or runtime is NULL.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_min_agent_run</span>(<span class="param">eai_min_agent_t *agent, const eai_agent_task_t *task</span>)</code></div>
+<p class="api-desc">Run the agent's ReAct loop to completion. Iterates: Think → Tool Call → Observe → Think until the agent signals DONE or reaches max_iterations. This is a blocking call that may take seconds to minutes depending on model size and task complexity.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>agent</code></td><td><code>eai_min_agent_t *</code></td><td>Initialized agent.</td></tr>
+<tr><td><code>task</code></td><td><code>const eai_agent_task_t *</code></td><td>Task description with goal and constraints.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> if task completed. <code>EAI_ERR</code> on LLM inference failure. <code>EAI_ERR_OOM</code> on memory exhaustion.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eai_agent_task_t task = {
+    .goal = "Read the temperature sensor and turn on the fan if above 35C",
+    .offline_only = true,
+    .max_iterations = 5
+};
+
+eai_status_t rc = eai_min_agent_run(&amp;agent, &amp;task);
+if (rc == EAI_OK) {
+    printf("Agent result: %s\n", eai_min_agent_output(&amp;agent));
+} else {
+    printf("Agent failed after %d iterations\n", agent.iteration);
+}</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_min_agent_step</span>(<span class="param">eai_min_agent_t *agent</span>)</code></div>
+<p class="api-desc">Execute a single ReAct iteration. Use instead of <code>eai_min_agent_run()</code> when you need fine-grained control, logging between steps, or need to run the agent cooperatively within an RTOS task.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>agent</code></td><td><code>eai_min_agent_t *</code></td><td>Agent (must have had <code>run()</code> called to set the task, or be in THINKING/TOOL_CALL state).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> if step completed. Check <code>agent-&gt;state</code> for DONE/ERROR.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">const char *</span> <span class="fn">eai_min_agent_output</span>(<span class="param">const eai_min_agent_t *agent</span>)</code></div>
+<p class="api-desc">Get the agent's final output text after a completed run.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>agent</code></td><td><code>const eai_min_agent_t *</code></td><td>Agent (should be in DONE state).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Pointer to output string (up to 4096 chars), or empty string if agent hasn't completed.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eai_min_agent_reset</span>(<span class="param">eai_min_agent_t *agent</span>)</code></div>
+<p class="api-desc">Reset agent to IDLE state. Clears iteration count and last output. Does not affect runtime, tools, or memory.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>agent</code></td><td><code>eai_min_agent_t *</code></td><td>Agent to reset.</td></tr>
+</table></div></div>
+<div id="memory" class="module-section"><h2 style="color:var(--orange)">&#128190; Memory Lite API</h2>
+<p class="module-desc">Key-value memory store for agent state persistence. Header: <code>&lt;eai_min/memory_lite.h&gt;</code></p></div>
+
+<div class="struct-card"><h4>eai_mem_lite_t</h4><table>
+<tr><td><code>entries[128]</code></td><td><code>eai_mem_entry_t</code></td><td>Memory entries (max EAI_MEM_MAX_ENTRIES=128).</td></tr>
+<tr><td><code>count</code></td><td><code>int</code></td><td>Current number of entries.</td></tr>
+<tr><td><code>storage_path</code></td><td><code>const char *</code></td><td>File path for persistent entries (NULL for RAM-only).</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eai_mem_entry_t</h4><table>
+<tr><td><code>key[64]</code></td><td><code>char</code></td><td>Entry key (max 63 chars).</td></tr>
+<tr><td><code>value[512]</code></td><td><code>char</code></td><td>Entry value (max 511 chars).</td></tr>
+<tr><td><code>timestamp</code></td><td><code>uint64_t</code></td><td>Creation/update timestamp.</td></tr>
+<tr><td><code>persistent</code></td><td><code>bool</code></td><td>Whether entry survives reboot (saved to flash/disk).</td></tr>
+</table></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_mem_lite_init</span>(<span class="param">eai_mem_lite_t *mem, const char *storage_path</span>)</code></div>
+<p class="api-desc">Initialize memory store. If storage_path is non-NULL, persistent entries will be saved/loaded from that file.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>mem</code></td><td><code>eai_mem_lite_t *</code></td><td>Memory store to initialize.</td></tr>
+<tr><td><code>storage_path</code></td><td><code>const char *</code></td><td>Path for persistent storage (NULL for RAM-only).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> on success.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eai_mem_lite_t mem;
+eai_mem_lite_init(&amp;mem, "/data/eai_memory.bin");
+eai_mem_lite_load(&amp;mem);  // Load persistent entries from previous run
+
+eai_mem_lite_set(&amp;mem, "user_preference", "metric_units", true);
+eai_mem_lite_set(&amp;mem, "last_temp_reading", "23.5", false);
+
+const char *pref = eai_mem_lite_get(&amp;mem, "user_preference");
+printf("User prefers: %s\n", pref);
+
+eai_mem_lite_save(&amp;mem);  // Persist to flash</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_mem_lite_set</span>(<span class="param">eai_mem_lite_t *mem, const char *key, const char *value, bool persistent</span>)</code></div>
+<p class="api-desc">Set or update a key-value pair. If key exists, overwrites value and persistent flag.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>mem</code></td><td><code>eai_mem_lite_t *</code></td><td>Memory store.</td></tr>
+<tr><td><code>key</code></td><td><code>const char *</code></td><td>Key (max 63 chars).</td></tr>
+<tr><td><code>value</code></td><td><code>const char *</code></td><td>Value (max 511 chars).</td></tr>
+<tr><td><code>persistent</code></td><td><code>bool</code></td><td>Save to flash on <code>eai_mem_lite_save()</code>.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EAI_OK</code> on success. <code>EAI_ERR_FULL</code> if 128 entries reached.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">const char *</span> <span class="fn">eai_mem_lite_get</span>(<span class="param">const eai_mem_lite_t *mem, const char *key</span>)</code></div>
+<p class="api-desc">Get value by key. Returns NULL if key not found.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>mem</code></td><td><code>const eai_mem_lite_t *</code></td><td>Memory store.</td></tr>
+<tr><td><code>key</code></td><td><code>const char *</code></td><td>Key to look up.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Pointer to value string, or <code>NULL</code> if not found.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">eai_status_t</span> <span class="fn">eai_mem_lite_delete</span>(<span class="param">eai_mem_lite_t *mem, const char *key</span>) / <span class="fn">eai_mem_lite_save</span>(<span class="param">const eai_mem_lite_t *mem</span>) / <span class="fn">eai_mem_lite_load</span>(<span class="param">eai_mem_lite_t *mem</span>) / <span class="fn">eai_mem_lite_clear</span>(<span class="param">eai_mem_lite_t *mem</span>)</code></div>
+<p class="api-desc"><code>delete</code>: Remove key. <code>save</code>: Write persistent entries to storage_path. <code>load</code>: Read persistent entries from storage_path. <code>clear</code>: Remove all entries from memory.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="ret">int</span> <span class="fn">eai_mem_lite_count</span>(<span class="param">const eai_mem_lite_t *mem</span>)</code></div>
+<p class="api-desc">Get current number of entries stored.</p>
+<div class="api-returns"><h5>Returns</h5><p>Entry count (0-128).</p></div></div>
+
+<div id="models" class="module-section"><h2 style="color:var(--blue)">&#129302; Model Registry</h2>
+<p class="module-desc">Curated LLM model database for embedded targets. Header: <code>&lt;eai/models.h&gt;</code></p></div>
+
+<div class="struct-card"><h4>eai_model_info_t</h4><table>
+<tr><td><code>name</code></td><td><code>const char *</code></td><td>Model name (e.g., "TinyLlama-1.1B-Q4_0").</td></tr>
+<tr><td><code>family</code></td><td><code>const char *</code></td><td>Model family (e.g., "LLaMA", "Phi", "Qwen").</td></tr>
+<tr><td><code>description</code></td><td><code>const char *</code></td><td>Short description.</td></tr>
+<tr><td><code>quant</code></td><td><code>eai_quant_t</code></td><td>Quantization: F32, F16, Q8_0, Q5_1, Q5_0, Q4_1, Q4_0, Q3_K, Q2_K, IQ2.</td></tr>
+<tr><td><code>runtime</code></td><td><code>eai_runtime_t</code></td><td>Runtime: LLAMA_CPP(0), ONNX(1), TFLITE(2), CUSTOM(3).</td></tr>
+<tr><td><code>tier</code></td><td><code>eai_model_tier_t</code></td><td>MICRO(&lt;100MB), TINY(100-500MB), SMALL(500MB-2GB), MEDIUM(2-4GB), LARGE(4GB+).</td></tr>
+<tr><td><code>param_count_m</code></td><td><code>uint32_t</code></td><td>Parameters in millions.</td></tr>
+<tr><td><code>context_len</code></td><td><code>uint32_t</code></td><td>Max context tokens.</td></tr>
+<tr><td><code>ram_mb</code></td><td><code>uint32_t</code></td><td>RAM required in MB.</td></tr>
+<tr><td><code>storage_mb</code></td><td><code>uint32_t</code></td><td>Storage required in MB.</td></tr>
+<tr><td><code>tokens_per_sec</code></td><td><code>uint32_t</code></td><td>Approx tokens/sec on target hardware.</td></tr>
+<tr><td><code>target_hardware</code></td><td><code>const char *</code></td><td>Recommended hardware.</td></tr>
+<tr><td><code>license</code></td><td><code>const char *</code></td><td>License type.</td></tr>
+<tr><td><code>gguf_file</code></td><td><code>const char *</code></td><td>GGUF filename for llama.cpp.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eai_quant_t</h4><table>
+<tr><td><code>EAI_QUANT_F32</code></td><td><code>0</code></td><td>Full 32-bit float (largest, highest quality).</td></tr>
+<tr><td><code>EAI_QUANT_F16</code></td><td><code>1</code></td><td>Half-precision float.</td></tr>
+<tr><td><code>EAI_QUANT_Q8_0</code></td><td><code>2</code></td><td>8-bit quantization.</td></tr>
+<tr><td><code>EAI_QUANT_Q5_1</code></td><td><code>3</code></td><td>5-bit with 1-bit scale.</td></tr>
+<tr><td><code>EAI_QUANT_Q5_0</code></td><td><code>4</code></td><td>5-bit quantization.</td></tr>
+<tr><td><code>EAI_QUANT_Q4_1</code></td><td><code>5</code></td><td>4-bit with 1-bit scale.</td></tr>
+<tr><td><code>EAI_QUANT_Q4_0</code></td><td><code>6</code></td><td>4-bit quantization (recommended for embedded).</td></tr>
+<tr><td><code>EAI_QUANT_Q3_K</code></td><td><code>7</code></td><td>3-bit K-quant.</td></tr>
+<tr><td><code>EAI_QUANT_Q2_K</code></td><td><code>8</code></td><td>2-bit K-quant (smallest, lowest quality).</td></tr>
+<tr><td><code>EAI_QUANT_IQ2</code></td><td><code>9</code></td><td>Importance-weighted 2-bit.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>eai_model_tier_t</h4><table>
+<tr><td><code>EAI_MODEL_TIER_MICRO</code></td><td><code>0</code></td><td>&lt;100MB. MCU-class: Cortex-M7, RP2040.</td></tr>
+<tr><td><code>EAI_MODEL_TIER_TINY</code></td><td><code>1</code></td><td>100-500MB. Low-end SBC: RPi3, nRF5340.</td></tr>
+<tr><td><code>EAI_MODEL_TIER_SMALL</code></td><td><code>2</code></td><td>500MB-2GB. Mid SBC: RPi4, i.MX8M.</td></tr>
+<tr><td><code>EAI_MODEL_TIER_MEDIUM</code></td><td><code>3</code></td><td>2-4GB. High SBC: Jetson Nano, RPi5.</td></tr>
+<tr><td><code>EAI_MODEL_TIER_LARGE</code></td><td><code>4</code></td><td>4GB+. Edge server: x86, Jetson Orin.</td></tr>
+</table></div>
+
+<div class="api-card"><div class="api-header">
+<code class="api-signature"><span class="ret">const eai_model_info_t *</span> <span class="fn">eai_model_find</span>(<span class="param">const char *name</span>)</code></div>
+<p class="api-desc">Find a model by exact name. Returns NULL if not found.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>name</code></td><td><code>const char *</code></td><td>Model name.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Pointer to model info, or NULL.</p></div></div>
+
+<div class="api-card"><div class="api-header">
+<code class="api-signature"><span class="ret">const eai_model_info_t *</span> <span class="fn">eai_model_find_by_tier</span>(<span class="param">eai_model_tier_t tier</span>)</code></div>
+<p class="api-desc">Find the first model matching a tier. Use to get the recommended model for your hardware class.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>tier</code></td><td><code>eai_model_tier_t</code></td><td>Target tier: MICRO, TINY, SMALL, MEDIUM, LARGE.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Pointer to model info, or NULL.</p></div></div>
+
+<div class="api-card"><div class="api-header">
+<code class="api-signature"><span class="ret">const eai_model_info_t *</span> <span class="fn">eai_model_find_best_fit</span>(<span class="param">uint32_t ram_mb, uint32_t storage_mb</span>)</code></div>
+<p class="api-desc">Find the largest model that fits within the given RAM and storage constraints. Returns the best quality model your hardware can run.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>ram_mb</code></td><td><code>uint32_t</code></td><td>Available RAM in MB.</td></tr>
+<tr><td><code>storage_mb</code></td><td><code>uint32_t</code></td><td>Available storage in MB.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Pointer to best-fit model info, or NULL if nothing fits.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>// Auto-select best model for available resources
+const eai_model_info_t *model = eai_model_find_best_fit(512, 1024);
+if (model) {
+    printf("Selected: %s (%s, %uM params, %u MB RAM)\n",
+           model-&gt;name, model-&gt;family,
+           model-&gt;param_count_m, model-&gt;ram_mb);
+    printf("GGUF file: %s\n", model-&gt;gguf_file);
+    printf("Expected: ~%u tokens/sec\n", model-&gt;tokens_per_sec);
+} else {
+    printf("No model fits in 512MB RAM / 1GB storage\n");
+}</code></pre></div></div>
+
+<div class="api-card"><div class="api-header">
+<code class="api-signature"><span class="ret">void</span> <span class="fn">eai_model_list</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Print all registered models to stdout with their names, tiers, sizes, and hardware targets.</p></div>
+
+<div id="modeltable" class="module-section"><h2 style="color:var(--green)">&#128202; LLM Model Table</h2></div>
+<div class="struct-card">
+<table>
+<tr style="font-weight:bold;color:var(--cyan)"><td>Model</td><td>Family</td><td>Params</td><td>Quant</td><td>RAM</td><td>Storage</td><td>tok/s</td><td>Tier</td><td>Hardware</td></tr>
+<tr><td>SmolLM-135M-Q4_0</td><td>SmolLM</td><td>135M</td><td>Q4_0</td><td>80MB</td><td>70MB</td><td>~12</td><td>MICRO</td><td>Cortex-M7, RP2040</td></tr>
+<tr><td>TinyStories-33M-Q8</td><td>TinyStories</td><td>33M</td><td>Q8_0</td><td>45MB</td><td>35MB</td><td>~25</td><td>MICRO</td><td>Cortex-M7</td></tr>
+<tr><td>Phi-2-Q4_0</td><td>Phi</td><td>2700M</td><td>Q4_0</td><td>1800MB</td><td>1500MB</td><td>~8</td><td>SMALL</td><td>RPi4, i.MX8M</td></tr>
+<tr><td>TinyLlama-1.1B-Q4_0</td><td>LLaMA</td><td>1100M</td><td>Q4_0</td><td>700MB</td><td>600MB</td><td>~10</td><td>SMALL</td><td>RPi4</td></tr>
+<tr><td>Qwen2-0.5B-Q4_0</td><td>Qwen</td><td>500M</td><td>Q4_0</td><td>350MB</td><td>300MB</td><td>~15</td><td>TINY</td><td>nRF5340, RPi3</td></tr>
+<tr><td>Gemma-2B-Q4_0</td><td>Gemma</td><td>2000M</td><td>Q4_0</td><td>1500MB</td><td>1200MB</td><td>~6</td><td>SMALL</td><td>RPi4</td></tr>
+<tr><td>LLaMA-3.2-3B-Q4_0</td><td>LLaMA</td><td>3000M</td><td>Q4_0</td><td>2500MB</td><td>2000MB</td><td>~5</td><td>MEDIUM</td><td>Jetson Nano, RPi5</td></tr>
+<tr><td>Mistral-7B-Q2_K</td><td>Mistral</td><td>7000M</td><td>Q2_K</td><td>4000MB</td><td>3000MB</td><td>~3</td><td>LARGE</td><td>Jetson Orin, x86</td></tr>
+</table></div>
+
+<div id="agentloop" class="module-section"><h2 style="color:var(--purple)">&#128260; Agent Loop Walkthrough</h2></div>
+<div class="struct-card">
+<pre><code style="color:var(--text-secondary);font-size:0.82rem">// Complete EAI-Min agent setup and execution
+#include &lt;eai/config.h&gt;
+#include &lt;eai/tool.h&gt;
+#include &lt;eai_min/agent.h&gt;
+#include &lt;eai_min/memory_lite.h&gt;
+#include &lt;eai/models.h&gt;
+
+// 1. Select model based on hardware
+const eai_model_info_t *model = eai_model_find_best_fit(512, 1024);
+
+// 2. Initialize LLM runtime
+eai_min_runtime_t runtime;
+eai_min_runtime_init(&amp;runtime, model-&gt;gguf_file, model-&gt;context_len);
+
+// 3. Register tools
+eai_tool_registry_t tools;
+eai_tool_registry_init(&amp;tools);
+eai_tool_register(&amp;tools, &amp;gpio_tool);
+eai_tool_register(&amp;tools, &amp;sensor_tool);
+eai_tool_register(&amp;tools, &amp;motor_tool);
+
+// 4. Initialize memory
+eai_mem_lite_t mem;
+eai_mem_lite_init(&amp;mem, "/data/agent_memory.bin");
+eai_mem_lite_load(&amp;mem);
+
+// 5. Create and run agent
+eai_min_agent_t agent;
+eai_min_agent_init(&amp;agent, &amp;runtime, &amp;tools, &amp;mem);
+
+eai_agent_task_t task = {
+    .goal = "Check all temperature sensors. If any exceed 40C, "
+            "activate the cooling fan on GPIO pin 12.",
+    .offline_only = true,
+    .max_iterations = 5
+};
+
+eai_status_t rc = eai_min_agent_run(&amp;agent, &amp;task);
+printf("Result: %s\n", eai_min_agent_output(&amp;agent));
+
+// Agent internally executes:
+// Iteration 1: THINK  → "I need to read temperature sensors"
+//              TOOL   → sensor_read(sensor="temp_1") → {"temp_c": 38.2}
+// Iteration 2: THINK  → "Sensor 1 is 38.2C, let me check sensor 2"
+//              TOOL   → sensor_read(sensor="temp_2") → {"temp_c": 42.7}
+// Iteration 3: THINK  → "Sensor 2 exceeds 40C! Activating fan."
+//              TOOL   → gpio_write(pin=12, value=true) → {"ok": true}
+// Iteration 4: DONE   → "Temperature alert: Sensor 2 at 42.7C.
+//                         Cooling fan activated on GPIO 12."
+
+eai_mem_lite_save(&amp;mem);  // Persist any state changes</code></pre></div>
+
+<p style="color:var(--text-muted);margin-top:3rem;font-size:0.85rem">Thread Safety: EAI-Min agent is NOT thread-safe. Run a single agent per task. The tool registry and memory store can be shared if protected by a mutex. LLM runtime is single-threaded by design.</p>
+
+</main></div><footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

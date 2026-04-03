@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EoS Developer Documentation v0.1.0 - EmbeddedOS</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links">
+<a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+</div></div></nav>
+<div class="doc-layout">
+<aside class="doc-sidebar"><div class="sidebar-section">
+<div class="sidebar-title">EoS Modules</div>
+<a href="#hal" class="sidebar-link active">HAL</a><a href="#kernel" class="sidebar-link">Kernel</a>
+<a href="#multicore" class="sidebar-link">Multicore</a><a href="#crypto" class="sidebar-link">Crypto</a>
+<a href="#ota" class="sidebar-link">OTA</a><a href="#sensor" class="sidebar-link">Sensor</a>
+<a href="#motor" class="sidebar-link">Motor Control</a><a href="#filesystem" class="sidebar-link">Filesystem</a>
+<a href="#power" class="sidebar-link">Power</a><a href="#net" class="sidebar-link">Networking</a>
+<a href="#debug" class="sidebar-link">Debug</a><a href="#drivers" class="sidebar-link">Drivers</a>
+<a href="#services" class="sidebar-link">Services</a><a href="#logging" class="sidebar-link">Logging</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eboot.html" class="sidebar-link">eBoot</a><a href="eai.html" class="sidebar-link">EAI</a>
+<a href="eni.html" class="sidebar-link">ENI</a><a href="ebuild.html" class="sidebar-link">ebuild</a>
+<a href="eipc.html" class="sidebar-link">EIPC</a><a href="eosuite.html" class="sidebar-link">eApps</a>
+<a href="eosim.html" class="sidebar-link">EoSim</a>
+</div></aside>
+<main class="doc-content">
+<h1>EoS Developer Documentation <span class="version-badge">v0.1.0</span></h1>
+<p>Complete API reference for the EoS multi-platform operating system. EoS scales from bare-metal microcontrollers to full desktop, TV, and any device &mdash; with the same unified API. <code>ebuild</code> auto-resolves all platform-specific dependencies (toolchains, runtimes, packages) based on the target profile.</p>
+<p><strong>Headers:</strong> <code>#include &lt;eos/*.h&gt;</code> | <strong>License:</strong> MIT | <strong>Standards:</strong> ISO/IEC 25000</p>
+<div class="callout callout-info"><div class="callout-title">Multi-Platform Profiles</div>
+<p><strong>Embedded:</strong> MCU/SoC targets (Cortex-M, RISC-V, Xtensa) &mdash; bare-metal RTOS, minimal footprint.<br>
+<strong>Desktop:</strong> x86_64/ARM64 PCs &mdash; full GUI, Python 3.10+, OpenGL 3.3+, runs EoStudio and eApps.<br>
+<strong>TV:</strong> Smart TV (ARM/x86) &mdash; 4K UI, media apps, remote control input.<br>
+<strong>Tablet/Laptop:</strong> ARM64/x86_64 &mdash; touch UI, battery management, productivity apps.<br>
+<strong>Kiosk:</strong> x86/ARM &mdash; single-app mode, touchscreen, digital signage.<br>
+<code>ebuild</code> handles all dependencies for each profile automatically.</p></div>
+<div id="hal" class="module-section"><h2 style="color:var(--cyan)">&#9881; Hardware Abstraction Layer</h2>
+<p class="module-desc">Platform-independent peripheral API. Header: <code>&lt;eos/hal.h&gt;</code></p></div>
+
+<h3>HAL Initialization</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_hal_init</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Initialize the HAL subsystem for the current platform. Must be called before any other HAL function.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code on failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>int ret = eos_hal_init();
+if (ret != 0) { printf("HAL init failed: %d\n", ret); return ret; }</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_hal_deinit</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Deinitialize the HAL subsystem, releasing all resources.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_delay_ms</span>(<span class="param">uint32_t ms</span>)</code></div>
+<p class="api-desc">Blocking delay for <code>ms</code> milliseconds. For RTOS tasks use <code>eos_task_delay_ms()</code> instead.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>ms</td><td>uint32_t</td><td>Milliseconds to delay.</td></tr></table></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_gpio_write(13, true);
+eos_delay_ms(500);
+eos_gpio_write(13, false);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">uint32_t</span> <span class="fn">eos_get_tick_ms</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Get system tick count in milliseconds since <code>eos_hal_init()</code>. Wraps at UINT32_MAX (~49.7 days).</p>
+<div class="api-returns"><h5>Returns</h5><p>Current tick count in milliseconds.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>uint32_t start = eos_get_tick_ms();
+do_work();
+printf("Elapsed: %u ms\n", eos_get_tick_ms() - start);</code></pre></div></div>
+
+<h3>GPIO</h3>
+<div class="struct-card"><h4>eos_gpio_config_t</h4><table>
+<tr><td><code>pin</code></td><td><code>uint16_t</code></td><td>GPIO pin number</td></tr>
+<tr><td><code>mode</code></td><td><code>eos_gpio_mode_t</code></td><td>INPUT, OUTPUT, AF, ANALOG</td></tr>
+<tr><td><code>pull</code></td><td><code>eos_gpio_pull_t</code></td><td>PULL_NONE, PULL_UP, PULL_DOWN</td></tr>
+<tr><td><code>speed</code></td><td><code>eos_gpio_speed_t</code></td><td>SPEED_LOW, MEDIUM, HIGH, VHIGH</td></tr>
+<tr><td><code>af_num</code></td><td><code>uint8_t</code></td><td>Alternate function number</td></tr>
+</table></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_gpio_init</span>(<span class="param">const eos_gpio_config_t *cfg</span>)</code></div>
+<p class="api-desc">Initialize a GPIO pin. Must be called before read/write/toggle on the pin.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>cfg</td><td>const eos_gpio_config_t *</td><td>Pin configuration struct.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code on failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_gpio_config_t led = {
+    .pin = 13, .mode = EOS_GPIO_OUTPUT,
+    .pull = EOS_GPIO_PULL_NONE, .speed = EOS_GPIO_SPEED_LOW
+};
+eos_gpio_init(&amp;led);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_gpio_deinit</span>(<span class="param">uint16_t pin</span>)</code></div>
+<p class="api-desc">Release a GPIO pin, resetting it to default state.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>pin</td><td>uint16_t</td><td>Pin number to release.</td></tr></table></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_gpio_write</span>(<span class="param">uint16_t pin, bool value</span>)</code></div>
+<p class="api-desc">Set GPIO output pin high or low.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>pin</td><td>uint16_t</td><td>Pin number.</td></tr>
+<tr><td>value</td><td>bool</td><td><code>true</code>=high, <code>false</code>=low.</td></tr></table></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_gpio_write(13, true);  // LED on
+eos_delay_ms(1000);
+eos_gpio_write(13, false); // LED off</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">bool</span> <span class="fn">eos_gpio_read</span>(<span class="param">uint16_t pin</span>)</code></div>
+<p class="api-desc">Read current state of a GPIO pin. Works for input and output pins.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>pin</td><td>uint16_t</td><td>Pin number.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>true</code> if high, <code>false</code> if low.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_gpio_config_t btn = { .pin=2, .mode=EOS_GPIO_INPUT, .pull=EOS_GPIO_PULL_UP };
+eos_gpio_init(&amp;btn);
+if (!eos_gpio_read(2)) printf("Button pressed!\n");</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_gpio_toggle</span>(<span class="param">uint16_t pin</span>)</code></div>
+<p class="api-desc">Toggle a GPIO output pin (high&rarr;low or low&rarr;high).</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>pin</td><td>uint16_t</td><td>Pin number.</td></tr></table></div>
+<div class="api-example"><h5>Example</h5><pre><code>while (1) { eos_gpio_toggle(13); eos_delay_ms(500); } // 1 Hz blink</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_gpio_set_irq</span>(<span class="param">uint16_t pin, eos_gpio_edge_t edge, eos_gpio_callback_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Attach interrupt callback to a GPIO pin on specified edge(s).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>pin</td><td>uint16_t</td><td>Pin number.</td></tr>
+<tr><td>edge</td><td>eos_gpio_edge_t</td><td>EDGE_RISING, FALLING, BOTH, or NONE.</td></tr>
+<tr><td>cb</td><td>eos_gpio_callback_t</td><td><code>void (*)(uint16_t pin, void *ctx)</code></td></tr>
+<tr><td>ctx</td><td>void *</td><td>User context passed to callback.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void on_btn(uint16_t pin, void *ctx) { *(int*)ctx += 1; }
+int count = 0;
+eos_gpio_set_irq(2, EOS_GPIO_EDGE_FALLING, on_btn, &amp;count);</code></pre></div></div>
+
+<h3>UART</h3>
+<div class="struct-card"><h4>eos_uart_config_t</h4><table>
+<tr><td><code>port</code></td><td><code>uint8_t</code></td><td>UART port number</td></tr>
+<tr><td><code>baudrate</code></td><td><code>uint32_t</code></td><td>Baud rate (9600, 115200, etc.)</td></tr>
+<tr><td><code>data_bits</code></td><td><code>uint8_t</code></td><td>Data bits (7 or 8)</td></tr>
+<tr><td><code>parity</code></td><td><code>eos_uart_parity_t</code></td><td>NONE, EVEN, ODD</td></tr>
+<tr><td><code>stop_bits</code></td><td><code>eos_uart_stop_t</code></td><td>STOP_1, STOP_2</td></tr></table></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_uart_init</span>(<span class="param">const eos_uart_config_t *cfg</span>)</code></div>
+<p class="api-desc">Initialize a UART port with baud rate, parity, and stop bits.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>cfg</td><td>const eos_uart_config_t *</td><td>UART configuration.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_uart_config_t uart = { .port=0, .baudrate=115200, .data_bits=8,
+    .parity=EOS_UART_PARITY_NONE, .stop_bits=EOS_UART_STOP_1 };
+eos_uart_init(&amp;uart);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_uart_write</span>(<span class="param">uint8_t port, const uint8_t *data, size_t len</span>)</code></div>
+<p class="api-desc">Write data to UART. Blocks until all bytes transmitted.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>UART port.</td></tr>
+<tr><td>data</td><td>const uint8_t *</td><td>Data buffer.</td></tr>
+<tr><td>len</td><td>size_t</td><td>Bytes to write.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p>Bytes written, or negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>const char *msg = "Hello UART\r\n";
+eos_uart_write(0, (const uint8_t *)msg, strlen(msg));</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_uart_read</span>(<span class="param">uint8_t port, uint8_t *data, size_t len, uint32_t timeout_ms</span>)</code></div>
+<p class="api-desc">Read data from UART. Blocks until <code>len</code> bytes received or timeout expires.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>UART port.</td></tr>
+<tr><td>data</td><td>uint8_t *</td><td>Receive buffer.</td></tr>
+<tr><td>len</td><td>size_t</td><td>Max bytes to read.</td></tr>
+<tr><td>timeout_ms</td><td>uint32_t</td><td>Timeout in ms. <code>EOS_WAIT_FOREVER</code> to block indefinitely.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p>Bytes read, or negative error code.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_uart_deinit</span>(<span class="param">uint8_t port</span>)</code></div>
+<p class="api-desc">Deinitialize UART port, releasing resources.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>port</td><td>uint8_t</td><td>UART port to release.</td></tr></table></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_uart_set_rx_callback</span>(<span class="param">uint8_t port, eos_uart_rx_callback_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Register per-byte receive callback. Fires from ISR context.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>UART port.</td></tr>
+<tr><td>cb</td><td>eos_uart_rx_callback_t</td><td><code>void (*)(uint8_t port, uint8_t byte, void *ctx)</code></td></tr>
+<tr><td>ctx</td><td>void *</td><td>User context.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<h3>SPI</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_spi_init</span>(<span class="param">const eos_spi_config_t *cfg</span>)</code></div>
+<p class="api-desc">Initialize SPI port with clock speed, mode (CPOL/CPHA 0-3), bits per word, and CS pin.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>cfg</td><td>const eos_spi_config_t *</td><td>SPI config: port, clock_hz, mode, bits_per_word, cs_pin.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_spi_config_t spi = { .port=0, .clock_hz=1000000,
+    .mode=EOS_SPI_MODE_0, .bits_per_word=8, .cs_pin=10 };
+eos_spi_init(&amp;spi);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_spi_transfer</span>(<span class="param">uint8_t port, const uint8_t *tx, uint8_t *rx, size_t len</span>)</code></div>
+<p class="api-desc">Full-duplex SPI transfer. Either <code>tx</code> or <code>rx</code> may be NULL for half-duplex.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>SPI port.</td></tr>
+<tr><td>tx</td><td>const uint8_t *</td><td>TX buffer (NULL = receive only).</td></tr>
+<tr><td>rx</td><td>uint8_t *</td><td>RX buffer (NULL = transmit only).</td></tr>
+<tr><td>len</td><td>size_t</td><td>Transfer length in bytes.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_spi_write</span>(<span class="param">uint8_t port, const uint8_t *data, size_t len</span>)</code></div>
+<p class="api-desc">Write-only SPI transfer (discards received data).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>SPI port.</td></tr><tr><td>data</td><td>const uint8_t *</td><td>Data to send.</td></tr>
+<tr><td>len</td><td>size_t</td><td>Byte count.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_spi_read</span>(<span class="param">uint8_t port, uint8_t *data, size_t len</span>)</code></div>
+<p class="api-desc">Read-only SPI transfer (clocks out zeros).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>SPI port.</td></tr><tr><td>data</td><td>uint8_t *</td><td>Receive buffer.</td></tr>
+<tr><td>len</td><td>size_t</td><td>Byte count.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<h3>I2C</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_i2c_init</span>(<span class="param">const eos_i2c_config_t *cfg</span>)</code></div>
+<p class="api-desc">Initialize I2C port with clock frequency and optional own address.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>cfg</td><td>const eos_i2c_config_t *</td><td>I2C config: port, clock_hz (100k/400k), own_addr.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_i2c_config_t i2c = { .port=0, .clock_hz=400000, .own_addr=0 };
+eos_i2c_init(&amp;i2c);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_i2c_write</span>(<span class="param">uint8_t port, uint16_t addr, const uint8_t *data, size_t len</span>)</code></div>
+<p class="api-desc">Write data to I2C device at 7-bit address.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>I2C port.</td></tr><tr><td>addr</td><td>uint16_t</td><td>Device address.</td></tr>
+<tr><td>data</td><td>const uint8_t *</td><td>Data buffer.</td></tr><tr><td>len</td><td>size_t</td><td>Byte count.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_i2c_read</span>(<span class="param">uint8_t port, uint16_t addr, uint8_t *data, size_t len</span>)</code></div>
+<p class="api-desc">Read data from I2C device.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>I2C port.</td></tr><tr><td>addr</td><td>uint16_t</td><td>Device address.</td></tr>
+<tr><td>data</td><td>uint8_t *</td><td>Receive buffer.</td></tr><tr><td>len</td><td>size_t</td><td>Byte count.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_i2c_write_reg</span>(<span class="param">uint8_t port, uint16_t addr, uint8_t reg, const uint8_t *data, size_t len</span>)</code></div>
+<p class="api-desc">Write to a specific register on an I2C device (register address + data in one transaction).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>I2C port.</td></tr><tr><td>addr</td><td>uint16_t</td><td>Device address.</td></tr>
+<tr><td>reg</td><td>uint8_t</td><td>Register address.</td></tr><tr><td>data</td><td>const uint8_t *</td><td>Data to write.</td></tr>
+<tr><td>len</td><td>size_t</td><td>Byte count.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_i2c_read_reg</span>(<span class="param">uint8_t port, uint16_t addr, uint8_t reg, uint8_t *data, size_t len</span>)</code></div>
+<p class="api-desc">Read from a specific register on an I2C device.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>port</td><td>uint8_t</td><td>I2C port.</td></tr><tr><td>addr</td><td>uint16_t</td><td>Device address.</td></tr>
+<tr><td>reg</td><td>uint8_t</td><td>Register address.</td></tr><tr><td>data</td><td>uint8_t *</td><td>Receive buffer.</td></tr>
+<tr><td>len</td><td>size_t</td><td>Byte count.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>uint8_t who;
+eos_i2c_read_reg(0, 0x68, 0x75, &amp;who, 1); // MPU6050 WHO_AM_I
+printf("WHO_AM_I = 0x%02X\n", who);</code></pre></div></div>
+
+<h3>Timer</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_timer_init</span>(<span class="param">const eos_timer_config_t *cfg</span>)</code></div>
+<p class="api-desc">Initialize a hardware timer with period, auto-reload, and callback.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>cfg</td><td>const eos_timer_config_t *</td><td>Timer config: timer_id, period_us, auto_reload, callback, ctx.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void tick(uint8_t id, void *ctx) { eos_gpio_toggle(13); }
+eos_timer_config_t t = { .timer_id=0, .period_us=1000000,
+    .auto_reload=true, .callback=tick };
+eos_timer_init(&amp;t);
+eos_timer_start(0);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_timer_start</span>(<span class="param">uint8_t timer_id</span>)</code></div>
+<p class="api-desc">Start a previously initialized timer.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>timer_id</td><td>uint8_t</td><td>Timer ID.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_timer_stop</span>(<span class="param">uint8_t timer_id</span>)</code></div>
+<p class="api-desc">Stop a running timer. Can be restarted with <code>eos_timer_start()</code>.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>timer_id</td><td>uint8_t</td><td>Timer ID.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">uint32_t</span> <span class="fn">eos_timer_get_count</span>(<span class="param">uint8_t timer_id</span>)</code></div>
+<p class="api-desc">Get current timer counter value.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>timer_id</td><td>uint8_t</td><td>Timer ID.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p>Counter value in microseconds.</p></div></div>
+
+<h3>Interrupts</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_irq_disable</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Globally disable interrupts. Pair with <code>eos_irq_enable()</code>.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_irq_enable</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Re-enable globally disabled interrupts.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_irq_register</span>(<span class="param">uint16_t irq_num, void (*handler)(void), uint8_t priority</span>)</code></div>
+<p class="api-desc">Register an ISR for a specific IRQ number with given priority.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>irq_num</td><td>uint16_t</td><td>IRQ number (platform-specific).</td></tr>
+<tr><td>handler</td><td>void (*)(void)</td><td>Interrupt handler function.</td></tr>
+<tr><td>priority</td><td>uint8_t</td><td>Priority (0=highest).</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_irq_unregister</span>(<span class="param">uint16_t irq_num</span>)</code></div>
+<p class="api-desc">Unregister an ISR for the specified IRQ.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>irq_num</td><td>uint16_t</td><td>IRQ number.</td></tr></table></div></div>
+<div id="kernel" class="module-section"><h2 style="color:var(--green)">&#9881; Kernel (RTOS)</h2>
+<p class="module-desc">Task management, mutexes, semaphores, message queues, software timers. Header: <code>&lt;eos/kernel.h&gt;</code></p></div>
+<div class="callout callout-info"><div class="callout-title">Constants</div>
+<code>EOS_MAX_TASKS=16</code> &bull; <code>EOS_MAX_MUTEXES=8</code> &bull; <code>EOS_MAX_SEMAPHORES=8</code> &bull; <code>EOS_MAX_QUEUES=8</code> &bull; <code>EOS_WAIT_FOREVER=0xFFFFFFFF</code> &bull; <code>EOS_NO_WAIT=0</code><br>
+Return codes: <code>EOS_KERN_OK=0</code>, <code>ERR=-1</code>, <code>TIMEOUT=-2</code>, <code>FULL=-3</code>, <code>EMPTY=-4</code>, <code>INVALID=-5</code>, <code>NO_MEMORY=-6</code></div>
+
+<h3>Lifecycle</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_kernel_init</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Initialize the RTOS kernel &mdash; scheduler, idle task, tick timer. Call before creating tasks.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_kernel_start</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Start the scheduler. Does not return. Create at least one task first.</p>
+<div class="api-example"><h5>Example</h5><pre><code>int main(void) {
+    eos_hal_init();
+    eos_kernel_init();
+    eos_task_create("app", app_task, NULL, 1, 1024);
+    eos_kernel_start(); // never returns
+}</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">bool</span> <span class="fn">eos_kernel_is_running</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Check if the scheduler is active.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>true</code> if running.</p></div></div>
+
+<h3>Task Management</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_task_create</span>(<span class="param">const char *name, eos_task_func_t entry, void *arg, uint8_t priority, uint32_t stack_size</span>)</code></div>
+<p class="api-desc">Create a new task in READY state. Higher priority number = scheduled first.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>name</td><td>const char *</td><td>Task name (debug display).</td></tr>
+<tr><td>entry</td><td>eos_task_func_t</td><td>Entry point: <code>void (*)(void *arg)</code></td></tr>
+<tr><td>arg</td><td>void *</td><td>Argument passed to entry.</td></tr>
+<tr><td>priority</td><td>uint8_t</td><td>Priority level.</td></tr>
+<tr><td>stack_size</td><td>uint32_t</td><td>Stack size in bytes.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p>Task handle (>=0) on success, negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void sensor_task(void *arg) {
+    while (1) {
+        read_sensor();
+        eos_task_delay_ms(100);
+    }
+}
+int h = eos_task_create("sensor", sensor_task, NULL, 2, 512);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_task_delete</span>(<span class="param">eos_task_handle_t handle</span>)</code></div>
+<p class="api-desc">Delete a task and free its resources.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>handle</td><td>eos_task_handle_t</td><td>Task handle from <code>eos_task_create()</code>.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_task_suspend</span>(<span class="param">eos_task_handle_t handle</span>)</code></div>
+<p class="api-desc">Suspend a task. Task remains in memory but will not be scheduled until resumed.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>handle</td><td>eos_task_handle_t</td><td>Task handle.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_task_resume</span>(<span class="param">eos_task_handle_t handle</span>)</code></div>
+<p class="api-desc">Resume a previously suspended task.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>handle</td><td>eos_task_handle_t</td><td>Task handle.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_task_yield</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Voluntarily yield the CPU to the next ready task of equal or higher priority.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_task_delay_ms</span>(<span class="param">uint32_t ms</span>)</code></div>
+<p class="api-desc">Block the current task for <code>ms</code> milliseconds. Yields to the scheduler (non-blocking to other tasks).</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>ms</td><td>uint32_t</td><td>Delay in milliseconds.</td></tr></table></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eos_task_handle_t</span> <span class="fn">eos_task_get_current</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Get the handle of the currently running task.</p>
+<div class="api-returns"><h5>Returns</h5><p>Current task handle.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eos_task_state_t</span> <span class="fn">eos_task_get_state</span>(<span class="param">eos_task_handle_t handle</span>)</code></div>
+<p class="api-desc">Get the state of a task: READY, RUNNING, BLOCKED, SUSPENDED, or DELETED.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>handle</td><td>eos_task_handle_t</td><td>Task handle.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>eos_task_state_t</code> enum value.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eos_task_get_name</span>(<span class="param">eos_task_handle_t handle</span>)</code></div>
+<p class="api-desc">Get the name string of a task.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>handle</td><td>eos_task_handle_t</td><td>Task handle.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p>Pointer to task name string.</p></div></div>
+
+<h3>Mutex</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_mutex_create</span>(<span class="param">eos_mutex_handle_t *out</span>)</code></div>
+<p class="api-desc">Create a new mutex. Stores handle in <code>*out</code>.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>out</td><td>eos_mutex_handle_t *</td><td>Output handle.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success, <code>EOS_KERN_NO_MEMORY</code> if limit reached.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_mutex_handle_t mtx;
+eos_mutex_create(&amp;mtx);
+eos_mutex_lock(mtx, EOS_WAIT_FOREVER);
+// critical section
+eos_mutex_unlock(mtx);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_mutex_lock</span>(<span class="param">eos_mutex_handle_t handle, uint32_t timeout_ms</span>)</code></div>
+<p class="api-desc">Acquire a mutex. Blocks until acquired or timeout.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>handle</td><td>eos_mutex_handle_t</td><td>Mutex handle.</td></tr>
+<tr><td>timeout_ms</td><td>uint32_t</td><td>Timeout. <code>EOS_WAIT_FOREVER</code> or <code>EOS_NO_WAIT</code>.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> or <code>EOS_KERN_TIMEOUT</code>.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_mutex_unlock</span>(<span class="param">eos_mutex_handle_t handle</span>)</code></div>
+<p class="api-desc">Release a previously acquired mutex.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>handle</td><td>eos_mutex_handle_t</td><td>Mutex handle.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_mutex_delete</span>(<span class="param">eos_mutex_handle_t handle</span>)</code></div>
+<p class="api-desc">Delete a mutex and free resources.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>handle</td><td>eos_mutex_handle_t</td><td>Mutex handle.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success.</p></div></div>
+
+<h3>Semaphore</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sem_create</span>(<span class="param">eos_sem_handle_t *out, uint32_t initial, uint32_t max</span>)</code></div>
+<p class="api-desc">Create a counting semaphore.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>out</td><td>eos_sem_handle_t *</td><td>Output handle.</td></tr>
+<tr><td>initial</td><td>uint32_t</td><td>Initial count.</td></tr>
+<tr><td>max</td><td>uint32_t</td><td>Maximum count.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_sem_handle_t sem;
+eos_sem_create(&amp;sem, 0, 10); // binary-like: start at 0
+// Producer: eos_sem_post(sem);
+// Consumer: eos_sem_wait(sem, EOS_WAIT_FOREVER);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sem_wait</span>(<span class="param">eos_sem_handle_t handle, uint32_t timeout_ms</span>)</code></div>
+<p class="api-desc">Decrement semaphore. Blocks if count is 0 until posted or timeout.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>handle</td><td>eos_sem_handle_t</td><td>Semaphore handle.</td></tr>
+<tr><td>timeout_ms</td><td>uint32_t</td><td>Timeout in ms.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> or <code>EOS_KERN_TIMEOUT</code>.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sem_post</span>(<span class="param">eos_sem_handle_t handle</span>)</code></div>
+<p class="api-desc">Increment semaphore count and wake one waiting task.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>handle</td><td>eos_sem_handle_t</td><td>Semaphore handle.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> or <code>EOS_KERN_FULL</code>.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sem_delete</span>(<span class="param">eos_sem_handle_t handle</span>)</code></div>
+<p class="api-desc">Delete a semaphore.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">uint32_t</span> <span class="fn">eos_sem_get_count</span>(<span class="param">eos_sem_handle_t handle</span>)</code></div>
+<p class="api-desc">Get current semaphore count.</p>
+<div class="api-returns"><h5>Returns</h5><p>Current count value.</p></div></div>
+
+<h3>Message Queue</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_queue_create</span>(<span class="param">eos_queue_handle_t *out, size_t item_size, uint32_t capacity</span>)</code></div>
+<p class="api-desc">Create a fixed-size message queue.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>out</td><td>eos_queue_handle_t *</td><td>Output handle.</td></tr>
+<tr><td>item_size</td><td>size_t</td><td>Size of each item in bytes.</td></tr>
+<tr><td>capacity</td><td>uint32_t</td><td>Maximum number of items.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>typedef struct { int type; float value; } msg_t;
+eos_queue_handle_t q;
+eos_queue_create(&amp;q, sizeof(msg_t), 16);
+
+msg_t m = { .type = 1, .value = 23.5f };
+eos_queue_send(q, &amp;m, EOS_WAIT_FOREVER);
+
+msg_t rx;
+eos_queue_receive(q, &amp;rx, EOS_WAIT_FOREVER);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_queue_send</span>(<span class="param">eos_queue_handle_t handle, const void *item, uint32_t timeout_ms</span>)</code></div>
+<p class="api-desc">Send an item to the queue. Blocks if full until space available or timeout.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>handle</td><td>eos_queue_handle_t</td><td>Queue handle.</td></tr>
+<tr><td>item</td><td>const void *</td><td>Pointer to item data.</td></tr>
+<tr><td>timeout_ms</td><td>uint32_t</td><td>Timeout.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code>, <code>EOS_KERN_FULL</code>, or <code>EOS_KERN_TIMEOUT</code>.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_queue_receive</span>(<span class="param">eos_queue_handle_t handle, void *item, uint32_t timeout_ms</span>)</code></div>
+<p class="api-desc">Receive an item from the queue. Blocks if empty.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>handle</td><td>eos_queue_handle_t</td><td>Queue handle.</td></tr>
+<tr><td>item</td><td>void *</td><td>Buffer for received item.</td></tr>
+<tr><td>timeout_ms</td><td>uint32_t</td><td>Timeout.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code>, <code>EOS_KERN_EMPTY</code>, or <code>EOS_KERN_TIMEOUT</code>.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_queue_peek</span>(<span class="param">eos_queue_handle_t handle, void *item</span>)</code></div>
+<p class="api-desc">Read front item without removing it.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">uint32_t</span> <span class="fn">eos_queue_count</span>(<span class="param">eos_queue_handle_t handle</span>)</code></div>
+<p class="api-desc">Get number of items currently in queue.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">bool</span> <span class="fn">eos_queue_is_full</span>(<span class="param">eos_queue_handle_t handle</span>)</code></div>
+<p class="api-desc">Check if queue is full.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">bool</span> <span class="fn">eos_queue_is_empty</span>(<span class="param">eos_queue_handle_t handle</span>)</code></div>
+<p class="api-desc">Check if queue is empty.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_queue_delete</span>(<span class="param">eos_queue_handle_t handle</span>)</code></div>
+<p class="api-desc">Delete a message queue.</p></div>
+
+<h3>Software Timers</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_swtimer_create</span>(<span class="param">eos_swtimer_handle_t *out, const char *name, uint32_t period_ms, bool auto_reload, eos_swtimer_callback_t callback, void *ctx</span>)</code></div>
+<p class="api-desc">Create a software timer that runs in the timer task context.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>out</td><td>eos_swtimer_handle_t *</td><td>Output handle.</td></tr>
+<tr><td>name</td><td>const char *</td><td>Timer name.</td></tr>
+<tr><td>period_ms</td><td>uint32_t</td><td>Timer period.</td></tr>
+<tr><td>auto_reload</td><td>bool</td><td>Auto-restart after expiry.</td></tr>
+<tr><td>callback</td><td>eos_swtimer_callback_t</td><td><code>void (*)(handle, void *ctx)</code></td></tr>
+<tr><td>ctx</td><td>void *</td><td>User context.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>EOS_KERN_OK</code> on success.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void heartbeat(eos_swtimer_handle_t h, void *ctx) {
+    eos_gpio_toggle(13);
+}
+eos_swtimer_handle_t t;
+eos_swtimer_create(&amp;t, "hb", 1000, true, heartbeat, NULL);
+eos_swtimer_start(t);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_swtimer_start</span>(<span class="param">eos_swtimer_handle_t handle</span>)</code></div>
+<p class="api-desc">Start a software timer.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_swtimer_stop</span>(<span class="param">eos_swtimer_handle_t handle</span>)</code></div>
+<p class="api-desc">Stop a running software timer.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_swtimer_reset</span>(<span class="param">eos_swtimer_handle_t handle</span>)</code></div>
+<p class="api-desc">Reset timer counter to zero and restart.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_swtimer_delete</span>(<span class="param">eos_swtimer_handle_t handle</span>)</code></div>
+<p class="api-desc">Delete a software timer.</p></div>
+<div id="multicore" class="module-section"><h2 style="color:var(--purple)">&#9881; Multicore Framework</h2>
+<p class="module-desc">SMP/AMP, spinlocks, IPI, shared memory, core affinity, atomics. Header: <code>&lt;eos/multicore.h&gt;</code> (requires <code>EOS_ENABLE_MULTICORE</code>)</p></div>
+
+<h3>Core Management</h3>
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_multicore_init</span>(<span class="param">eos_mp_mode_t mode</span>)</code></div>
+<p class="api-desc">Initialize multicore framework in SMP or AMP mode.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>mode</td><td>eos_mp_mode_t</td><td><code>EOS_MP_SMP</code> (same OS image) or <code>EOS_MP_AMP</code> (per-core firmware).</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_multicore_init(EOS_MP_SMP);
+printf("Cores: %u, I am core %u\n", eos_core_count(), eos_core_id());</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">uint8_t</span> <span class="fn">eos_core_count</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Get total number of cores available on the platform.</p>
+<div class="api-returns"><h5>Returns</h5><p>Number of cores (1-16).</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">uint8_t</span> <span class="fn">eos_core_id</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Get the ID of the core executing this call.</p>
+<div class="api-returns"><h5>Returns</h5><p>Core ID (0-based).</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_core_start</span>(<span class="param">uint8_t core_id, eos_core_entry_fn entry, void *arg</span>)</code></div>
+<p class="api-desc">Start a secondary core with the given entry function.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>core_id</td><td>uint8_t</td><td>Core to start.</td></tr>
+<tr><td>entry</td><td>eos_core_entry_fn</td><td><code>void (*)(void *arg)</code></td></tr>
+<tr><td>arg</td><td>void *</td><td>Argument for entry.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void core1_main(void *arg) { while(1) process_audio(); }
+eos_core_start(1, core1_main, NULL);</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_core_stop</span>(<span class="param">uint8_t core_id</span>)</code></div>
+<p class="api-desc">Stop a secondary core.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_core_get_info</span>(<span class="param">uint8_t core_id, eos_core_info_t *info</span>)</code></div>
+<p class="api-desc">Get core info: state, frequency, load percentage, MP mode.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>core_id</td><td>uint8_t</td><td>Core ID.</td></tr>
+<tr><td>info</td><td>eos_core_info_t *</td><td>Output info struct.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div></div>
+
+<h3>Spinlocks</h3>
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_spin_init</span>(<span class="param">eos_spinlock_t *lock</span>)</code></div>
+<p class="api-desc">Initialize a spinlock. Use <code>EOS_SPINLOCK_INIT</code> for static init.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_spin_lock</span>(<span class="param">eos_spinlock_t *lock</span>)</code></div>
+<p class="api-desc">Acquire spinlock. Busy-waits until lock is available. Use for short critical sections only.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">bool</span> <span class="fn">eos_spin_trylock</span>(<span class="param">eos_spinlock_t *lock</span>)</code></div>
+<p class="api-desc">Try to acquire spinlock without blocking.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>true</code> if acquired, <code>false</code> if already held.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_spin_unlock</span>(<span class="param">eos_spinlock_t *lock</span>)</code></div>
+<p class="api-desc">Release a previously acquired spinlock.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_spin_lock_irqsave</span>(<span class="param">eos_spinlock_t *lock, uint32_t *flags</span>)</code></div>
+<p class="api-desc">Acquire spinlock and save/disable IRQs. Use when lock is shared between task and ISR context.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_spin_unlock_irqrestore</span>(<span class="param">eos_spinlock_t *lock, uint32_t flags</span>)</code></div>
+<p class="api-desc">Release spinlock and restore IRQ state.</p></div>
+
+<h3>Inter-Processor Interrupts</h3>
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ipi_send</span>(<span class="param">uint8_t target_core, eos_ipi_type_t type, uint32_t data</span>)</code></div>
+<p class="api-desc">Send an inter-processor interrupt to a specific core.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>target_core</td><td>uint8_t</td><td>Destination core ID.</td></tr>
+<tr><td>type</td><td>eos_ipi_type_t</td><td>RESCHEDULE, CALL_FUNC, STOP, or USER.</td></tr>
+<tr><td>data</td><td>uint32_t</td><td>User data payload.</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ipi_broadcast</span>(<span class="param">eos_ipi_type_t type, uint32_t data</span>)</code></div>
+<p class="api-desc">Broadcast IPI to all other cores.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ipi_register_handler</span>(<span class="param">eos_ipi_type_t type, eos_ipi_handler_t handler, void *ctx</span>)</code></div>
+<p class="api-desc">Register handler for a specific IPI type: <code>void (*)(uint8_t from_core, uint32_t data, void *ctx)</code></p></div>
+
+<h3>Shared Memory</h3>
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_shmem_create</span>(<span class="param">const eos_shmem_config_t *cfg, eos_shmem_region_t *region</span>)</code></div>
+<p class="api-desc">Create a named shared memory region accessible by all cores.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>cfg</td><td>const eos_shmem_config_t *</td><td>Config: name, base address, size, cached flag.</td></tr>
+<tr><td>region</td><td>eos_shmem_region_t *</td><td>Output region info (addr, size, id).</td></tr></table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_shmem_config_t cfg = { .name="ipc_buf", .base=NULL, .size=4096, .cached=false };
+eos_shmem_region_t region;
+eos_shmem_create(&amp;cfg, &amp;region);
+memcpy(region.addr, data, len);</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_shmem_open</span>(<span class="param">const char *name, eos_shmem_region_t *region</span>)</code></div>
+<p class="api-desc">Open an existing shared memory region by name.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_shmem_close</span>(<span class="param">eos_shmem_region_t *region</span>)</code></div>
+<p class="api-desc">Close a shared memory region.</p></div>
+
+<h3>Atomics</h3>
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int32_t</span> <span class="fn">eos_atomic_add</span>(<span class="param">volatile int32_t *ptr, int32_t val</span>)</code></div>
+<p class="api-desc">Atomically add <code>val</code> to <code>*ptr</code> and return the previous value.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int32_t</span> <span class="fn">eos_atomic_sub</span>(<span class="param">volatile int32_t *ptr, int32_t val</span>)</code></div>
+<p class="api-desc">Atomically subtract <code>val</code> from <code>*ptr</code> and return previous value.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int32_t</span> <span class="fn">eos_atomic_cas</span>(<span class="param">volatile int32_t *ptr, int32_t expected, int32_t desired</span>)</code></div>
+<p class="api-desc">Compare-and-swap: if <code>*ptr == expected</code>, set to <code>desired</code>. Returns old value.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int32_t</span> <span class="fn">eos_atomic_load</span>(<span class="param">volatile const int32_t *ptr</span>)</code></div>
+<p class="api-desc">Atomic load with acquire semantics.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_atomic_store</span>(<span class="param">volatile int32_t *ptr, int32_t val</span>)</code></div>
+<p class="api-desc">Atomic store with release semantics.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_dmb</span>(<span class="param">void</span>) / <span class="fn">eos_dsb</span>(<span class="param">void</span>) / <span class="fn">eos_isb</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Memory barriers: Data Memory Barrier, Data Synchronization Barrier, Instruction Synchronization Barrier.</p></div>
+
+<h3>Task Affinity</h3>
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_task_set_affinity</span>(<span class="param">uint32_t task_id, eos_core_mask_t mask</span>)</code></div>
+<p class="api-desc">Pin a task to specific core(s). Use <code>EOS_CORE_MASK(c)</code> to build mask.</p>
+<div class="api-example"><h5>Example</h5><pre><code>eos_task_set_affinity(tid, EOS_CORE_MASK(0) | EOS_CORE_MASK(1)); // cores 0,1 only</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_task_migrate</span>(<span class="param">uint32_t task_id, uint8_t target_core</span>)</code></div>
+<p class="api-desc">Migrate a running task to a different core.</p></div>
+<div id="crypto" class="module-section"><h2 style="color:var(--orange)">&#128274; Cryptographic Services</h2>
+<p class="module-desc">SHA-256/512, CRC32/64, AES-128/256, RSA, ECC. Header: <code>&lt;eos/crypto.h&gt;</code></p></div>
+
+<h3>SHA-256</h3>
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_sha256_init</span>(<span class="param">EosSha256 *ctx</span>)</code></div>
+<p class="api-desc">Initialize SHA-256 hash context.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_sha256_update</span>(<span class="param">EosSha256 *ctx, const void *data, size_t len</span>)</code></div>
+<p class="api-desc">Feed data into the SHA-256 hash. Can be called multiple times for streaming.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_sha256_final</span>(<span class="param">EosSha256 *ctx, uint8_t digest[32]</span>)</code></div>
+<p class="api-desc">Finalize and output the 32-byte SHA-256 digest.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_sha256_data</span>(<span class="param">const void *data, size_t len, char hex[65]</span>)</code></div>
+<p class="api-desc">One-shot SHA-256: compute hash and output as hex string.</p>
+<div class="api-example"><h5>Example</h5><pre><code>char hex[65];
+eos_sha256_data("hello", 5, hex);
+printf("SHA-256: %s\n", hex);</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sha256_file</span>(<span class="param">const char *path, char hex[65]</span>)</code></div>
+<p class="api-desc">Compute SHA-256 of a file. Returns 0 on success.</p></div>
+
+<h3>CRC</h3>
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">uint32_t</span> <span class="fn">eos_crc32</span>(<span class="param">uint32_t crc, const void *data, size_t len</span>)</code></div>
+<p class="api-desc">Compute CRC32. Pass <code>crc=0</code> for initial, chain for streaming.</p>
+<div class="api-example"><h5>Example</h5><pre><code>uint32_t crc = eos_crc32(0, firmware_data, firmware_size);
+printf("CRC32: 0x%08X\n", crc);</code></pre></div></div>
+
+<h3>AES</h3>
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_aes_init</span>(<span class="param">EosAesCtx *ctx, const uint8_t *key, int key_bits</span>)</code></div>
+<p class="api-desc">Initialize AES context. <code>key_bits</code> = 128 or 256.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_aes_cbc_encrypt</span>(<span class="param">const EosAesCtx *ctx, const uint8_t *iv, const uint8_t *in, uint8_t *out, size_t len</span>)</code></div>
+<p class="api-desc">AES-CBC encrypt. <code>len</code> must be multiple of 16.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_aes_cbc_decrypt</span>(<span class="param">const EosAesCtx *ctx, const uint8_t *iv, const uint8_t *in, uint8_t *out, size_t len</span>)</code></div>
+<p class="api-desc">AES-CBC decrypt.</p></div>
+
+<h3>RSA &amp; ECC</h3>
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_rsa_sign_sha256</span>(<span class="param">const EosRsaKey *key, const uint8_t hash[32], uint8_t *sig, size_t *sig_len</span>)</code></div>
+<p class="api-desc">RSA sign a SHA-256 hash. Private key required.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_rsa_verify_sha256</span>(<span class="param">const EosRsaKey *key, const uint8_t hash[32], const uint8_t *sig, size_t sig_len</span>)</code></div>
+<p class="api-desc">RSA verify a SHA-256 signature. Returns 0 if valid.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ecc_sign</span>(<span class="param">const EosEccKey *key, const uint8_t *hash, size_t hash_len, uint8_t *sig, size_t *sig_len</span>)</code></div>
+<p class="api-desc">ECDSA sign.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ecc_verify</span>(<span class="param">const EosEccKey *key, const uint8_t *hash, size_t hash_len, const uint8_t *sig, size_t sig_len</span>)</code></div>
+<p class="api-desc">ECDSA verify. Returns 0 if valid.</p></div>
+
+<div id="ota" class="module-section"><h2 style="color:var(--blue)">&#128259; OTA Updates</h2>
+<p class="module-desc">Firmware download, verification, A/B slot management, rollback. Header: <code>&lt;eos/ota.h&gt;</code></p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_init</span>(<span class="param">void</span>) / <span class="fn">eos_ota_deinit</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Initialize/deinitialize the OTA subsystem.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_check_update</span>(<span class="param">const eos_ota_source_t *source, bool *available</span>)</code></div>
+<p class="api-desc">Check if a firmware update is available at the given URL.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>source</td><td>const eos_ota_source_t *</td><td>URL, version, expected_size, sha256, use_tls.</td></tr>
+<tr><td>available</td><td>bool *</td><td>Output: true if newer version exists.</td></tr></table></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_begin</span>(<span class="param">const eos_ota_source_t *source</span>)</code></div>
+<p class="api-desc">Begin OTA download to the inactive slot.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_write_chunk</span>(<span class="param">const uint8_t *data, size_t len</span>)</code></div>
+<p class="api-desc">Write a firmware chunk. Call repeatedly until all data written.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_finish</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Finalize OTA write. Pads and commits to flash.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_verify</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Verify the downloaded image (CRC, SHA-256, signature).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_apply</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Mark update slot as pending and trigger reboot.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_rollback</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Rollback to the previous firmware slot.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_get_status</span>(<span class="param">eos_ota_status_t *status</span>)</code></div>
+<p class="api-desc">Get current OTA status: state, progress, active/update slot, versions.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_ota_set_progress_callback</span>(<span class="param">eos_ota_progress_cb cb, void *ctx</span>)</code></div>
+<p class="api-desc">Register progress callback: <code>void (*)(uint8_t pct, void *ctx)</code></p></div>
+
+<div class="api-example"><h5>Full OTA Example</h5><pre><code>eos_ota_init();
+eos_ota_source_t src = { .url="https://fw.example.com/v2.bin", .version="2.0.0", .use_tls=true };
+bool avail;
+eos_ota_check_update(&amp;src, &amp;avail);
+if (avail) {
+    eos_ota_begin(&amp;src);
+    // ... write chunks ...
+    eos_ota_finish();
+    if (eos_ota_verify() == 0) eos_ota_apply(); // reboots
+}</code></pre></div>
+<div id="sensor" class="module-section"><h2 style="color:var(--cyan)">&#128225; Sensor Framework</h2>
+<p class="module-desc">Unified sensor API with filtering and calibration. Header: <code>&lt;eos/sensor.h&gt;</code></p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sensor_init</span>(<span class="param">void</span>) / <span class="fn">eos_sensor_deinit</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Initialize/deinitialize the sensor subsystem.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sensor_register</span>(<span class="param">const eos_sensor_config_t *cfg</span>)</code></div>
+<p class="api-desc">Register a sensor with ID, name, type, filter, sample interval, and read function.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>cfg</td><td>const eos_sensor_config_t *</td><td>Config: id, name, type (TEMPERATURE..CUSTOM), filter type (NONE/AVERAGE/MEDIAN/LOWPASS/KALMAN), window, interval_ms, read_fn.</td></tr></table></div>
+<div class="api-example"><h5>Example</h5><pre><code>int read_temp(uint8_t id, float *val) { *val = adc_to_celsius(adc_read(0)); return 0; }
+eos_sensor_config_t cfg = { .id=0, .name="temp", .type=EOS_SENSOR_TEMPERATURE,
+    .filter=EOS_FILTER_KALMAN, .filter_window=8, .sample_interval_ms=1000, .read_fn=read_temp };
+eos_sensor_register(&amp;cfg);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sensor_read</span>(<span class="param">uint8_t id, eos_sensor_reading_t *reading</span>)</code></div>
+<p class="api-desc">Read raw sensor value. Returns value, min, max, timestamp, valid flag.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sensor_read_filtered</span>(<span class="param">uint8_t id, eos_sensor_reading_t *reading</span>)</code></div>
+<p class="api-desc">Read filtered sensor value using configured filter (average, median, lowpass, Kalman).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sensor_calibrate</span>(<span class="param">uint8_t id, const eos_sensor_calib_t *calib</span>)</code></div>
+<p class="api-desc">Set calibration offset and scale for a sensor.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sensor_auto_calibrate</span>(<span class="param">uint8_t id</span>)</code></div>
+<p class="api-desc">Automatically calibrate sensor using built-in algorithm.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_sensor_set_filter</span>(<span class="param">uint8_t id, eos_filter_type_t filter, uint8_t window_size</span>)</code></div>
+<p class="api-desc">Change filter type and window size at runtime.</p></div>
+
+<div id="motor" class="module-section"><h2 style="color:var(--pink)">&#9881; Motor Control</h2>
+<p class="module-desc">PID loops, trajectory planning, encoder feedback. Header: <code>&lt;eos/motor_ctrl.h&gt;</code></p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_motor_ctrl_init</span>(<span class="param">void</span>) / <span class="fn">eos_motor_ctrl_deinit</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Initialize/deinitialize motor control subsystem.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_motor_ctrl_configure</span>(<span class="param">const eos_motor_ctrl_config_t *cfg</span>)</code></div>
+<p class="api-desc">Configure a motor with PID parameters, encoder CPR, and control rate.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>cfg</td><td>const eos_motor_ctrl_config_t *</td><td>motor_id, pid_speed {kp,ki,kd,integral_max,output_min,output_max}, pid_position, encoder_cpr, control_rate_hz.</td></tr></table></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_motor_ctrl_config_t cfg = {
+    .motor_id = 0,
+    .pid_speed = { .kp=1.0, .ki=0.1, .kd=0.01, .output_min=-100, .output_max=100 },
+    .encoder_cpr = 1024,
+    .control_rate_hz = 1000
+};
+eos_motor_ctrl_configure(&amp;cfg);</code></pre></div></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_motor_ctrl_set_speed</span>(<span class="param">uint8_t motor_id, int16_t target_speed</span>)</code></div>
+<p class="api-desc">Set closed-loop speed target in RPM.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_motor_ctrl_set_position</span>(<span class="param">uint8_t motor_id, int32_t target_position</span>)</code></div>
+<p class="api-desc">Set closed-loop absolute position target in encoder steps.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_motor_ctrl_move_relative</span>(<span class="param">uint8_t motor_id, int32_t delta</span>)</code></div>
+<p class="api-desc">Move motor by relative number of encoder steps.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_motor_ctrl_run_trajectory</span>(<span class="param">uint8_t motor_id, const eos_trajectory_t *segments, size_t num_segments</span>)</code></div>
+<p class="api-desc">Execute a multi-segment trajectory with position, speed, acceleration, and duration per segment.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_motor_ctrl_stop</span>(<span class="param">uint8_t motor_id</span>) / <span class="fn">eos_motor_ctrl_emergency_stop</span>(<span class="param">uint8_t motor_id</span>)</code></div>
+<p class="api-desc">Stop motor (controlled deceleration) or emergency stop (immediate).</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_motor_ctrl_get_status</span>(<span class="param">uint8_t motor_id, eos_motor_ctrl_status_t *status</span>)</code></div>
+<p class="api-desc">Get motor status: current/target position, speed, PID output, in_motion, stalled flags.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_motor_ctrl_update</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Run one PID control loop iteration. Call from timer ISR at <code>control_rate_hz</code>.</p></div>
+
+<div id="filesystem" class="module-section"><h2 style="color:var(--green)">&#128193; Filesystem</h2>
+<p class="module-desc">File operations over flash, SD, or RAM. Supports FAT, LittleFS, SPIFFS, RAMFS. Header: <code>&lt;eos/filesystem.h&gt;</code></p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_fs_init</span>(<span class="param">const eos_fs_config_t *cfg</span>)</code></div>
+<p class="api-desc">Initialize filesystem. Config: type (FAT/LITTLEFS/SPIFFS/RAMFS), flash_id, base_addr, size.</p>
+<div class="api-example"><h5>Example</h5><pre><code>eos_fs_config_t fs = { .type=EOS_FS_LITTLEFS, .flash_id=0, .base_addr=0x08100000, .size=1048576 };
+eos_fs_init(&amp;fs);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eos_file_t</span> <span class="fn">eos_fs_open</span>(<span class="param">const char *path, uint32_t flags</span>)</code></div>
+<p class="api-desc">Open a file. Flags: <code>EOS_O_READ</code>, <code>EOS_O_WRITE</code>, <code>EOS_O_CREATE</code>, <code>EOS_O_APPEND</code>, <code>EOS_O_TRUNC</code> (bitwise OR).</p>
+<div class="api-returns"><h5>Returns</h5><p>File descriptor (&ge;0) or <code>EOS_FILE_INVALID (-1)</code>.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eos_file_t f = eos_fs_open("/config.json", EOS_O_READ);
+char buf[256];
+int n = eos_fs_read(f, buf, sizeof(buf));
+eos_fs_close(f);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_fs_read</span>(<span class="param">eos_file_t fd, void *buf, size_t len</span>)</code></div>
+<p class="api-desc">Read up to <code>len</code> bytes from file. Returns bytes read.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_fs_write</span>(<span class="param">eos_file_t fd, const void *data, size_t len</span>)</code></div>
+<p class="api-desc">Write data to file. Returns bytes written.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_fs_close</span>(<span class="param">eos_file_t fd</span>)</code></div>
+<p class="api-desc">Close file descriptor.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_fs_seek</span>(<span class="param">eos_file_t fd, int32_t offset, eos_seek_whence_t whence</span>)</code></div>
+<p class="api-desc">Seek within file. Whence: <code>EOS_SEEK_SET</code>, <code>EOS_SEEK_CUR</code>, <code>EOS_SEEK_END</code>.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_fs_mkdir</span>(<span class="param">const char *path</span>)</code></div>
+<p class="api-desc">Create a directory.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_fs_remove</span>(<span class="param">const char *path</span>) / <span class="fn">eos_fs_rename</span>(<span class="param">const char *old, const char *new</span>) / <span class="fn">eos_fs_exists</span>(<span class="param">const char *path</span>)</code></div>
+<p class="api-desc">Remove file, rename, or check existence.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_fs_stat</span>(<span class="param">eos_fs_stat_t *stat</span>)</code></div>
+<p class="api-desc">Get filesystem statistics: total_bytes, used_bytes, free_bytes.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_fs_format</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Format the entire filesystem. All data will be lost.</p></div>
+<div id="power" class="module-section"><h2 style="color:var(--yellow)">&#9889; Power Management</h2>
+<p class="module-desc">Sleep modes, battery monitoring, wake sources, peripheral power, CPU scaling. Header: <code>&lt;eos/power.h&gt;</code></p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_power_init</span>(<span class="param">const eos_power_config_t *cfg</span>)</code></div>
+<p class="api-desc">Initialize power management. Config: ADC channel, battery full/empty voltages, divider ratio.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_power_enter_mode</span>(<span class="param">eos_power_mode_t mode</span>)</code></div>
+<p class="api-desc">Enter a power mode: <code>EOS_POWER_RUN</code>, <code>SLEEP</code>, <code>DEEP_SLEEP</code>, or <code>SHUTDOWN</code>.</p>
+<div class="api-example"><h5>Example</h5><pre><code>eos_power_set_wake_sources(EOS_WAKE_GPIO | EOS_WAKE_RTC);
+eos_power_enter_mode(EOS_POWER_DEEP_SLEEP); // wakes on GPIO or RTC</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_power_set_wake_sources</span>(<span class="param">uint32_t wake_mask</span>)</code></div>
+<p class="api-desc">Configure wake sources: <code>EOS_WAKE_GPIO</code>, <code>TIMER</code>, <code>RTC</code>, <code>UART</code>, <code>BLE</code>, <code>USB</code>, <code>INTERRUPT</code> (bitwise OR).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">uint32_t</span> <span class="fn">eos_power_get_battery_mv</span>(<span class="param">void</span>) / <span class="fn">eos_power_get_battery_pct</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Get battery voltage in millivolts or percentage (0-100).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_power_get_battery_info</span>(<span class="param">eos_battery_info_t *info</span>)</code></div>
+<p class="api-desc">Get full battery info: voltage_mv, percentage, charging, charger_connected, current_ma, temperature_c.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_power_enable_peripheral</span>(<span class="param">eos_peripheral_id_t periph</span>) / <span class="fn">eos_power_disable_peripheral</span>(<span class="param">...</span>)</code></div>
+<p class="api-desc">Enable/disable power to individual peripherals (GPIO, UART, SPI, I2C, WiFi, BLE, etc.).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_power_set_cpu_freq</span>(<span class="param">uint32_t freq_hz</span>) / <span class="fn">eos_power_get_cpu_freq</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Set/get CPU frequency for dynamic voltage-frequency scaling.</p></div>
+
+<div id="net" class="module-section"><h2 style="color:var(--blue)">&#127760; Networking</h2>
+<p class="module-desc">Socket API, HTTP client, MQTT client, mDNS. Header: <code>&lt;eos/net.h&gt;</code></p></div>
+
+<h3>Sockets</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">eos_socket_t</span> <span class="fn">eos_net_socket</span>(<span class="param">eos_net_proto_t proto</span>)</code></div>
+<p class="api-desc">Create a socket. <code>EOS_NET_TCP</code> or <code>EOS_NET_UDP</code>.</p>
+<div class="api-returns"><h5>Returns</h5><p>Socket descriptor or <code>EOS_SOCKET_INVALID</code>.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_net_connect</span>(<span class="param">eos_socket_t sock, const eos_net_addr_t *addr</span>)</code></div>
+<p class="api-desc">Connect a TCP socket to a remote address (ip + port).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_net_send</span>(<span class="param">eos_socket_t sock, const void *data, size_t len</span>)</code></div>
+<p class="api-desc">Send data on a connected socket. Returns bytes sent.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_net_recv</span>(<span class="param">eos_socket_t sock, void *buf, size_t len, uint32_t timeout_ms</span>)</code></div>
+<p class="api-desc">Receive data. Returns bytes received or negative on error/timeout.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_net_bind</span>(<span class="param">eos_socket_t sock, uint16_t port</span>) / <span class="fn">eos_net_listen</span>(<span class="param">sock, int backlog</span>) / <span class="fn">eos_net_accept</span>(<span class="param">sock, eos_net_addr_t *client</span>)</code></div>
+<p class="api-desc">Server socket operations: bind to port, listen, accept connections.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_net_close</span>(<span class="param">eos_socket_t sock</span>)</code></div>
+<p class="api-desc">Close a socket.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_net_resolve</span>(<span class="param">const char *hostname, uint32_t *ip</span>)</code></div>
+<p class="api-desc">DNS resolve hostname to IP address.</p></div>
+
+<h3>HTTP Client</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_http_get</span>(<span class="param">const char *url, eos_http_response_t *resp</span>)</code></div>
+<p class="api-desc">HTTP GET request. Response contains status_code, body, body_len, content_type.</p>
+<div class="api-example"><h5>Example</h5><pre><code>eos_http_response_t resp;
+eos_http_get("http://api.example.com/data", &amp;resp);
+printf("Status: %d, Body: %.*s\n", resp.status_code, (int)resp.body_len, resp.body);
+eos_http_response_free(&amp;resp);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_http_post</span>(<span class="param">const char *url, const void *body, size_t body_len, const char *content_type, eos_http_response_t *resp</span>)</code></div>
+<p class="api-desc">HTTP POST with body and content type.</p></div>
+
+<h3>MQTT Client</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">eos_mqtt_handle_t</span> <span class="fn">eos_mqtt_connect</span>(<span class="param">const eos_mqtt_config_t *cfg</span>)</code></div>
+<p class="api-desc">Connect to MQTT broker. Config: broker_host, port, client_id, username, password, keepalive_sec.</p>
+<div class="api-example"><h5>Example</h5><pre><code>eos_mqtt_config_t cfg = { .broker_host="mqtt.example.com", .broker_port=1883,
+    .client_id="sensor01", .keepalive_sec=60 };
+eos_mqtt_handle_t mqtt = eos_mqtt_connect(&amp;cfg);
+eos_mqtt_publish(mqtt, "sensors/temp", "23.5", 4, 1);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_mqtt_publish</span>(<span class="param">eos_mqtt_handle_t h, const char *topic, const void *payload, size_t len, uint8_t qos</span>)</code></div>
+<p class="api-desc">Publish a message to an MQTT topic with QoS 0, 1, or 2.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_mqtt_subscribe</span>(<span class="param">eos_mqtt_handle_t h, const char *topic, uint8_t qos, eos_mqtt_msg_callback_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Subscribe to topic with callback: <code>void (*)(const char *topic, const uint8_t *payload, size_t len, void *ctx)</code></p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_mqtt_loop</span>(<span class="param">eos_mqtt_handle_t h, uint32_t timeout_ms</span>)</code></div>
+<p class="api-desc">Process MQTT events. Call periodically to handle incoming messages and keepalive.</p></div>
+
+<h3>mDNS</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_mdns_register</span>(<span class="param">const char *service_name, const char *service_type, uint16_t port</span>)</code></div>
+<p class="api-desc">Register a service for mDNS discovery.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_mdns_resolve</span>(<span class="param">const char *service_type, eos_net_addr_t *addr, uint32_t timeout_ms</span>)</code></div>
+<p class="api-desc">Discover a service via mDNS.</p></div>
+<div id="debug" class="module-section"><h2 style="color:var(--red)">&#128027; Debug Tools</h2>
+<p class="module-desc">GDB remote stub and core dump capture. Headers: <code>&lt;eos/gdb_stub.h&gt;</code>, <code>&lt;eos/coredump.h&gt;</code></p></div>
+
+<h3>GDB Stub</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_gdb_init</span>(<span class="param">EosGdbStub *stub, EosGdbTransport transport</span>)</code></div>
+<p class="api-desc">Initialize GDB stub with UART or TCP transport.</p>
+<div class="api-example"><h5>Example</h5><pre><code>EosGdbStub stub;
+eos_gdb_init(&amp;stub, EOS_GDB_TRANSPORT_UART);
+eos_gdb_start(&amp;stub, 115200); // baud rate for UART
+// For TCP: eos_gdb_start(&amp;stub, 3333); // port</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_gdb_start</span>(<span class="param">EosGdbStub *stub, int port_or_baud</span>)</code></div>
+<p class="api-desc">Start listening for GDB connections. For UART: baud rate; for TCP: port number.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_gdb_stop</span>(<span class="param">EosGdbStub *stub</span>)</code></div>
+<p class="api-desc">Stop GDB stub and disconnect.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_gdb_handle_exception</span>(<span class="param">EosGdbStub *stub, int signal</span>)</code></div>
+<p class="api-desc">Handle a debug exception &mdash; call from your fault handler.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_gdb_add_breakpoint</span>(<span class="param">EosGdbStub *stub, uint32_t addr</span>) / <span class="fn">eos_gdb_remove_breakpoint</span>(<span class="param">...</span>)</code></div>
+<p class="api-desc">Add/remove software breakpoints at memory address. Max 16 breakpoints.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_gdb_breakpoint</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Trigger a breakpoint programmatically (like BKPT instruction).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_gdb_is_connected</span>(<span class="param">EosGdbStub *stub</span>)</code></div>
+<p class="api-desc">Check if a GDB client is connected.</p></div>
+
+<h3>Core Dump</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_coredump_init</span>(<span class="param">EosDumpTarget target</span>)</code></div>
+<p class="api-desc">Initialize core dump subsystem. Target: <code>EOS_DUMP_TARGET_FLASH</code>, <code>UART</code>, or <code>RAM</code>.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_coredump_capture</span>(<span class="param">EosCrashReason reason, const EosCrashRegs *regs</span>)</code></div>
+<p class="api-desc">Capture crash state. Reasons: HARDFAULT, MEMFAULT, BUSFAULT, USAGEFAULT, ASSERT, WATCHDOG, STACK_OVF.</p>
+<div class="api-example"><h5>Example</h5><pre><code>void HardFault_Handler(void) {
+    EosCrashRegs regs;
+    // ... populate regs from exception frame ...
+    eos_coredump_capture(EOS_CRASH_HARDFAULT, &amp;regs);
+}</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_coredump_save</span>(<span class="param">const EosCoreDump *dump</span>) / <span class="fn">eos_coredump_load</span>(<span class="param">EosCoreDump *dump</span>)</code></div>
+<p class="api-desc">Save/load core dump to/from configured target. Magic: <code>0xC0DEDEAD</code>.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_coredump_print</span>(<span class="param">const EosCoreDump *dump</span>)</code></div>
+<p class="api-desc">Print formatted crash report to serial/stderr.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_coredump_exists</span>(<span class="param">void</span>) / <span class="fn">eos_coredump_clear</span>(<span class="param">void</span>) / <span class="fn">eos_coredump_validate</span>(<span class="param">const EosCoreDump *dump</span>)</code></div>
+<p class="api-desc">Check if dump exists, clear saved dump, or validate CRC32.</p></div>
+
+<div id="drivers" class="module-section"><h2 style="color:var(--orange)">&#128268; Driver Framework</h2>
+<p class="module-desc">Device driver registration, probe/bind, power management. Header: <code>&lt;eos/driver.h&gt;</code></p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_drv_init</span>(<span class="param">EosDrvRegistry *reg</span>)</code></div>
+<p class="api-desc">Initialize the driver registry (max 64 drivers).</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_drv_register</span>(<span class="param">EosDrvRegistry *reg, EosDriver *drv</span>)</code></div>
+<p class="api-desc">Register a driver. Driver struct provides name, class, probe/remove/suspend/resume/ioctl ops.</p>
+<div class="api-example"><h5>Example</h5><pre><code>int my_probe(EosDriver *d, void *pd) { /* init hardware */ return 0; }
+void my_remove(EosDriver *d) { /* cleanup */ }
+
+EosDriver my_drv = {
+    .name = "my_sensor", .version = 1,
+    .class_id = EOS_DRV_CLASS_SENSOR,
+    .probe = my_probe, .remove = my_remove
+};
+eos_drv_register(&amp;registry, &amp;my_drv);
+eos_drv_probe(&amp;registry, "my_sensor", platform_data);</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_drv_probe</span>(<span class="param">EosDrvRegistry *reg, const char *name, void *platform_data</span>)</code></div>
+<p class="api-desc">Probe (bind) a specific driver with platform data.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_drv_probe_all</span>(<span class="param">EosDrvRegistry *reg</span>)</code></div>
+<p class="api-desc">Probe all registered drivers.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">EosDriver *</span> <span class="fn">eos_drv_find</span>(<span class="param">EosDrvRegistry *reg, const char *name</span>)</code></div>
+<p class="api-desc">Find a driver by name. Returns pointer or NULL.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">EosDriver *</span> <span class="fn">eos_drv_find_by_class</span>(<span class="param">EosDrvRegistry *reg, EosDrvClass class_id, int index</span>)</code></div>
+<p class="api-desc">Find nth driver of a given class (GPIO, UART, SPI, SENSOR, etc.).</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_drv_suspend_all</span>(<span class="param">EosDrvRegistry *reg</span>) / <span class="fn">eos_drv_resume_all</span>(<span class="param">...</span>)</code></div>
+<p class="api-desc">Suspend/resume all bound drivers for power management.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_drv_ioctl</span>(<span class="param">EosDrvRegistry *reg, const char *name, uint32_t cmd, void *arg</span>)</code></div>
+<p class="api-desc">Send an I/O control command to a named driver.</p></div>
+
+<div id="services" class="module-section"><h2 style="color:var(--pink)">&#128295; Service Manager</h2>
+<p class="module-desc">Service lifecycle, health checks, restart policies, dependencies. Header: <code>&lt;eos/service.h&gt;</code></p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_svc_init</span>(<span class="param">EosSvcManager *mgr</span>)</code></div>
+<p class="api-desc">Initialize the service manager (max 32 services).</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_svc_register</span>(<span class="param">EosSvcManager *mgr, const char *name, const EosSvcOps *ops</span>)</code></div>
+<p class="api-desc">Register a service with start/stop/health callbacks.</p>
+<div class="api-example"><h5>Example</h5><pre><code>int wifi_start(void *ctx) { return wifi_connect(); }
+void wifi_stop(void *ctx) { wifi_disconnect(); }
+int wifi_health(void *ctx) { return wifi_is_connected() ? 0 : -1; }
+
+EosSvcOps wifi_ops = { .start=wifi_start, .stop=wifi_stop, .health=wifi_health };
+eos_svc_register(&amp;mgr, "wifi", &amp;wifi_ops);
+eos_svc_set_restart_policy(&amp;mgr, "wifi", EOS_SVC_RESTART_ON_FAIL, 5, 3000);
+eos_svc_set_watchdog(&amp;mgr, "wifi", 30000);</code></pre></div></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_svc_set_restart_policy</span>(<span class="param">EosSvcManager *mgr, const char *name, EosSvcRestartPolicy policy, uint32_t max, uint32_t delay_ms</span>)</code></div>
+<p class="api-desc">Set restart policy: NEVER, ALWAYS, or ON_FAIL with max restarts and delay.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_svc_add_dependency</span>(<span class="param">EosSvcManager *mgr, const char *name, const char *depends_on</span>)</code></div>
+<p class="api-desc">Add service dependency &mdash; ensures ordering during start/stop.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_svc_start</span>(<span class="param">EosSvcManager *mgr, const char *name</span>) / <span class="fn">eos_svc_stop</span>(<span class="param">...</span>) / <span class="fn">eos_svc_restart</span>(<span class="param">...</span>)</code></div>
+<p class="api-desc">Start, stop, or restart an individual service.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eos_svc_start_all</span>(<span class="param">EosSvcManager *mgr</span>) / <span class="fn">eos_svc_stop_all</span>(<span class="param">...</span>)</code></div>
+<p class="api-desc">Start/stop all registered services in dependency order.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_svc_tick</span>(<span class="param">EosSvcManager *mgr, uint32_t now_ms</span>)</code></div>
+<p class="api-desc">Service manager tick &mdash; call periodically. Checks health, handles restarts, watchdogs.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">EosSvcState</span> <span class="fn">eos_svc_get_state</span>(<span class="param">EosSvcManager *mgr, const char *name</span>)</code></div>
+<p class="api-desc">Get service state: STOPPED, STARTING, RUNNING, STOPPING, FAILED, RESTARTING.</p></div>
+
+<div id="logging" class="module-section"><h2 style="color:var(--green)">&#128196; Logging</h2>
+<p class="module-desc">Multi-output, module-scoped, crash-safe ring buffer. Header: <code>&lt;eos/log.h&gt;</code></p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_log_set_level</span>(<span class="param">EosLogLevel level</span>)</code></div>
+<p class="api-desc">Set global log level: <code>EOS_LOG_TRACE</code>, <code>DEBUG</code>, <code>INFO</code>, <code>WARN</code>, <code>ERROR</code>, <code>FATAL</code>, <code>NONE</code>.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_log_set_module_level</span>(<span class="param">const char *module, EosLogLevel level</span>)</code></div>
+<p class="api-desc">Set per-module log level (e.g., <code>eos_log_set_module_level("hal", EOS_LOG_DEBUG)</code>).</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_log_set_output</span>(<span class="param">uint32_t outputs</span>)</code></div>
+<p class="api-desc">Set output targets (bitwise OR): <code>EOS_LOG_OUTPUT_STDERR</code>, <code>UART</code>, <code>FILE</code>, <code>RING</code>, <code>SYSLOG</code>.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_log</span>(<span class="param">EosLogLevel level, const char *fmt, ...</span>)</code></div>
+<p class="api-desc">Core log function with printf-style formatting.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_log_module</span>(<span class="param">EosLogLevel level, const char *module, const char *fmt, ...</span>)</code></div>
+<p class="api-desc">Log with module tag for filtering.</p></div>
+
+<div class="callout callout-tip"><div class="callout-title">Convenience Macros</div>
+<code>EOS_TRACE(...)</code>, <code>EOS_DEBUG(...)</code>, <code>EOS_INFO(...)</code>, <code>EOS_WARN(...)</code>, <code>EOS_ERROR(...)</code>, <code>EOS_FATAL(...)</code><br>
+Module-scoped: Define <code>EOS_LOG_MODULE</code> then use <code>MLOG_INFO(...)</code>, <code>MLOG_ERROR(...)</code>, etc.
+</div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eos_log_ring_dump</span>(<span class="param">void</span>) / <span class="fn">eos_log_ring_clear</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Dump or clear the crash-safe ring buffer (64 entries). Use after reboot to inspect pre-crash logs.</p>
+<div class="api-example"><h5>Example</h5><pre><code>#define EOS_LOG_MODULE "app"
+#include &lt;eos/log.h&gt;
+
+eos_log_set_level(EOS_LOG_DEBUG);
+eos_log_set_output(EOS_LOG_OUTPUT_UART | EOS_LOG_OUTPUT_RING);
+
+MLOG_INFO("Application started, version %s", APP_VERSION);
+MLOG_DEBUG("Sensor reading: %.2f", temperature);</code></pre></div></div>
+
+</main></div>
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

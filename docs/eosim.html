@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EoSim API Reference v0.1.0 - EmbeddedOS</title><link rel="stylesheet" href="../style.css"></head><body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids 🎮</a><a href="../hardware-lab.html">Hardware Lab 🔌</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div>
+</div></nav>
+<div class="doc-layout"><aside class="doc-sidebar">
+<a href="#overview" class="sidebar-link active">Overview</a><a href="#list" class="sidebar-link">eosim list</a>
+<a href="#search" class="sidebar-link">eosim search</a><a href="#run" class="sidebar-link">eosim run</a>
+<a href="#stats" class="sidebar-link">eosim stats</a><a href="#gui" class="sidebar-link">eosim gui</a>
+<a href="#platform" class="sidebar-link">Platform YAML</a><a href="#engines" class="sidebar-link">Engines</a>
+<a href="#peripherals" class="sidebar-link">Peripherals</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eos.html" class="sidebar-link">EoS</a><a href="eboot.html" class="sidebar-link">eBoot</a>
+<a href="eai.html" class="sidebar-link">EAI</a><a href="eni.html" class="sidebar-link">ENI</a>
+<a href="eipc.html" class="sidebar-link">EIPC</a><a href="ebuild.html" class="sidebar-link">ebuild</a>
+<a href="eosuite.html" class="sidebar-link">eApps</a><a href="eostudio.html" class="sidebar-link">EoStudio</a></div></aside>
+<main class="doc-content">
+<h1>EoSim Developer Documentation <span class="version-badge">v0.1.0</span></h1>
+<p>Multi-architecture embedded simulation platform. Supports native Python simulation, binary emulation, and hardware-in-the-loop (HIL) testing across ARM, RISC-V, Xtensa, and x86 targets. Python CLI (<code>eosim</code>) with optional Tkinter GUI.</p>
+
+<div id="overview" class="module-section"><h2 style="color:var(--blue)">&#128187; Architecture</h2></div>
+<div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:0.82rem">EoSim CLI / GUI
+  |
+  +-- Platform Registry (52 platforms from YAML files)
+  |       |              |              |
+  |  Native Engine   Binary Engine  HIL Bridge
+  |  (Python sim)    (ARM/RV/x86)   (OpenOCD/Serial)
+  |  GPIO,UART,SPI   Full binary    Real hardware
+  |  I2C,Timer,ADC   execution      via debug probe
+  |
+  +-- 3D Renderers (drone, robot, vehicle, aircraft, medical, satellite)
+  +-- GUI Dashboard (GPIO panel, UART terminal, CPU state, memory view)</code></pre></div>
+
+<div id="list" class="module-section"><h2 style="color:var(--cyan)">&#128196; eosim list</h2></div>
+<div class="api-card accent-cyan"><div class="api-header">
+<code class="api-signature"><span class="fn">eosim list</span> <span class="param">[options]</span></code></div>
+<p class="api-desc">List all simulation platforms from the registry. Supports filtering and grouping. Output: table (default), JSON, or CSV.</p>
+<div class="api-params"><h5>Options</h5><table>
+<tr><td><code>--arch &lt;name&gt;</code></td><td><code>string</code></td><td>Filter: arm, arm64, riscv64, xtensa, x86_64.</td></tr>
+<tr><td><code>--vendor &lt;name&gt;</code></td><td><code>string</code></td><td>Filter: ST, NXP, Nordic, Espressif, Renesas, TI, Microchip, NVIDIA.</td></tr>
+<tr><td><code>--class &lt;name&gt;</code></td><td><code>string</code></td><td>Filter: mcu, sbc, soc, edge-server.</td></tr>
+<tr><td><code>--engine &lt;name&gt;</code></td><td><code>string</code></td><td>Filter: native, qemu, hil.</td></tr>
+<tr><td><code>--domain &lt;name&gt;</code></td><td><code>string</code></td><td>Filter: automotive, industrial, medical, iot, robotics, aerospace.</td></tr>
+<tr><td><code>--group-by &lt;f&gt;</code></td><td><code>string</code></td><td>Group by: arch, vendor, class, engine, domain.</td></tr>
+<tr><td><code>--format &lt;fmt&gt;</code></td><td><code>string</code></td><td>Output: table, json, csv.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>$ eosim list --arch arm --class mcu
+
+Available platforms (8):
+  NAME                ARCH    ENGINE   VENDOR     CLASS  DESCRIPTION
+  -------------------------------------------------------------------
+  stm32f4             arm     native   ST         mcu    STM32F407 Cortex-M4F
+  stm32h7             arm     native   ST         mcu    STM32H743 Cortex-M7
+  nrf52               arm     native   Nordic     mcu    nRF52840 Cortex-M4F
+  nrf5340             arm     native   Nordic     mcu    nRF5340 Cortex-M33
+  k64f                arm     native   NXP        mcu    Kinetis K64 Cortex-M4F
+  samc21              arm     native   Microchip  mcu    SAMC21 Cortex-M0+
+  psoc6               arm     native   Infineon   mcu    PSoC 6 Cortex-M4F
+  s32k344             arm     qemu     NXP        mcu    S32K344 Cortex-M7</code></pre></div></div>
+
+<div id="search" class="module-section"><h2 style="color:var(--green)">&#128269; eosim search</h2></div>
+<div class="api-card accent-green"><div class="api-header">
+<code class="api-signature"><span class="fn">eosim search</span> <span class="param">&lt;query&gt;</span></code></div>
+<p class="api-desc">Fuzzy search platforms by name, vendor, SoC, or architecture.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td><code>query</code></td><td><code>string</code></td><td>Search term.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>$ eosim search nordic
+Search results for 'nordic' (3 matches):
+  nrf52     arm   native  Nordic  nRF52840
+  nrf5340   arm   native  Nordic  nRF5340
+  nrf9160   arm   qemu    Nordic  nRF9160</code></pre></div></div>
+
+<div id="run" class="module-section"><h2 style="color:var(--orange)">&#9654; eosim run</h2></div>
+<div class="api-card accent-orange"><div class="api-header">
+<code class="api-signature"><span class="fn">eosim run</span> <span class="param">&lt;platform&gt; [options]</span></code></div>
+<p class="api-desc">Start simulation for a platform. Loads YAML config, initializes engine (native/binary emulation), optionally loads firmware.</p>
+<div class="api-params"><h5>Options</h5><table>
+<tr><td><code>--firmware &lt;path&gt;</code></td><td><code>string</code></td><td>ELF or BIN firmware to load.</td></tr>
+<tr><td><code>--engine &lt;type&gt;</code></td><td><code>string</code></td><td>Override: native, qemu.</td></tr>
+<tr><td><code>--gdb-port &lt;N&gt;</code></td><td><code>int</code></td><td>GDB server port (default: 3333).</td></tr>
+<tr><td><code>--uart-port &lt;N&gt;</code></td><td><code>int</code></td><td>UART TCP bridge port (default: 4444).</td></tr>
+<tr><td><code>--gui</code></td><td><code>flag</code></td><td>Open GUI dashboard.</td></tr>
+<tr><td><code>--headless</code></td><td><code>flag</code></td><td>No GUI or terminal.</td></tr>
+<tr><td><code>--timeout &lt;sec&gt;</code></td><td><code>int</code></td><td>Auto-stop after N seconds.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>$ eosim run stm32f4 --firmware build/my-robot.elf --gui
+
+[eosim] Platform: stm32f4 (STM32F407VG)
+[eosim] Engine: native (Python peripheral simulation)
+[eosim] Peripherals: GPIO(144), UART(6), SPI(6), I2C(3), TIM(14), ADC(3)
+[eosim] GDB server: localhost:3333
+[eosim] UART bridge: localhost:4444
+[eosim] GUI dashboard opened
+[eosim] Simulation running... (Ctrl+C to stop)</code></pre></div></div>
+<div id="stats" class="module-section"><h2 style="color:var(--purple)">&#128202; eosim stats</h2></div>
+<div class="api-card accent-purple"><div class="api-header">
+<code class="api-signature"><span class="fn">eosim stats</span></code></div>
+<p class="api-desc">Show platform registry statistics: total count, breakdown by architecture, vendor, engine, class, and domain.</p>
+<div class="api-example"><h5>Example</h5><pre><code>$ eosim stats
+Platform Registry Statistics:
+  Total platforms: 52
+  By Architecture:  arm: 22, arm64: 10, riscv64: 3, riscv32: 2, xtensa: 3, x86_64: 2, mipsel: 2, powerpc: 1, microblaze: 1, arc: 1, tricore: 1, rh850: 1
+  By Engine:        native: 32, qemu: 16, hil: 4
+  By Class:         mcu: 20, sbc: 10, soc: 5, devboard: 5, virtual: 4, automotive: 3, safety: 3, fpga: 1, industrial: 1
+  By Vendor:        ST: 5, Broadcom: 5, Nordic: 3, NXP: 3, Espressif: 3, TI: 3, ARM: 3, NVIDIA: 2, ...</code></pre></div></div>
+
+<div id="gui" class="module-section"><h2 style="color:var(--pink)">&#127912; eosim gui</h2></div>
+<div class="api-card accent-pink"><div class="api-header">
+<code class="api-signature"><span class="fn">eosim gui</span> <span class="param">[platform]</span></code></div>
+<p class="api-desc">Open the EoSim GUI dashboard (Tkinter). Includes: GPIO pin visualizer, UART terminal, CPU state panel, memory viewer, peripheral register inspector, and optional 3D product renderers (drone, robot, vehicle, aircraft, medical, satellite).</p>
+<div class="api-params"><h5>Options</h5><table>
+<tr><td><code>platform</code></td><td><code>string</code></td><td>Optional platform to auto-start simulation.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>$ eosim gui stm32f4
+# Opens Tkinter window with:
+# - GPIO panel: 144 pins, click to toggle, color by state
+# - UART terminal: real-time serial output
+# - CPU panel: registers, PC, SP, flags, clock
+# - Memory view: hex dump of RAM/Flash regions
+# - Peripheral registers: TIM, ADC, SPI, I2C config</code></pre></div></div>
+<div id="platform" class="module-section"><h2 style="color:var(--orange)">&#128220; Platform YAML Format</h2></div>
+<div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:0.82rem"># platforms/stm32f4/platform.yml
+name: stm32f4
+display_name: "STM32F407VG Discovery"
+arch: arm
+vendor: ST
+soc: STM32F407VG
+platform_class: mcu
+engine: native
+domain: iot
+
+cpu:
+  core: cortex-m4f
+  fpu: true
+  mpu: true
+  clock_hz: 168000000
+  icache: false
+  dcache: false
+
+memory:
+  flash_kb: 1024
+  ram_kb: 192
+  ccm_kb: 64       # Core-coupled memory
+
+peripherals:
+  gpio: { ports: [A,B,C,D,E,F,G,H,I], pins_per_port: 16 }
+  uart: { count: 6, max_baud: 10500000 }
+  spi:  { count: 6, max_clock_hz: 42000000 }
+  i2c:  { count: 3, max_clock_hz: 400000 }
+  timer: { count: 14, bits: [16, 32] }
+  adc:  { count: 3, channels: 16, resolution: 12 }
+  dac:  { count: 2, channels: 2, resolution: 12 }
+  dma:  { count: 2, streams: 16 }
+  usb:  { otg_fs: true, otg_hs: true }
+  can:  { count: 2 }
+  sdio: { count: 1 }
+  ethernet: { count: 1 }
+
+debug:
+  interface: SWD
+  gdb_port: 3333
+  uart_bridge_port: 4444
+
+qemu:
+  machine: netduinoplus2
+  cpu: cortex-m4</code></pre></div>
+
+<div id="engines" class="module-section"><h2 style="color:var(--green)">&#9881; Simulation Engines</h2></div>
+<div class="struct-card"><table>
+<tr style="font-weight:bold;color:var(--cyan)"><td>Engine</td><td>Type</td><td>Speed</td><td>Fidelity</td><td>Use Case</td></tr>
+<tr><td><code>native</code></td><td>Python simulation</td><td>Fast</td><td>Medium</td><td>Rapid prototyping, CI testing, peripheral logic verification. Simulates GPIO, UART, SPI, I2C, Timer, ADC registers in Python.</td></tr>
+<tr><td><code>qemu</code></td><td>Binary emulation</td><td>Medium</td><td>High</td><td>Full firmware execution on emulated CPU. Uses EoSim binary emulation with GDB and QMP interfaces. Supports ARM, RISC-V, Xtensa, x86.</td></tr>
+<tr><td><code>hil</code></td><td>Hardware-in-loop</td><td>Real-time</td><td>Exact</td><td>Real hardware via debug probe (OpenOCD/J-Link). Bridges serial and GDB. Highest fidelity for production validation.</td></tr>
+</table></div>
+
+<div id="peripherals" class="module-section"><h2 style="color:var(--purple)">&#128268; Native Engine Peripheral Registers</h2>
+<p class="module-desc">The native engine simulates peripheral register maps in Python. Each peripheral provides read/write access to memory-mapped registers.</p></div>
+
+<div class="struct-card"><h4>GPIO Register Map (per port)</h4><table>
+<tr style="font-weight:bold;color:var(--cyan)"><td>Offset</td><td>Register</td><td>Description</td></tr>
+<tr><td><code>0x00</code></td><td>MODER</td><td>Mode register: 2 bits per pin (00=input, 01=output, 10=AF, 11=analog).</td></tr>
+<tr><td><code>0x04</code></td><td>OTYPER</td><td>Output type: 0=push-pull, 1=open-drain.</td></tr>
+<tr><td><code>0x08</code></td><td>OSPEEDR</td><td>Speed: 00=low, 01=med, 10=high, 11=vhigh.</td></tr>
+<tr><td><code>0x0C</code></td><td>PUPDR</td><td>Pull-up/down: 00=none, 01=up, 10=down.</td></tr>
+<tr><td><code>0x10</code></td><td>IDR</td><td>Input data (read-only, 16 bits).</td></tr>
+<tr><td><code>0x14</code></td><td>ODR</td><td>Output data (read/write, 16 bits).</td></tr>
+<tr><td><code>0x18</code></td><td>BSRR</td><td>Bit set/reset (write-only, atomic).</td></tr>
+<tr><td><code>0x1C</code></td><td>LCKR</td><td>Lock register.</td></tr>
+<tr><td><code>0x20</code></td><td>AFRL</td><td>Alternate function low (pins 0-7).</td></tr>
+<tr><td><code>0x24</code></td><td>AFRH</td><td>Alternate function high (pins 8-15).</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>UART Register Map</h4><table>
+<tr style="font-weight:bold;color:var(--cyan)"><td>Offset</td><td>Register</td><td>Description</td></tr>
+<tr><td><code>0x00</code></td><td>SR</td><td>Status: TXE, RXNE, TC, IDLE, ORE, NE, FE, PE flags.</td></tr>
+<tr><td><code>0x04</code></td><td>DR</td><td>Data register (read=RX, write=TX).</td></tr>
+<tr><td><code>0x08</code></td><td>BRR</td><td>Baud rate register (mantissa + fraction).</td></tr>
+<tr><td><code>0x0C</code></td><td>CR1</td><td>Control: UE, TE, RE, RXNEIE, TCIE, TXEIE, M, OVER8.</td></tr>
+<tr><td><code>0x10</code></td><td>CR2</td><td>Control: STOP bits, CLKEN, LINEN.</td></tr>
+<tr><td><code>0x14</code></td><td>CR3</td><td>Control: DMAT, DMAR, CTSE, RTSE.</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>Timer Register Map</h4><table>
+<tr style="font-weight:bold;color:var(--cyan)"><td>Offset</td><td>Register</td><td>Description</td></tr>
+<tr><td><code>0x00</code></td><td>CR1</td><td>Control: CEN, UDIS, URS, OPM, DIR, ARPE.</td></tr>
+<tr><td><code>0x0C</code></td><td>DIER</td><td>DMA/interrupt enable: UIE, CC1IE, CC2IE, TIE.</td></tr>
+<tr><td><code>0x10</code></td><td>SR</td><td>Status: UIF, CC1IF, CC2IF, TIF.</td></tr>
+<tr><td><code>0x24</code></td><td>CNT</td><td>Counter value.</td></tr>
+<tr><td><code>0x28</code></td><td>PSC</td><td>Prescaler.</td></tr>
+<tr><td><code>0x2C</code></td><td>ARR</td><td>Auto-reload value.</td></tr>
+<tr><td><code>0x34</code></td><td>CCR1</td><td>Capture/compare channel 1.</td></tr>
+</table></div>
+
+<p style="color:var(--text-muted);margin-top:3rem;font-size:0.85rem">EoSim requires Python 3.10+. Binary emulation engine requires qemu-system binaries installed. HIL engine requires OpenOCD and a compatible debug probe. Install: <code>pip install eosim</code>.</p>
+
+</main></div><footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

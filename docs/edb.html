@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eDB - Unified Multi-Model Database - EmbeddedOS</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links">
+<a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+</div></div></nav>
+<div class="doc-layout">
+<aside class="doc-sidebar"><div class="sidebar-section">
+<div class="sidebar-title">eDB Modules</div>
+<a href="#sql" class="sidebar-link active">SQL Engine</a><a href="#document" class="sidebar-link">Document Store</a>
+<a href="#keyvalue" class="sidebar-link">Key-Value</a><a href="#restapi" class="sidebar-link">REST API</a>
+<a href="#auth" class="sidebar-link">Authentication</a><a href="#security" class="sidebar-link">Security</a>
+<a href="#ebot" class="sidebar-link">eBot AI</a><a href="#query-engine" class="sidebar-link">Query Engine</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eboot.html" class="sidebar-link">eBoot</a><a href="eai.html" class="sidebar-link">EAI</a>
+<a href="eni.html" class="sidebar-link">ENI</a><a href="ebuild.html" class="sidebar-link">ebuild</a>
+<a href="eipc.html" class="sidebar-link">EIPC</a><a href="eosuite.html" class="sidebar-link">eApps</a>
+<a href="eosim.html" class="sidebar-link">EoSim</a><a href="eostudio.html" class="sidebar-link">EoStudio</a>
+<a href="edb.html" class="sidebar-link">eDB</a><a href="ebowser.html" class="sidebar-link">eBowser</a>
+<a href="eoffice.html" class="sidebar-link">eOffice</a><a href="eserviceapps.html" class="sidebar-link">eServiceApps</a>
+</div></aside>
+<main class="doc-content">
+<h1>eDB &mdash; Unified Multi-Model Database <span class="version-badge">v0.1.0</span></h1>
+<p>eDB is a lightweight, embeddable multi-model database for EmbeddedOS that unifies SQL (relational), document (NoSQL), and key-value storage under a single Python API and REST interface. Designed for resource-constrained devices, edge computing, and rapid prototyping &mdash; with built-in JWT authentication, AES-256-GCM encryption, and an AI-powered natural language query assistant.</p>
+<p><strong>Language:</strong> Python 3.10+ | <strong>Package:</strong> <code>pip install edb</code> | <strong>License:</strong> MIT | <strong>Backend:</strong> SQLite3</p>
+
+<div class="callout callout-info"><div class="callout-title">Architecture Overview</div>
+<p><strong>SQL Engine:</strong> Full relational database powered by SQLite &mdash; CREATE, INSERT, SELECT, UPDATE, DELETE, JOINs, indexes.<br>
+<strong>Document Store:</strong> Schema-free JSON document collections with query operators ($eq, $gt, $lt, $in, $regex).<br>
+<strong>Key-Value Store:</strong> Fast in-memory key-value with optional TTL-based expiry and persistence.<br>
+<strong>REST API:</strong> FastAPI-powered HTTP interface for all three engines &mdash; serve with <code>edb serve</code>.<br>
+<strong>eBot AI:</strong> Natural language &rarr; SQL/NoSQL translation using rule-based NLP.<br>
+<strong>Security:</strong> JWT auth (RBAC), AES-256-GCM encryption at rest, tamper-resistant audit logging.</p></div>
+
+<div class="callout callout-tip"><div class="callout-title">Quick Start</div>
+<pre><code>pip install edb
+edb init myproject.sqlite      # Create database
+edb shell                      # Interactive SQL shell
+edb serve --port 8080          # Launch REST API server</code></pre></div>
+
+<!-- ═══════════════════════════════════════════════════════ SQL ENGINE ═══════════════════════════════════════════════════════ -->
+<div id="sql" class="module-section"><h2 style="color:var(--cyan)">&#128451; SQL Engine</h2>
+<p class="module-desc">Full relational database with SQLite backend. Module: <code>edb.core.relational</code></p></div>
+
+<h3>Database Initialization</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">RelationalDB</span> <span class="fn">RelationalDB</span>(<span class="param">db_path: str</span>)</code></div>
+<p class="api-desc">Create or open a SQLite database at the given file path. Creates the file and parent directories if they don&rsquo;t exist.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>db_path</td><td>str</td><td>Path to the SQLite database file (e.g., <code>"mydb.sqlite"</code>).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>RelationalDB</code> instance.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>from edb.core.relational import RelationalDB
+
+db = RelationalDB("mydb.sqlite")</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">list[dict]</span> <span class="fn">db.execute</span>(<span class="param">sql: str, params: tuple = ()</span>)</code></div>
+<p class="api-desc">Execute a raw SQL statement. For SELECT queries, returns a list of row dicts. For write operations, commits automatically and returns an empty list.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>sql</td><td>str</td><td>SQL statement with optional <code>?</code> placeholders.</td></tr>
+<tr><td>params</td><td>tuple</td><td>Positional parameters for placeholders.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>List of dicts for SELECT; empty list for DDL/DML.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>db.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        role TEXT DEFAULT 'user',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+""")</code></pre></div></div>
+
+<h3>CRUD Operations</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">list[dict]</span> <span class="fn">db.execute</span>(<span class="param">"INSERT INTO ..."</span>)</code></div>
+<p class="api-desc">Insert one or more rows into a table. Use parameterized queries to prevent SQL injection.</p>
+<div class="api-example"><h5>Example</h5><pre><code># Single insert
+db.execute(
+    "INSERT INTO users (name, email, role) VALUES (?, ?, ?)",
+    ("Alice", "alice@example.com", "admin")
+)
+
+# Batch insert
+users = [("Bob", "bob@example.com", "user"), ("Carol", "carol@example.com", "user")]
+for name, email, role in users:
+    db.execute("INSERT INTO users (name, email, role) VALUES (?, ?, ?)", (name, email, role))</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">list[dict]</span> <span class="fn">db.execute</span>(<span class="param">"SELECT ..."</span>)</code></div>
+<p class="api-desc">Query rows from one or more tables. Supports WHERE, JOIN, ORDER BY, LIMIT, GROUP BY, HAVING, and aggregate functions.</p>
+<div class="api-example"><h5>Example</h5><pre><code># Basic select
+rows = db.execute("SELECT * FROM users WHERE role = ?", ("admin",))
+for row in rows:
+    print(f"{row['name']} &mdash; {row['email']}")
+
+# Join with aggregation
+results = db.execute("""
+    SELECT u.name, COUNT(o.id) AS order_count
+    FROM users u LEFT JOIN orders o ON u.id = o.user_id
+    GROUP BY u.id ORDER BY order_count DESC LIMIT 10
+""")</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">list[dict]</span> <span class="fn">db.execute</span>(<span class="param">"UPDATE ..."</span>)</code></div>
+<p class="api-desc">Update existing rows matching a WHERE condition.</p>
+<div class="api-example"><h5>Example</h5><pre><code>db.execute(
+    "UPDATE users SET role = ? WHERE email = ?",
+    ("admin", "bob@example.com")
+)</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">list[dict]</span> <span class="fn">db.execute</span>(<span class="param">"DELETE ..."</span>)</code></div>
+<p class="api-desc">Delete rows matching a WHERE condition.</p>
+<div class="api-example"><h5>Example</h5><pre><code>db.execute("DELETE FROM users WHERE email = ?", ("carol@example.com",))</code></pre></div></div>
+
+<h3>Schema &amp; Index Management</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">list[dict]</span> <span class="fn">db.execute</span>(<span class="param">"CREATE INDEX ..."</span>)</code></div>
+<p class="api-desc">Create indexes to accelerate queries. Supports unique indexes, composite indexes, and partial indexes.</p>
+<div class="api-example"><h5>Example</h5><pre><code># Unique index
+db.execute("CREATE UNIQUE INDEX idx_users_email ON users(email)")
+
+# Composite index
+db.execute("CREATE INDEX idx_orders_user_date ON orders(user_id, created_at)")
+
+# List all tables
+tables = db.execute("SELECT name FROM sqlite_master WHERE type='table'")</code></pre></div></div>
+
+<h3>Interactive Shell</h3>
+<div class="callout callout-tip"><div class="callout-title">edb shell</div>
+<pre><code>$ edb shell
+eDB Shell v0.1.0 (SQLite 3.39.0)
+Connected to: mydb.sqlite
+
+edb&gt; CREATE TABLE sensors (id INTEGER PRIMARY KEY, name TEXT, value REAL);
+OK
+
+edb&gt; INSERT INTO sensors VALUES (1, 'temperature', 23.5);
+OK (1 row affected)
+
+edb&gt; SELECT * FROM sensors;
++----+-------------+-------+
+| id | name        | value |
++----+-------------+-------+
+|  1 | temperature |  23.5 |
++----+-------------+-------+
+1 row(s)
+
+edb&gt; .tables
+sensors
+users
+
+edb&gt; .schema sensors
+CREATE TABLE sensors (id INTEGER PRIMARY KEY, name TEXT, value REAL);
+
+edb&gt; .quit</code></pre></div>
+
+<!-- ═══════════════════════════════════════════════════════ DOCUMENT STORE ═══════════════════════════════════════════════════════ -->
+<div id="document" class="module-section"><h2 style="color:var(--green)">&#128196; Document Store</h2>
+<p class="module-desc">Schema-free JSON document collections with query operators. Module: <code>edb.core.document</code></p></div>
+
+<h3>Collection Management</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">DocumentStore</span> <span class="fn">DocumentStore</span>(<span class="param">db_path: str</span>)</code></div>
+<p class="api-desc">Initialize the document store engine. Uses the same SQLite file as the SQL engine &mdash; documents are stored as JSON blobs with auto-generated UUIDs.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>db_path</td><td>str</td><td>Path to the database file.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>from edb.core.document import DocumentStore
+
+docs = DocumentStore("mydb.sqlite")</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">Collection</span> <span class="fn">docs.collection</span>(<span class="param">name: str</span>)</code></div>
+<p class="api-desc">Get or create a named collection. Collections are created lazily on first insert.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>name</td><td>str</td><td>Collection name (alphanumeric, underscores).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>Collection</code> handle.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>sensors = docs.collection("sensors")
+users = docs.collection("users")</code></pre></div></div>
+
+<h3>Document Operations</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">str</span> <span class="fn">collection.insert</span>(<span class="param">doc: dict</span>)</code></div>
+<p class="api-desc">Insert a JSON document into the collection. Auto-generates a UUID <code>_id</code> field if not provided.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>doc</td><td>dict</td><td>JSON-serializable document.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Document <code>_id</code> string (UUID).</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>doc_id = sensors.insert({
+    "type": "temperature",
+    "value": 23.5,
+    "unit": "celsius",
+    "location": "lab-1",
+    "tags": ["indoor", "calibrated"],
+    "metadata": {"firmware": "v2.1", "battery": 85}
+})
+print(f"Inserted: {doc_id}")</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">list[str]</span> <span class="fn">collection.insert_many</span>(<span class="param">docs: list[dict]</span>)</code></div>
+<p class="api-desc">Bulk insert multiple documents. Runs in a single transaction for atomicity.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>docs</td><td>list[dict]</td><td>List of documents to insert.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>List of inserted <code>_id</code> strings.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>ids = sensors.insert_many([
+    {"type": "humidity", "value": 65.2, "unit": "percent"},
+    {"type": "pressure", "value": 1013.25, "unit": "hPa"},
+    {"type": "temperature", "value": 19.8, "unit": "celsius"}
+])</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">list[dict]</span> <span class="fn">collection.find</span>(<span class="param">query: dict = {}</span>)</code></div>
+<p class="api-desc">Query documents matching filter criteria. Supports operators: <code>$eq</code>, <code>$ne</code>, <code>$gt</code>, <code>$gte</code>, <code>$lt</code>, <code>$lte</code>, <code>$in</code>, <code>$nin</code>, <code>$regex</code>, <code>$exists</code>.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>query</td><td>dict</td><td>Filter document. Empty dict returns all documents.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>List of matching documents (dicts with <code>_id</code>).</p></div>
+<div class="api-example"><h5>Example</h5><pre><code># Exact match
+temps = sensors.find({"type": "temperature"})
+
+# Comparison operators
+hot = sensors.find({"value": {"$gt": 30}, "type": "temperature"})
+
+# Regex match
+lab_sensors = sensors.find({"location": {"$regex": "^lab-"}})
+
+# $in operator
+specific = sensors.find({"type": {"$in": ["temperature", "humidity"]}})
+
+# Nested field access
+old_fw = sensors.find({"metadata.firmware": {"$lt": "v2.0"}})</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">dict | None</span> <span class="fn">collection.find_one</span>(<span class="param">query: dict</span>)</code></div>
+<p class="api-desc">Find the first document matching the query. Returns <code>None</code> if no match.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>query</td><td>dict</td><td>Filter document.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Matching document or <code>None</code>.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>doc = sensors.find_one({"_id": doc_id})
+if doc:
+    print(f"Value: {doc['value']} {doc['unit']}")</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">collection.update</span>(<span class="param">query: dict, update: dict</span>)</code></div>
+<p class="api-desc">Update all documents matching the query. Supports <code>$set</code>, <code>$unset</code>, <code>$inc</code>, <code>$push</code>, <code>$pull</code> operators.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>query</td><td>dict</td><td>Filter to select documents.</td></tr>
+<tr><td>update</td><td>dict</td><td>Update operations to apply.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Number of documents modified.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code># Set fields
+sensors.update(
+    {"type": "temperature", "location": "lab-1"},
+    {"$set": {"value": 24.1, "updated_at": "2025-01-15T10:30:00Z"}}
+)
+
+# Increment a numeric field
+sensors.update({"_id": doc_id}, {"$inc": {"metadata.battery": -1}})
+
+# Push to an array
+sensors.update({"_id": doc_id}, {"$push": {"tags": "verified"}})</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">collection.delete</span>(<span class="param">query: dict</span>)</code></div>
+<p class="api-desc">Delete all documents matching the query.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>query</td><td>dict</td><td>Filter to select documents for deletion.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Number of documents deleted.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>deleted = sensors.delete({"type": "pressure", "value": {"$lt": 900}})
+print(f"Removed {deleted} documents")</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">collection.count</span>(<span class="param">query: dict = {}</span>)</code></div>
+<p class="api-desc">Count documents matching the query. Empty query counts all documents in the collection.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>query</td><td>dict</td><td>Optional filter.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Number of matching documents.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>total = sensors.count()
+temp_count = sensors.count({"type": "temperature"})
+print(f"{temp_count}/{total} are temperature readings")</code></pre></div></div>
+
+<h3>Query Operators Reference</h3>
+<div class="struct-card"><h4>Supported Query Operators</h4><table>
+<tr><td><code>$eq</code></td><td>dict</td><td>Equals (implicit when using direct value match)</td></tr>
+<tr><td><code>$ne</code></td><td>dict</td><td>Not equal</td></tr>
+<tr><td><code>$gt</code> / <code>$gte</code></td><td>dict</td><td>Greater than / greater than or equal</td></tr>
+<tr><td><code>$lt</code> / <code>$lte</code></td><td>dict</td><td>Less than / less than or equal</td></tr>
+<tr><td><code>$in</code> / <code>$nin</code></td><td>dict</td><td>Value in / not in array</td></tr>
+<tr><td><code>$regex</code></td><td>dict</td><td>Regular expression match</td></tr>
+<tr><td><code>$exists</code></td><td>dict</td><td>Field exists (true) or not (false)</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>Supported Update Operators</h4><table>
+<tr><td><code>$set</code></td><td>dict</td><td>Set field values (create if missing)</td></tr>
+<tr><td><code>$unset</code></td><td>dict</td><td>Remove fields from document</td></tr>
+<tr><td><code>$inc</code></td><td>dict</td><td>Increment numeric fields</td></tr>
+<tr><td><code>$push</code></td><td>dict</td><td>Append value to array field</td></tr>
+<tr><td><code>$pull</code></td><td>dict</td><td>Remove value from array field</td></tr>
+</table></div>
+
+<!-- ═══════════════════════════════════════════════════════ KEY-VALUE STORE ═══════════════════════════════════════════════════════ -->
+<div id="keyvalue" class="module-section"><h2 style="color:var(--purple)">&#128273; Key-Value Store</h2>
+<p class="module-desc">Fast in-memory key-value store with optional TTL expiry and disk persistence. Module: <code>edb.core.keyvalue</code></p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">KeyValueStore</span> <span class="fn">KeyValueStore</span>(<span class="param">db_path: str</span>)</code></div>
+<p class="api-desc">Initialize the key-value store. Keys are strings; values are any JSON-serializable type. Supports optional TTL-based expiry for cache-like behavior.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>db_path</td><td>str</td><td>Path to the persistence file. Values are loaded into memory at startup.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>from edb.core.keyvalue import KeyValueStore
+
+kv = KeyValueStore("mydb.sqlite")</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">None</span> <span class="fn">kv.set</span>(<span class="param">key: str, value: Any, ttl: int | None = None</span>)</code></div>
+<p class="api-desc">Store a key-value pair. If the key already exists, its value is overwritten. Optional TTL in seconds causes automatic expiry.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>key</td><td>str</td><td>Key string (max 512 bytes).</td></tr>
+<tr><td>value</td><td>Any</td><td>JSON-serializable value (str, int, float, dict, list, bool, None).</td></tr>
+<tr><td>ttl</td><td>int | None</td><td>Time-to-live in seconds. <code>None</code> = no expiry.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code># Permanent storage
+kv.set("config:version", "2.1.0")
+kv.set("device:info", {"name": "sensor-01", "firmware": "v2.1", "calibrated": True})
+
+# Cache with TTL (expires after 5 minutes)
+kv.set("cache:weather", {"temp": 22.5, "humidity": 60}, ttl=300)
+
+# Session token (expires after 1 hour)
+kv.set("session:abc123", {"user_id": 42, "role": "admin"}, ttl=3600)</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">Any | None</span> <span class="fn">kv.get</span>(<span class="param">key: str</span>)</code></div>
+<p class="api-desc">Retrieve a value by key. Returns <code>None</code> if the key doesn&rsquo;t exist or has expired.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>key</td><td>str</td><td>Key to look up.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Stored value or <code>None</code>.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>version = kv.get("config:version")     # "2.1.0"
+info = kv.get("device:info")           # {"name": "sensor-01", ...}
+missing = kv.get("nonexistent")        # None</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">bool</span> <span class="fn">kv.delete</span>(<span class="param">key: str</span>)</code></div>
+<p class="api-desc">Delete a key-value pair. Returns <code>True</code> if the key existed and was deleted.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>key</td><td>str</td><td>Key to delete.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>True</code> if deleted, <code>False</code> if key not found.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>kv.delete("session:abc123")   # True
+kv.delete("nonexistent")      # False</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">bool</span> <span class="fn">kv.exists</span>(<span class="param">key: str</span>)</code></div>
+<p class="api-desc">Check if a key exists and has not expired.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>key</td><td>str</td><td>Key to check.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>True</code> if key exists and is not expired.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">list[str]</span> <span class="fn">kv.keys</span>(<span class="param">pattern: str = "*"</span>)</code></div>
+<p class="api-desc">List all keys matching a glob pattern. Excludes expired keys.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>pattern</td><td>str</td><td>Glob pattern (<code>*</code> = all, <code>session:*</code> = all sessions).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>List of matching key strings.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>all_keys = kv.keys()                   # All keys
+sessions = kv.keys("session:*")        # Session keys only
+configs = kv.keys("config:*")          # Config keys only</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">None</span> <span class="fn">kv.flush</span>(<span class="param"></span>)</code></div>
+<p class="api-desc">Delete all key-value pairs from the store and persist the change to disk.</p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">None</span> <span class="fn">kv.cleanup_expired</span>(<span class="param"></span>)</code></div>
+<p class="api-desc">Remove all expired keys from the store. Called automatically on <code>get()</code>, but can be invoked manually for batch cleanup.</p></div>
+
+<!-- ═══════════════════════════════════════════════════════ REST API ═══════════════════════════════════════════════════════ -->
+<div id="restapi" class="module-section"><h2 style="color:var(--orange)">&#127760; REST API</h2>
+<p class="module-desc">FastAPI-powered HTTP interface for all database engines. Module: <code>edb.api</code></p></div>
+
+<div class="callout callout-info"><div class="callout-title">Server Launch</div>
+<pre><code># Start the API server
+edb serve --port 8080
+
+# With authentication enabled
+edb serve --port 8080 --auth
+
+# Custom host and database
+edb serve --host 0.0.0.0 --port 8080 --db /data/production.sqlite</code></pre></div>
+
+<h3>SQL Endpoints</h3>
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">POST</span> <span class="param">/api/sql/query</span></code></div>
+<p class="api-desc">Execute a SQL query and return results as JSON.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>sql</td><td>string</td><td>SQL statement to execute.</td></tr>
+<tr><td>params</td><td>array</td><td>Optional positional parameters.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>curl -X POST http://localhost:8080/api/sql/query \
+  -H "Content-Type: application/json" \
+  -d '{"sql": "SELECT * FROM users WHERE role = ?", "params": ["admin"]}'
+
+# Response:
+{
+  "columns": ["id", "name", "email", "role"],
+  "rows": [
+    {"id": 1, "name": "Alice", "email": "alice@example.com", "role": "admin"}
+  ],
+  "row_count": 1
+}</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">GET</span> <span class="param">/api/sql/tables</span></code></div>
+<p class="api-desc">List all tables in the database with row counts.</p>
+<div class="api-returns"><h5>Response</h5><p>JSON array of <code>{"name": "...", "row_count": N}</code> objects.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">GET</span> <span class="param">/api/sql/tables/{table}/schema</span></code></div>
+<p class="api-desc">Get the schema (column names, types, constraints) of a specific table.</p></div>
+
+<h3>Document Endpoints</h3>
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">POST</span> <span class="param">/api/documents/{collection}</span></code></div>
+<p class="api-desc">Insert a document into a collection.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>document</td><td>object</td><td>JSON document to insert.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>curl -X POST http://localhost:8080/api/documents/sensors \
+  -H "Content-Type: application/json" \
+  -d '{"document": {"type": "temperature", "value": 23.5}}'
+
+# Response:
+{"_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "status": "inserted"}</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">POST</span> <span class="param">/api/documents/{collection}/find</span></code></div>
+<p class="api-desc">Query documents with MongoDB-style filter operators.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>query</td><td>object</td><td>Filter document with optional operators.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>curl -X POST http://localhost:8080/api/documents/sensors/find \
+  -H "Content-Type: application/json" \
+  -d '{"query": {"type": "temperature", "value": {"$gt": 20}}}'</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">PUT</span> <span class="param">/api/documents/{collection}</span></code></div>
+<p class="api-desc">Update documents matching a query.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>query</td><td>object</td><td>Filter to select documents.</td></tr>
+<tr><td>update</td><td>object</td><td>Update operations (<code>$set</code>, <code>$inc</code>, etc.).</td></tr>
+</table></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">DELETE</span> <span class="param">/api/documents/{collection}</span></code></div>
+<p class="api-desc">Delete documents matching a query.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>query</td><td>object</td><td>Filter to select documents for deletion.</td></tr>
+</table></div></div>
+
+<h3>Key-Value Endpoints</h3>
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">GET</span> <span class="param">/api/kv/{key}</span></code></div>
+<p class="api-desc">Retrieve a value by key.</p>
+<div class="api-returns"><h5>Response</h5><p><code>{"key": "...", "value": ..., "ttl_remaining": N|null}</code></p></div>
+<div class="api-example"><h5>Example</h5><pre><code>curl http://localhost:8080/api/kv/config:version
+
+# Response:
+{"key": "config:version", "value": "2.1.0", "ttl_remaining": null}</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">PUT</span> <span class="param">/api/kv/{key}</span></code></div>
+<p class="api-desc">Set a key-value pair with optional TTL.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>value</td><td>any</td><td>JSON-serializable value.</td></tr>
+<tr><td>ttl</td><td>integer | null</td><td>Optional TTL in seconds.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>curl -X PUT http://localhost:8080/api/kv/cache:token \
+  -H "Content-Type: application/json" \
+  -d '{"value": "abc123xyz", "ttl": 3600}'</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">DELETE</span> <span class="param">/api/kv/{key}</span></code></div>
+<p class="api-desc">Delete a key-value pair.</p>
+<div class="api-returns"><h5>Response</h5><p><code>{"key": "...", "deleted": true|false}</code></p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">GET</span> <span class="param">/api/kv</span></code></div>
+<p class="api-desc">List all keys, optionally filtered by glob pattern via <code>?pattern=session:*</code> query parameter.</p>
+<div class="api-returns"><h5>Response</h5><p><code>{"keys": ["key1", "key2", ...], "count": N}</code></p></div></div>
+
+<!-- ═══════════════════════════════════════════════════════ AUTHENTICATION ═══════════════════════════════════════════════════════ -->
+<div id="auth" class="module-section"><h2 style="color:var(--pink)">&#128274; Authentication</h2>
+<p class="module-desc">JWT-based authentication with role-based access control (RBAC). Module: <code>edb.auth</code></p></div>
+
+<div class="callout callout-info"><div class="callout-title">RBAC Roles</div>
+<p><strong>admin:</strong> Full access &mdash; create/drop tables, manage users, read/write all data.<br>
+<strong>read_write:</strong> Read and write data, create indexes. Cannot drop tables or manage users.<br>
+<strong>read_only:</strong> Read-only access to all queries. Cannot modify any data.</p></div>
+
+<h3>Auth Endpoints</h3>
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="fn">POST</span> <span class="param">/api/auth/register</span></code></div>
+<p class="api-desc">Register a new user account. First registered user automatically gets <code>admin</code> role.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>username</td><td>string</td><td>Unique username (3-64 chars).</td></tr>
+<tr><td>password</td><td>string</td><td>Password (min 8 chars, hashed with bcrypt).</td></tr>
+<tr><td>role</td><td>string</td><td>Optional: <code>"admin"</code>, <code>"read_write"</code>, or <code>"read_only"</code> (default).</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username": "alice", "password": "secureP@ss123", "role": "admin"}'
+
+# Response:
+{"user_id": 1, "username": "alice", "role": "admin", "created": true}</code></pre></div></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="fn">POST</span> <span class="param">/api/auth/login</span></code></div>
+<p class="api-desc">Authenticate and receive access + refresh token pair. Access token expires in 15 minutes; refresh token in 7 days.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>username</td><td>string</td><td>Registered username.</td></tr>
+<tr><td>password</td><td>string</td><td>User password.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "alice", "password": "secureP@ss123"}'
+
+# Response:
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIs...",
+  "token_type": "bearer",
+  "expires_in": 900,
+  "role": "admin"
+}</code></pre></div></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="fn">POST</span> <span class="param">/api/auth/refresh</span></code></div>
+<p class="api-desc">Exchange a valid refresh token for a new access token.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>refresh_token</td><td>string</td><td>Valid refresh token.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Response</h5><p>New <code>access_token</code> with fresh expiry.</p></div></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="fn">GET</span> <span class="param">/api/auth/me</span></code></div>
+<p class="api-desc">Get the currently authenticated user&rsquo;s profile. Requires <code>Authorization: Bearer &lt;token&gt;</code> header.</p>
+<div class="api-returns"><h5>Response</h5><p><code>{"user_id": N, "username": "...", "role": "...", "created_at": "..."}</code></p></div></div>
+
+<div class="callout callout-tip"><div class="callout-title">Using Authenticated Endpoints</div>
+<pre><code># All API endpoints require the Authorization header when --auth is enabled:
+curl -X POST http://localhost:8080/api/sql/query \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
+  -H "Content-Type: application/json" \
+  -d '{"sql": "SELECT * FROM users"}'</code></pre></div>
+
+<h3>Token Structure</h3>
+<div class="struct-card"><h4>JWT Access Token Payload</h4><table>
+<tr><td><code>sub</code></td><td>string</td><td>Username (subject)</td></tr>
+<tr><td><code>role</code></td><td>string</td><td>User role (admin, read_write, read_only)</td></tr>
+<tr><td><code>iat</code></td><td>integer</td><td>Issued-at timestamp (Unix epoch)</td></tr>
+<tr><td><code>exp</code></td><td>integer</td><td>Expiration timestamp (Unix epoch)</td></tr>
+<tr><td><code>type</code></td><td>string</td><td><code>"access"</code> or <code>"refresh"</code></td></tr>
+</table></div>
+
+<!-- ═══════════════════════════════════════════════════════ SECURITY ═══════════════════════════════════════════════════════ -->
+<div id="security" class="module-section"><h2 style="color:var(--red)">&#128737; Security</h2>
+<p class="module-desc">Encryption at rest, audit logging, and input sanitization. Module: <code>edb.security</code></p></div>
+
+<h3>Encryption</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">EncryptionManager</span> <span class="fn">EncryptionManager</span>(<span class="param">key: bytes</span>)</code></div>
+<p class="api-desc">Initialize AES-256-GCM encryption engine. All data at rest is encrypted with this key. The key must be exactly 32 bytes.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>key</td><td>bytes</td><td>32-byte encryption key. Generate with <code>os.urandom(32)</code> or derive from passphrase with PBKDF2.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>from edb.security import EncryptionManager
+import os
+
+key = os.urandom(32)
+enc = EncryptionManager(key)
+
+ciphertext = enc.encrypt(b"sensitive data")
+plaintext = enc.decrypt(ciphertext)  # b"sensitive data"</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">bytes</span> <span class="fn">enc.encrypt</span>(<span class="param">plaintext: bytes</span>)</code></div>
+<p class="api-desc">Encrypt data using AES-256-GCM. Returns nonce + ciphertext + tag (authenticated encryption).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>plaintext</td><td>bytes</td><td>Data to encrypt.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Encrypted bytes (12-byte nonce + ciphertext + 16-byte auth tag).</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">bytes</span> <span class="fn">enc.decrypt</span>(<span class="param">ciphertext: bytes</span>)</code></div>
+<p class="api-desc">Decrypt and verify AES-256-GCM ciphertext. Raises <code>InvalidTag</code> if data has been tampered with.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>ciphertext</td><td>bytes</td><td>Encrypted data from <code>encrypt()</code>.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Decrypted plaintext bytes.</p></div></div>
+
+<h3>Audit Logging</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">AuditLogger</span> <span class="fn">AuditLogger</span>(<span class="param">db_path: str</span>)</code></div>
+<p class="api-desc">Initialize tamper-resistant audit log. Each entry is hash-chained to the previous entry using SHA-256, forming an immutable ledger.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>db_path</td><td>str</td><td>Path to audit log database (separate from main DB).</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>from edb.security import AuditLogger
+
+audit = AuditLogger("audit.sqlite")
+audit.log("alice", "QUERY", "SELECT * FROM users")
+audit.log("bob", "INSERT", "INSERT INTO orders VALUES (...)")
+
+# Verify chain integrity
+is_valid = audit.verify_chain()  # True if untampered</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">None</span> <span class="fn">audit.log</span>(<span class="param">user: str, action: str, detail: str</span>)</code></div>
+<p class="api-desc">Record an audit event with timestamp, user, action type, and detail. Auto-computes hash chain.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>user</td><td>str</td><td>Username performing the action.</td></tr>
+<tr><td>action</td><td>str</td><td>Action type: QUERY, INSERT, UPDATE, DELETE, LOGIN, REGISTER, ADMIN.</td></tr>
+<tr><td>detail</td><td>str</td><td>SQL statement or action description.</td></tr>
+</table></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">bool</span> <span class="fn">audit.verify_chain</span>(<span class="param"></span>)</code></div>
+<p class="api-desc">Verify the integrity of the entire audit chain. Returns <code>False</code> if any entry has been modified or deleted.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>True</code> if chain is intact.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">list[dict]</span> <span class="fn">audit.query</span>(<span class="param">user: str = None, action: str = None, limit: int = 100</span>)</code></div>
+<p class="api-desc">Query audit log entries with optional filters.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>user</td><td>str</td><td>Filter by username (optional).</td></tr>
+<tr><td>action</td><td>str</td><td>Filter by action type (optional).</td></tr>
+<tr><td>limit</td><td>int</td><td>Maximum entries to return (default 100).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>List of audit entries with id, timestamp, user, action, detail, hash.</p></div></div>
+
+<h3>Input Sanitization</h3>
+<div class="struct-card"><h4>Built-in Protections</h4><table>
+<tr><td><code>SQL Injection</code></td><td>Prevention</td><td>Parameterized queries enforced; raw string interpolation rejected</td></tr>
+<tr><td><code>NoSQL Injection</code></td><td>Prevention</td><td>Query operators validated against whitelist ($eq, $gt, etc.)</td></tr>
+<tr><td><code>Prompt Injection</code></td><td>Prevention</td><td>eBot input sanitized; dangerous SQL keywords blocked from NL input</td></tr>
+<tr><td><code>XSS</code></td><td>Prevention</td><td>All REST API outputs JSON-encoded; no HTML rendering</td></tr>
+<tr><td><code>Path Traversal</code></td><td>Prevention</td><td>Database paths validated and sandboxed</td></tr>
+</table></div>
+
+<!-- ═══════════════════════════════════════════════════════ eBOT AI ═══════════════════════════════════════════════════════ -->
+<div id="ebot" class="module-section"><h2 style="color:var(--blue)">&#129302; eBot AI</h2>
+<p class="module-desc">Natural language to SQL/NoSQL query translation. Module: <code>edb.ebot</code></p></div>
+
+<div class="callout callout-info"><div class="callout-title">How eBot Works</div>
+<p>eBot uses rule-based NLP to translate natural language questions into SQL or NoSQL queries. It parses intent, extracts entities (table names, column names, operators), and generates safe parameterized queries. No external LLM required &mdash; runs entirely offline.</p></div>
+
+<h3>Python API</h3>
+<div class="api-card accent-blue"><div class="api-header"><code class="api-signature"><span class="ret">EBot</span> <span class="fn">EBot</span>(<span class="param">db: RelationalDB, doc_store: DocumentStore = None</span>)</code></div>
+<p class="api-desc">Initialize eBot with database references. Introspects table schemas to understand column names and types.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>db</td><td>RelationalDB</td><td>SQL engine instance for schema introspection.</td></tr>
+<tr><td>doc_store</td><td>DocumentStore</td><td>Optional document store for NoSQL queries.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>from edb.ebot import EBot
+
+bot = EBot(db, doc_store=docs)
+result = bot.query("show me all admin users")
+# Translates to: SELECT * FROM users WHERE role = 'admin'
+print(result)</code></pre></div></div>
+
+<div class="api-card accent-blue"><div class="api-header"><code class="api-signature"><span class="ret">dict</span> <span class="fn">bot.query</span>(<span class="param">question: str</span>)</code></div>
+<p class="api-desc">Translate a natural language question into a query and execute it. Returns both the generated query and results.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>question</td><td>str</td><td>Natural language question (English).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Dict with <code>query</code> (generated SQL/NoSQL), <code>query_type</code> ("sql" or "nosql"), <code>results</code> (data), and <code>row_count</code>.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code># SQL translation examples
+bot.query("how many users are there?")
+# → SELECT COUNT(*) AS count FROM users
+
+bot.query("show the top 5 orders by amount")
+# → SELECT * FROM orders ORDER BY amount DESC LIMIT 5
+
+bot.query("what is the average temperature reading?")
+# → SELECT AVG(value) AS average FROM sensors WHERE type = 'temperature'
+
+# NoSQL translation
+bot.query("find all temperature sensors in lab-1")
+# → collection("sensors").find({"type": "temperature", "location": "lab-1"})</code></pre></div></div>
+
+<div class="api-card accent-blue"><div class="api-header"><code class="api-signature"><span class="ret">str</span> <span class="fn">bot.explain</span>(<span class="param">question: str</span>)</code></div>
+<p class="api-desc">Translate without executing &mdash; returns the generated query string for review.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>question</td><td>str</td><td>Natural language question.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Generated SQL or NoSQL query string.</p></div></div>
+
+<h3>REST Endpoint</h3>
+<div class="api-card accent-blue"><div class="api-header"><code class="api-signature"><span class="fn">POST</span> <span class="param">/api/ebot/query</span></code></div>
+<p class="api-desc">Send a natural language query via the REST API.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>question</td><td>string</td><td>Natural language question.</td></tr>
+<tr><td>explain_only</td><td>boolean</td><td>If true, return the generated query without executing.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>curl -X POST http://localhost:8080/api/ebot/query \
+  -H "Content-Type: application/json" \
+  -d '{"question": "show me all users who registered this week"}'
+
+# Response:
+{
+  "question": "show me all users who registered this week",
+  "query_type": "sql",
+  "generated_query": "SELECT * FROM users WHERE created_at >= date('now', '-7 days')",
+  "results": [...],
+  "row_count": 3
+}</code></pre></div></div>
+
+<!-- ═══════════════════════════════════════════════════════ QUERY ENGINE ═══════════════════════════════════════════════════════ -->
+<div id="query-engine" class="module-section"><h2 style="color:var(--green)">&#128269; Query Engine</h2>
+<p class="module-desc">Full-text search, graph queries, and advanced query features. Module: <code>edb.query</code></p></div>
+
+<h3>Full-Text Search</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">None</span> <span class="fn">db.create_fts_index</span>(<span class="param">table: str, columns: list[str]</span>)</code></div>
+<p class="api-desc">Create a full-text search index on specified columns using SQLite FTS5. Enables fast text search with ranking.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>table</td><td>str</td><td>Table to index.</td></tr>
+<tr><td>columns</td><td>list[str]</td><td>Columns to include in the FTS index.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>db.create_fts_index("articles", ["title", "body"])
+
+# Search with ranking
+results = db.search("articles", "embedded operating system", limit=10)
+for r in results:
+    print(f"[{r['rank']:.2f}] {r['title']}")</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">list[dict]</span> <span class="fn">db.search</span>(<span class="param">table: str, query: str, limit: int = 20</span>)</code></div>
+<p class="api-desc">Execute a full-text search query with BM25 ranking. Returns results sorted by relevance.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>table</td><td>str</td><td>Table with FTS index.</td></tr>
+<tr><td>query</td><td>str</td><td>Search query (supports AND, OR, NOT, phrase matching with quotes).</td></tr>
+<tr><td>limit</td><td>int</td><td>Maximum results to return (default 20).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>List of matching rows with <code>rank</code> score field (lower = more relevant).</p></div>
+<div class="api-example"><h5>Example</h5><pre><code># Boolean search
+results = db.search("articles", "embedded AND system NOT windows")
+
+# Phrase search
+results = db.search("articles", '"real-time operating system"')
+
+# Prefix matching
+results = db.search("articles", "micro*")</code></pre></div></div>
+
+<h3>REST Search Endpoint</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="fn">POST</span> <span class="param">/api/search/{table}</span></code></div>
+<p class="api-desc">Full-text search via REST API.</p>
+<div class="api-params"><h5>Request Body</h5><table>
+<tr><td>query</td><td>string</td><td>Search query string.</td></tr>
+<tr><td>limit</td><td>integer</td><td>Max results (default 20).</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>curl -X POST http://localhost:8080/api/search/articles \
+  -H "Content-Type: application/json" \
+  -d '{"query": "embedded database", "limit": 5}'</code></pre></div></div>
+
+<h3>Planned Features</h3>
+<div class="callout callout-info"><div class="callout-title">Roadmap</div>
+<p><strong>Graph Data Model (v0.2.0):</strong> Vertex/edge storage with Cypher-like traversal queries &mdash; <code>db.graph.add_vertex()</code>, <code>db.graph.traverse()</code>.<br>
+<strong>LLM-Powered eBot (v0.3.0):</strong> Optional LLM backend for complex natural language queries, multi-table joins, and conversational context.<br>
+<strong>Vector Search (v0.3.0):</strong> Embedding storage and approximate nearest-neighbor search for AI/ML workloads.<br>
+<strong>Replication (v0.4.0):</strong> Primary-replica replication for high availability on edge clusters.</p></div>
+
+<!-- ═══════════════════════════════════════════════════════ CLI REFERENCE ═══════════════════════════════════════════════════════ -->
+<h2>&#128187; CLI Reference</h2>
+
+<div class="struct-card"><h4>edb Commands</h4><table>
+<tr><td><code>edb init &lt;path&gt;</code></td><td></td><td>Create a new database file at the given path</td></tr>
+<tr><td><code>edb shell</code></td><td></td><td>Open interactive SQL shell (supports .tables, .schema, .quit)</td></tr>
+<tr><td><code>edb serve</code></td><td></td><td>Start the REST API server (FastAPI + Uvicorn)</td></tr>
+<tr><td><code>edb migrate</code></td><td></td><td>Run pending schema migrations from <code>migrations/</code> directory</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>edb serve Options</h4><table>
+<tr><td><code>--host</code></td><td>string</td><td>Bind address (default: <code>127.0.0.1</code>)</td></tr>
+<tr><td><code>--port</code></td><td>integer</td><td>Listen port (default: <code>8080</code>)</td></tr>
+<tr><td><code>--db</code></td><td>string</td><td>Database file path (default: <code>./edb.sqlite</code>)</td></tr>
+<tr><td><code>--auth</code></td><td>flag</td><td>Enable JWT authentication</td></tr>
+<tr><td><code>--encrypt</code></td><td>flag</td><td>Enable AES-256-GCM encryption at rest</td></tr>
+<tr><td><code>--audit</code></td><td>flag</td><td>Enable audit logging</td></tr>
+<tr><td><code>--cors</code></td><td>string</td><td>CORS allowed origins (default: <code>*</code>)</td></tr>
+<tr><td><code>--workers</code></td><td>integer</td><td>Number of Uvicorn workers (default: <code>1</code>)</td></tr>
+</table></div>
+
+<div class="struct-card"><h4>edb shell Commands</h4><table>
+<tr><td><code>.tables</code></td><td></td><td>List all tables</td></tr>
+<tr><td><code>.schema &lt;table&gt;</code></td><td></td><td>Show CREATE statement for a table</td></tr>
+<tr><td><code>.collections</code></td><td></td><td>List all document collections</td></tr>
+<tr><td><code>.kv</code></td><td></td><td>List all key-value keys</td></tr>
+<tr><td><code>.export &lt;table&gt; &lt;file&gt;</code></td><td></td><td>Export table to CSV</td></tr>
+<tr><td><code>.import &lt;file&gt; &lt;table&gt;</code></td><td></td><td>Import CSV into table</td></tr>
+<tr><td><code>.quit</code></td><td></td><td>Exit the shell</td></tr>
+</table></div>
+
+</main></div>
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

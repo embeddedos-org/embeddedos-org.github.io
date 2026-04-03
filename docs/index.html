@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentation Hub v0.1.0 - EmbeddedOS</title><link rel="stylesheet" href="../style.css"></head><body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids 🎮</a><a href="../hardware-lab.html">Hardware Lab 🔌</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+<div class="content-wrapper" style="max-width:1100px;margin:0 auto;padding:3rem 2rem">
+<h1>EmbeddedOS Documentation Hub <span class="version-badge">v0.1.0</span></h1>
+<p class="section-subtitle" style="color:var(--text-secondary);font-size:1.1rem;margin-bottom:2rem">Complete developer documentation for all EmbeddedOS components. Each page includes full API signatures, parameter tables, return values, and working code examples.</p>
+
+<h2>Core Platform</h2>
+<div class="product-grid">
+<div class="product-card card-eos"><div class="card-icon">EoS</div><h3>EoS Kernel &amp; HAL</h3>
+<p>Modular RTOS kernel with HAL (GPIO, UART, SPI, I2C, Timer), multicore framework, power management, networking (TCP/UDP, HTTP, MQTT, mDNS), crypto, OTA, sensors, motor control, filesystem, debug (GDB stub, coredump), driver model, service manager, and structured logging.</p>
+<div class="card-tags"><span class="badge badge-blue">14 Modules</span><span class="badge badge-green">200+ Functions</span><span class="badge badge-orange">98 KB</span></div>
+<div class="card-buttons"><a href="eos.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+
+<div class="product-card card-eboot"><div class="card-icon">eBt</div><h3>eBoot Bootloader</h3>
+<p>Secure A/B bootloader with CRC-protected boot control block, dual-copy redundancy, slot management, image verification, rollback support, structured boot log, recovery mode, and factory reset. Full porting guide included.</p>
+<div class="card-tags"><span class="badge badge-orange">Bootloader</span><span class="badge badge-cyan">A/B Slots</span><span class="badge badge-green">32 KB</span></div>
+<div class="card-buttons"><a href="eboot.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+</div>
+
+<h2>AI &amp; Neural Interface</h2>
+<div class="product-grid">
+<div class="product-card card-eai"><div class="card-icon">EAI</div><h3>EAI Framework</h3>
+<p>Embedded AI for on-device LLM inference with tool-calling ReAct agents, model registry (8+ curated models from 33M to 7B params), runtime configuration, key-value memory persistence, and complete agent loop walkthrough.</p>
+<div class="card-tags"><span class="badge badge-purple">AI Agents</span><span class="badge badge-green">LLM Models</span><span class="badge badge-blue">37 KB</span></div>
+<div class="card-buttons"><a href="eai.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+
+<div class="product-card card-eni"><div class="card-icon">ENI</div><h3>ENI Neural Interface</h3>
+<p>Neural interface framework with pluggable provider contracts, structured events (intents, features, raw), safety policy engine (allow/deny/confirm), signal filtering, normalization, Neuralink BCI adapter (1024 channels, 30kHz), calibration workflow, and custom provider implementation guide.</p>
+<div class="card-tags"><span class="badge badge-pink">BCI</span><span class="badge badge-orange">Neuralink</span><span class="badge badge-green">34 KB</span></div>
+<div class="card-buttons"><a href="eni.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+</div>
+
+<h2>Communication &amp; Build</h2>
+<div class="product-grid">
+<div class="product-card card-eipc"><div class="card-icon">IPC</div><h3>EIPC Protocol</h3>
+<p>Inter-process communication with length-prefixed binary framing, JSON payloads, HMAC-SHA256 authentication, TCP/Unix socket transport. Complete C SDK and Go server/client with frame format diagram and security setup guide.</p>
+<div class="card-tags"><span class="badge badge-cyan">IPC</span><span class="badge badge-orange">HMAC</span><span class="badge badge-green">24 KB</span></div>
+<div class="card-buttons"><a href="eipc.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+
+<div class="product-card card-ebuild"><div class="card-icon">eBd</div><h3>ebuild CLI</h3>
+<p>Unified build system with project scaffolding (init), cross-compilation (build), flash programming, serial monitoring, unit testing with coverage, SDK management, and build.yaml configuration reference. Supports 9+ platforms.</p>
+<div class="card-tags"><span class="badge badge-blue">Build</span><span class="badge badge-purple">CLI</span><span class="badge badge-green">14 KB</span></div>
+<div class="card-buttons"><a href="ebuild.html" class="btn btn-sm btn-primary">CLI Reference</a></div></div>
+</div>
+
+<h2>Tools &amp; Simulation</h2>
+<div class="product-grid">
+<div class="product-card card-eosim"><div class="card-icon">Sim</div><h3>EoSim Simulator</h3>
+<p>Multi-architecture simulation with native Python engine, QEMU binary emulation, Renode, and HIL bridge. 63 platform definitions across 12 architectures, 7 simulation engines, GPIO/UART/Timer register maps, and GUI dashboard.</p>
+<div class="card-tags"><span class="badge badge-green">Simulator</span><span class="badge badge-blue">63 Platforms</span><span class="badge badge-orange">7 Engines</span></div>
+<div class="card-buttons"><a href="eosim.html" class="btn btn-sm btn-primary">CLI Reference</a></div></div>
+
+<div class="product-card card-eosuite"><div class="card-icon">Apps</div><h3>eApps (43 Apps)</h3>
+<p>Cross-platform embedded applications in pure C + LVGL v9.1: 13 productivity tools (eNote, eCalc, ePDF, eFiles), 5 media apps, 11 games (Snake, Tetris, Chess), 7 connectivity tools (eSSH, eVPN, eChat), and a security firewall. Runs on 7 platforms.</p>
+<div class="card-tags"><span class="badge badge-purple">C + LVGL</span><span class="badge badge-cyan">43 Apps</span><span class="badge badge-green">7 Platforms</span></div>
+<div class="card-buttons"><a href="eosuite.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+</div>
+
+<h2>Database, Browser &amp; Office</h2>
+<div class="product-grid">
+<div class="product-card" style="border-top:3px solid var(--green)"><div class="card-icon">eDB</div><h3>eDB Database</h3>
+<p>Unified multi-model database combining SQL, Document/NoSQL, and Key-Value storage. Built on SQLite with zero dependencies. REST API via FastAPI, JWT auth, RBAC, AES-256-GCM encryption, full-text search, and eBot AI natural language interface.</p>
+<div class="card-tags"><span class="badge badge-green">Multi-Model</span><span class="badge badge-blue">REST API</span><span class="badge badge-purple">Python</span></div>
+<div class="card-buttons"><a href="edb.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+
+<div class="product-card" style="border-top:3px solid var(--cyan)"><div class="card-icon">eBw</div><h3>eBowser Browser</h3>
+<p>Lightweight web browser engine for embedded/IoT devices. HTML5/CSS rendering, modular architecture with rendering/network/input layers, platform abstraction for SDL2, EoS, and WASM. 130+ test cases across 7 suites.</p>
+<div class="card-tags"><span class="badge badge-cyan">Browser</span><span class="badge badge-orange">HTML5/CSS</span><span class="badge badge-blue">C/C++</span></div>
+<div class="card-buttons"><a href="ebowser.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+
+<div class="product-card" style="border-top:3px solid var(--orange)"><div class="card-icon">eOf</div><h3>eOffice Suite</h3>
+<p>AI-powered office suite with 11 apps: eDocs, eSheets, eSlides, eNotes, eMail, eDrive, eConnect, eForms, eSway, ePlanner. Powered by eBot AI for text rewriting, formula suggestions, and slide generation. Browser, Electron, Docker deployment.</p>
+<div class="card-tags"><span class="badge badge-orange">11 Apps</span><span class="badge badge-purple">eBot AI</span><span class="badge badge-blue">TypeScript</span></div>
+<div class="card-buttons"><a href="eoffice.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+
+<div class="product-card" style="border-top:3px solid var(--pink)"><div class="card-icon">eSA</div><h3>eServiceApps Mobile</h3>
+<p>Feature-modular Flutter mobile super app with 4 service modules: social networking, ride-sharing, travel planning, and delivery. Riverpod state management, GoRouter navigation, Material 3 design, Firebase backend.</p>
+<div class="card-tags"><span class="badge badge-pink">Flutter</span><span class="badge badge-green">4 Modules</span><span class="badge badge-yellow">Firebase</span></div>
+<div class="card-buttons"><a href="eserviceapps.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+</div>
+
+<h2 style="margin-top:3rem">Quick Reference</h2>
+<div class="struct-card"><table>
+<tr style="font-weight:bold;color:var(--cyan)"><td>Component</td><td>Language</td><td>Headers / Entry</td><td>Key Functions</td></tr>
+<tr><td>EoS HAL</td><td>C</td><td><code>&lt;eos/hal.h&gt;</code></td><td>eos_gpio_init, eos_uart_write, eos_spi_transfer, eos_i2c_read_reg</td></tr>
+<tr><td>EoS Kernel</td><td>C</td><td><code>&lt;eos/kernel.h&gt;</code></td><td>eos_task_create, eos_mutex_lock, eos_queue_send, eos_swtimer_create</td></tr>
+<tr><td>EoS Power</td><td>C</td><td><code>&lt;eos/power.h&gt;</code></td><td>eos_power_enter_mode, eos_power_get_battery_pct</td></tr>
+<tr><td>EoS Net</td><td>C</td><td><code>&lt;eos/net.h&gt;</code></td><td>eos_net_socket, eos_http_get, eos_mqtt_connect</td></tr>
+<tr><td>eBoot</td><td>C</td><td><code>eos_bootctl.h</code></td><td>eos_bootctl_load, eos_bootctl_confirm, eos_slot_scan_all</td></tr>
+<tr><td>EAI</td><td>C</td><td><code>&lt;eai/tool.h&gt;</code></td><td>eai_tool_register, eai_min_agent_run, eai_model_find_best_fit</td></tr>
+<tr><td>ENI</td><td>C</td><td><code>&lt;eni/event.h&gt;</code></td><td>eni_provider_poll, eni_policy_evaluate, eni_neuralink_init</td></tr>
+<tr><td>EIPC</td><td>C/Go</td><td><code>&lt;eipc.h&gt;</code></td><td>eipc_client_connect, eipc_client_send_intent, eipc_hmac_sign</td></tr>
+<tr><td>ebuild</td><td>Go</td><td>CLI</td><td>ebuild init, build, flash, monitor, test</td></tr>
+<tr><td>EoSim</td><td>Python</td><td>CLI</td><td>eosim list, search, run, stats, gui</td></tr>
+<tr><td>eApps</td><td>C + LVGL</td><td><code>eapps/registry.h</code></td><td>43 apps: Snake, eCalc, eSSH, eBot, eGuard</td></tr>
+<tr><td>eDB</td><td>Python</td><td><code>edb.core</code></td><td>SQL, Document, Key-Value, REST API, eBot AI</td></tr>
+<tr><td>eBowser</td><td>C/C++</td><td><code>ebowser.h</code></td><td>eb_create, eb_navigate, eb_run, eb_destroy</td></tr>
+<tr><td>eOffice</td><td>TypeScript</td><td>React + Node.js</td><td>11 apps: eDocs, eSheets, eSlides, eBot AI</td></tr>
+<tr><td>eServiceApps</td><td>Dart/Flutter</td><td>lib/main.dart</td><td>4 modules: Social, Ride, Travel, Delivery</td></tr>
+</table></div>
+
+</div>
+
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide &#127918;</a></li><li><a href="../hardware-lab.html">Hardware Lab &#128268;</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>

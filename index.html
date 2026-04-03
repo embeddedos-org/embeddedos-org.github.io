@@ -1,0 +1,569 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EmbeddedOS - Open-Source Embedded Operating System</title>
+<meta name="description" content="A modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and comprehensive tooling for 52+ platforms.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Shared SVG Definitions -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+<defs>
+  <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="shadow3d"><feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.5"/></filter>
+  <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#58a6ff"/><stop offset="100%" stop-color="#1158a6"/></linearGradient>
+  <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3fb950"/><stop offset="100%" stop-color="#1a6b2a"/></linearGradient>
+  <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#bc8cff"/><stop offset="100%" stop-color="#6e40aa"/></linearGradient>
+  <linearGradient id="grad-orange" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0883e"/><stop offset="100%" stop-color="#a05020"/></linearGradient>
+  <linearGradient id="grad-cyan" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#79c0ff"/><stop offset="100%" stop-color="#2a6090"/></linearGradient>
+  <linearGradient id="grad-pink" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f778ba"/><stop offset="100%" stop-color="#a03070"/></linearGradient>
+  <linearGradient id="grad-yellow" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e3b341"/><stop offset="100%" stop-color="#8a6a10"/></linearGradient>
+  <linearGradient id="grad-red" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f85149"/><stop offset="100%" stop-color="#a02020"/></linearGradient>
+  <linearGradient id="grad-pcb" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a5a2a"/><stop offset="100%" stop-color="#0d3318"/></linearGradient>
+</defs>
+</svg>
+
+<nav class="navbar">
+<div class="nav-inner">
+  <a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <div class="nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="getting-started.html">Get Started</a>
+    <a href="docs/index.html">Docs</a>
+    <a href="kids.html">Kids &#127918;</a>
+    <a href="hardware-lab.html">Hardware Lab &#128268;</a>
+    <a href="flow.html">Flow</a>
+    <a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+  </div>
+</div>
+</nav>
+
+<section class="hero">
+<div class="hero-content">
+  <div class="hero-text">
+  <h1>The Operating System for Every Device</h1>
+  <p class="subtitle">A modular, multi-platform OS with AI inference, secure IPC, OTA updates, browser engine, database, office suite, mobile apps, and simulation &mdash; from microcontrollers to desktops, TVs, and beyond.</p>
+  <div class="hero-buttons">
+    <a href="getting-started.html" class="btn btn-primary">&#9654; Get Started</a>
+    <a href="docs/index.html" class="btn btn-secondary">&#128214; Documentation</a>
+    <a href="https://github.com/embeddedos-org" class="btn btn-outline">&#9733; Star on GitHub</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-number" style="color:var(--blue)">14</span><span class="stat-label">Components</span></div>
+    <div class="stat"><span class="stat-number" style="color:var(--green)">52+</span><span class="stat-label">Platforms</span></div>
+    <div class="stat"><span class="stat-number" style="color:var(--purple)">300+</span><span class="stat-label">APIs</span></div>
+    <div class="stat"><span class="stat-number" style="color:var(--orange)">41</span><span class="stat-label">Product Profiles</span></div>
+    <div class="stat"><span class="stat-number" style="color:var(--pink)">49</span><span class="stat-label">Apps</span></div>
+  </div>
+  </div>
+  <div class="hero-illustration svg-float">
+    <svg viewBox="0 0 220 220" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <rect x="30" y="30" width="160" height="160" rx="12" fill="url(#grad-pcb)" stroke="#3fb950" stroke-width="1" opacity="0.7"/>
+      <path d="M50 100H80 M140 100H170 M110 50V80 M110 140V170" stroke="#3fb950" stroke-width="1" opacity="0.3"/>
+      <path d="M60 60L80 80 M160 60L140 80 M60 160L80 140 M160 160L140 140" stroke="#58a6ff" stroke-width="0.8" opacity="0.3"/>
+      <rect x="75" y="75" width="70" height="70" rx="4" fill="#1a1e24" stroke="#58a6ff" stroke-width="1.5"/>
+      <rect x="82" y="82" width="56" height="56" rx="2" fill="none" stroke="#58a6ff" stroke-width="0.5" opacity="0.5"/>
+      <line x1="90" y1="75" x2="90" y2="62" stroke="#8b949e" stroke-width="2"/><line x1="100" y1="75" x2="100" y2="62" stroke="#8b949e" stroke-width="2"/><line x1="110" y1="75" x2="110" y2="62" stroke="#8b949e" stroke-width="2"/><line x1="120" y1="75" x2="120" y2="62" stroke="#8b949e" stroke-width="2"/><line x1="130" y1="75" x2="130" y2="62" stroke="#8b949e" stroke-width="2"/>
+      <line x1="90" y1="145" x2="90" y2="158" stroke="#8b949e" stroke-width="2"/><line x1="100" y1="145" x2="100" y2="158" stroke="#8b949e" stroke-width="2"/><line x1="110" y1="145" x2="110" y2="158" stroke="#8b949e" stroke-width="2"/><line x1="120" y1="145" x2="120" y2="158" stroke="#8b949e" stroke-width="2"/><line x1="130" y1="145" x2="130" y2="158" stroke="#8b949e" stroke-width="2"/>
+      <line x1="75" y1="90" x2="62" y2="90" stroke="#8b949e" stroke-width="2"/><line x1="75" y1="100" x2="62" y2="100" stroke="#8b949e" stroke-width="2"/><line x1="75" y1="110" x2="62" y2="110" stroke="#8b949e" stroke-width="2"/><line x1="75" y1="120" x2="62" y2="120" stroke="#8b949e" stroke-width="2"/><line x1="75" y1="130" x2="62" y2="130" stroke="#8b949e" stroke-width="2"/>
+      <line x1="145" y1="90" x2="158" y2="90" stroke="#8b949e" stroke-width="2"/><line x1="145" y1="100" x2="158" y2="100" stroke="#8b949e" stroke-width="2"/><line x1="145" y1="110" x2="158" y2="110" stroke="#8b949e" stroke-width="2"/><line x1="145" y1="120" x2="158" y2="120" stroke="#8b949e" stroke-width="2"/><line x1="145" y1="130" x2="158" y2="130" stroke="#8b949e" stroke-width="2"/>
+      <text x="110" y="115" text-anchor="middle" fill="#58a6ff" font-size="10" font-weight="700" font-family="monospace">EoS</text>
+      <circle cx="50" cy="50" r="4" fill="#3fb950" opacity="0.8"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="170" cy="50" r="4" fill="#58a6ff" opacity="0.8"><animate attributeName="opacity" values="0.6;1;0.6" dur="1.5s" repeatCount="indefinite"/></circle>
+      <circle cx="170" cy="170" r="4" fill="#f778ba" opacity="0.8"><animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/></circle>
+      <circle cx="50" cy="170" r="4" fill="#e3b341" opacity="0.8"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/></circle>
+      <rect x="55" y="78" width="8" height="4" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/>
+      <rect x="157" y="78" width="8" height="4" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/>
+      <rect x="55" y="138" width="8" height="4" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/>
+      <rect x="157" y="138" width="8" height="4" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/>
+    </svg>
+  </div>
+</div>
+</section>
+
+<div style="text-align:center;padding:0 2rem 2rem">
+  <a href="flow.html" class="btn btn-primary" style="font-size:1.1rem;padding:.8rem 2rem">&#127760; View Platform Flow</a>
+</div>
+
+<section class="section-full section-alt">
+<div class="section">
+  <h2 class="section-title">The EmbeddedOS Ecosystem</h2>
+  <p class="section-subtitle">14 integrated components covering every aspect of embedded &amp; application development</p>
+  <div style="height:3px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--pink));border-radius:2px;max-width:80px;margin:0 auto 3rem;"></div>
+</div>
+
+<div class="product-grid">
+
+  <div class="product-card card-eos">
+    <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="8" width="16" height="16" rx="2" fill="none" stroke="#58a6ff" stroke-width="1.5"/><rect x="11" y="11" width="10" height="10" rx="1" fill="url(#grad-blue)" opacity="0.6"/><line x1="12" y1="8" x2="12" y2="4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="8" x2="16" y2="4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="8" x2="20" y2="4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="24" x2="12" y2="28" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="24" x2="16" y2="28" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="24" x2="20" y2="28" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="12" x2="4" y2="12" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="16" x2="4" y2="16" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="20" x2="4" y2="20" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="12" x2="28" y2="12" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="16" x2="28" y2="16" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="20" x2="28" y2="20" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+    <h3>EoS</h3>
+    <p>Universal embedded OS framework supporting <strong>41 product categories</strong> with 33 HAL peripherals, RTOS kernel with SMP/AMP multicore, power management, networking (TCP/HTTP/MQTT), crypto (SHA-256, AES, RSA/ECC), OTA updates, sensor framework, motor control, and filesystem.</p>
+    <div class="card-tags">
+      <span class="badge badge-blue">Multi-Platform</span>
+      <span class="badge badge-cyan">HAL</span>
+      <span class="badge badge-green">Multicore</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eos.html" class="btn btn-sm btn-primary">Docs</a>
+      <a href="https://github.com/embeddedos-org/eos" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card card-eboot">
+    <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4L20 14L24 14L16 22L18 15L14 15Z" fill="url(#grad-green)" stroke="#3fb950" stroke-width="1" stroke-linejoin="round"/><circle cx="16" cy="26" r="3" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.6"/><path d="M13 27Q16 32 19 27" stroke="#3fb950" stroke-width="1" fill="none" opacity="0.4"/></svg></div>
+    <h3>eBoot</h3>
+    <p>Production-grade bootloader supporting <strong>24 board ports</strong> across 10 architectures. Staged boot (stage-0 + stage-1), A/B slots with automatic rollback, secure boot chain, stream-based firmware update, SMP/AMP/lockstep multicore boot, UEFI-style device table, and recovery mode.</p>
+    <div class="card-tags">
+      <span class="badge badge-green">Bootloader</span>
+      <span class="badge badge-blue">A/B Slots</span>
+      <span class="badge badge-orange">Verified</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eboot.html" class="btn btn-sm btn-green">Docs</a>
+      <a href="https://github.com/embeddedos-org/eboot" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card card-ebuild">
+    <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="10" fill="none" stroke="#f0883e" stroke-width="1.5"/><circle cx="16" cy="16" r="4" fill="url(#grad-orange)" opacity="0.6"/><path d="M16 6V8 M16 24V26 M6 16H8 M24 16H26 M9 9L10.5 10.5 M21.5 21.5L23 23 M9 23L10.5 21.5 M21.5 10.5L23 9" stroke="#f0883e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+    <h3>ebuild</h3>
+    <p>Unified build system with <strong>18 CLI commands</strong>. Cross-compilation across CMake/Make/Meson/Cargo/Kbuild, hardware schematic analysis (KiCad/YAML), Yocto-style SDK generation, package management with YAML recipes, 6 project templates, and deployable OS image creation for 14+ targets.</p>
+    <div class="card-tags">
+      <span class="badge badge-orange">CLI</span>
+      <span class="badge badge-yellow">SDK</span>
+      <span class="badge badge-purple">Auto-Deps</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/ebuild.html" class="btn btn-sm" style="background:var(--orange);color:#fff">Docs</a>
+      <a href="https://github.com/embeddedos-org/ebuild" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card card-eipc">
+    <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="8" cy="16" r="3" fill="url(#grad-cyan)" opacity="0.7"/><circle cx="24" cy="8" r="3" fill="url(#grad-cyan)" opacity="0.7"/><circle cx="24" cy="24" r="3" fill="url(#grad-cyan)" opacity="0.7"/><line x1="11" y1="15" x2="21" y2="9" stroke="#79c0ff" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="17" x2="21" y2="23" stroke="#79c0ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="11" x2="24" y2="21" stroke="#79c0ff" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/></svg></div>
+    <h3>EIPC</h3>
+    <p>Secure, real-time IPC framework with Go &amp; C SDKs. Pluggable transports (TCP, Unix sockets, shared memory, Windows pipes), HMAC-SHA256 integrity, capability-based auth, pub/sub broker, policy engine, replay protection, keyring management, and JSON-line audit logging.</p>
+    <div class="card-tags">
+      <span class="badge badge-cyan">Go</span>
+      <span class="badge badge-blue">C SDK</span>
+      <span class="badge badge-green">mTLS</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eipc.html" class="btn btn-sm" style="background:var(--cyan);color:#fff">Docs</a>
+      <a href="https://github.com/embeddedos-org/eipc" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card card-eai">
+    <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4C10 4 6 10 6 16C6 20 8 24 12 26L12 28L20 28L20 26C24 24 26 20 26 16C26 10 22 4 16 4Z" fill="none" stroke="#bc8cff" stroke-width="1.5"/><path d="M11 14Q16 8 21 14" stroke="#bc8cff" stroke-width="1" fill="none" opacity="0.6"/><path d="M11 18Q16 12 21 18" stroke="#bc8cff" stroke-width="1" fill="none" opacity="0.4"/><circle cx="12" cy="16" r="1.5" fill="#bc8cff" opacity="0.8"/><circle cx="20" cy="16" r="1.5" fill="#bc8cff" opacity="0.8"/><circle cx="16" cy="13" r="1.5" fill="#bc8cff" opacity="0.8"/><line x1="12" y1="28" x2="20" y2="28" stroke="#bc8cff" stroke-width="1.5"/></svg></div>
+    <h3>EAI</h3>
+    <p>C11 embedded AI framework with <strong>two tiers</strong>: EAI-Min (50KB RAM, MCUs) and EAI-Framework (enterprise). 12 curated LLMs (TinyLlama to Qwen2.5 7B), ReAct agents with tool calling, LoRA fine-tuning, federated learning, 8-layer security, power-aware inference, and 5 deployment profiles.</p>
+    <div class="card-tags">
+      <span class="badge badge-purple">AI/ML</span>
+      <span class="badge badge-pink">Agents</span>
+      <span class="badge badge-orange">12 Models</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eai.html" class="btn btn-sm btn-purple">Docs</a>
+      <a href="https://github.com/embeddedos-org/eai" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card card-eni">
+    <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="#f778ba" stroke-width="1.2"/><ellipse cx="16" cy="16" rx="11" ry="5" fill="none" stroke="#f778ba" stroke-width="0.8" opacity="0.6"/><ellipse cx="16" cy="16" rx="5" ry="11" fill="none" stroke="#f778ba" stroke-width="0.8" opacity="0.6"/><circle cx="16" cy="16" r="2" fill="#f778ba" opacity="0.5"/><path d="M24 6Q28 6 28 10" stroke="#f778ba" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M26 4Q30 4 30 8" stroke="#f778ba" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/></svg></div>
+    <h3>ENI</h3>
+    <p>Embedded Neural Interface for brain-computer interfaces. Neuralink 1024-channel adapter at 30kHz, EEG headset provider, DSP (FIR/IIR/FFT), lightweight neural network, intent decoder, neurofeedback, stimulation output with safety interlocks, and EIPC bridge to EAI agents.</p>
+    <div class="card-tags">
+      <span class="badge badge-pink">Neural Interface</span>
+      <span class="badge badge-cyan">BCI</span>
+      <span class="badge badge-yellow">Neuralink</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eni.html" class="btn btn-sm" style="background:var(--pink);color:#fff">Docs</a>
+      <a href="https://github.com/embeddedos-org/eni" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card card-eosuite">
+    <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="11" height="11" rx="3" fill="url(#grad-yellow)" opacity="0.5" stroke="#e3b341" stroke-width="1"/><rect x="17" y="4" width="11" height="11" rx="3" fill="url(#grad-blue)" opacity="0.5" stroke="#58a6ff" stroke-width="1"/><rect x="4" y="17" width="11" height="11" rx="3" fill="url(#grad-green)" opacity="0.5" stroke="#3fb950" stroke-width="1"/><rect x="17" y="17" width="11" height="11" rx="3" fill="url(#grad-purple)" opacity="0.5" stroke="#bc8cff" stroke-width="1"/></svg></div>
+    <h3>eApps</h3>
+    <p><strong>38 cross-platform apps</strong> in pure C + LVGL: 13 productivity tools (eNote, eCalc, ePDF, eFiles), 5 media apps, 11 games (Snake, Tetris, Chess), 7 connectivity tools (eSSH, eVPN, eChat), and a security firewall. Runs on Windows, Linux, macOS, EoS, and Web (WASM).</p>
+    <div class="card-tags">
+      <span class="badge badge-yellow">38 Apps</span>
+      <span class="badge badge-green">C + LVGL</span>
+      <span class="badge badge-blue">5 Platforms</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eosuite.html" class="btn btn-sm" style="background:var(--yellow);color:#000">Docs</a>
+      <a href="https://github.com/embeddedos-org/eApps" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card card-eosim">
+    <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="24" height="18" rx="2" fill="none" stroke="#f85149" stroke-width="1.5"/><line x1="4" y1="7" x2="28" y2="7" stroke="#f85149" stroke-width="0.5" opacity="0.4"/><rect x="8" y="10" width="7" height="8" rx="1" fill="url(#grad-pcb)" stroke="#3fb950" stroke-width="0.8" opacity="0.8"/><rect x="10" y="12" width="3" height="3" fill="#1a1e24" stroke="#58a6ff" stroke-width="0.5"/><circle cx="22" cy="14" r="1.5" fill="#f85149" opacity="0.8"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle><line x1="12" y1="24" x2="20" y2="24" stroke="#f85149" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="22" x2="16" y2="24" stroke="#f85149" stroke-width="1.5"/></svg></div>
+    <h3>EoSim</h3>
+    <p>Simulation and validation platform supporting <strong>52+ platforms</strong> across 12 architectures. Native Python engine, Renode, QEMU binary emulation, and HIL bridge. GPIO/UART/Timer register maps, GUI dashboard with 3D renderers, cluster simulation, and CI-native testing.</p>
+    <div class="card-tags">
+      <span class="badge badge-red">Simulator</span>
+      <span class="badge badge-blue">52 Platforms</span>
+      <span class="badge badge-cyan">Cluster</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eosim.html" class="btn btn-sm" style="background:var(--red);color:#fff">Docs</a>
+      <a href="https://github.com/embeddedos-org/eosim" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--pink)">
+    <div class="card-icon" style="background:var(--pink-dim);color:var(--pink)"><svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="18" rx="12" ry="9" fill="none" stroke="#f778ba" stroke-width="1.5"/><ellipse cx="16" cy="18" rx="12" ry="9" fill="url(#grad-pink)" opacity="0.15"/><circle cx="10" cy="15" r="2.5" fill="#58a6ff"/><circle cx="18" cy="13" r="2.5" fill="#3fb950"/><circle cx="22" cy="18" r="2.5" fill="#e3b341"/><circle cx="14" cy="21" r="2.5" fill="#bc8cff"/><ellipse cx="6" cy="18" rx="2" ry="3" fill="none" stroke="#f778ba" stroke-width="1" opacity="0.5"/></svg></div>
+    <h3>EoStudio</h3>
+    <p>Unified design suite with <strong>12 editors</strong>: 3D modeler, CAD designer, image editor, game editor, UI/UX designer, UML modeler, simulation editor, database designer, hardware PCB editor, and IDE. <strong>30+ code generators</strong> for React, Flutter, Godot, OpenSCAD, and more. LLM-powered AI assistance.</p>
+    <div class="card-tags">
+      <span class="badge badge-pink">Design</span>
+      <span class="badge badge-purple">AI Tutor</span>
+      <span class="badge badge-blue">10 Editors</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eostudio.html" class="btn btn-sm" style="background:var(--pink);color:#fff">Docs</a>
+      <a href="https://github.com/embeddedos-org/EoStudio" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--green)">
+    <div class="card-icon" style="background:var(--green-dim);color:var(--green)">&#128451;</div>
+    <h3>eDB</h3>
+    <p>Unified multi-model database combining <strong>SQL + Document/NoSQL + Key-Value</strong> in one engine. Built on SQLite with zero dependencies. REST API via FastAPI, JWT auth, RBAC, AES-256 encryption at rest, tamper-resistant audit logging, full-text search, graph queries, and eBot AI natural language interface.</p>
+    <div class="card-tags">
+      <span class="badge badge-green">Multi-Model</span>
+      <span class="badge badge-blue">REST API</span>
+      <span class="badge badge-purple">AI Queries</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/edb.html" class="btn btn-sm btn-green">Docs</a>
+        <a href="https://github.com/embeddedos-org/eDB" class="btn btn-sm btn-outline">GitHub</a>
+      </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--cyan)">
+    <div class="card-icon" style="background:var(--cyan-dim);color:var(--cyan)">&#127760;</div>
+    <h3>eBowser</h3>
+    <p>Lightweight <strong>web browser engine</strong> for embedded and IoT devices. HTML5/CSS rendering, optional JavaScript engine, modular architecture with separate rendering/network/input layers, platform abstraction for Linux/RTOS/bare-metal, and zero-prerequisite setup scripts. 130+ test cases across 7 test suites.</p>
+    <div class="card-tags">
+      <span class="badge badge-cyan">Browser</span>
+      <span class="badge badge-blue">HTML/CSS</span>
+      <span class="badge badge-orange">Embedded</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/ebowser.html" class="btn btn-sm" style="background:var(--cyan);color:#fff">Docs</a>
+      <a href="https://github.com/embeddedos-org/eBowser" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--orange)">
+    <div class="card-icon" style="background:var(--orange-dim);color:var(--orange)">&#128188;</div>
+    <h3>eOffice</h3>
+    <p>Complete <strong>office suite with 11 apps</strong>: eDocs (word processing), eSheets (spreadsheets), eSlides (presentations), eNotes (notebooks), eMail, eDB, eDrive (cloud storage), eConnect (collaboration), eForms, eSway, and ePlanner. Powered by <strong>eBot</strong> AI assistant for text rewriting, formula suggestions, and semantic search.</p>
+    <div class="card-tags">
+      <span class="badge badge-orange">11 Apps</span>
+      <span class="badge badge-purple">eBot AI</span>
+      <span class="badge badge-blue">Real-time</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eoffice.html" class="btn btn-sm" style="background:var(--orange);color:#fff">Docs</a>
+      <a href="https://github.com/embeddedos-org/eOffice" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--pink)">
+    <div class="card-icon" style="background:var(--pink-dim);color:var(--pink)">&#128241;</div>
+    <h3>eServiceApps</h3>
+    <p><strong>4 mobile service apps</strong> built with Flutter: eSocial (social networking + dating), eTravel (bookings + transport), eRide (ride-hailing with GPS), and eTrack (food/parcel delivery tracking). Unified wallet, central notifications, micro-fee sustainability model, and Firebase/Supabase backend.</p>
+    <div class="card-tags">
+      <span class="badge badge-pink">Flutter</span>
+      <span class="badge badge-green">4 Apps</span>
+      <span class="badge badge-yellow">Wallet</span>
+    </div>
+    <div class="card-buttons">
+      <a href="docs/eserviceapps.html" class="btn btn-sm" style="background:var(--pink);color:#fff">Docs</a>
+      <a href="https://github.com/embeddedos-org/eServiceApps" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+  <div class="product-card" style="border-top:3px solid var(--text-muted)">
+    <div class="card-icon" style="background:rgba(110,118,129,0.15);color:var(--text-secondary)"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="10" width="12" height="9" rx="1" fill="none" stroke="#8b949e" stroke-width="1.2"/><line x1="7" y1="19" x2="11" y2="22" stroke="#8b949e" stroke-width="1"/><line x1="3" y1="19" x2="7" y2="22" stroke="#8b949e" stroke-width="1"/><rect x="18" y="6" width="11" height="16" rx="2" fill="none" stroke="#8b949e" stroke-width="1.2"/><circle cx="23.5" cy="20" r="1" fill="#8b949e" opacity="0.6"/><rect x="11" y="12" width="7" height="10" rx="1" fill="none" stroke="#8b949e" stroke-width="1" opacity="0.7"/></svg></div>
+    <h3>eos-platform</h3>
+    <p>Multi-form-factor platform layer: Desktop, TV, Laptop, Tablet, and Kiosk profiles built on top of EoS.</p>
+    <div class="card-tags">
+      <span class="badge badge-blue">Desktop</span>
+      <span class="badge badge-purple">TV</span>
+      <span class="badge badge-green">Tablet</span>
+    </div>
+    <div class="card-buttons">
+      <a href="https://github.com/embeddedos-org/eos-platform" class="btn btn-sm btn-outline">GitHub</a>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- WHY EMBEDDEDOS -->
+<section class="section">
+  <h2 class="section-title">Why EmbeddedOS?</h2>
+  <p class="section-subtitle">One unified platform from bootloader to browser</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:2rem">
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--blue)">
+      <h3 style="color:var(--blue);margin-top:0;border:none;font-size:1.1rem">&#9889; Universal</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">One OS framework for 41 product categories &mdash; smartwatches to spacecraft, gaming consoles to 5G base stations, medical devices to autonomous vehicles.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--green)">
+      <h3 style="color:var(--green);margin-top:0;border:none;font-size:1.1rem">&#128274; Secure by Default</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">Secure boot chain, SHA-256/AES crypto, A/B firmware updates with rollback, mTLS IPC, JWT auth, RBAC, 8-layer AI security, and tamper-resistant audit logs.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--purple)">
+      <h3 style="color:var(--purple);margin-top:0;border:none;font-size:1.1rem">&#129302; AI-Native</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">On-device LLM inference with 12 curated models (TinyLlama to Llama 3.2), autonomous agents, LoRA fine-tuning, federated learning &mdash; zero cloud dependency.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--orange)">
+      <h3 style="color:var(--orange);margin-top:0;border:none;font-size:1.1rem">&#128736; Full Stack</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">Complete ecosystem: kernel, bootloader, build system, IPC, AI, neural interface, simulator, browser, database, office suite, 49 apps, design IDE, and mobile services.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--cyan)">
+      <h3 style="color:var(--cyan);margin-top:0;border:none;font-size:1.1rem">&#128640; Multi-Arch</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">ARM Cortex-M/A/R, RISC-V 32/64, Xtensa, x86_64, PowerPC, MIPS, MicroBlaze, ARC &mdash; 52+ platform definitions with QEMU and Renode simulation.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--pink)">
+      <h3 style="color:var(--pink);margin-top:0;border:none;font-size:1.1rem">&#127891; Standards Compliant</h3>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">ISO 26262 (automotive), DO-178C (aerospace), IEC 61508 (safety), ISO 27001 (security), FIPS 140-3, POSIX, SBOM (SPDX, CycloneDX), WCAG 2.1.</p>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="section-full section-alt">
+<div class="section">
+  <h2 class="section-title">Who Uses EmbeddedOS?</h2>
+  <p class="section-subtitle">Real-world use cases across industries</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:2rem">
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--blue)">&#128663; Automotive OEM</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Vehicle ECU with sensor fusion + CAN bus. Uses <code>automotive</code> profile with HAL (CAN, ADC, PWM), kernel, motor control, and watchdog.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--green)">&#127973; Medical Device Maker</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Patient monitor with BLE + encrypted storage. Uses <code>medical</code> profile with HAL (BLE, ADC), crypto (AES), secure storage, and audit.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--purple)">&#129302; Robotics Company</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Industrial robot arm with 6-axis control. Uses <code>robot</code> profile with motor control, IMU, camera, and EAI on-device agent.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--orange)">&#128752; IoT Startup</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">WiFi sensor node reporting to cloud. Uses <code>iot</code> profile with HAL (WiFi, ADC), OTA update, power management, and eDB for local storage.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--cyan)">&#127968; Smart Home Vendor</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Hub controlling lights, locks, cameras. Uses <code>smart_home</code> profile with HAL (WiFi, BLE, IR), networking (MQTT), and eBowser for web UI.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--pink)">&#128640; Aerospace Firm</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Satellite attitude controller. Uses <code>satellite</code> profile with HAL (IMU, GNSS), crypto, watchdog, redundancy, and DO-178C compliance.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--yellow)">&#127918; Gaming Console</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Handheld with GPU + haptics. Uses <code>gaming</code> profile with eApps (11 games), EoStudio for game design, multicore GPU, and HDMI.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:1.2rem">
+      <strong style="color:var(--red)">&#9889; EV Manufacturer</strong>
+      <p style="color:var(--text-secondary);font-size:.85rem;margin:.5rem 0 0">Battery management + motor control. Uses <code>ev</code> profile with HAL (CAN, ADC), motor, power, multicore SMP, and eOffice for fleet management.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- QUICK START -->
+<section class="section">
+  <h2 class="section-title">Quick Start</h2>
+  <p class="section-subtitle">Get running in minutes</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:1.5rem;margin-top:2rem">
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--blue);margin-top:0;border:none;font-size:1rem">&#9654; Build EoS Kernel</h3>
+      <pre style="margin:.5rem 0 0"><code>cmake -B build -DEOS_PRODUCT=robot
+cmake --build build</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--orange);margin-top:0;border:none;font-size:1rem">&#9654; Build with ebuild</h3>
+      <pre style="margin:.5rem 0 0"><code>pip install -e .
+ebuild build --target raspi4 --with eai,eni</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--red);margin-top:0;border:none;font-size:1rem">&#9654; Simulate with EoSim</h3>
+      <pre style="margin:.5rem 0 0"><code>pip install eosim
+eosim run stm32f4</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--yellow);margin-top:0;border:none;font-size:1rem">&#9654; Launch eApps</h3>
+      <pre style="margin:.5rem 0 0"><code>cmake -B build -DEAPPS_PORT=sdl2
+cmake --build build
+./build/eapps_suite</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--green);margin-top:0;border:none;font-size:1rem">&#9654; Start eDB Server</h3>
+      <pre style="margin:.5rem 0 0"><code>pip install -e ".[dev]"
+edb init &amp;&amp; edb serve --port 8000</code></pre>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--cyan);margin-top:0;border:none;font-size:1rem">&#9654; Launch eBowser</h3>
+      <pre style="margin:.5rem 0 0"><code>git clone --recursive ...eBowser.git
+cd eBowser &amp;&amp; ./setup.sh</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">System Architecture</h2>
+  <p class="section-subtitle">How all 14 EmbeddedOS components work together</p>
+  <div class="arch-diagram">
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--orange);color:var(--orange)">eOffice (11 Apps)</div>
+      <div class="arch-box" style="border-color:var(--pink);color:var(--pink)">eServiceApps (4 Mobile)</div>
+      <div class="arch-box" style="border-color:var(--yellow);color:var(--yellow)">eApps (43 Apps)</div>
+    </div>
+    <div class="arch-arrow">&darr;&darr;&darr;</div>
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--cyan);color:var(--cyan)">eBowser (Browser)</div>
+      <div class="arch-box" style="border-color:var(--green);color:var(--green)">eDB (Database)</div>
+      <div class="arch-box" style="border-color:#bc8cff;color:#bc8cff">EoStudio (12 Editors)</div>
+    </div>
+    <div class="arch-arrow">&darr;&darr;&darr;</div>
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--purple);color:var(--purple)">EAI (AI/ML &bull; 12 LLMs)</div>
+      <div class="arch-box" style="border-color:var(--pink);color:var(--pink)">ENI (Neural/BCI)</div>
+      <div class="arch-box" style="border-color:var(--red);color:var(--red)">EoSim (52+ Platforms)</div>
+    </div>
+    <div class="arch-arrow">&darr;&darr;&darr;</div>
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--cyan);color:var(--cyan);min-width:200px">EIPC (IPC &bull; Go + C)</div>
+    </div>
+    <div class="arch-arrow">&darr;</div>
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--blue);color:var(--blue);min-width:350px">EoS Kernel (41 Profiles &bull; 33 HAL &bull; Multicore SMP/AMP)</div>
+    </div>
+    <div class="arch-arrow">&darr;</div>
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--green);color:var(--green)">eBoot (24 Boards &bull; Secure Boot)</div>
+      <div class="arch-box" style="border-color:var(--orange);color:var(--orange)">ebuild (18 CLI &bull; SDK Gen)</div>
+    </div>
+    <div class="arch-arrow">&darr;</div>
+    <div class="arch-row">
+      <div class="arch-box" style="border-color:var(--text-muted);color:var(--text-secondary);min-width:450px">Hardware: ARM Cortex-M/A/R &bull; RISC-V &bull; x86 &bull; Xtensa &bull; MIPS &bull; PowerPC &bull; ARC</div>
+    </div>
+  </div>
+</section>
+
+<section class="section-full section-alt">
+<div class="section">
+  <h2 class="section-title">Supported Hardware</h2>
+  <p class="section-subtitle">From tiny microcontrollers to powerful application processors</p>
+
+  <h3 style="color:var(--blue);margin-bottom:1rem">ARM Cortex-M Series</h3>
+  <div class="hw-grid">
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--blue)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="5" y="10" width="90" height="50" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="35" y="22" width="22" height="22" rx="2" fill="#1a1e24" stroke="#58a6ff" stroke-width="1"/><text x="46" y="36" text-anchor="middle" fill="#58a6ff" font-size="6" font-family="monospace">STM</text><line x1="38" y1="22" x2="38" y2="16" stroke="#8b949e" stroke-width="1.5"/><line x1="42" y1="22" x2="42" y2="16" stroke="#8b949e" stroke-width="1.5"/><line x1="46" y1="22" x2="46" y2="16" stroke="#8b949e" stroke-width="1.5"/><line x1="50" y1="22" x2="50" y2="16" stroke="#8b949e" stroke-width="1.5"/><line x1="54" y1="22" x2="54" y2="16" stroke="#8b949e" stroke-width="1.5"/><line x1="38" y1="44" x2="38" y2="50" stroke="#8b949e" stroke-width="1.5"/><line x1="42" y1="44" x2="42" y2="50" stroke="#8b949e" stroke-width="1.5"/><line x1="46" y1="44" x2="46" y2="50" stroke="#8b949e" stroke-width="1.5"/><line x1="50" y1="44" x2="50" y2="50" stroke="#8b949e" stroke-width="1.5"/><line x1="54" y1="44" x2="54" y2="50" stroke="#8b949e" stroke-width="1.5"/><circle cx="15" cy="18" r="2.5" fill="#3fb950" opacity="0.8"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/></circle><circle cx="22" cy="18" r="2.5" fill="#f85149" opacity="0.6"/><rect x="70" y="25" width="16" height="6" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/></svg></div><h4>STM32F4</h4><p>Cortex-M4 &bull; 180 MHz &bull; FPU</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--blue)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="5" y="10" width="90" height="50" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="30" y="20" width="28" height="24" rx="2" fill="#1a1e24" stroke="#58a6ff" stroke-width="1"/><text x="44" y="34" text-anchor="middle" fill="#58a6ff" font-size="5" font-family="monospace">H7</text><text x="44" y="40" text-anchor="middle" fill="#79c0ff" font-size="4" font-family="monospace">dual</text><line x1="34" y1="20" x2="34" y2="14" stroke="#8b949e" stroke-width="1.5"/><line x1="40" y1="20" x2="40" y2="14" stroke="#8b949e" stroke-width="1.5"/><line x1="46" y1="20" x2="46" y2="14" stroke="#8b949e" stroke-width="1.5"/><line x1="52" y1="20" x2="52" y2="14" stroke="#8b949e" stroke-width="1.5"/><line x1="34" y1="44" x2="34" y2="50" stroke="#8b949e" stroke-width="1.5"/><line x1="40" y1="44" x2="40" y2="50" stroke="#8b949e" stroke-width="1.5"/><line x1="46" y1="44" x2="46" y2="50" stroke="#8b949e" stroke-width="1.5"/><line x1="52" y1="44" x2="52" y2="50" stroke="#8b949e" stroke-width="1.5"/><circle cx="15" cy="18" r="2.5" fill="#58a6ff" opacity="0.8"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/></circle><circle cx="15" cy="25" r="2.5" fill="#3fb950" opacity="0.6"/><rect x="68" y="22" width="20" height="8" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/></svg></div><h4>STM32H7</h4><p>Cortex-M7 &bull; 480 MHz &bull; Dual-core</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--cyan)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="10" y="12" width="70" height="46" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="30" y="24" width="18" height="18" rx="2" fill="#1a1e24" stroke="#79c0ff" stroke-width="1"/><text x="39" y="36" text-anchor="middle" fill="#79c0ff" font-size="5" font-family="monospace">nRF</text><path d="M72 16Q82 16 82 26L82 36" stroke="#79c0ff" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M75 14Q86 14 86 24L86 32" stroke="#79c0ff" stroke-width="1" fill="none" opacity="0.5"/><circle cx="18" cy="20" r="2" fill="#58a6ff" opacity="0.7"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/></circle></svg></div><h4>nRF52840</h4><p>Cortex-M4 &bull; BLE 5.0 &bull; USB</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--cyan)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="10" y="12" width="70" height="46" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="25" y="22" width="16" height="14" rx="2" fill="#1a1e24" stroke="#79c0ff" stroke-width="1"/><rect x="45" y="22" width="16" height="14" rx="2" fill="#1a1e24" stroke="#bc8cff" stroke-width="1"/><text x="33" y="32" text-anchor="middle" fill="#79c0ff" font-size="4" font-family="monospace">APP</text><text x="53" y="32" text-anchor="middle" fill="#bc8cff" font-size="4" font-family="monospace">NET</text><path d="M72 18Q80 18 80 28" stroke="#79c0ff" stroke-width="1.5" fill="none"/><circle cx="18" cy="20" r="2" fill="#3fb950" opacity="0.7"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle></svg></div><h4>nRF5340</h4><p>Cortex-M33 &bull; Dual-core &bull; BLE 5.3</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--green)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="5" y="10" width="90" height="50" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="35" y="22" width="20" height="20" rx="2" fill="#1a1e24" stroke="#3fb950" stroke-width="1"/><text x="45" y="35" text-anchor="middle" fill="#3fb950" font-size="5" font-family="monospace">K64</text><rect x="75" y="20" width="14" height="18" rx="2" fill="#2a2e34" stroke="#6e7681" stroke-width="0.8"/><text x="82" y="32" text-anchor="middle" fill="#6e7681" font-size="4" font-family="monospace">ETH</text><circle cx="15" cy="18" r="2" fill="#e3b341" opacity="0.7"/></svg></div><h4>K64F</h4><p>Cortex-M4 &bull; 120 MHz &bull; Ethernet</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--orange)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="5" y="10" width="90" height="50" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="32" y="20" width="24" height="22" rx="2" fill="#1a1e24" stroke="#f0883e" stroke-width="1"/><text x="44" y="33" text-anchor="middle" fill="#f0883e" font-size="4.5" font-family="monospace">S32K</text><rect x="72" y="26" width="16" height="10" rx="2" fill="#2a2e34" stroke="#f0883e" stroke-width="0.8"/><text x="80" y="33" text-anchor="middle" fill="#f0883e" font-size="3.5" font-family="monospace">CAN</text><circle cx="15" cy="18" r="2" fill="#f0883e" opacity="0.7"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/></circle></svg></div><h4>S32K344</h4><p>Cortex-M7 &bull; Automotive &bull; CAN-FD</p></div>
+  </div>
+
+  <h3 style="color:var(--green);margin-top:2rem;margin-bottom:1rem">Application Processors</h3>
+  <div class="hw-grid">
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--green)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="5" y="10" width="90" height="50" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="35" y="22" width="18" height="18" rx="2" fill="#1a1e24" stroke="#3fb950" stroke-width="1"/><text x="44" y="34" text-anchor="middle" fill="#3fb950" font-size="5" font-family="monospace">RPi4</text><rect x="80" y="16" width="10" height="8" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.8"/><rect x="80" y="26" width="10" height="8" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.8"/><text x="85" y="22" text-anchor="middle" fill="#6e7681" font-size="3" font-family="monospace">USB</text><rect x="78" y="42" width="14" height="12" rx="2" fill="#2a2e34" stroke="#6e7681" stroke-width="0.8"/><text x="85" y="50" text-anchor="middle" fill="#6e7681" font-size="3" font-family="monospace">ETH</text><g><circle cx="12" cy="14" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="14" cy="14" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="16" cy="14" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="18" cy="14" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="20" cy="14" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="22" cy="14" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="24" cy="14" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="26" cy="14" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="12" cy="16" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="14" cy="16" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="16" cy="16" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="18" cy="16" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="20" cy="16" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="22" cy="16" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="24" cy="16" r="0.8" fill="#e3b341" opacity="0.6"/><circle cx="26" cy="16" r="0.8" fill="#e3b341" opacity="0.6"/></g><circle cx="15" cy="50" r="2" fill="#3fb950" opacity="0.8"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/></circle><circle cx="22" cy="50" r="2" fill="#f85149" opacity="0.5"/></svg></div><h4>Raspberry Pi 4</h4><p>Cortex-A72 &bull; 4-core &bull; 8GB</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--purple)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="10" y="12" width="80" height="46" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="32" y="22" width="26" height="20" rx="2" fill="#1a1e24" stroke="#bc8cff" stroke-width="1"/><text x="45" y="34" text-anchor="middle" fill="#bc8cff" font-size="5" font-family="monospace">i.MX8</text><rect x="65" y="26" width="16" height="10" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/><circle cx="18" cy="20" r="2" fill="#bc8cff" opacity="0.7"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/></circle><rect x="14" y="44" width="20" height="6" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/></svg></div><h4>i.MX 8M</h4><p>Cortex-A53 &bull; NPU &bull; 4K video</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--green)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="5" y="10" width="90" height="50" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="25" y="18" width="30" height="24" rx="2" fill="#2a2e34" stroke="#6e7681" stroke-width="1"/><path d="M28 21H52 M28 25H52 M28 29H52 M28 33H52 M28 37H52" stroke="#6e7681" stroke-width="0.5" opacity="0.4"/><text x="40" y="30" text-anchor="middle" fill="#3fb950" font-size="4" font-family="monospace">ORIN</text><rect x="65" y="22" width="22" height="16" rx="2" fill="#1a1e24" stroke="#3fb950" stroke-width="1"/><text x="76" y="32" text-anchor="middle" fill="#3fb950" font-size="4" font-family="monospace">GPU</text><circle cx="15" cy="18" r="2" fill="#3fb950" opacity="0.8"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/></circle></svg></div><h4>Jetson Orin Nano</h4><p>Cortex-A78AE &bull; 40 TOPS AI</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--cyan)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="5" y="10" width="90" height="50" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="35" y="20" width="22" height="22" rx="2" fill="#1a1e24" stroke="#79c0ff" stroke-width="1"/><text x="46" y="34" text-anchor="middle" fill="#79c0ff" font-size="4" font-family="monospace">TDA4</text><g><circle cx="12" cy="14" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="14" cy="14" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="16" cy="14" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="18" cy="14" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="20" cy="14" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="22" cy="14" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="12" cy="16" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="14" cy="16" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="16" cy="16" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="18" cy="16" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="20" cy="16" r="0.8" fill="#f0883e" opacity="0.5"/><circle cx="22" cy="16" r="0.8" fill="#f0883e" opacity="0.5"/></g><rect x="72" y="20" width="14" height="16" rx="2" fill="#2a2e34" stroke="#6e7681" stroke-width="0.8"/><text x="79" y="30" text-anchor="middle" fill="#6e7681" font-size="3" font-family="monospace">ETH</text><circle cx="15" cy="50" r="2" fill="#79c0ff" opacity="0.7"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle></svg></div><h4>BeagleBone AI-64</h4><p>TDA4VM &bull; Dual A72 &bull; Deep learning</p></div>
+  </div>
+
+  <h3 style="color:var(--purple);margin-top:2rem;margin-bottom:1rem">RISC-V &amp; Others</h3>
+  <div class="hw-grid">
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--yellow)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="15" y="14" width="55" height="42" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="30" y="24" width="18" height="16" rx="2" fill="#1a1e24" stroke="#e3b341" stroke-width="1"/><text x="39" y="35" text-anchor="middle" fill="#e3b341" font-size="5" font-family="monospace">ESP</text><path d="M62 18Q72 18 72 28L72 38Q72 48 62 48" stroke="#e3b341" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M64 20Q74 20 74 30L74 36Q74 46 64 46" stroke="#e3b341" stroke-width="0.8" fill="none" opacity="0.4"/><circle cx="22" cy="22" r="2" fill="#58a6ff" opacity="0.7"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/></circle><circle cx="22" cy="28" r="2" fill="#f85149" opacity="0.5"/></svg></div><h4>ESP32</h4><p>Xtensa LX6 &bull; Wi-Fi/BLE &bull; Dual-core</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--yellow)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="20" y="18" width="45" height="34" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="30" y="26" width="14" height="12" rx="2" fill="#1a1e24" stroke="#e3b341" stroke-width="1"/><text x="37" y="34" text-anchor="middle" fill="#e3b341" font-size="4" font-family="monospace">C3</text><path d="M58 22Q66 22 66 30L66 36Q66 44 58 44" stroke="#e3b341" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="26" cy="24" r="1.5" fill="#3fb950" opacity="0.7"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle></svg></div><h4>ESP32-C3</h4><p>RISC-V &bull; Wi-Fi/BLE &bull; Single-core</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--purple)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="10" y="12" width="80" height="46" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="32" y="22" width="26" height="20" rx="2" fill="#1a1e24" stroke="#bc8cff" stroke-width="1"/><text x="45" y="34" text-anchor="middle" fill="#bc8cff" font-size="5" font-family="monospace">U74</text><text x="45" y="40" text-anchor="middle" fill="#bc8cff" font-size="3.5" font-family="monospace" opacity="0.6">RISC-V</text><line x1="14" y1="18" x2="14" y2="50" stroke="#8b949e" stroke-width="1" stroke-dasharray="2 2" opacity="0.3"/><rect x="68" y="24" width="14" height="12" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/><circle cx="20" cy="18" r="2" fill="#bc8cff" opacity="0.7"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/></circle></svg></div><h4>SiFive U74</h4><p>RISC-V 64-bit &bull; Linux-capable</p></div>
+    <div class="hw-item"><div class="svg-icon svg-isometric svg-glow-hover" style="color:var(--red)"><svg viewBox="0 0 100 70" class="board-svg" aria-hidden="true"><rect x="12" y="14" width="76" height="42" rx="4" fill="url(#grad-pcb)" stroke="#2a8a4a" stroke-width="1"/><rect x="34" y="24" width="20" height="16" rx="2" fill="#1a1e24" stroke="#f85149" stroke-width="1"/><text x="44" y="34" text-anchor="middle" fill="#f85149" font-size="4" font-family="monospace">GD32</text><text x="44" y="39" text-anchor="middle" fill="#f85149" font-size="3" font-family="monospace" opacity="0.6">RV</text><line x1="18" y1="20" x2="18" y2="48" stroke="#8b949e" stroke-width="1.5"/><circle cx="18" cy="22" r="0.8" fill="#8b949e"/><circle cx="18" cy="26" r="0.8" fill="#8b949e"/><circle cx="18" cy="30" r="0.8" fill="#8b949e"/><circle cx="18" cy="34" r="0.8" fill="#8b949e"/><circle cx="18" cy="38" r="0.8" fill="#8b949e"/><rect x="64" y="26" width="14" height="10" rx="1" fill="#2a2e34" stroke="#6e7681" stroke-width="0.5"/><text x="71" y="33" text-anchor="middle" fill="#6e7681" font-size="3" font-family="monospace">USB</text><circle cx="26" cy="20" r="2" fill="#f85149" opacity="0.7"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/></circle></svg></div><h4>GD32VF103</h4><p>RISC-V &bull; 108 MHz &bull; USB OTG</p></div>
+  </div>
+</div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Quick Start</h2>
+  <p class="section-subtitle">Get up and running in minutes</p>
+  <div style="max-width:700px;margin:0 auto">
+    <pre><code><span class="cm"># Install ebuild CLI</span>
+<span class="fn">pip</span> <span class="str">install</span> embeddedos-ebuild
+
+<span class="cm"># Create a new project</span>
+<span class="fn">ebuild</span> init my-project --board stm32f4
+
+<span class="cm"># Build and flash</span>
+<span class="kw">cd</span> my-project
+<span class="fn">ebuild</span> build
+<span class="fn">ebuild</span> flash
+<span class="fn">ebuild</span> monitor</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+<div class="footer-inner">
+  <div class="footer-brand">
+    <h3 style="margin-bottom:0.5rem">EmbeddedOS</h3>
+    <p>An open-source embedded operating system for the next generation of intelligent devices.</p>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <span class="badge badge-blue">MIT</span>
+      <span class="badge badge-green">Open Source</span>
+      <span class="badge badge-purple">Community</span>
+    </div>
+  </div>
+  <div>
+    <h4>Documentation</h4>
+    <ul>
+      <li><a href="getting-started.html">Getting Started</a></li>
+      <li><a href="docs/eos.html">EoS Kernel</a></li>
+      <li><a href="docs/eboot.html">eBoot</a></li>
+      <li><a href="docs/ebuild.html">ebuild</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Components</h4>
+    <ul>
+      <li><a href="docs/eipc.html">EIPC</a></li>
+      <li><a href="docs/eai.html">EAI</a></li>
+      <li><a href="docs/eni.html">ENI</a></li>
+      <li><a href="docs/eosuite.html">eApps</a></li>
+      <li><a href="docs/eosim.html">EoSim</a></li>
+      <li><a href="docs/eostudio.html">EoStudio</a></li>
+      <li><a href="https://github.com/embeddedos-org/eDB">eDB</a></li>
+      <li><a href="https://github.com/embeddedos-org/eBowser">eBowser</a></li>
+      <li><a href="https://github.com/embeddedos-org/eOffice">eOffice</a></li>
+      <li><a href="https://github.com/embeddedos-org/eServiceApps">eServiceApps</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Community</h4>
+    <ul>
+      <li><a href="https://github.com/embeddedos-org">GitHub Organization</a></li>
+      <li><a href="https://github.com/embeddedos-org/eos/issues">Report Issues</a></li>
+      <li><a href="https://github.com/embeddedos-org/eos/discussions">Discussions</a></li>
+      <li><a href="https://github.com/embeddedos-org/eos/blob/main/CONTRIBUTING.md">Contributing</a></li>
+    </ul>
+  </div>
+</div>
+<div class="footer-bottom">
+  &copy; 2025 EmbeddedOS Project &bull; Licensed under MIT &bull; Built with care for embedded developers
+</div>
+</footer>
+
+</body>
+</html>

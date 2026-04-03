@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eServiceApps - Mobile Super App - EmbeddedOS</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links">
+<a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+</div></div></nav>
+<div class="doc-layout">
+<aside class="doc-sidebar"><div class="sidebar-section">
+<div class="sidebar-title">eServiceApps Modules</div>
+<a href="#architecture" class="sidebar-link">Architecture</a><a href="#social" class="sidebar-link">Social</a><a href="#ride" class="sidebar-link">Ride</a><a href="#travel" class="sidebar-link">Travel</a><a href="#delivery" class="sidebar-link">Delivery</a><a href="#auth" class="sidebar-link">Auth</a><a href="#routing" class="sidebar-link">Routing</a><a href="#theming" class="sidebar-link">Theming</a><a href="#state" class="sidebar-link">State Mgmt</a><a href="#firebase" class="sidebar-link">Firebase</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eboot.html" class="sidebar-link">eBoot</a><a href="eai.html" class="sidebar-link">EAI</a>
+<a href="eni.html" class="sidebar-link">ENI</a><a href="ebuild.html" class="sidebar-link">ebuild</a>
+<a href="eipc.html" class="sidebar-link">EIPC</a><a href="eosuite.html" class="sidebar-link">eApps</a>
+<a href="eosim.html" class="sidebar-link">EoSim</a><a href="eostudio.html" class="sidebar-link">EoStudio</a>
+<a href="edb.html" class="sidebar-link">eDB</a><a href="ebowser.html" class="sidebar-link">eBowser</a>
+<a href="eoffice.html" class="sidebar-link">eOffice</a><a href="eserviceapps.html" class="sidebar-link">eServiceApps</a>
+</div></aside>
+<main class="doc-content">
+<h1>eServiceApps &mdash; Mobile Super App <span class="version-badge">v1.0.0</span></h1>
+<p>Feature-modular Flutter super app combining social networking, ride-sharing, travel planning, and delivery services into a single mobile platform. Built with Dart/Flutter using clean architecture, Riverpod state management, GoRouter navigation, and Firebase backend.</p>
+<p><strong>Stack:</strong> <code>Dart 3 + Flutter 3.x</code> | <strong>State:</strong> <code>Riverpod</code> | <strong>Navigation:</strong> <code>GoRouter</code> | <strong>Backend:</strong> <code>Firebase</code> | <strong>License:</strong> MIT</p>
+<div class="callout callout-info"><div class="callout-title">Feature Modules</div><p><strong>Social</strong> &mdash; User profiles, posts, feeds, messaging.<br><strong>Ride</strong> &mdash; Ride-sharing with map integration and tracking.<br><strong>Travel</strong> &mdash; Destinations, bookings, itineraries.<br><strong>Delivery</strong> &mdash; Package/food delivery with order tracking.<br>Each module follows clean architecture: <code>features/[name]/models</code>, <code>services</code>, <code>views</code>, <code>widgets</code>.</p></div>
+<div id="architecture" class="module-section"><h2 style="color:var(--cyan)">&#127959; Architecture</h2>
+<p class="module-desc">Feature-modular Flutter with Riverpod + GoRouter + Firebase.</p></div>
+<h3>Project Structure</h3>
+<div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:.82rem">eServiceApps/
+  lib/
+    app/              App widget, theme, router
+    core/             Shared utilities, constants, extensions
+    features/
+      social/         models/ services/ views/ widgets/
+      ride/           models/ services/ views/ widgets/
+      travel/         models/ services/ views/ widgets/
+      delivery/       models/ services/ views/ widgets/
+      auth/           models/ services/ views/ widgets/
+    shared/           Shared widgets, providers, mixins
+  test/               Unit and widget tests
+  integration_test/   Integration tests
+  firebase/           Security rules, indexes</code></pre></div>
+<div class="callout callout-tip"><div class="callout-title">Clean Architecture</div><p>Each feature module is self-contained with <code>models/</code> (data classes), <code>services/</code> (business logic + API), <code>views/</code> (screens), and <code>widgets/</code> (reusable UI). Cross-feature communication uses Riverpod providers.</p></div>
+<div class="struct-card"><h4>Core Dependencies</h4><table>
+<tr><td><code>flutter_riverpod</code></td><td>^2.4.0</td><td>State management</td></tr>
+<tr><td><code>go_router</code></td><td>^13.0.0</td><td>Declarative routing</td></tr>
+<tr><td><code>firebase_core</code></td><td>^2.24.0</td><td>Firebase initialization</td></tr>
+<tr><td><code>cloud_firestore</code></td><td>^4.13.0</td><td>NoSQL database</td></tr>
+<tr><td><code>firebase_auth</code></td><td>^4.15.0</td><td>Authentication</td></tr>
+<tr><td><code>firebase_storage</code></td><td>^11.5.0</td><td>File storage</td></tr>
+<tr><td><code>google_maps_flutter</code></td><td>^2.5.0</td><td>Maps integration</td></tr>
+<tr><td><code>freezed</code></td><td>^2.4.0</td><td>Immutable data classes</td></tr>
+</table></div>
+<div id="social" class="module-section"><h2 style="color:var(--blue)">&#128101; Social Module</h2>
+<p class="module-desc">Social networking: profiles, posts, feeds, messaging.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">SocialService</span> <span class="fn">SocialService</span>(<span class="param">FirebaseFirestore db, FirebaseAuth auth</span>)</code></div>
+<p class="api-desc">Core social networking service managing posts, feeds, user profiles, and real-time messaging.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>db</td><td>FirebaseFirestore</td><td>Firestore instance.</td></tr><tr><td>auth</td><td>FirebaseAuth</td><td>Auth instance.</td></tr></table></div>
+<div class="api-example"><h5>Example</h5><pre><code>final socialService = ref.watch(socialServiceProvider);</code></pre></div></div>
+<div class="struct-card"><h4>PostModel</h4><table>
+<tr><td><code>id</code></td><td><code>String</code></td><td>Unique post ID</td></tr>
+<tr><td><code>authorId</code></td><td><code>String</code></td><td>Author user ID</td></tr>
+<tr><td><code>content</code></td><td><code>String</code></td><td>Post text content</td></tr>
+<tr><td><code>mediaUrls</code></td><td><code>List&lt;String&gt;</code></td><td>Attached media URLs</td></tr>
+<tr><td><code>likes</code></td><td><code>int</code></td><td>Like count</td></tr>
+<tr><td><code>comments</code></td><td><code>int</code></td><td>Comment count</td></tr>
+<tr><td><code>createdAt</code></td><td><code>DateTime</code></td><td>Creation timestamp</td></tr>
+</table></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;void&gt;</span> <span class="fn">createPost</span>(<span class="param">PostModel post</span>)</code></div>
+<p class="api-desc">Create a new post. Uploads media to Firebase Storage, stores metadata in Firestore, and notifies followers.</p>
+<div class="api-example"><h5>Example</h5><pre><code>await socialService.createPost(PostModel(
+  content: 'Hello world!',
+  mediaUrls: [uploadedUrl],
+));</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Stream&lt;List&lt;PostModel&gt;&gt;</span> <span class="fn">getFeed</span>(<span class="param">String userId, {int limit = 20}</span>)</code></div>
+<p class="api-desc">Real-time feed stream using Firestore snapshots. Merges posts from followed users, sorted by timestamp.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;void&gt;</span> <span class="fn">sendMessage</span>(<span class="param">String chatId, MessageModel msg</span>)</code></div>
+<p class="api-desc">Send a real-time message in a chat thread. Updates Firestore and triggers push notification.</p></div>
+<div id="ride" class="module-section"><h2 style="color:var(--green)">&#128663; Ride Module</h2>
+<p class="module-desc">Ride-sharing with map integration, booking, and live tracking.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">RideService</span> <span class="fn">RideService</span>(<span class="param">FirebaseFirestore db, GoogleMapsApi maps</span>)</code></div>
+<p class="api-desc">Ride booking, driver matching, real-time tracking, and fare calculation.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>db</td><td>FirebaseFirestore</td><td>Firestore instance.</td></tr><tr><td>maps</td><td>GoogleMapsApi</td><td>Maps API client.</td></tr></table></div></div>
+<div class="struct-card"><h4>BookingModel</h4><table>
+<tr><td><code>id</code></td><td><code>String</code></td><td>Booking ID</td></tr>
+<tr><td><code>riderId</code></td><td><code>String</code></td><td>Rider user ID</td></tr>
+<tr><td><code>driverId</code></td><td><code>String?</code></td><td>Matched driver (null until matched)</td></tr>
+<tr><td><code>pickup</code></td><td><code>LatLng</code></td><td>Pickup coordinates</td></tr>
+<tr><td><code>destination</code></td><td><code>LatLng</code></td><td>Destination coordinates</td></tr>
+<tr><td><code>status</code></td><td><code>RideStatus</code></td><td>requested, matched, in_progress, completed, cancelled</td></tr>
+<tr><td><code>fare</code></td><td><code>double</code></td><td>Calculated fare</td></tr>
+</table></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;BookingModel&gt;</span> <span class="fn">requestRide</span>(<span class="param">LatLng pickup, LatLng dest</span>)</code></div>
+<p class="api-desc">Request a ride. Calculates route, estimates fare, and enters driver matching queue.</p>
+<div class="api-example"><h5>Example</h5><pre><code>final booking = await rideService.requestRide(
+  LatLng(37.78, -122.41), LatLng(37.33, -121.89)
+);</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Stream&lt;DriverLocation&gt;</span> <span class="fn">trackDriver</span>(<span class="param">String bookingId</span>)</code></div>
+<p class="api-desc">Real-time driver location stream via Firestore. Updates every 3 seconds during active rides.</p></div>
+<h3>MapView</h3>
+<p>Interactive Google Maps widget showing pickup/destination markers, route polyline, and live driver position. Uses <code>google_maps_flutter</code> with custom markers and info windows.</p>
+<div id="travel" class="module-section"><h2 style="color:var(--purple)">&#9992; Travel Module</h2>
+<p class="module-desc">Travel planning with destinations, bookings, and itineraries.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">TravelService</span> <span class="fn">TravelService</span>(<span class="param">FirebaseFirestore db</span>)</code></div>
+<p class="api-desc">Destination discovery, hotel/flight bookings, and itinerary management.</p></div>
+<div class="struct-card"><h4>DestinationModel</h4><table>
+<tr><td><code>id</code></td><td><code>String</code></td><td>Destination ID</td></tr>
+<tr><td><code>name</code></td><td><code>String</code></td><td>Destination name</td></tr>
+<tr><td><code>country</code></td><td><code>String</code></td><td>Country</td></tr>
+<tr><td><code>imageUrl</code></td><td><code>String</code></td><td>Cover image</td></tr>
+<tr><td><code>rating</code></td><td><code>double</code></td><td>Average rating (0-5)</td></tr>
+<tr><td><code>priceRange</code></td><td><code>PriceRange</code></td><td>budget, moderate, luxury</td></tr>
+</table></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;List&lt;DestinationModel&gt;&gt;</span> <span class="fn">searchDestinations</span>(<span class="param">String query, {DestinationFilter? filter}</span>)</code></div>
+<p class="api-desc">Search destinations with optional filters: country, priceRange, rating, activities.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;Itinerary&gt;</span> <span class="fn">createItinerary</span>(<span class="param">String destId, DateRange dates</span>)</code></div>
+<p class="api-desc">Generate a day-by-day itinerary for a destination and date range.</p></div>
+<div id="delivery" class="module-section"><h2 style="color:var(--orange)">&#128230; Delivery Module</h2>
+<p class="module-desc">Package and food delivery with order tracking.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">DeliveryService</span> <span class="fn">DeliveryService</span>(<span class="param">FirebaseFirestore db</span>)</code></div>
+<p class="api-desc">Order placement, real-time tracking, delivery status updates.</p></div>
+<div class="struct-card"><h4>OrderModel</h4><table>
+<tr><td><code>id</code></td><td><code>String</code></td><td>Order ID</td></tr>
+<tr><td><code>userId</code></td><td><code>String</code></td><td>Customer user ID</td></tr>
+<tr><td><code>items</code></td><td><code>List&lt;OrderItem&gt;</code></td><td>Ordered items</td></tr>
+<tr><td><code>status</code></td><td><code>OrderStatus</code></td><td>placed, preparing, picked_up, in_transit, delivered</td></tr>
+<tr><td><code>deliveryAddress</code></td><td><code>Address</code></td><td>Delivery address</td></tr>
+<tr><td><code>estimatedArrival</code></td><td><code>DateTime</code></td><td>ETA</td></tr>
+<tr><td><code>trackingUrl</code></td><td><code>String?</code></td><td>Live tracking URL</td></tr>
+</table></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;OrderModel&gt;</span> <span class="fn">placeOrder</span>(<span class="param">List&lt;OrderItem&gt; items, Address addr</span>)</code></div>
+<p class="api-desc">Place a delivery order. Validates items, calculates total, assigns courier.</p>
+<div class="api-example"><h5>Example</h5><pre><code>final order = await deliveryService.placeOrder(
+  [OrderItem(name:'Pizza',qty:2,price:12.99)],
+  Address(street:'123 Main St',city:'SF')
+);</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Stream&lt;OrderStatus&gt;</span> <span class="fn">trackOrder</span>(<span class="param">String orderId</span>)</code></div>
+<p class="api-desc">Real-time order status stream. Emits updates as order progresses through stages.</p></div>
+<div id="auth" class="module-section"><h2 style="color:var(--red)">&#128274; Authentication</h2>
+<p class="module-desc">Firebase Auth with email/password and social login.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">AuthService</span> <span class="fn">AuthService</span>(<span class="param">FirebaseAuth auth</span>)</code></div>
+<p class="api-desc">Authentication service with email/password, Google, and Apple sign-in. Manages auth state and user sessions.</p>
+<div class="api-params"><h5>Parameters</h5><table><tr><td>auth</td><td>FirebaseAuth</td><td>Firebase Auth instance.</td></tr></table></div>
+<div class="api-example"><h5>Example</h5><pre><code>final authService = ref.watch(authServiceProvider);</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;UserCredential&gt;</span> <span class="fn">signInWithEmail</span>(<span class="param">String email, String password</span>)</code></div>
+<p class="api-desc">Sign in with email and password. Throws AuthException on failure.</p>
+<div class="api-example"><h5>Example</h5><pre><code>await authService.signInWithEmail('user@example.com', 'pass123');</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;UserCredential&gt;</span> <span class="fn">signInWithGoogle</span>(<span class="param"></span>)</code></div>
+<p class="api-desc">Sign in with Google OAuth. Opens native Google sign-in flow.</p>
+<div class="api-example"><h5>Example</h5><pre><code>final cred = await authService.signInWithGoogle();</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;UserCredential&gt;</span> <span class="fn">signInWithApple</span>(<span class="param"></span>)</code></div>
+<p class="api-desc">Sign in with Apple ID. iOS 13+ required.</p>
+<div class="api-example"><h5>Example</h5><pre><code>final cred = await authService.signInWithApple();</code></pre></div></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">Future&lt;void&gt;</span> <span class="fn">signOut</span>(<span class="param"></span>)</code></div>
+<p class="api-desc">Sign out the current user and clear local session.</p></div>
+<h3>AuthGuard</h3>
+<p>Route guard that redirects unauthenticated users to the login screen. Integrates with GoRouter's <code>redirect</code> callback.</p>
+<pre><code>GoRouter(
+  redirect: (context, state) {
+    final loggedIn = ref.read(authStateProvider).valueOrNull != null;
+    if (!loggedIn) return '/login';
+    return null;
+  },
+  routes: [...]
+);</code></pre>
+<div id="routing" class="module-section"><h2 style="color:var(--green)">&#128268; Routing</h2>
+<p class="module-desc">GoRouter declarative navigation with deep linking and guards.</p></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">GoRouter</span> <span class="fn">createAppRouter</span>(<span class="param">Ref ref</span>)</code></div>
+<p class="api-desc">Create the app router with all feature routes, auth guards, and deep link support.</p>
+<div class="api-example"><h5>Example</h5><pre><code>final router = createAppRouter(ref);</code></pre></div></div>
+<h3>app_router.dart Configuration</h3>
+<pre><code>final appRouter = GoRouter(
+  initialLocation: '/social/feed',
+  routes: [
+    GoRoute(path: '/social/feed', builder: (_, __) =&gt; FeedView()),
+    GoRoute(path: '/social/profile/:id', builder: (_, s) =&gt; ProfileView(id: s.pathParameters['id']!)),
+    GoRoute(path: '/ride', builder: (_, __) =&gt; RideHomeView()),
+    GoRoute(path: '/ride/booking/:id', builder: (_, s) =&gt; BookingView(id: s.pathParameters['id']!)),
+    GoRoute(path: '/travel', builder: (_, __) =&gt; TravelHomeView()),
+    GoRoute(path: '/delivery', builder: (_, __) =&gt; DeliveryHomeView()),
+    GoRoute(path: '/delivery/track/:id', builder: (_, s) =&gt; TrackingView(id: s.pathParameters['id']!)),
+    GoRoute(path: '/login', builder: (_, __) =&gt; LoginView()),
+  ],
+);</code></pre>
+<div class="callout callout-tip"><div class="callout-title">Deep Linking</div><p>All routes support deep linking via <code>go_router</code>. URLs like <code>eserviceapps://ride/booking/abc123</code> open directly to the booking screen on mobile.</p></div>
+<div id="theming" class="module-section"><h2 style="color:var(--purple)">&#127912; Theming</h2>
+<p class="module-desc">Material 3 with custom theme, light/dark modes, and brand colors.</p></div>
+<h3>AppTheme</h3>
+<pre><code>class AppTheme {
+  static ThemeData light() =&gt; ThemeData(
+    useMaterial3: true,
+    colorSchemeSeed: const Color(0xFF3B82F6),
+    brightness: Brightness.light,
+    fontFamily: 'Inter',
+  );
+  static ThemeData dark() =&gt; ThemeData(
+    useMaterial3: true,
+    colorSchemeSeed: const Color(0xFF3B82F6),
+    brightness: Brightness.dark,
+    fontFamily: 'Inter',
+  );
+}</code></pre>
+<div class="struct-card"><h4>Brand Colors</h4><table>
+<tr><td><code>Primary</code></td><td><code>#3B82F6</code></td><td>Blue - primary actions</td></tr>
+<tr><td><code>Secondary</code></td><td><code>#10B981</code></td><td>Green - success, ride</td></tr>
+<tr><td><code>Tertiary</code></td><td><code>#8B5CF6</code></td><td>Purple - travel</td></tr>
+<tr><td><code>Error</code></td><td><code>#EF4444</code></td><td>Red - errors, alerts</td></tr>
+<tr><td><code>Surface</code></td><td><code>#FFFFFF / #1E1E1E</code></td><td>Light/dark backgrounds</td></tr>
+</table></div>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">ThemeProvider</span> <span class="fn">ThemeProvider</span>(<span class="param"></span>)</code></div>
+<p class="api-desc">Riverpod StateNotifier managing theme mode (light, dark, system). Persists preference to SharedPreferences.</p>
+<div class="api-example"><h5>Example</h5><pre><code>final themeMode = ref.watch(themeProvider);
+ref.read(themeProvider.notifier).toggle();</code></pre></div></div>
+<div id="state" class="module-section"><h2 style="color:var(--cyan)">&#9881; State Management</h2>
+<p class="module-desc">Riverpod providers for feature isolation and reactive state.</p></div>
+<div class="callout callout-info"><div class="callout-title">Riverpod Provider Types</div><p><code>Provider</code> &mdash; Read-only computed values.<br><code>StateProvider</code> &mdash; Simple mutable state.<br><code>StateNotifierProvider</code> &mdash; Complex state with business logic.<br><code>FutureProvider</code> &mdash; Async one-shot data.<br><code>StreamProvider</code> &mdash; Real-time reactive data.</p></div>
+<h3>Best Practices for Feature Isolation</h3>
+<pre><code>// Each feature defines its own providers
+// features/social/providers.dart
+final socialServiceProvider = Provider&lt;SocialService&gt;((ref) {
+  final db = ref.watch(firestoreProvider);
+  final auth = ref.watch(firebaseAuthProvider);
+  return SocialService(db, auth);
+});
+
+final feedProvider = StreamProvider.family&lt;List&lt;PostModel&gt;, String&gt;((ref, userId) {
+  return ref.watch(socialServiceProvider).getFeed(userId);
+});
+
+// In views - use AsyncValue for loading/error/data states
+ref.watch(feedProvider(userId)).when(
+  data: (posts) =&gt; PostList(posts: posts),
+  loading: () =&gt; const CircularProgressIndicator(),
+  error: (e, st) =&gt; ErrorWidget(e),
+);</code></pre>
+<div id="firebase" class="module-section"><h2 style="color:var(--orange)">&#128293; Firebase Integration</h2>
+<p class="module-desc">Firestore, Storage, Analytics, Crashlytics configuration.</p></div>
+<div class="struct-card"><h4>Firebase Services</h4><table>
+<tr><td><code>Firestore</code></td><td>NoSQL document database</td><td>User profiles, posts, bookings, orders</td></tr>
+<tr><td><code>Firebase Auth</code></td><td>Authentication</td><td>Email/password, Google, Apple sign-in</td></tr>
+<tr><td><code>Firebase Storage</code></td><td>File/media storage</td><td>Profile images, post media, documents</td></tr>
+<tr><td><code>Analytics</code></td><td>Event tracking</td><td>Screen views, user actions, conversions</td></tr>
+<tr><td><code>Crashlytics</code></td><td>Crash reporting</td><td>Real-time crash reports with stack traces</td></tr>
+</table></div>
+<h3>Security Rules</h3>
+<pre><code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.uid == userId;
+    }
+    match /posts/{postId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        &amp;&amp; request.resource.data.authorId == request.auth.uid;
+      allow delete: if resource.data.authorId == request.auth.uid;
+    }
+    match /bookings/{bookingId} {
+      allow read, write: if request.auth != null
+        &amp;&amp; (resource.data.riderId == request.auth.uid
+        || resource.data.driverId == request.auth.uid);
+    }
+    match /orders/{orderId} {
+      allow read, write: if request.auth != null
+        &amp;&amp; resource.data.userId == request.auth.uid;
+    }
+  }
+}</code></pre>
+<h3>Data Model</h3>
+<div class="struct-card"><h4>Firestore Collections</h4><table>
+<tr><td><code>users</code></td><td>User profiles, preferences, followers</td><td>Document per user</td></tr>
+<tr><td><code>posts</code></td><td>Social posts with media refs</td><td>Subcollections: comments, likes</td></tr>
+<tr><td><code>chats</code></td><td>Chat threads</td><td>Subcollections: messages</td></tr>
+<tr><td><code>bookings</code></td><td>Ride bookings</td><td>Status updates via Firestore triggers</td></tr>
+<tr><td><code>destinations</code></td><td>Travel destinations</td><td>Cached with offline persistence</td></tr>
+<tr><td><code>orders</code></td><td>Delivery orders</td><td>Real-time status via snapshots</td></tr>
+</table></div>
+
+</main></div>
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+</body></html>
