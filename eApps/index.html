@@ -1,0 +1,376 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eApps — EoSim Play & Browser Extensions - EmbeddedOS</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin:2rem 0}
+.sim-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:all .3s}
+.sim-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.sim-card img{width:80px;height:80px;margin:0 auto 1rem;display:block;border-radius:16px}
+.sim-card h3{border:none;margin:0 0 .5rem;font-size:1.2rem}
+.sim-card p{color:var(--text-secondary);font-size:.9rem;margin-bottom:1rem}
+.cmd-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.85rem}
+.cmd-table th{text-align:left;padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--cyan)}
+.cmd-table td{padding:8px 12px;border:1px solid var(--border-color)}
+.cmd-table code{color:var(--green);font-size:.82rem}
+.section-icon{font-size:1.8rem;margin-right:8px;vertical-align:middle}
+.layer-diagram{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;margin:1.5rem 0;font-family:monospace;font-size:.82rem;color:var(--text-secondary);line-height:1.8}
+.reuse-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;background:rgba(52,211,153,.15);color:var(--green);font-size:.75rem;font-weight:700;letter-spacing:.3px}
+</style></head><body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="../docs/index.html">Docs</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+
+<section class="hero" style="padding:4rem 2rem 3rem"><div class="hero-content">
+<h1 style="font-size:2.6rem">🎮 EoSim Play & eApps</h1>
+<p class="subtitle">Interactive 3D simulation games ported from EoSim renderers — play in your browser, install as mobile app, or use as a browser extension.</p>
+<div class="hero-buttons">
+<a href="#games" class="btn btn-primary">Play Games</a>
+<a href="#extension" class="btn btn-secondary">Browser Extension</a>
+<a href="#cli" class="btn btn-outline">CLI Commands</a>
+</div>
+</div></section>
+
+<div class="content-wrapper" style="max-width:1000px">
+
+<h2 id="games" style="border:none;text-align:center;font-size:1.8rem"><span class="section-icon">🕹️</span>Simulation Games</h2>
+<p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1.5rem">
+Each game reuses the <strong style="color:var(--green)">exact same 3D geometry and physics</strong> from EoSim's Python renderers
+(<code>eosim/gui/renderers/</code>), ported to JavaScript/Canvas. <span class="reuse-badge">♻️ Code Reused</span>
+</p>
+
+<div class="sim-grid">
+<div class="sim-card" style="border-top:3px solid #60a5fa">
+<img src="icons/sim-aircraft.svg" alt="Aircraft Sim">
+<h3 style="color:#60a5fa">✈️ Aircraft Simulator</h3>
+<p>Fly a fixed-wing aircraft with pitch, roll, heading, airspeed, gear, and flaps. Ported from <code>aircraft.py</code>.</p>
+<span class="reuse-badge">From AircraftRenderer</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #34d399">
+<img src="icons/sim-vehicle.svg" alt="Car Sim">
+<h3 style="color:#34d399">🚗 Car Simulator</h3>
+<p>Drive a car with steering, acceleration, braking, speed-based colors, and odometer. Ported from <code>vehicle.py</code>.</p>
+<span class="reuse-badge">From VehicleRenderer</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #a78bfa">
+<img src="icons/sim-drone.svg" alt="Drone Sim">
+<h3 style="color:#a78bfa">🚁 Drone Simulator</h3>
+<p>Fly a quadrotor with roll, pitch, yaw, altitude, motor RPM visualization. Ported from <code>drone.py</code>.</p>
+<span class="reuse-badge">From DroneRenderer</span>
+</div>
+</div>
+
+<h2 id="eosim-tool" style="border:none;text-align:center;font-size:1.8rem"><span class="section-icon">🖥️</span>EoSim — Official Simulation Platform</h2>
+<p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1.5rem">
+<strong style="color:var(--red)">EoSim</strong> is the multi-architecture embedded simulation platform — supporting <strong>52+ platforms</strong> across 12 architectures with native Python simulation, QEMU, Renode, VirtualBox, VMware, Docker-like layers, and snapshots.
+</p>
+
+<div class="sim-grid">
+<div class="sim-card" style="border-top:3px solid #f87171">
+<img src="icons/eosim.svg" alt="EoSim">
+<h3 style="color:#f87171">🖥️ EoSim Engine</h3>
+<p>52+ platform definitions — ARM, RISC-V, Xtensa, x86, MIPS, PowerPC. Native + QEMU + Renode + VirtualBox + VMware engines.</p>
+<span class="reuse-badge">Python · 12 Architectures</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #fb923c">
+<h3 style="color:#fb923c;margin-top:0.5rem">🎨 14 3D Renderers</h3>
+<p>Aircraft, Vehicle, Drone, Robot, Medical, Satellite, Gaming, Weather, Finance, Aerodynamics, Physiology, Consumer, Generic — all reusable.</p>
+<span class="reuse-badge">Ported to JS for browser</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #ef4444">
+<h3 style="color:#ef4444;margin-top:0.5rem">📊 GUI Dashboard</h3>
+<p>GPIO panel, UART terminal, CPU state, memory view, peripheral registers, 3D product viewer — Tkinter + Web.</p>
+<span class="reuse-badge">7 Widget Panels</span>
+</div>
+</div>
+
+<div class="sim-grid">
+<div class="sim-card" style="border-top:3px solid #f97316">
+<h3 style="color:#f97316;margin-top:0.5rem">📦 VirtualBox + VMware</h3>
+<p>Generate <code>.vbox</code> + <code>.vdi</code> for VirtualBox and <code>.vmx</code> + <code>.vmdk</code> for VMware directly from platform hardware configs.</p>
+<span class="reuse-badge">eosim vbox create · eosim vmware create</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #ea580c">
+<h3 style="color:#ea580c;margin-top:0.5rem">🐳 Docker-like Layers</h3>
+<p>Incremental layered VM builds — base (FROM), overlay (COPY/ADD), commit (tag), flatten (export), history — just like Docker.</p>
+<span class="reuse-badge">eosim layer create/add/commit</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #dc2626">
+<h3 style="color:#dc2626;margin-top:0.5rem">📸 Snapshots</h3>
+<p>Save, restore, export, import VM snapshots across VirtualBox and VMware — with snapshot trees and portable <code>.tar.gz</code> archives.</p>
+<span class="reuse-badge">eosim snapshot save/restore</span>
+</div>
+</div>
+
+<div class="callout callout-tip"><div class="callout-title">Quick Start — EoSim</div>
+<pre><code>pip install git+https://github.com/embeddedos-org/eosim.git
+
+eosim list                            # 52+ platforms
+eosim run stm32f4 --gui               # launch simulation with GUI
+eosim vbox create x86_64-linux        # generate VirtualBox VM
+eosim vmware create raspi4            # generate VMware VM
+eosim snapshot save my-vm checkpoint1 # save snapshot
+eosim layer create my-vm ./out/vbox/my-vm  # create base layer
+eosim layer add my-vm ./apps --name apps   # add overlay layer
+eosim layer commit my-vm v1.0              # tag as v1.0</code></pre></div>
+
+<p style="text-align:center;margin:1.5rem 0"><a href="../docs/eosim.html" class="btn btn-primary">📖 EoSim API Docs</a>&nbsp;&nbsp;<a href="https://github.com/embeddedos-org/eosim" class="btn btn-secondary">⭐ GitHub</a></p>
+
+<h2 id="eostudio-tool" style="border:none;text-align:center;font-size:1.8rem"><span class="section-icon">🎨</span>EoStudio — Design Suite with LLM</h2>
+<p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1.5rem">
+<strong style="color:var(--purple)">EoStudio</strong> is the unified cross-platform design tool suite — <strong>12 editors</strong>, <strong>30+ code generators</strong>, AI/LLM integration, and native EoSim plugin for hardware simulation directly from the design canvas.
+</p>
+
+<div class="sim-grid">
+<div class="sim-card" style="border-top:3px solid #a855f7">
+<img src="icons/eostudio.svg" alt="EoStudio">
+<h3 style="color:#a855f7">🎨 12 Design Editors</h3>
+<p>3D Modeler, CAD, Image Editor, Game Editor, UI/UX, Product Design, Interior, UML, Simulation, Database, Hardware PCB, IDE.</p>
+<span class="reuse-badge">Python · tkinter · Cross-Platform</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #c084fc">
+<h3 style="color:#c084fc;margin-top:0.5rem">⚡ 30+ Code Generators</h3>
+<p>Flutter, React Native, Electron, Tauri, React+FastAPI, Vue+Flask, Angular, Svelte, OpenSCAD, STL, Godot, Unity, EoS firmware.</p>
+<span class="reuse-badge">Mobile · Desktop · Web · Game · Firmware</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #d946ef">
+<h3 style="color:#d946ef;margin-top:0.5rem">🤖 AI / LLM Powered</h3>
+<p>Design Agent, Smart Chat, Text-to-UI, Text-to-3D, AI Simulator, Kids Tutor — powered by Ollama (local) or OpenAI API.</p>
+<span class="reuse-badge">Ollama · OpenAI · GPT-4</span>
+</div>
+</div>
+
+<div class="callout callout-tip"><div class="callout-title">Quick Start — EoStudio</div>
+<pre><code>pip install -e ".[all]"
+
+EoStudio launch                       # open design suite
+EoStudio new --template todo-app      # create from template
+EoStudio codegen my-app.eostudio --framework react  # generate code
+EoStudio ask "Design a responsive dashboard"        # AI design agent
+EoStudio teach --lesson shapes                      # kids learning mode</code></pre></div>
+
+<p style="text-align:center;margin:1.5rem 0"><a href="../docs/eostudio.html" class="btn btn-primary">📖 EoStudio API Docs</a>&nbsp;&nbsp;<a href="https://github.com/embeddedos-org/EoStudio" class="btn btn-secondary">⭐ GitHub</a></p>
+
+<h2 id="plugins" style="border:none;text-align:center;font-size:1.8rem"><span class="section-icon">🔌</span>EoSim Plugins — Everywhere</h2>
+<p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1.5rem">
+EoSim is available as a <strong style="color:var(--green)">plugin for every platform</strong> in the EoS ecosystem — from EoStudio design tools to browser extensions, mobile apps, VSCode, JetBrains, Slack, and more.
+</p>
+
+<div class="sim-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+<div class="sim-card" style="border-top:3px solid #a855f7;padding:1rem">
+<h3 style="color:#a855f7;font-size:1rem;margin-top:0">🎨 EoStudio Plugin</h3>
+<p style="font-size:.8rem">Simulate hardware directly from the design canvas. Menu items, toolbar, status panel, 3D product viewer.</p>
+<span class="reuse-badge">eosim_plugin.py</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #60a5fa;padding:1rem">
+<h3 style="color:#60a5fa;font-size:1rem;margin-top:0">🧩 Chrome Extension</h3>
+<p style="font-size:.8rem">EoSim Play games in the eOffice Suite browser extension popup — Aircraft, Car, Drone sims.</p>
+<span class="reuse-badge">extensions/browser/</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #22c55e;padding:1rem">
+<h3 style="color:#22c55e;font-size:1rem;margin-top:0">📱 Mobile PWA</h3>
+<p style="font-size:.8rem">Touch-optimized sim games with D-pad controls. Installable on iOS & Android via "Add to Home Screen".</p>
+<span class="reuse-badge">mobile-apps/eosim-play/</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #38bdf8;padding:1rem">
+<h3 style="color:#38bdf8;font-size:1rem;margin-top:0">🌐 eBrowser Native</h3>
+<p style="font-size:.8rem">EoSim sims render natively inside eBrowser on embedded devices, kiosks, and IoT dashboards.</p>
+<span class="reuse-badge">eBrowser + sim-engine.js</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #06b6d4;padding:1rem">
+<h3 style="color:#06b6d4;font-size:1rem;margin-top:0">💻 VSCode Extension</h3>
+<p style="font-size:.8rem">EoSim sidebar provider, app launcher, CSV editor — integrated into VS Code.</p>
+<span class="reuse-badge">extensions/vscode/</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #8b5cf6;padding:1rem">
+<h3 style="color:#8b5cf6;font-size:1rem;margin-top:0">🔧 JetBrains Plugin</h3>
+<p style="font-size:.8rem">EoSim tool window and eBot action for IntelliJ, CLion, PyCharm — simulate from your IDE.</p>
+<span class="reuse-badge">extensions/jetbrains/</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #f59e0b;padding:1rem">
+<h3 style="color:#f59e0b;font-size:1rem;margin-top:0">💬 Slack Bot</h3>
+<p style="font-size:.8rem">Run <code>/eosim simulate stm32f4</code> in Slack channels. Share results with your team.</p>
+<span class="reuse-badge">extensions/slack/</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #ec4899;padding:1rem">
+<h3 style="color:#ec4899;font-size:1rem;margin-top:0">🍎 Safari Extension</h3>
+<p style="font-size:.8rem">Same eOffice Suite with EoSim Play games — works in Safari on macOS & iOS.</p>
+<span class="reuse-badge">extensions/safari/</span>
+</div>
+</div>
+
+<div class="callout callout-info"><div class="callout-title">EoSim Plugin Architecture</div>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    EoSim Core Engine                         │
+│  (52+ platforms, 14 renderers, QEMU/Renode/VBox/VMware)     │
+├─────────────────────────────────────────────────────────────┤
+│                  Plugin Interfaces                           │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │ EoStudio │ │ eBrowser │ │  Chrome  │ │  VSCode  │       │
+│  │  Plugin  │ │  Native  │ │Extension │ │Extension │       │
+│  └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘       │
+│       │             │            │             │             │
+│  ┌────┴─────┐ ┌────┴─────┐ ┌────┴─────┐ ┌────┴─────┐       │
+│  │ JetBrains│ │  Slack   │ │  Safari  │ │  Mobile  │       │
+│  │  Plugin  │ │   Bot    │ │Extension │ │   PWA    │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+├─────────────────────────────────────────────────────────────┤
+│              Shared: sim-engine.js (Canvas 2D)              │
+│         Ported from eosim/gui/renderers/*.py (Python)       │
+└─────────────────────────────────────────────────────────────┘</code></pre></div>
+
+<h2 id="architecture" style="border:none;text-align:center;font-size:1.6rem"><span class="section-icon">🌐</span>eBrowser — Embedded Web Browser</h2>
+<p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1.5rem">
+<strong style="color:var(--cyan)">eBrowser</strong> is the EmbeddedOS lightweight web browser engine — built from scratch in C/C++ for embedded devices, kiosks, and IoT dashboards. It renders the EoSim Play games natively and powers the browser extension platform.
+</p>
+
+<div class="sim-grid">
+<div class="sim-card" style="border-top:3px solid #38bdf8">
+<img src="icons/ebrowser.svg" alt="eBrowser">
+<h3 style="color:#38bdf8">🌐 eBrowser Engine</h3>
+<p>Lightweight HTML5/CSS3 rendering engine with DOM, layout, and networking — all under 1 MB binary.</p>
+<span class="reuse-badge">C/C++ · LVGL · SDL2 · WASM</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #0ea5e9">
+<h3 style="color:#0ea5e9;margin-top:0.5rem">🧩 Extension Support</h3>
+<p>eBrowser loads eOffice Suite extensions and EoSim Play sims as browser-native apps — same extensions run in Chrome, eBrowser, and mobile.</p>
+<span class="reuse-badge">Same JS · Same HTML</span>
+</div>
+<div class="sim-card" style="border-top:3px solid #06b6d4">
+<h3 style="color:#06b6d4;margin-top:0.5rem">🖥️ 3 Backends</h3>
+<p><strong>SDL2</strong> (desktop), <strong>EoS native</strong> (embedded framebuffer), <strong>WASM</strong> (run in any browser via Emscripten).</p>
+<span class="reuse-badge">Cross-Platform</span>
+</div>
+</div>
+
+<div class="callout callout-tip"><div class="callout-title">Quick Start — eBrowser</div>
+<pre><code># Linux / macOS
+git clone --recursive https://github.com/embeddedos-org/eBrowser.git
+cd eBrowser && ./setup.sh
+
+# Windows
+git clone --recursive https://github.com/embeddedos-org/eBrowser.git
+cd eBrowser && setup.bat
+
+# Open EoSim Play games in eBrowser
+./eBrowser https://embeddedos-org.github.io/eApps/</code></pre></div>
+
+<div class="callout callout-info"><div class="callout-title">eBrowser Architecture</div>
+<pre><code>┌─────────────────────────────────────────────┐
+│          Browser UI (tabs, URL bar)          │
+├─────────────────────────────────────────────┤
+│   Core Engine (HTML / CSS / Layout / JS)     │
+├──────────────┬──────────────┬───────────────┤
+│  Rendering   │   Network    │    Input       │
+│  (LVGL)      │   (HTTP/S)   │  (touch/kb)    │
+├──────────────┴──────────────┴───────────────┤
+│      Platform Abstraction Layer (PAL)        │
+├─────────────────────────────────────────────┤
+│   SDL2 (desktop)  │  EoS (embedded)  │ WASM  │
+└─────────────────────────────────────────────┘</code></pre></div>
+
+<div class="callout callout-info"><div class="callout-title">eBrowser C API</div>
+<pre><code>#include &lt;ebrowser/ebrowser.h&gt;
+
+eb_config cfg = eb_config_default();
+eb_instance *browser = eb_create(&amp;cfg);
+eb_navigate(browser, "https://embeddedos-org.github.io/eApps/");
+eb_run(browser);
+eb_destroy(browser);</code></pre></div>
+
+<p style="text-align:center;margin:1.5rem 0"><a href="../docs/ebowser.html" class="btn btn-primary">📖 Full eBrowser API Docs</a>&nbsp;&nbsp;<a href="https://github.com/embeddedos-org/eBrowser" class="btn btn-secondary">⭐ GitHub</a></p>
+
+<h2 id="reuse-arch" style="border:none;text-align:center;font-size:1.6rem"><span class="section-icon">🔄</span>Code Reuse Architecture</h2>
+<div class="layer-diagram">
+EoSim Python Renderers (source of truth)
+  eosim/gui/renderers/aircraft.py  ─┐
+  eosim/gui/renderers/vehicle.py   ─┼──→  eApps/shared/js/sim-engine.js  (ported geometry + math)
+  eosim/gui/renderers/drone.py     ─┘           │
+                                                 ├──→  Browser Extension (eosim-play.html)
+                                                 ├──→  Mobile PWA (mobile-apps/eosim-play/)
+                                                 └──→  GitHub Pages (embeddedos-org.github.io/eApps/)
+
+Layer Reuse (Docker-like):
+  ┌────────────────────────────────────────────┐
+  │  Layer 3: Custom Designs (per-deployment)  │  ← eosim layer add
+  ├────────────────────────────────────────────┤
+  │  Layer 2: App Layer (sim-engine.js)        │  ← eosim layer add
+  ├────────────────────────────────────────────┤
+  │  Layer 1: Base OS (VirtualBox / VMware)    │  ← eosim layer create
+  └────────────────────────────────────────────┘
+</div>
+
+<h2 id="extension" style="border:none;text-align:center;font-size:1.6rem"><span class="section-icon">🧩</span>Browser Extension</h2>
+<p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1rem">The EoSim sims are integrated into the <strong>eOffice Suite</strong> Chrome extension. Click any sim in the extension popup to launch a full-screen interactive game tab.</p>
+<div class="callout callout-tip"><div class="callout-title">Install</div>
+<ol><li>Clone <code>eApps</code> repo</li>
+<li>Open <code>chrome://extensions</code></li>
+<li>Enable Developer Mode → Load Unpacked → select <code>extensions/browser/</code></li>
+<li>Click the extension icon → scroll to "🎮 EoSim Simulations"</li></ol></div>
+
+<h2 id="mobile" style="border:none;text-align:center;font-size:1.6rem"><span class="section-icon">📱</span>Mobile App (PWA)</h2>
+<p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1rem">The same <code>sim-engine.js</code> powers a mobile-optimized PWA with touch D-pad controls, HUD overlay, and landscape orientation. Installable on iOS and Android.</p>
+<div class="callout callout-info"><div class="callout-title">Run Locally</div>
+<pre><code>cd eApps/mobile-apps/eosim-play
+npx serve .
+# Open on phone → "Add to Home Screen"</code></pre></div>
+
+<h2 id="cli" style="border:none;text-align:center;font-size:1.8rem"><span class="section-icon">💻</span>EoSim CLI Commands</h2>
+
+<h3 style="color:var(--cyan);border:none">📸 Snapshot Commands</h3>
+<table class="cmd-table">
+<tr><th>Command</th><th>Description</th></tr>
+<tr><td><code>eosim snapshot save &lt;vm&gt; &lt;name&gt;</code></td><td>Save a snapshot of a VirtualBox or VMware VM</td></tr>
+<tr><td><code>eosim snapshot restore &lt;vm&gt; &lt;id&gt;</code></td><td>Restore a VM to a saved snapshot state</td></tr>
+<tr><td><code>eosim snapshot list</code></td><td>List all saved snapshots</td></tr>
+<tr><td><code>eosim snapshot delete &lt;vm&gt; &lt;id&gt;</code></td><td>Delete a snapshot and its files</td></tr>
+<tr><td><code>eosim snapshot export &lt;vm&gt; &lt;id&gt;</code></td><td>Export snapshot to portable <code>.tar.gz</code></td></tr>
+<tr><td><code>eosim snapshot import &lt;vm&gt; &lt;archive&gt;</code></td><td>Import snapshot from archive</td></tr>
+</table>
+
+<h3 style="color:var(--green);border:none">🖥️ VMware Commands</h3>
+<table class="cmd-table">
+<tr><th>Command</th><th>Description</th></tr>
+<tr><td><code>eosim vmware create &lt;platform&gt;</code></td><td>Create VMware <code>.vmx</code> + <code>.vmdk</code> from platform config</td></tr>
+<tr><td><code>eosim vmware info &lt;platform&gt;</code></td><td>Show VMware config mapping for a platform</td></tr>
+<tr><td><code>eosim vmware export-ova &lt;vmx&gt;</code></td><td>Export to OVA format (requires ovftool)</td></tr>
+</table>
+
+<h3 style="color:var(--purple);border:none">🐳 Layer Commands (Docker-like)</h3>
+<table class="cmd-table">
+<tr><th>Command</th><th>Description</th></tr>
+<tr><td><code>eosim layer create &lt;vm&gt; &lt;dir&gt;</code></td><td>Create base layer from VM directory (like Docker <code>FROM</code>)</td></tr>
+<tr><td><code>eosim layer add &lt;vm&gt; &lt;dir&gt;</code></td><td>Add overlay layer on top (like Docker <code>COPY</code>/<code>ADD</code>)</td></tr>
+<tr><td><code>eosim layer commit &lt;vm&gt; &lt;tag&gt;</code></td><td>Tag current layer stack (like Docker <code>tag</code>/<code>commit</code>)</td></tr>
+<tr><td><code>eosim layer list</code></td><td>List all layers across all VMs</td></tr>
+<tr><td><code>eosim layer history &lt;vm&gt;</code></td><td>Show layer history (like <code>docker history</code>)</td></tr>
+<tr><td><code>eosim layer flatten &lt;vm&gt;</code></td><td>Merge all layers into single directory (like <code>docker export</code>)</td></tr>
+<tr><td><code>eosim layer images</code></td><td>List all VM images with layer counts and tags</td></tr>
+</table>
+
+<h3 style="color:var(--blue);border:none">📦 VirtualBox Commands</h3>
+<table class="cmd-table">
+<tr><th>Command</th><th>Description</th></tr>
+<tr><td><code>eosim vbox create &lt;platform&gt;</code></td><td>Create VirtualBox <code>.vbox</code> + <code>.vdi</code> from platform config</td></tr>
+<tr><td><code>eosim vbox list</code></td><td>List VirtualBox VMs (requires VBoxManage)</td></tr>
+<tr><td><code>eosim vbox info &lt;platform&gt;</code></td><td>Show VirtualBox config mapping for a platform</td></tr>
+</table>
+
+<h2 id="images" style="border:none;text-align:center;font-size:1.6rem"><span class="section-icon">🖼️</span>Hosted Assets</h2>
+<p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1rem">All icons and images are hosted at:</p>
+<div class="callout callout-info"><div class="callout-title">Image URLs</div>
+<pre><code>https://embeddedos-org.github.io/eApps/icons/eosim.svg
+https://embeddedos-org.github.io/eApps/icons/eostudio.svg
+https://embeddedos-org.github.io/eApps/icons/eosim-play.svg
+https://embeddedos-org.github.io/eApps/icons/ebrowser.svg
+https://embeddedos-org.github.io/eApps/icons/sim-aircraft.svg
+https://embeddedos-org.github.io/eApps/icons/sim-vehicle.svg
+https://embeddedos-org.github.io/eApps/icons/sim-drone.svg</code></pre></div>
+
+</div>
+<footer class="footer"><div class="footer-inner"><div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="../docs/eos.html">EoS</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="../docs/eai.html">EAI</a></li><li><a href="../docs/eosuite.html">eApps</a></li><li><a href="../docs/eosim.html">EoSim</a></li></ul></div>
+<div><h4>Play</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="index.html">EoSim Play</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer></body></html>

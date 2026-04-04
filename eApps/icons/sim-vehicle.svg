@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#059669"/></linearGradient></defs>
+<rect width="128" height="128" rx="24" fill="#0a0e1a"/>
+<g transform="translate(64,58)" stroke="url(#g)" fill="none" stroke-width="2.5">
+<rect x="-24" y="-10" width="48" height="20" rx="6"/>
+<rect x="-28" y="-6" width="8" height="12" rx="3"/>
+<circle cx="-16" cy="14" r="6"/><circle cx="16" cy="14" r="6"/>
+<circle cx="-16" cy="14" r="2.5" fill="url(#g)"/><circle cx="16" cy="14" r="2.5" fill="url(#g)"/>
+</g>
+<text x="64" y="110" text-anchor="middle" fill="#34d399" font-family="sans-serif" font-size="12" font-weight="700">Car</text>
+</svg>

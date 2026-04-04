@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs>
+<rect width="128" height="128" rx="24" fill="#0a0e1a"/>
+<g transform="translate(64,56)" stroke="url(#g)" fill="none" stroke-width="2.5" stroke-linecap="round">
+<line x1="0" y1="0" x2="18" y2="-18"/><line x1="0" y1="0" x2="-18" y2="-18"/>
+<line x1="0" y1="0" x2="18" y2="18"/><line x1="0" y1="0" x2="-18" y2="18"/>
+<circle cx="18" cy="-18" r="8" stroke-width="1.5"/><circle cx="-18" cy="-18" r="8" stroke-width="1.5"/>
+<circle cx="18" cy="18" r="8" stroke-width="1.5"/><circle cx="-18" cy="18" r="8" stroke-width="1.5"/>
+<circle cx="0" cy="0" r="4" fill="url(#g)"/>
+</g>
+<text x="64" y="110" text-anchor="middle" fill="#a78bfa" font-family="sans-serif" font-size="12" font-weight="700">Drone</text>
+</svg>
