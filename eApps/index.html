@@ -301,6 +301,85 @@ Layer Reuse (Docker-like):
   └────────────────────────────────────────────┘
 </div>
 
+<h2 id="downloads" style="border:none;text-align:center;font-size:1.8rem"><span class="section-icon">📥</span>Downloads by Platform</h2>
+<p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1.5rem">All releases are hosted on <a href="https://github.com/embeddedos-org/eApps/releases" style="color:var(--blue)">GitHub Releases</a>. Pick your platform:</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:2rem">
+
+<div class="callout" style="border-left:4px solid var(--blue)"><div class="callout-title">🌐 Browser Extensions</div>
+<table class="cmd-table"><tr><th>Browser</th><th>Format</th><th>Download</th></tr>
+<tr><td>Chrome / Edge / Brave</td><td><code>.crx</code></td><td><a href="https://github.com/embeddedos-org/eApps/releases/latest" style="color:var(--blue)">Latest .crx</a></td></tr>
+<tr><td>Firefox</td><td><code>.xpi</code></td><td><a href="https://github.com/embeddedos-org/eApps/releases/latest" style="color:var(--blue)">Latest .xpi</a></td></tr>
+<tr><td>Safari</td><td><code>.safariextz</code></td><td><a href="https://github.com/embeddedos-org/eApps/releases/latest" style="color:var(--blue)">Latest .safariextz</a></td></tr>
+<tr><td>Opera</td><td><code>.nex</code></td><td><a href="https://github.com/embeddedos-org/eApps/releases/latest" style="color:var(--blue)">Latest .nex</a></td></tr>
+</table></div>
+
+<div class="callout" style="border-left:4px solid var(--purple)"><div class="callout-title">🛠️ IDE & Editor Extensions</div>
+<table class="cmd-table"><tr><th>Editor</th><th>Format</th><th>Download</th></tr>
+<tr><td>VS Code</td><td><code>.vsix</code></td><td><a href="https://github.com/embeddedos-org/eApps/releases/latest" style="color:var(--purple)">Latest .vsix</a></td></tr>
+<tr><td>JetBrains</td><td><code>.jar</code></td><td><a href="https://github.com/embeddedos-org/eApps/releases/latest" style="color:var(--purple)">Latest .jar</a></td></tr>
+<tr><td>Obsidian</td><td><code>.zip</code></td><td><a href="https://github.com/embeddedos-org/eApps/releases/latest" style="color:var(--purple)">Latest .zip</a></td></tr>
+<tr><td>Sublime Text</td><td><code>.sublime-package</code></td><td><a href="https://github.com/embeddedos-org/eApps/releases/latest" style="color:var(--purple)">Latest</a></td></tr>
+</table></div>
+
+<div class="callout" style="border-left:4px solid var(--green)"><div class="callout-title">📱 Mobile Apps</div>
+<table class="cmd-table"><tr><th>Platform</th><th>Format</th><th>Install</th></tr>
+<tr><td>Android (Phone/Tablet)</td><td><code>.apk</code></td><td>Settings → Unknown Sources → Install</td></tr>
+<tr><td>Google Play (AAB)</td><td><code>.aab</code></td><td>Via Play Console upload</td></tr>
+<tr><td>iOS</td><td><code>.ipa</code></td><td>TestFlight or Enterprise cert</td></tr>
+<tr><td>Android TV</td><td><code>.apk</code></td><td>Sideload via ADB</td></tr>
+<tr><td>PWA</td><td>Web</td><td>"Add to Home Screen" in browser</td></tr>
+</table></div>
+
+<div class="callout" style="border-left:4px solid var(--orange)"><div class="callout-title">🖥️ Desktop Apps</div>
+<table class="cmd-table"><tr><th>OS</th><th>Format</th><th>Apps</th></tr>
+<tr><td>Windows x64</td><td><code>.exe</code> / <code>.msi</code></td><td>eOffice, EoStudio, EoSim, eBrowser</td></tr>
+<tr><td>macOS (Apple Silicon)</td><td><code>.dmg</code> / <code>.pkg</code></td><td>eOffice, EoStudio, EoSim, eBrowser</td></tr>
+<tr><td>Linux x64</td><td><code>.AppImage</code> / <code>.deb</code> / <code>.rpm</code></td><td>eOffice, EoStudio, EoSim, eBrowser</td></tr>
+<tr><td>EmbeddedOS</td><td><code>.eapp</code></td><td>All 45+ native apps</td></tr>
+<tr><td>WASM</td><td><code>.wasm</code></td><td>Web-based deployment</td></tr>
+</table></div>
+
+<div class="callout" style="border-left:4px solid var(--cyan)"><div class="callout-title">💿 OS & VM Images</div>
+<table class="cmd-table"><tr><th>Format</th><th>Platform</th><th>Use</th></tr>
+<tr><td><code>.ova</code></td><td>VirtualBox</td><td>Import → Start</td></tr>
+<tr><td><code>.vmdk</code></td><td>VMware</td><td>Create VM → Attach disk</td></tr>
+<tr><td><code>.qcow2</code></td><td>QEMU/KVM</td><td><code>qemu-system-x86_64 -hda eos.qcow2</code></td></tr>
+<tr><td><code>.iso</code></td><td>Bare Metal</td><td>Flash USB → Boot</td></tr>
+<tr><td><code>.img</code></td><td>Raspberry Pi</td><td><code>dd if=eos.img of=/dev/sdX</code></td></tr>
+<tr><td><code>.bin</code></td><td>STM32/ESP32</td><td>Flash via ST-Link / esptool</td></tr>
+</table></div>
+
+<div class="callout" style="border-left:4px solid var(--pink)"><div class="callout-title">☁️ Services & Integrations</div>
+<table class="cmd-table"><tr><th>Platform</th><th>Format</th><th>Install</th></tr>
+<tr><td>Slack</td><td>Bot App</td><td>Add to workspace via manifest</td></tr>
+<tr><td>GitHub</td><td>Probot App</td><td>Install via GitHub Apps</td></tr>
+<tr><td>Google Workspace</td><td>Apps Script</td><td>Deploy via clasp</td></tr>
+<tr><td>Office 365</td><td>Add-in</td><td>Sideload manifest.xml</td></tr>
+<tr><td>Raycast</td><td>Extension</td><td><code>raycast import</code></td></tr>
+<tr><td>Docker</td><td><code>.tar.gz</code></td><td><code>docker load</code></td></tr>
+</table></div>
+</div>
+
+<div class="callout callout-tip" style="margin-bottom:2rem"><div class="callout-title">⚡ Quick Install Commands</div>
+<pre><code># VS Code Extension
+code --install-extension eoffice-vscode-0.1.0.vsix
+
+# Chrome Extension (unpacked)
+# chrome://extensions → Developer Mode → Load unpacked → extensions/browser/
+
+# Firefox Extension
+# about:addons → ⚙️ → Install from file → eoffice-firefox-0.1.0.xpi
+
+# Android APK
+adb install eride-0.1.0-release.apk
+
+# EoS Native
+eosim install eoffice-0.1.0.eapp
+
+# Docker
+docker pull ghcr.io/embeddedos-org/eosim:latest</code></pre></div>
+
 <h2 id="extension" style="border:none;text-align:center;font-size:1.6rem"><span class="section-icon">🧩</span>Browser Extension</h2>
 <p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1rem">The EoSim sims are integrated into the <strong>eOffice Suite</strong> Chrome extension. Click any sim in the extension popup to launch a full-screen interactive game tab.</p>
 <div class="callout callout-tip"><div class="callout-title">Install</div>
