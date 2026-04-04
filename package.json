@@ -1,5 +1,6 @@
 {
   "name": "embeddedos-website-tests",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "test": "npx playwright test tests/",
