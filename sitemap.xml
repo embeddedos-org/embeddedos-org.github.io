@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.embeddedos.org/</loc><priority>1.0</priority></url>
+  <url><loc>https://www.embeddedos.org/getting-started.html</loc><priority>0.9</priority></url>
+  <url><loc>https://www.embeddedos.org/flow.html</loc><priority>0.7</priority></url>
+  <url><loc>https://www.embeddedos.org/kids.html</loc><priority>0.7</priority></url>
+  <url><loc>https://www.embeddedos.org/hardware-lab.html</loc><priority>0.7</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/</loc><priority>0.9</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eos.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eboot.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/ebuild.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eipc.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eai.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eni.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eosim.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eostudio.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eosuite.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/edb.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/ebowser.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eoffice.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/docs/eserviceapps.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/eApps/</loc><priority>0.8</priority></url>
+  <url><loc>https://www.embeddedos.org/404.html</loc><priority>0.1</priority></url>
+</urlset>

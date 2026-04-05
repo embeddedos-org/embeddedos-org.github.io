@@ -1,6 +1,18 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kids Guide - EmbeddedOS</title>
+<meta name="description" content="A fun introduction to EmbeddedOS for young explorers. Learn about robots, drones, smart watches and tiny computers.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.embeddedos.org/kids.html">
+<meta property="og:title" content="Kids Guide - EmbeddedOS">
+<meta property="og:description" content="A fun introduction to EmbeddedOS for young explorers. Learn about robots, drones, smart watches and tiny computers.">
+<meta property="og:image" content="https://www.embeddedos.org/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kids Guide - EmbeddedOS">
+<meta name="twitter:description" content="A fun introduction to EmbeddedOS for young explorers. Learn about robots, drones, smart watches and tiny computers.">
+<meta name="twitter:image" content="https://www.embeddedos.org/og-image.png">
+<link rel="canonical" href="https://www.embeddedos.org/kids.html">
+<link rel="preload" href="style.css" as="style">
 <link rel="stylesheet" href="style.css">
 <style>
 .kid-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;transition:all .3s;text-align:center}
@@ -22,7 +34,8 @@
 <nav class="navbar"><div class="nav-inner">
 <a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
 <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html">Get Started</a><a href="docs/index.html">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="kids.html" class="active">Kids &#127918;</a><a href="hardware-lab.html">Hardware Lab &#128268;</a><a href="flow.html">Flow</a>
-<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+<button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav>
 <section class="hero" style="padding:4rem 2rem 3rem"><div class="hero-content">
 <h1 style="font-size:2.8rem">Welcome, Young Explorer!</h1>
 <p class="subtitle">EmbeddedOS makes robots, drones, smart watches, and tiny computers come alive. No experience needed!</p>
@@ -69,4 +82,48 @@ git clone https://github.com/embeddedos-org/eos.git</code></pre></div>
 <div><h4>Docs</h4><ul><li><a href="getting-started.html">Get Started</a></li><li><a href="docs/eos.html">EoS</a></li></ul></div>
 <div><h4>Components</h4><ul><li><a href="docs/eai.html">EAI</a></li><li><a href="docs/eosuite.html">eApps</a></li><li><a href="docs/eosim.html">EoSim</a></li></ul></div>
 <div><h4>Learn</h4><ul><li><a href="kids.html">Kids Guide</a></li><li><a href="hardware-lab.html">Hardware Lab</a></li></ul></div>
-</div><div class="footer-bottom">2025 EmbeddedOS Project - MIT License</div></footer></body></html>
+</div><div class="footer-bottom">2025 EmbeddedOS Project - MIT License</div></footer>
+<div id="eos-search-overlay" class="search-overlay" hidden>
+<div class="search-modal">
+<div class="search-header">
+<span class="search-icon">&#128269;</span>
+<input type="text" id="eos-search-input" class="search-input" placeholder="Search EmbeddedOS docs..." autocomplete="off">
+<kbd class="search-kbd">Esc</kbd>
+</div>
+<ul id="eos-search-results" class="search-results"></ul>
+</div>
+</div>
+<script>
+const EosSearch={pages:[
+{t:'Home',u:'index.html',d:'The Operating System for Every Device'},
+{t:'Get Started',u:'getting-started.html',d:'Choose your path and get running in minutes'},
+{t:'Documentation Hub',u:'docs/index.html',d:'Complete developer documentation for all components'},
+{t:'Platform Flow',u:'flow.html',d:'EoS platform build and deployment flow'},
+{t:'Kids Guide',u:'kids.html',d:'Welcome young explorers to EmbeddedOS'},
+{t:'Hardware Lab',u:'hardware-lab.html',d:'Pick your board and get EoS running on real hardware'},
+{t:'App Store',u:'https://embeddedos-org.github.io/eApps/',d:'60+ apps across all platforms'},
+{t:'EoS Kernel',u:'docs/eos.html',d:'Modular RTOS kernel with HAL and multicore framework'},
+{t:'eBoot Bootloader',u:'docs/eboot.html',d:'Secure A/B bootloader with verified boot chain'},
+{t:'ebuild CLI',u:'docs/ebuild.html',d:'Unified build system with cross-compilation'},
+{t:'EIPC Protocol',u:'docs/eipc.html',d:'Secure real-time IPC framework'},
+{t:'EAI Framework',u:'docs/eai.html',d:'Embedded AI for on-device LLM inference'},
+{t:'ENI Neural Interface',u:'docs/eni.html',d:'Brain-computer interface framework'},
+{t:'EoSim Simulator',u:'docs/eosim.html',d:'Multi-architecture simulation platform'},
+{t:'EoStudio',u:'docs/eostudio.html',d:'Unified design suite with 12 editors'},
+{t:'eApps Suite',u:'docs/eosuite.html',d:'60+ apps for all platforms'},
+{t:'eDB Database',u:'docs/edb.html',d:'Unified multi-model database'},
+{t:'eBowser Browser',u:'docs/ebowser.html',d:'Lightweight web browser engine'},
+{t:'eOffice Suite',u:'docs/eoffice.html',d:'AI-powered office suite with 11 apps'},
+{t:'eServiceApps',u:'docs/eserviceapps.html',d:'Flutter mobile service apps'}
+],
+overlay:null,input:null,results:null,
+init(){this.overlay=document.getElementById('eos-search-overlay');this.input=document.getElementById('eos-search-input');this.results=document.getElementById('eos-search-results')},
+open(){if(!this.overlay)this.init();this.overlay.hidden=false;this.input.value='';this.render(this.pages);this.input.focus()},
+close(){if(this.overlay)this.overlay.hidden=true},
+render(items){this.results.innerHTML=items.map(p=>'<li class="search-result-item"><a href="'+p.u+'"><strong>'+p.t+'</strong><span>'+p.d+'</span></a></li>').join('')||'<li class="search-result-item" style="color:var(--text-secondary)">No results found.</li>'},
+filter(q){const l=q.toLowerCase();this.render(this.pages.filter(p=>p.t.toLowerCase().includes(l)||p.d.toLowerCase().includes(l)))}
+};
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();EosSearch.open()}if(e.key==='Escape')EosSearch.close()});
+document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('eos-search-input');if(i)i.addEventListener('input',e=>EosSearch.filter(e.target.value));const o=document.getElementById('eos-search-overlay');if(o)o.addEventListener('click',e=>{if(e.target===o)EosSearch.close()})});
+</script>
+</body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Page Not Found - EmbeddedOS</title>
+<meta name="description" content="The page you're looking for doesn't exist. Navigate back to EmbeddedOS documentation and resources.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.embeddedos.org/404.html">
+<meta property="og:title" content="404 - Page Not Found - EmbeddedOS">
+<meta property="og:description" content="The page you're looking for doesn't exist. Navigate back to EmbeddedOS documentation and resources.">
+<meta property="og:image" content="https://www.embeddedos.org/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="404 - Page Not Found - EmbeddedOS">
+<meta name="twitter:description" content="The page you're looking for doesn't exist. Navigate back to EmbeddedOS documentation and resources.">
+<meta name="twitter:image" content="https://www.embeddedos.org/og-image.png">
+<link rel="canonical" href="https://www.embeddedos.org/404.html">
+<link rel="preload" href="style.css" as="style">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar"><div class="nav-inner">
+<a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html">Get Started</a><a href="docs/index.html">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="kids.html">Kids &#127918;</a><a href="hardware-lab.html">Hardware Lab &#128268;</a><a href="flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+<button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
+</div></div></nav>
+
+<section class="hero" style="padding:6rem 2rem 4rem;min-height:60vh;display:flex;align-items:center">
+<div class="hero-content" style="text-align:center;max-width:600px;margin:0 auto">
+<h1 style="font-size:6rem;margin-bottom:0.5rem;background:linear-gradient(135deg,var(--blue),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">404</h1>
+<p style="font-size:1.5rem;color:var(--text-primary);margin-bottom:0.5rem">Page Not Found</p>
+<p style="color:var(--text-secondary);margin-bottom:2rem">The page you&rsquo;re looking for doesn&rsquo;t exist or has been moved.</p>
+<div class="hero-buttons">
+<a href="index.html" class="btn btn-primary">Go Home</a>
+<a href="docs/index.html" class="btn btn-secondary">Documentation</a>
+<a href="getting-started.html" class="btn btn-outline">Get Started</a>
+</div>
+</div>
+</section>
+
+<div class="content-wrapper" style="max-width:700px;text-align:center;padding-bottom:4rem">
+<h2 style="border:none;font-size:1.4rem">Looking for something?</h2>
+<p style="color:var(--text-secondary)">Try one of these popular pages:</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-top:1.5rem">
+<a href="docs/eos.html" class="btn btn-outline" style="display:block">EoS Kernel</a>
+<a href="docs/eai.html" class="btn btn-outline" style="display:block">EAI Framework</a>
+<a href="docs/eosim.html" class="btn btn-outline" style="display:block">EoSim Simulator</a>
+<a href="hardware-lab.html" class="btn btn-outline" style="display:block">Hardware Lab</a>
+</div>
+</div>
+
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="getting-started.html">Get Started</a></li><li><a href="docs/eos.html">EoS</a></li><li><a href="docs/eboot.html">eBoot</a></li><li><a href="docs/ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="docs/eai.html">EAI</a></li><li><a href="docs/eni.html">ENI</a></li><li><a href="docs/eipc.html">EIPC</a></li><li><a href="docs/eosuite.html">eApps</a></li><li><a href="docs/eosim.html">EoSim</a></li></ul></div>
+<div><h4>Community</h4><ul><li><a href="https://github.com/embeddedos-org">GitHub</a></li><li><a href="https://github.com/embeddedos-org/eos/discussions">Discussions</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+
+<button class="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">&uarr;</button>
+
+<div id="eos-search-overlay" class="search-overlay" hidden>
+<div class="search-modal">
+<div class="search-header">
+<span class="search-icon">&#128269;</span>
+<input type="text" id="eos-search-input" class="search-input" placeholder="Search EmbeddedOS docs..." autocomplete="off">
+<kbd class="search-kbd">Esc</kbd>
+</div>
+<ul id="eos-search-results" class="search-results"></ul>
+</div>
+</div>
+
+<script>
+const EosSearch={pages:[
+{t:'Home',u:'index.html',d:'The Operating System for Every Device'},
+{t:'Get Started',u:'getting-started.html',d:'Choose your path and get running in minutes'},
+{t:'Documentation Hub',u:'docs/index.html',d:'Complete developer documentation for all components'},
+{t:'Platform Flow',u:'flow.html',d:'EoS platform build and deployment flow'},
+{t:'Kids Guide',u:'kids.html',d:'Welcome young explorers to EmbeddedOS'},
+{t:'Hardware Lab',u:'hardware-lab.html',d:'Pick your board and get EoS running on real hardware'},
+{t:'App Store',u:'https://embeddedos-org.github.io/eApps/',d:'60+ apps across all platforms'},
+{t:'EoS Kernel',u:'docs/eos.html',d:'Modular RTOS kernel with HAL and multicore framework'},
+{t:'eBoot Bootloader',u:'docs/eboot.html',d:'Secure A/B bootloader with verified boot chain'},
+{t:'ebuild CLI',u:'docs/ebuild.html',d:'Unified build system with cross-compilation'},
+{t:'EIPC Protocol',u:'docs/eipc.html',d:'Secure real-time IPC framework'},
+{t:'EAI Framework',u:'docs/eai.html',d:'Embedded AI for on-device LLM inference'},
+{t:'ENI Neural Interface',u:'docs/eni.html',d:'Brain-computer interface framework'},
+{t:'EoSim Simulator',u:'docs/eosim.html',d:'Multi-architecture simulation platform'},
+{t:'EoStudio',u:'docs/eostudio.html',d:'Unified design suite with 12 editors'},
+{t:'eApps Suite',u:'docs/eosuite.html',d:'60+ apps for all platforms'},
+{t:'eDB Database',u:'docs/edb.html',d:'Unified multi-model database'},
+{t:'eBowser Browser',u:'docs/ebowser.html',d:'Lightweight web browser engine'},
+{t:'eOffice Suite',u:'docs/eoffice.html',d:'AI-powered office suite with 11 apps'},
+{t:'eServiceApps',u:'docs/eserviceapps.html',d:'Flutter mobile service apps'}
+],
+overlay:null,input:null,results:null,
+init(){this.overlay=document.getElementById('eos-search-overlay');this.input=document.getElementById('eos-search-input');this.results=document.getElementById('eos-search-results')},
+open(){if(!this.overlay)this.init();this.overlay.hidden=false;this.input.value='';this.render(this.pages);this.input.focus()},
+close(){if(this.overlay)this.overlay.hidden=true},
+render(items){this.results.innerHTML=items.map(p=>'<li class="search-result-item"><a href="'+p.u+'"><strong>'+p.t+'</strong><span>'+p.d+'</span></a></li>').join('')||'<li class="search-result-item" style="color:var(--text-secondary)">No results found.</li>'},
+filter(q){const l=q.toLowerCase();this.render(this.pages.filter(p=>p.t.toLowerCase().includes(l)||p.d.toLowerCase().includes(l)))}
+};
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();EosSearch.open()}if(e.key==='Escape')EosSearch.close()});
+document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('eos-search-input');if(i)i.addEventListener('input',e=>EosSearch.filter(e.target.value));const o=document.getElementById('eos-search-overlay');if(o)o.addEventListener('click',e=>{if(e.target===o)EosSearch.close()});
+const s=document.querySelector('.scroll-top-btn');if(s)window.addEventListener('scroll',()=>{s.style.display=window.scrollY>300?'flex':'none'})});
+</script>
+
+</body>
+</html>

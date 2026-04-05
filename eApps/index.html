@@ -1,6 +1,30 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>eApps — EoSim Play & Browser Extensions - EmbeddedOS</title>
+<title>eApps - EoSim Play and Browser Extensions - EmbeddedOS</title>
+<meta name="description" content="Interactive 3D simulation games, browser extensions, and apps for EmbeddedOS. Play aircraft, drone, and vehicle simulators in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.embeddedos.org/eApps/">
+<meta property="og:title" content="eApps - EoSim Play and Browser Extensions - EmbeddedOS">
+<meta property="og:description" content="Interactive 3D simulation games, browser extensions, and apps for EmbeddedOS. Play aircraft, drone, and vehicle simulators in your browser.">
+<meta property="og:image" content="https://www.embeddedos.org/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="eApps - EoSim Play and Browser Extensions - EmbeddedOS">
+<meta name="twitter:description" content="Interactive 3D simulation games, browser extensions, and apps for EmbeddedOS. Play aircraft, drone, and vehicle simulators in your browser.">
+<meta name="twitter:image" content="https://www.embeddedos.org/og-image.png">
+<link rel="canonical" href="https://www.embeddedos.org/eApps/">
+<link rel="preload" href="../style.css" as="style">
+<meta name="description" content="Interactive 3D simulation games, browser extensions, and apps for EmbeddedOS. Play aircraft, drone, and vehicle simulators in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.embeddedos.org/eApps/">
+<meta property="og:title" content="eApps - EoSim Play and Browser Extensions - EmbeddedOS">
+<meta property="og:description" content="Interactive 3D simulation games, browser extensions, and apps for EmbeddedOS. Play aircraft, drone, and vehicle simulators in your browser.">
+<meta property="og:image" content="https://www.embeddedos.org/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="eApps - EoSim Play and Browser Extensions - EmbeddedOS">
+<meta name="twitter:description" content="Interactive 3D simulation games, browser extensions, and apps for EmbeddedOS. Play aircraft, drone, and vehicle simulators in your browser.">
+<meta name="twitter:image" content="https://www.embeddedos.org/og-image.png">
+<link rel="canonical" href="https://www.embeddedos.org/eApps/">
+<link rel="preload" href="../style.css" as="style">
 <link rel="stylesheet" href="../style.css">
 <style>
 .sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin:2rem 0}
@@ -8,7 +32,7 @@
 .sim-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .sim-card img{width:80px;height:80px;margin:0 auto 1rem;display:block;border-radius:16px}
 .sim-card h3{border:none;margin:0 0 .5rem;font-size:1.2rem}
-.sim-card p{color:var(--text-secondary);font-size:.9rem;margin-bottom:1rem}
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a><button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav>
 .cmd-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.85rem}
 .cmd-table th{text-align:left;padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--cyan)}
 .cmd-table td{padding:8px 12px;border:1px solid var(--border-color)}
@@ -20,7 +44,7 @@
 <nav class="navbar"><div class="nav-inner">
 <a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
 <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="../docs/index.html">Docs</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
-<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a></div></div></nav>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a><button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav>
 
 <section class="hero" style="padding:4rem 2rem 3rem"><div class="hero-content">
 <h1 style="font-size:2.6rem">🎮 EoSim Play & eApps</h1>
@@ -440,7 +464,6 @@ npx serve .
 <p style="text-align:center;color:var(--text-secondary);max-width:700px;margin:0 auto 1rem">All icons and images are hosted at:</p>
 <div class="callout callout-info"><div class="callout-title">Image URLs</div>
 <pre><code>https://embeddedos-org.github.io/eApps/icons/eosim.svg
-https://embeddedos-org.github.io/eApps/icons/eostudio.svg
 https://embeddedos-org.github.io/eApps/icons/eosim-play.svg
 https://embeddedos-org.github.io/eApps/icons/ebrowser.svg
 https://embeddedos-org.github.io/eApps/icons/sim-aircraft.svg
@@ -452,4 +475,48 @@ https://embeddedos-org.github.io/eApps/icons/sim-drone.svg</code></pre></div>
 <div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="../docs/eos.html">EoS</a></li></ul></div>
 <div><h4>Components</h4><ul><li><a href="../docs/eai.html">EAI</a></li><li><a href="../docs/eosuite.html">eApps</a></li><li><a href="../docs/eosim.html">EoSim</a></li></ul></div>
 <div><h4>Play</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="index.html">EoSim Play</a></li></ul></div>
-</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer></body></html>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+<div id="eos-search-overlay" class="search-overlay" hidden>
+<div class="search-modal">
+<div class="search-header">
+<span class="search-icon">&#128269;</span>
+<input type="text" id="eos-search-input" class="search-input" placeholder="Search EmbeddedOS docs..." autocomplete="off">
+<kbd class="search-kbd">Esc</kbd>
+</div>
+<ul id="eos-search-results" class="search-results"></ul>
+</div>
+</div>
+<script>
+const EosSearch={pages:[
+{t:'Home',u:'../index.html',d:'The Operating System for Every Device'},
+{t:'Get Started',u:'../getting-started.html',d:'Choose your path and get running in minutes'},
+{t:'Documentation Hub',u:'../docs/index.html',d:'Complete developer documentation for all components'},
+{t:'Platform Flow',u:'../flow.html',d:'EoS platform build and deployment flow'},
+{t:'Kids Guide',u:'../kids.html',d:'Welcome young explorers to EmbeddedOS'},
+{t:'Hardware Lab',u:'../hardware-lab.html',d:'Pick your board and get EoS running on real hardware'},
+{t:'App Store',u:'https://embeddedos-org.github.io/eApps/',d:'60+ apps across all platforms'},
+{t:'EoS Kernel',u:'../docs/eos.html',d:'Modular RTOS kernel with HAL and multicore framework'},
+{t:'eBoot Bootloader',u:'../docs/eboot.html',d:'Secure A/B bootloader with verified boot chain'},
+{t:'ebuild CLI',u:'../docs/ebuild.html',d:'Unified build system with cross-compilation'},
+{t:'EIPC Protocol',u:'../docs/eipc.html',d:'Secure real-time IPC framework'},
+{t:'EAI Framework',u:'../docs/eai.html',d:'Embedded AI for on-device LLM inference'},
+{t:'ENI Neural Interface',u:'../docs/eni.html',d:'Brain-computer interface framework'},
+{t:'EoSim Simulator',u:'../docs/eosim.html',d:'Multi-architecture simulation platform'},
+{t:'EoStudio',u:'../docs/eostudio.html',d:'Unified design suite with 12 editors'},
+{t:'eApps Suite',u:'../docs/eosuite.html',d:'60+ apps for all platforms'},
+{t:'eDB Database',u:'../docs/edb.html',d:'Unified multi-model database'},
+{t:'eBowser Browser',u:'../docs/ebowser.html',d:'Lightweight web browser engine'},
+{t:'eOffice Suite',u:'../docs/eoffice.html',d:'AI-powered office suite with 11 apps'},
+{t:'eServiceApps',u:'../docs/eserviceapps.html',d:'Flutter mobile service apps'}
+],
+overlay:null,input:null,results:null,
+init(){this.overlay=document.getElementById('eos-search-overlay');this.input=document.getElementById('eos-search-input');this.results=document.getElementById('eos-search-results')},
+open(){if(!this.overlay)this.init();this.overlay.hidden=false;this.input.value='';this.render(this.pages);this.input.focus()},
+close(){if(this.overlay)this.overlay.hidden=true},
+render(items){this.results.innerHTML=items.map(p=>'<li class="search-result-item"><a href="'+p.u+'"><strong>'+p.t+'</strong><span>'+p.d+'</span></a></li>').join('')||'<li class="search-result-item" style="color:var(--text-secondary)">No results found.</li>'},
+filter(q){const l=q.toLowerCase();this.render(this.pages.filter(p=>p.t.toLowerCase().includes(l)||p.d.toLowerCase().includes(l)))}
+};
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();EosSearch.open()}if(e.key==='Escape')EosSearch.close()});
+document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('eos-search-input');if(i)i.addEventListener('input',e=>EosSearch.filter(e.target.value));const o=document.getElementById('eos-search-overlay');if(o)o.addEventListener('click',e=>{if(e.target===o)EosSearch.close()})});
+</script>
+</body></html>
