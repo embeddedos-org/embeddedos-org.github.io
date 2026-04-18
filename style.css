@@ -483,9 +483,6 @@ details[open] summary { border-bottom: 1px solid var(--border-color); }
   padding-top: 15vh;
   backdrop-filter: blur(4px);
 }
-.search-overlay[hidden] {
-  display: none !important;
-}
 .search-modal {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
