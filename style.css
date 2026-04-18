@@ -472,6 +472,7 @@ details[open] summary { border-bottom: 1px solid var(--border-color); }
 }
 
 /* Search overlay */
+.search-overlay[hidden] { display: none; }
 .search-overlay {
   position: fixed;
   inset: 0;
