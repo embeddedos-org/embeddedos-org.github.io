@@ -2,7 +2,7 @@
 
 **Website**: [embeddedos-org.github.io](https://embeddedos-org.github.io)
 
-**Foundation**: [www.embeddedos.org](https://www.embeddedos.org)
+**Foundation**: [embeddedos-org.github.io](https://embeddedos-org.github.io)
 
 **App Store**: [embeddedos-org.github.io/eApps](https://embeddedos-org.github.io/eApps/)
 
@@ -24,7 +24,7 @@ All repositories at v0.1.0 — a complete embedded AI systems stack.
 | [EoStudio](https://github.com/embeddedos-org/EoStudio) | Design suite — 12 editors (3D, CAD, UI, game, hardware), 30+ code generators, LLM integration | Python | v0.1.0 |
 | [eosim](https://github.com/embeddedos-org/eosim) | Simulator — 52+ platforms, 12 architectures, EoSim native engine, QEMU/Renode/HIL | Python | v0.1.0 |
 | [eDB](https://github.com/embeddedos-org/eDB) | Database — SQL + Document + Key-Value, REST API, JWT auth, AES-256, eBot AI queries | Python | v0.1.0 |
-| [eBowser](https://github.com/embeddedos-org/eBowser) | Browser engine — HTML5/CSS rendering for embedded/IoT, modular architecture, plugin system | C | v0.1.0 |
+| [eBrowser](https://github.com/embeddedos-org/eBrowser) | Browser engine — HTML5/CSS rendering for embedded/IoT, modular architecture, plugin system | C | v0.1.0 |
 | [eOffice](https://github.com/embeddedos-org/eOffice) | Office suite — 11 apps (eDocs, eSheets, eSlides, eMail, eDrive), eBot AI assistant | JS/TS | v0.1.0 |
 | [eServiceApps](https://github.com/embeddedos-org/eServiceApps) | Mobile apps — eSocial, eRide, eTravel, eTrack, eWallet (Flutter) | Dart | v0.1.0 |
 | [eos-platform](https://github.com/embeddedos-org/eos-platform) | Platform layer — Desktop, TV, Laptop, Tablet, Kiosk profiles on EoS | C | v0.1.0 |

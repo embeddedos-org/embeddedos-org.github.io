@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.embeddedos.org/sitemap.xml
+Sitemap: https://embeddedos-org.github.io/sitemap.xml
