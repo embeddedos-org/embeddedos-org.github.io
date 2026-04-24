@@ -127,6 +127,31 @@ embeddedos-org.github.io/
 └── tests/                  Playwright responsive tests
 ```
 
+## Security
+
+### Security Headers
+
+The `_headers` file configures HTTP security headers for the GitHub Pages site:
+
+- **X-Frame-Options: DENY** — Prevents clickjacking by blocking iframe embedding
+- **X-Content-Type-Options: nosniff** — Prevents MIME-type sniffing attacks
+- **X-XSS-Protection: 1; mode=block** — Enables browser XSS filtering
+- **Referrer-Policy: strict-origin-when-cross-origin** — Limits referrer information leakage
+- **Permissions-Policy** — Disables camera, microphone, and geolocation APIs
+- **Content-Security-Policy** — Restricts resource loading to trusted origins
+
+### Internal URL Policy
+
+Documentation pages use `localhost` and `192.168.x.x` addresses in code examples (eDB API examples, eIPC connection strings, ebuild OTA commands, hardware lab SSH). These are **example/placeholder addresses only** and do not represent real infrastructure. Contributors should:
+
+- Never include real internal hostnames or IP addresses in documentation
+- Use `localhost`, `192.168.x.x`, or `example.com` for all code examples
+- Review PRs for accidental inclusion of internal URLs before merging
+
+### Reporting Vulnerabilities
+
+If you discover a security vulnerability in any EmbeddedOS component, please report it responsibly by opening a private security advisory on the affected repository. Do not file public issues for security vulnerabilities.
+
 ## Standards Compliance
 
 ISO/IEC/IEEE 15288:2023 · ISO/IEC 12207 · ISO/IEC 25000 · ISO/IEC 27001 · IEC 61508 · ISO 26262 · DO-178C · FIPS 140-3 · POSIX · WCAG 2.1 · NTIA SBOM · SPDX · CycloneDX · OpenChain
