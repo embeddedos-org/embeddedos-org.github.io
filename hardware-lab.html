@@ -29,7 +29,7 @@
 .troubleshoot li{font-size:.9rem}
 </style></head><body>
 <nav class="navbar"><div class="nav-inner">
-<a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v1.0.0</span></a>
 <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html">Get Started</a><a href="docs/index.html">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="kids.html">Kids 🎮</a><a href="hardware-lab.html" class="active">Hardware Lab 🔌</a><a href="flow.html">Flow</a>
     <a href="books.html">📚 Books</a>
 <a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
@@ -80,7 +80,7 @@ cd my-blink &amp;&amp; ebuild build</code></pre></div>
 # Or simulate: eosim run build/firmware.elf --platform raspi4 --gui</code></pre></div>
 <div class="step"><h3>✅ Verify It Works</h3>
 <pre><code>ebuild monitor --baud 115200
-# [app] EmbeddedOS v0.1.0 starting...
+# [app] EmbeddedOS v1.0.0 starting...
 # [app] LED toggled, tick=500</code></pre></div>
 </div>
 <div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
@@ -186,7 +186,7 @@ cp build/firmware.bin /media/$USER/FRDM-K64F/
 # Or: ebuild flash --verify</code></pre></div>
 <div class="step"><h3>✅ Verify</h3>
 <pre><code>ebuild monitor --baud 115200
-# [app] EmbeddedOS v0.1.0 starting on K64F</code></pre></div>
+# [app] EmbeddedOS v1.0.0 starting on K64F</code></pre></div>
 </div>
 <div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
 <li><strong>OpenSDA not visible:</strong> Update OpenSDA firmware from nxp.com. Hold RESET while plugging USB.</li>
@@ -219,7 +219,7 @@ cd my-iot &amp;&amp; ebuild build</code></pre></div>
 # Windows: --port COM3  |  macOS: --port /dev/cu.usbserial-0001</code></pre></div>
 <div class="step"><h3>✅ Monitor</h3>
 <pre><code>ebuild monitor --port /dev/ttyUSB0 --baud 115200
-# [app] EmbeddedOS v0.1.0 starting on ESP32
+# [app] EmbeddedOS v1.0.0 starting on ESP32
 # [app] LED toggled, tick=500</code></pre></div>
 </div>
 <div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
@@ -250,7 +250,7 @@ pip install embeddedos-ebuild</code></pre></div>
 cd my-riscv &amp;&amp; ebuild build &amp;&amp; ebuild flash --verify</code></pre></div>
 <div class="step"><h3>✅ Monitor</h3>
 <pre><code>ebuild monitor --baud 115200
-# [app] EmbeddedOS v0.1.0 on RISC-V (FE310)</code></pre></div>
+# [app] EmbeddedOS v1.0.0 on RISC-V (FE310)</code></pre></div>
 </div>
 <div class="troubleshoot"><h4>🐛 Troubleshooting</h4><ul>
 <li><strong>J-Link not detected:</strong> Install J-Link Software from segger.com.</li>
@@ -317,7 +317,7 @@ const EosSearch={pages:[
 {t:'EoStudio',u:'docs/eostudio.html',d:'Unified design suite with 12 editors'},
 {t:'eApps Suite',u:'docs/eosuite.html',d:'60+ apps for all platforms'},
 {t:'eDB Database',u:'docs/edb.html',d:'Unified multi-model database'},
-{t:'eBowser Browser',u:'docs/ebowser.html',d:'Lightweight web browser engine'},
+{t:'eBowser Browser',u:'docs/ebrowser.html',d:'Lightweight web browser engine'},
 {t:'eOffice Suite',u:'docs/eoffice.html',d:'AI-powered office suite with 11 apps'},
 {t:'eServiceApps',u:'docs/eserviceapps.html',d:'Flutter mobile service apps'}
 ],

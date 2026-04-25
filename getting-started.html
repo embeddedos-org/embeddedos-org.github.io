@@ -29,14 +29,14 @@
 <linearGradient id="gs-grad-pcb" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a5a2a"/><stop offset="100%" stop-color="#0d3318"/></linearGradient>
 </defs></svg>
 <nav class="navbar"><div class="nav-inner">
-<a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v1.0.0</span></a>
 <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html" class="active">Get Started</a><a href="docs/index.html">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="kids.html">Kids &#127918;</a><a href="hardware-lab.html">Hardware Lab &#128268;</a><a href="flow.html">Flow</a>
     <a href="books.html">📚 Books</a>
 <a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
 <button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav>
 
 <div class="content-wrapper" style="max-width:900px">
-<h1>Getting Started with EmbeddedOS <span class="version-badge">v0.1.0</span></h1>
+<h1>Getting Started with EmbeddedOS <span class="version-badge">v1.0.0</span></h1>
 <p>Choose the path that fits what you have and what you want to do. Each path takes about 10 minutes!</p>
 
 <h2 style="border:none;text-align:center;font-size:1.6rem">🎯 Choose Your Path</h2>
@@ -58,7 +58,7 @@
 <div class="step"><h3>Install EoSim</h3>
 <pre><code>pip install embeddedos-eosim
 eosim --version
-# EoSim v0.1.0</code></pre></div>
+# EoSim v1.0.0</code></pre></div>
 <div class="step"><h3>List Available Platforms</h3>
 <pre><code>eosim list
 # stm32f4    ARM Cortex-M4 (168 MHz, 1MB Flash, 192KB RAM)
@@ -101,7 +101,7 @@ cd my-blink</code></pre></div>
 <div class="step"><h3>Build and Run</h3>
 <pre><code>ebuild build
 ebuild run
-# [app] EmbeddedOS v0.1.0 starting...
+# [app] EmbeddedOS v1.0.0 starting...
 # [app] LED toggled, tick=500</code></pre></div>
 <div class="step"><h3>Monitor Output</h3>
 <pre><code>ebuild monitor --baud 115200
@@ -137,7 +137,7 @@ ebuild build --jobs 8</code></pre></div>
 # [ebuild] Flash complete. Resetting device.</code></pre></div>
 <div class="step"><h3>Monitor</h3>
 <pre><code>ebuild monitor --baud 115200
-# [app] EmbeddedOS v0.1.0 starting...
+# [app] EmbeddedOS v1.0.0 starting...
 # [app] LED toggled, tick=500</code></pre></div>
 </div>
 <div class="callout callout-tip"><div class="callout-title">Next Steps</div>
@@ -184,7 +184,7 @@ cmake --build build --parallel</code></pre></div>
 <div class="step"><h3>Install EoStudio</h3>
 <pre><code>pip install eostudio
 eostudio --version
-# EoStudio v0.1.0</code></pre></div>
+# EoStudio v1.0.0</code></pre></div>
 <div class="step"><h3>Launch</h3>
 <pre><code>eostudio
 # The main window opens with all 10 editors</code></pre></div>
@@ -254,7 +254,7 @@ const EosSearch={pages:[
 {t:'EoStudio',u:'docs/eostudio.html',d:'Unified design suite with 12 editors'},
 {t:'eApps Suite',u:'docs/eosuite.html',d:'60+ apps for all platforms'},
 {t:'eDB Database',u:'docs/edb.html',d:'Unified multi-model database'},
-{t:'eBowser Browser',u:'docs/ebowser.html',d:'Lightweight web browser engine'},
+{t:'eBowser Browser',u:'docs/ebrowser.html',d:'Lightweight web browser engine'},
 {t:'eOffice Suite',u:'docs/eoffice.html',d:'AI-powered office suite with 11 apps'},
 {t:'eServiceApps',u:'docs/eserviceapps.html',d:'Flutter mobile service apps'}
 ],
