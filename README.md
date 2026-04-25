@@ -1,5 +1,9 @@
 # EoS — Embedded Operating System Developer Portal
 
+[![Deploy](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/deploy.yml)
+[![CI](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/ci.yml)
+[![Scorecard](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/scorecard.yml/badge.svg)](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/scorecard.yml)
+
 **Website**: [embeddedos-org.github.io](https://embeddedos-org.github.io)
 
 **Foundation**: [embeddedos-org.github.io](https://embeddedos-org.github.io)
@@ -159,3 +163,7 @@ ISO/IEC/IEEE 15288:2023 · ISO/IEC 12207 · ISO/IEC 25000 · ISO/IEC 27001 · IE
 ## License
 
 MIT License — see [LICENSE](LICENSE) for details.
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
