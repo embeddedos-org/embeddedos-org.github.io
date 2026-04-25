@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EmbeddedOS Press — Book Library</title>
+<meta name="description" content="Official reference books for the EmbeddedOS ecosystem. 16 professional technical guides covering RTOS, bootloaders, AI, databases, browsers, and more.">
+<meta property="og:title" content="EmbeddedOS Press — Book Library">
+<meta property="og:description" content="16 professional technical guides for the EmbeddedOS ecosystem. Free PDF downloads.">
+<meta property="og:url" content="https://embeddedos-org.github.io/books.html">
+<meta property="og:image" content="https://embeddedos-org.github.io/og-image.png">
+<link rel="canonical" href="https://embeddedos-org.github.io/books.html">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ═══ Books Page Styles ═══ */
+.books-hero {
+  background: linear-gradient(135deg, #0d1117 0%, #1a1040 40%, #0d2818 70%, #0d1117 100%);
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+}
+.books-hero h1 {
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--blue), var(--purple), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+.books-hero .publisher-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+.books-hero .publisher-badge .dot {
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.books-hero p {
+  color: var(--text-secondary);
+  font-size: 1.15rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.books-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.books-stats .stat {
+  text-align: center;
+}
+.books-stats .stat-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--blue);
+}
+.books-stats .stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ═══ Filter Bar ═══ */
+.filter-bar {
+  max-width: 1400px;
+  margin: 2rem auto 0;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--blue-dim);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* ═══ Book Grid ═══ */
+.books-grid {
+  max-width: 1400px;
+  margin: 2rem auto 4rem;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.book-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.book-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(88,166,255,0.1);
+}
+
+.book-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.book-card:hover .book-cover img {
+  transform: scale(1.03);
+}
+.book-cover .badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-free {
+  background: rgba(63,185,80,0.9);
+  color: #fff;
+}
+.badge-new {
+  background: rgba(88,166,255,0.9);
+  color: #fff;
+}
+
+.book-info {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.book-info h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.35rem;
+  color: var(--text-primary);
+}
+.book-info .book-sub {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+.book-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+.book-meta span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.book-meta .icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+}
+.book-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.book-tag {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 100px;
+  border: 1px solid;
+  font-weight: 500;
+}
+.book-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+.btn-pdf {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-pdf:hover { text-decoration: none; }
+.btn-download {
+  background: var(--blue);
+  color: #fff;
+}
+.btn-download:hover {
+  background: #79b8ff;
+  color: #fff;
+}
+.btn-github {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+.btn-github:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* ═══ Featured Book ═══ */
+.featured-book {
+  max-width: 1400px;
+  margin: 3rem auto 2rem;
+  padding: 0 2rem;
+}
+.featured-inner {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-tertiary));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  align-items: center;
+}
+.featured-inner img {
+  width: 100%;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+.featured-content h2 {
+  font-size: 1.8rem;
+  border: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.featured-content p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.featured-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.featured-features span {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.featured-features span::before {
+  content: "✓ ";
+  color: var(--green);
+  font-weight: bold;
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 768px) {
+  .books-hero h1 { font-size: 2rem; }
+  .books-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .featured-inner { grid-template-columns: 1fr; }
+  .featured-inner img { max-width: 200px; margin: 0 auto; }
+  .books-stats { gap: 1.5rem; }
+  .filter-bar { padding: 0 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ Navbar ═══ -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">EoS</span>
+      EmbeddedOS
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="getting-started.html">Get Started</a>
+      <a href="books.html" class="active">Books</a>
+      <a href="flow.html">Architecture</a>
+      <a href="hardware-lab.html">Hardware</a>
+      <a href="https://github.com/embeddedos-org" target="_blank">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ Hero ═══ -->
+<section class="books-hero">
+  <div class="publisher-badge">
+    <span class="dot"></span>
+    EmbeddedOS Press — Open Source Technical Publishing
+  </div>
+  <h1>📚 Book Library</h1>
+  <p>16 professional reference books covering the entire EmbeddedOS ecosystem. Free PDF downloads with colorful diagrams, architecture illustrations, and academic references.</p>
+  <div class="books-stats">
+    <div class="stat"><div class="stat-num">16</div><div class="stat-label">Books</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">50+</div><div class="stat-label">Diagrams</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--purple)">180+</div><div class="stat-label">Citations</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--orange)">FREE</div><div class="stat-label">Open Source</div></div>
+  </div>
+</section>
+
+<!-- ═══ Featured: Ecosystem Guide ═══ -->
+<section class="featured-book">
+  <div class="featured-inner">
+    <img src="https://raw.githubusercontent.com/embeddedos-org/eos/master/docs/book/cover.png" alt="EmbeddedOS Complete Guide Cover">
+    <div class="featured-content">
+      <h2>EmbeddedOS: The Complete Guide</h2>
+      <p>The definitive 42-chapter reference covering the entire EoS platform — from kernel internals and HAL design to all 15 ecosystem products. 500+ pages with architecture diagrams, API references, and deployment guides.</p>
+      <div class="featured-features">
+        <span>42 Chapters, 7 Parts</span>
+        <span>5 Architecture Diagrams</span>
+        <span>83 Board Ports</span>
+        <span>14 Academic References</span>
+        <span>15 Product Coverage</span>
+        <span>API Quick Reference</span>
+        <span>Cross-Compilation Guide</span>
+        <span>Safety Certification</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eos/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ Download PDF</a>
+        <a href="https://github.com/embeddedos-org/eos/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">📖 Source</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Filter ═══ -->
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterBooks('all')">All Books</button>
+  <button class="filter-btn" onclick="filterBooks('core')">Core Platform</button>
+  <button class="filter-btn" onclick="filterBooks('tools')">Dev Tools</button>
+  <button class="filter-btn" onclick="filterBooks('apps')">Apps & Services</button>
+  <button class="filter-btn" onclick="filterBooks('ai')">AI & Neural</button>
+  <button class="filter-btn" onclick="filterBooks('hw')">Hardware</button>
+</div>
+
+<!-- ═══ Book Grid ═══ -->
+<div class="books-grid" id="booksGrid">
+
+  <!-- eBoot -->
+  <div class="book-card" data-cat="core">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eBoot/master/docs/book/cover.png" alt="eBoot Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>eBoot — Secure Bootloader Platform</h3>
+      <div class="book-sub">Multi-platform secure boot with Ed25519, A/B partitions, and OTA firmware updates for ARM, RISC-V, and x86.</div>
+      <div class="book-meta">
+        <span>📄 30+ Chapters</span>
+        <span>🖼 5 Diagrams</span>
+        <span>📚 13 References</span>
+      </div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--green);border-color:var(--green)">Bootloader</span>
+        <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">Crypto</span>
+        <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">OTA</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eBoot/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eBoot/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ebuild -->
+  <div class="book-card" data-cat="tools">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/ebuild/master/docs/book/cover.png" alt="ebuild Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>ebuild — Build System & Toolchain</h3>
+      <div class="book-sub">Cross-platform build system supporting CMake, Meson, Yocto, and Ninja with dependency resolution and reproducible builds.</div>
+      <div class="book-meta"><span>📄 25+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 12 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">Build</span>
+        <span class="book-tag" style="color:var(--cyan);border-color:var(--cyan)">CMake</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/ebuild/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/ebuild/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eIPC -->
+  <div class="book-card" data-cat="core">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eIPC/master/docs/book/cover.png" alt="eIPC Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>eIPC — Inter-Process Communication</h3>
+      <div class="book-sub">Complete IPC framework with gRPC, Protocol Buffers, pub/sub, HMAC security, and 5 transport backends.</div>
+      <div class="book-meta"><span>📄 28+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 12 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--cyan);border-color:var(--cyan)">IPC</span>
+        <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">gRPC</span>
+        <span class="book-tag" style="color:var(--red);border-color:var(--red)">Security</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eIPC/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eIPC/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eAI -->
+  <div class="book-card" data-cat="ai">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eAI/master/docs/book/cover.png" alt="eAI Cover" loading="lazy">
+      <span class="badge badge-new">NEW</span>
+    </div>
+    <div class="book-info">
+      <h3>eAI — Embedded AI & TinyML</h3>
+      <div class="book-sub">Two-tier AI platform with TFLite Micro, LoRA fine-tuning, federated learning, and 8-layer security architecture.</div>
+      <div class="book-meta"><span>📄 30+ Chapters</span><span>🖼 4 Diagrams</span><span>📚 12 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">AI/ML</span>
+        <span class="book-tag" style="color:var(--green);border-color:var(--green)">TinyML</span>
+        <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">Edge</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eAI/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eAI/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eNI -->
+  <div class="book-card" data-cat="ai">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eNI/master/docs/book/cover.png" alt="eNI Cover" loading="lazy">
+      <span class="badge badge-new">NEW</span>
+    </div>
+    <div class="book-info">
+      <h3>eNI — Neural Interface Platform</h3>
+      <div class="book-sub">Brain-computer interface with EEG signal processing, neural decoding, and real-time BCI control loops.</div>
+      <div class="book-meta"><span>📄 20+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 11 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--pink);border-color:var(--pink)">BCI</span>
+        <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">Neural</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eNI/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eNI/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EoSim -->
+  <div class="book-card" data-cat="tools">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/EoSim/master/docs/book/cover.png" alt="EoSim Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>EoSim — Hardware Simulation Engine</h3>
+      <div class="book-sub">Multi-architecture simulation with QEMU, Renode, SystemC co-simulation, and HIL testing frameworks.</div>
+      <div class="book-meta"><span>📄 20+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 11 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--red);border-color:var(--red)">QEMU</span>
+        <span class="book-tag" style="color:var(--cyan);border-color:var(--cyan)">Simulation</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/EoSim/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/EoSim/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EoStudio -->
+  <div class="book-card" data-cat="tools">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/EoStudio/master/docs/book/cover.png" alt="EoStudio Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>EoStudio — IDE & Design Suite</h3>
+      <div class="book-sub">Cross-platform IDE with LSP, Tree-sitter code analysis, KiCad PCB integration, and debug adapter protocol.</div>
+      <div class="book-meta"><span>📄 20+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 11 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">IDE</span>
+        <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">PCB</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/EoStudio/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/EoStudio/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eApps -->
+  <div class="book-card" data-cat="apps">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eApps/master/docs/book/cover.png" alt="eApps Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>eApps — Application Framework</h3>
+      <div class="book-sub">Unified app marketplace with LVGL widget toolkit, sandboxed runtime, and touch-based UI rendering pipeline.</div>
+      <div class="book-meta"><span>📄 20+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 11 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--yellow);border-color:var(--yellow)">Apps</span>
+        <span class="book-tag" style="color:var(--green);border-color:var(--green)">LVGL</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eApps/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eApps/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eDB -->
+  <div class="book-card" data-cat="apps">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eDB/master/docs/book/cover.png" alt="eDB Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>eDB — Embedded Database Engine</h3>
+      <div class="book-sub">Multi-model database with SQL, document, graph, key-value, full-text search, and CRDT replication.</div>
+      <div class="book-meta"><span>📄 25+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 11 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--green);border-color:var(--green)">SQLite</span>
+        <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">Graph</span>
+        <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">FTS</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eDB/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eDB/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eBrowser -->
+  <div class="book-card" data-cat="apps">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eBrowser/master/docs/book/cover.png" alt="eBrowser Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>eBrowser — Embedded Web Browser</h3>
+      <div class="book-sub">Lightweight browser with HTML5 parser, CSS layout engine, JavaScript VM, HTTP/2, and TLS 1.3.</div>
+      <div class="book-meta"><span>📄 20+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 12 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--cyan);border-color:var(--cyan)">HTML5</span>
+        <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">CSS</span>
+        <span class="book-tag" style="color:var(--yellow);border-color:var(--yellow)">JS</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eBrowser/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eBrowser/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eOffice -->
+  <div class="book-card" data-cat="apps">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eOffice/master/docs/book/cover.png" alt="eOffice Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>eOffice — Office Productivity Suite</h3>
+      <div class="book-sub">AI-powered office suite with CRDT real-time collaboration, OOXML/ODF format support, and PDF export.</div>
+      <div class="book-meta"><span>📄 20+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 12 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">Docs</span>
+        <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">CRDT</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eOffice/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eOffice/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eVera -->
+  <div class="book-card" data-cat="ai">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eVera/master/docs/book/cover.png" alt="eVera Cover" loading="lazy">
+      <span class="badge badge-new">NEW</span>
+    </div>
+    <div class="book-info">
+      <h3>eVera — AI Assistant & 3D Avatar</h3>
+      <div class="book-sub">ReAct agent framework with RAG pipeline, tool use, LangChain integration, and Three.js 3D avatar rendering.</div>
+      <div class="book-meta"><span>📄 20+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 11 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--pink);border-color:var(--pink)">LLM</span>
+        <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">RAG</span>
+        <span class="book-tag" style="color:var(--cyan);border-color:var(--cyan)">3D</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eVera/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eVera/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eStocks -->
+  <div class="book-card" data-cat="apps">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eStocks_Trading_Scripts/master/docs/book/cover.png" alt="eStocks Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>eStocks — Algorithmic Trading</h3>
+      <div class="book-sub">Quantitative trading platform with backtesting, risk management (VaR), ML signals, and broker API integration.</div>
+      <div class="book-meta"><span>📄 20+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 12 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--blue);border-color:var(--blue)">Trading</span>
+        <span class="book-tag" style="color:var(--green);border-color:var(--green)">ML</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eStocks_Trading_Scripts/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eStocks_Trading_Scripts/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- eHardware -->
+  <div class="book-card" data-cat="hw">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/eHardware-Designs-Products/master/docs/book/cover.png" alt="eHardware Cover" loading="lazy">
+      <span class="badge badge-free">FREE</span>
+    </div>
+    <div class="book-info">
+      <h3>eHardware — Design & Products</h3>
+      <div class="book-sub">Hardware engineering with KiCad PCB design, radar systems, health sensors, EMC compliance, and manufacturing.</div>
+      <div class="book-meta"><span>📄 20+ Chapters</span><span>🖼 3 Diagrams</span><span>📚 13 References</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--green);border-color:var(--green)">PCB</span>
+        <span class="book-tag" style="color:var(--red);border-color:var(--red)">Radar</span>
+        <span class="book-tag" style="color:var(--cyan);border-color:var(--cyan)">Sensors</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org/eHardware-Designs-Products/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eHardware-Designs-Products/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ecosystem Guide -->
+  <div class="book-card" data-cat="core">
+    <div class="book-cover">
+      <img src="https://raw.githubusercontent.com/embeddedos-org/embeddedos-org.github.io/master/docs/book/cover.png" alt="Ecosystem Cover" loading="lazy">
+      <span class="badge badge-new">NEW</span>
+    </div>
+    <div class="book-info">
+      <h3>Ecosystem — Complete Platform Guide</h3>
+      <div class="book-sub">Overview of all 15 EmbeddedOS products, how they integrate, deployment architectures, and the full product roadmap.</div>
+      <div class="book-meta"><span>📄 Overview Guide</span><span>🖼 Cover Art</span><span>📚 Cross-refs</span></div>
+      <div class="book-tags">
+        <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">Ecosystem</span>
+        <span class="book-tag" style="color:var(--blue);border-color:var(--blue)">Platform</span>
+      </div>
+      <div class="book-actions">
+        <a href="https://github.com/embeddedos-org" class="btn-pdf btn-download" target="_blank">🌐 Explore</a>
+        <a href="https://github.com/embeddedos-org/embeddedos-org.github.io" class="btn-pdf btn-github" target="_blank">Source</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ Footer ═══ -->
+<footer style="text-align:center; padding:3rem 2rem; border-top:1px solid var(--border-color); color:var(--text-muted); font-size:0.85rem;">
+  <p><strong>EmbeddedOS Press</strong> — Open Source Technical Publishing</p>
+  <p style="margin-top:0.5rem;">All books are free and open source under CC BY-SA 4.0. PDFs auto-generated via GitHub Actions CI/CD.</p>
+  <p style="margin-top:0.5rem;">© 2026 Srikanth Patchava & EmbeddedOS Contributors</p>
+</footer>
+
+<script>
+function filterBooks(cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.book-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+
+</body>
+</html>
