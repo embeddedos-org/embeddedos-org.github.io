@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eBowser Browser Reference - EmbeddedOS</title>
+<meta name="description" content="eBowser lightweight web browser engine documentation for embedded/IoT devices with HTML5/CSS rendering and modular architecture.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://embeddedos-org.github.io/docs/ebowser.html">
+<meta property="og:title" content="eBowser Browser Reference - EmbeddedOS">
+<meta property="og:description" content="eBowser lightweight web browser engine documentation for embedded/IoT devices with HTML5/CSS rendering and modular architecture.">
+<meta property="og:image" content="https://embeddedos-org.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="eBowser Browser Reference - EmbeddedOS">
+<meta name="twitter:description" content="eBowser lightweight web browser engine documentation for embedded/IoT devices with HTML5/CSS rendering and modular architecture.">
+<meta name="twitter:image" content="https://embeddedos-org.github.io/og-image.png">
+<link rel="canonical" href="https://embeddedos-org.github.io/docs/ebowser.html">
+<link rel="preload" href="../style.css" as="style">
+<meta name="description" content="eBowser lightweight web browser engine documentation for embedded/IoT devices with HTML5/CSS rendering and modular architecture.">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links">
+<a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a><button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
+</div></div></nav>
+<div class="doc-layout">
+<aside class="doc-sidebar"><div class="sidebar-section">
+<div class="sidebar-title">eBowser Modules</div>
+<a href="#core" class="sidebar-link active">Core Engine</a><a href="#html-parser" class="sidebar-link">HTML Parser</a>
+<a href="#css-engine" class="sidebar-link">CSS Engine</a><a href="#layout" class="sidebar-link">Layout</a>
+<a href="#rendering" class="sidebar-link">Rendering</a><a href="#network" class="sidebar-link">Network</a>
+<a href="#input" class="sidebar-link">Input</a><a href="#platform" class="sidebar-link">Platform</a>
+<a href="#security" class="sidebar-link">Security</a><a href="#cli" class="sidebar-link">CLI Reference</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eboot.html" class="sidebar-link">eBoot</a><a href="eai.html" class="sidebar-link">EAI</a>
+<a href="eni.html" class="sidebar-link">ENI</a><a href="ebuild.html" class="sidebar-link">ebuild</a>
+<a href="eipc.html" class="sidebar-link">EIPC</a><a href="eosuite.html" class="sidebar-link">eApps</a>
+<a href="eosim.html" class="sidebar-link">EoSim</a><a href="eostudio.html" class="sidebar-link">EoStudio</a>
+<a href="edb.html" class="sidebar-link">eDB</a><a href="ebowser.html" class="sidebar-link">eBowser</a>
+<a href="eoffice.html" class="sidebar-link">eOffice</a><a href="eserviceapps.html" class="sidebar-link">eServiceApps</a>
+</div></aside>
+<main class="doc-content">
+<h1>eBowser &mdash; Embedded Web Browser <span class="version-badge">v0.1.0</span></h1>
+<p>eBowser is a lightweight, embeddable web browser engine for EmbeddedOS. Built from scratch in C/C++ with minimal dependencies, it provides HTML5 parsing, CSS styling, box-model layout, software rendering, and HTTP/HTTPS networking &mdash; all in a footprint suitable for resource-constrained embedded devices, kiosks, and IoT dashboards.</p>
+<p><strong>Headers:</strong> <code>#include &lt;ebowser/*.h&gt;</code> | <strong>License:</strong> MIT | <strong>Backends:</strong> SDL2, EoS native, WASM</p>
+
+<div class="callout callout-info"><div class="callout-title">Architecture Overview</div>
+<p><strong>Core Engine:</strong> Browser lifecycle, configuration, and embedding API.<br>
+<strong>HTML Parser:</strong> Tokenizer &rarr; DOM tree construction with error recovery.<br>
+<strong>CSS Engine:</strong> Stylesheet parsing, cascade, specificity, computed styles.<br>
+<strong>Layout Engine:</strong> Box model, block/inline flow, flexbox, text wrapping.<br>
+<strong>Rendering:</strong> Software rasterizer with SDL2 and EoS display backends.<br>
+<strong>Network:</strong> HTTP/1.1, HTTPS (TLS 1.2/1.3), cookies, connection pooling.<br>
+<strong>Input:</strong> Keyboard, mouse, and touch input abstraction with focus management.<br>
+<strong>Platform:</strong> Portable abstraction layer for SDL2, EoS native, and WebAssembly.</p></div>
+
+<div class="callout callout-tip"><div class="callout-title">Quick Start</div>
+<pre><code>#include &lt;ebowser/ebowser.h&gt;
+
+int main(void) {
+    eb_config_t cfg = {
+        .width = 1024, .height = 768,
+        .title = "eBowser",
+        .flags = EB_FLAG_RESIZABLE
+    };
+    eb_handle_t browser = eb_create(&amp;cfg);
+    eb_navigate(browser, "https://example.com");
+    eb_run(browser);  // blocks until window closed
+    eb_destroy(browser);
+    return 0;
+}</code></pre></div>
+
+<!-- ══════════════════════════════ CORE ENGINE ══════════════════════════════ -->
+<div id="core" class="module-section"><h2 style="color:var(--cyan)">&#9881; Core Engine</h2>
+<p class="module-desc">Browser lifecycle, configuration, and embedding API. Header: <code>&lt;ebowser/ebowser.h&gt;</code></p></div>
+
+<h3>Configuration</h3>
+<div class="struct-card"><h4>eb_config_t</h4><table>
+<tr><td><code>width</code></td><td><code>uint32_t</code></td><td>Initial window width in pixels (default: 1024)</td></tr>
+<tr><td><code>height</code></td><td><code>uint32_t</code></td><td>Initial window height in pixels (default: 768)</td></tr>
+<tr><td><code>title</code></td><td><code>const char *</code></td><td>Window title string</td></tr>
+<tr><td><code>flags</code></td><td><code>uint32_t</code></td><td>Bitwise OR of EB_FLAG_* constants</td></tr>
+<tr><td><code>user_agent</code></td><td><code>const char *</code></td><td>Custom User-Agent string (NULL = default)</td></tr>
+<tr><td><code>cache_size_mb</code></td><td><code>uint32_t</code></td><td>Max cache size in MB (default: 64)</td></tr>
+<tr><td><code>home_url</code></td><td><code>const char *</code></td><td>Homepage URL (NULL = about:blank)</td></tr>
+<tr><td><code>proxy</code></td><td><code>const char *</code></td><td>HTTP proxy URL (NULL = direct)</td></tr>
+</table></div>
+
+<div class="callout callout-info"><div class="callout-title">Configuration Flags</div>
+<code>EB_FLAG_RESIZABLE=0x01</code> &bull; <code>EB_FLAG_FULLSCREEN=0x02</code> &bull; <code>EB_FLAG_BORDERLESS=0x04</code> &bull; <code>EB_FLAG_NO_JS=0x08</code> &bull; <code>EB_FLAG_KIOSK=0x10</code> &bull; <code>EB_FLAG_HEADLESS=0x20</code> &bull; <code>EB_FLAG_HARDWARE_ACCEL=0x40</code></div>
+
+<h3>Lifecycle</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">eb_handle_t</span> <span class="fn">eb_create</span>(<span class="param">const eb_config_t *config</span>)</code></div>
+<p class="api-desc">Create a new browser instance. Initializes the platform backend, rendering surface, and network stack.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>config</td><td>const eb_config_t *</td><td>Browser configuration. Pass NULL for defaults (1024&times;768, resizable).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>eb_handle_t</code> browser handle, or <code>EB_INVALID_HANDLE</code> on failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eb_config_t cfg = {
+    .width = 800, .height = 600,
+    .title = "My Embedded Browser",
+    .flags = EB_FLAG_RESIZABLE | EB_FLAG_HARDWARE_ACCEL,
+    .cache_size_mb = 32,
+    .home_url = "https://example.com"
+};
+eb_handle_t browser = eb_create(&amp;cfg);
+if (browser == EB_INVALID_HANDLE) {
+    fprintf(stderr, "Failed to create browser\n");
+    return 1;
+}</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_navigate</span>(<span class="param">eb_handle_t browser, const char *url</span>)</code></div>
+<p class="api-desc">Navigate to a URL. Initiates DNS resolution, HTTP request, HTML parsing, layout, and rendering. Non-blocking &mdash; the page loads asynchronously.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+<tr><td>url</td><td>const char *</td><td>URL to navigate to (http://, https://, file://, or about:).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code on failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eb_navigate(browser, "https://example.com");
+eb_navigate(browser, "file:///data/local.html");
+eb_navigate(browser, "about:blank");</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_run</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Enter the main event loop. Processes input events, network I/O, layout updates, and rendering. Blocks until the browser window is closed or <code>eb_stop()</code> is called.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on clean exit.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_step</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Process a single frame of the event loop. Use instead of <code>eb_run()</code> when embedding the browser in a custom event loop.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>1</code> if running, <code>0</code> if exit was requested.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>while (eb_step(browser)) {
+    update_hud();
+    render_overlay();
+}</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_stop</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Signal the browser to exit the event loop. <code>eb_run()</code> or <code>eb_step()</code> will return on the next iteration.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_destroy</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Destroy a browser instance and free all resources (DOM, stylesheets, network connections, cache, rendering surfaces).</p></div>
+
+<h3>Navigation Control</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_go_back</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Navigate to the previous page in history. Returns <code>-1</code> if no history.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_go_forward</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Navigate to the next page in history. Returns <code>-1</code> if at the end.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_reload</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Reload the current page. Re-fetches resources from network (respects cache headers).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_get_url</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the current page URL.</p>
+<div class="api-returns"><h5>Returns</h5><p>Current URL string (valid until next navigation).</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_get_title</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the current page title.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">eb_load_state_t</span> <span class="fn">eb_get_load_state</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the current page loading state.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>EB_LOAD_IDLE</code>, <code>EB_LOAD_CONNECTING</code>, <code>EB_LOAD_LOADING</code>, <code>EB_LOAD_RENDERING</code>, or <code>EB_LOAD_COMPLETE</code>.</p></div></div>
+
+<h3>Callbacks</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_set_load_callback</span>(<span class="param">eb_handle_t browser, eb_load_callback_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Register a callback for page load events: <code>void (*)(eb_handle_t, eb_load_state_t state, const char *url, void *ctx)</code></p>
+<div class="api-example"><h5>Example</h5><pre><code>void on_load(eb_handle_t b, eb_load_state_t state, const char *url, void *ctx) {
+    if (state == EB_LOAD_COMPLETE)
+        printf("Page loaded: %s\n", url);
+}
+eb_set_load_callback(browser, on_load, NULL);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_set_navigate_callback</span>(<span class="param">eb_handle_t browser, eb_navigate_callback_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Register a callback invoked before navigation. Return <code>false</code> from the callback to block navigation (URL filtering for kiosk mode). Signature: <code>bool (*)(eb_handle_t, const char *url, void *ctx)</code></p></div>
+
+<!-- ══════════════════════════════ HTML PARSER ══════════════════════════════ -->
+<div id="html-parser" class="module-section"><h2 style="color:var(--green)">&#128196; HTML Parser</h2>
+<p class="module-desc">Tokenizer and DOM tree construction with error recovery. Header: <code>&lt;ebowser/dom.h&gt;</code></p></div>
+
+<h3>DOM Node Types</h3>
+<div class="struct-card"><h4>eb_dom_node_t</h4><table>
+<tr><td><code>type</code></td><td><code>eb_node_type_t</code></td><td>ELEMENT, TEXT, COMMENT, DOCUMENT, DOCTYPE</td></tr>
+<tr><td><code>tag</code></td><td><code>const char *</code></td><td>Tag name (e.g., "div", "p") &mdash; ELEMENT nodes only</td></tr>
+<tr><td><code>text</code></td><td><code>const char *</code></td><td>Text content &mdash; TEXT and COMMENT nodes</td></tr>
+<tr><td><code>id</code></td><td><code>const char *</code></td><td>Element id attribute (or NULL)</td></tr>
+<tr><td><code>class_name</code></td><td><code>const char *</code></td><td>Element class attribute (or NULL)</td></tr>
+<tr><td><code>parent</code></td><td><code>eb_dom_node_t *</code></td><td>Parent node</td></tr>
+<tr><td><code>first_child</code></td><td><code>eb_dom_node_t *</code></td><td>First child node</td></tr>
+<tr><td><code>next_sibling</code></td><td><code>eb_dom_node_t *</code></td><td>Next sibling node</td></tr>
+<tr><td><code>attr_count</code></td><td><code>uint16_t</code></td><td>Number of attributes</td></tr>
+<tr><td><code>attrs</code></td><td><code>eb_attr_t *</code></td><td>Array of name/value attribute pairs</td></tr>
+</table></div>
+
+<h3>DOM Query API</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t *</span> <span class="fn">eb_dom_get_document</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the root document node of the current page&rsquo;s DOM tree.</p>
+<div class="api-returns"><h5>Returns</h5><p>Root document node, or NULL if no page loaded.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t *</span> <span class="fn">eb_dom_get_element_by_id</span>(<span class="param">eb_handle_t browser, const char *id</span>)</code></div>
+<p class="api-desc">Find the first element with the given id attribute.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+<tr><td>id</td><td>const char *</td><td>Element id to search for.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Matching element node, or NULL.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eb_dom_node_t *header = eb_dom_get_element_by_id(browser, "main-header");
+if (header) printf("Found: &lt;%s id='%s'&gt;\n", header-&gt;tag, header-&gt;id);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t **</span> <span class="fn">eb_dom_query_selector_all</span>(<span class="param">eb_handle_t browser, const char *selector, uint32_t *count</span>)</code></div>
+<p class="api-desc">Find all elements matching a CSS selector. Supports tag, class, id, attribute, and descendant selectors.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>selector</td><td>const char *</td><td>CSS selector string.</td></tr>
+<tr><td>count</td><td>uint32_t *</td><td>Output: number of matches.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Array of matching nodes (caller frees with <code>eb_free()</code>).</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>uint32_t count;
+eb_dom_node_t **links = eb_dom_query_selector_all(browser, "a.nav-link", &amp;count);
+for (uint32_t i = 0; i &lt; count; i++) {
+    const char *href = eb_dom_get_attr(links[i], "href");
+    printf("Link: %s\n", href ? href : "(none)");
+}
+eb_free(links);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t *</span> <span class="fn">eb_dom_query_selector</span>(<span class="param">eb_handle_t browser, const char *selector</span>)</code></div>
+<p class="api-desc">Find the first element matching a CSS selector.</p></div>
+
+<h3>DOM Attribute &amp; Content Access</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_dom_get_attr</span>(<span class="param">eb_dom_node_t *node, const char *name</span>)</code></div>
+<p class="api-desc">Get the value of a named attribute. Returns NULL if not present.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_dom_get_text_content</span>(<span class="param">eb_dom_node_t *node</span>)</code></div>
+<p class="api-desc">Get concatenated text content of a node and all descendants. Caller frees with <code>eb_free()</code>.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_dom_get_inner_html</span>(<span class="param">eb_dom_node_t *node</span>)</code></div>
+<p class="api-desc">Get serialized HTML of an element&rsquo;s children. Caller frees with <code>eb_free()</code>.</p></div>
+
+<h3>Event Handling</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_dom_add_event_listener</span>(<span class="param">eb_dom_node_t *node, const char *event, eb_dom_event_cb_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Attach an event listener to a DOM node.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>node</td><td>eb_dom_node_t *</td><td>Target element.</td></tr>
+<tr><td>event</td><td>const char *</td><td>Event name: "click", "input", "submit", "load", "scroll".</td></tr>
+<tr><td>cb</td><td>eb_dom_event_cb_t</td><td><code>void (*)(eb_dom_node_t *target, const eb_dom_event_t *evt, void *ctx)</code></td></tr>
+<tr><td>ctx</td><td>void *</td><td>User context.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void on_click(eb_dom_node_t *target, const eb_dom_event_t *evt, void *ctx) {
+    printf("Clicked: &lt;%s&gt;\n", target-&gt;tag);
+}
+eb_dom_node_t *btn = eb_dom_get_element_by_id(browser, "submit-btn");
+eb_dom_add_event_listener(btn, "click", on_click, NULL);</code></pre></div></div>
+
+<!-- ══════════════════════════════ CSS ENGINE ══════════════════════════════ -->
+<div id="css-engine" class="module-section"><h2 style="color:var(--purple)">&#127912; CSS Engine</h2>
+<p class="module-desc">Stylesheet parsing, cascade, specificity, and computed styles. Header: <code>&lt;ebowser/css.h&gt;</code></p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">eb_stylesheet_t *</span> <span class="fn">eb_css_parse</span>(<span class="param">const char *css_text, size_t len</span>)</code></div>
+<p class="api-desc">Parse a CSS string into an internal stylesheet. Supports selectors, properties, media queries, and @-rules.</p>
+<div class="api-returns"><h5>Returns</h5><p>Parsed stylesheet, or NULL on failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>const char *css = "body { background: #fff; color: #333; font-size: 16px; }";
+eb_stylesheet_t *sheet = eb_css_parse(css, strlen(css));</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_css_apply</span>(<span class="param">eb_handle_t browser, eb_stylesheet_t *stylesheet</span>)</code></div>
+<p class="api-desc">Apply a stylesheet to the current document. Triggers cascade recalculation and relayout.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">eb_computed_style_t</span> <span class="fn">eb_css_computed_style</span>(<span class="param">eb_dom_node_t *node</span>)</code></div>
+<p class="api-desc">Get the fully resolved computed style for a DOM element after cascade, specificity, and inheritance.</p>
+<div class="api-example"><h5>Example</h5><pre><code>eb_dom_node_t *el = eb_dom_get_element_by_id(browser, "content");
+eb_computed_style_t style = eb_css_computed_style(el);
+printf("Font size: %dpx, Color: #%06X\n", style.font_size, style.color);</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_css_free</span>(<span class="param">eb_stylesheet_t *stylesheet</span>)</code></div>
+<p class="api-desc">Free a parsed stylesheet and all associated memory.</p></div>
+
+<h3>Computed Style Structure</h3>
+<div class="struct-card"><h4>eb_computed_style_t</h4><table>
+<tr><td><code>display</code></td><td><code>eb_display_t</code></td><td>BLOCK, INLINE, FLEX, NONE, INLINE_BLOCK</td></tr>
+<tr><td><code>color</code></td><td><code>uint32_t</code></td><td>Text color (0xRRGGBB)</td></tr>
+<tr><td><code>background_color</code></td><td><code>uint32_t</code></td><td>Background color (0xRRGGBB)</td></tr>
+<tr><td><code>font_size</code></td><td><code>uint16_t</code></td><td>Font size in pixels</td></tr>
+<tr><td><code>font_weight</code></td><td><code>uint16_t</code></td><td>Font weight (100-900)</td></tr>
+<tr><td><code>margin</code></td><td><code>eb_box_t</code></td><td>Margin (top, right, bottom, left) in px</td></tr>
+<tr><td><code>padding</code></td><td><code>eb_box_t</code></td><td>Padding (top, right, bottom, left) in px</td></tr>
+<tr><td><code>border_width</code></td><td><code>eb_box_t</code></td><td>Border widths in px</td></tr>
+<tr><td><code>position</code></td><td><code>eb_position_t</code></td><td>STATIC, RELATIVE, ABSOLUTE, FIXED</td></tr>
+</body></html>
+<!DOCTYPE html>
+</table></div>
+
+<div class="callout callout-tip"><div class="callout-title">Supported CSS Properties</div>
+<p><strong>Box Model:</strong> margin, padding, border, width, height, max-width, max-height, min-width, min-height, box-sizing<br>
+<strong>Typography:</strong> font-size, font-weight, font-family, line-height, text-align, text-decoration, color<br>
+<strong>Layout:</strong> display (block, inline, flex, none), position, top, right, bottom, left, float, clear<br>
+<strong>Flexbox:</strong> flex-direction, justify-content, align-items, flex-wrap, flex-grow, flex-shrink, gap<br>
+<strong>Visual:</strong> background-color, background-image, border-radius, opacity, overflow, visibility</p></div>
+
+<!-- PLACEHOLDER_SPLIT -->
+</main></div>
+</body></html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eBowser - Embedded Web Browser - EmbeddedOS</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<nav class="navbar"><div class="nav-inner">
+<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links">
+<a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+</div></div></nav>
+<div class="doc-layout">
+<aside class="doc-sidebar"><div class="sidebar-section">
+<div class="sidebar-title">eBowser Modules</div>
+<a href="#core" class="sidebar-link active">Core Engine</a><a href="#html-parser" class="sidebar-link">HTML Parser</a>
+<a href="#css-engine" class="sidebar-link">CSS Engine</a><a href="#layout" class="sidebar-link">Layout</a>
+<a href="#rendering" class="sidebar-link">Rendering</a><a href="#network" class="sidebar-link">Network</a>
+<a href="#input" class="sidebar-link">Input</a><a href="#platform" class="sidebar-link">Platform</a>
+<a href="#security" class="sidebar-link">Security</a><a href="#cli" class="sidebar-link">CLI Reference</a>
+</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
+<a href="eboot.html" class="sidebar-link">eBoot</a><a href="eai.html" class="sidebar-link">EAI</a>
+<a href="eni.html" class="sidebar-link">ENI</a><a href="ebuild.html" class="sidebar-link">ebuild</a>
+<a href="eipc.html" class="sidebar-link">EIPC</a><a href="eosuite.html" class="sidebar-link">eApps</a>
+<a href="eosim.html" class="sidebar-link">EoSim</a><a href="eostudio.html" class="sidebar-link">EoStudio</a>
+<a href="edb.html" class="sidebar-link">eDB</a><a href="ebowser.html" class="sidebar-link">eBowser</a>
+<a href="eoffice.html" class="sidebar-link">eOffice</a><a href="eserviceapps.html" class="sidebar-link">eServiceApps</a>
+</div></aside>
+<main class="doc-content">
+<h1>eBowser &mdash; Embedded Web Browser <span class="version-badge">v0.1.0</span></h1>
+<p>eBowser is a lightweight, embeddable web browser engine for EmbeddedOS. Built from scratch in C/C++ with minimal dependencies, it provides HTML5 parsing, CSS styling, box-model layout, software rendering, and HTTP/HTTPS networking &mdash; all in a footprint suitable for resource-constrained embedded devices, kiosks, and IoT dashboards.</p>
+<p><strong>Headers:</strong> <code>#include &lt;ebowser/*.h&gt;</code> | <strong>License:</strong> MIT | <strong>Backends:</strong> SDL2, EoS native, WASM</p>
+
+<div class="callout callout-info"><div class="callout-title">Architecture Overview</div>
+<p><strong>Core Engine:</strong> Browser lifecycle, configuration, and embedding API.<br>
+<strong>HTML Parser:</strong> Tokenizer &rarr; DOM tree construction with error recovery.<br>
+<strong>CSS Engine:</strong> Stylesheet parsing, cascade, specificity, computed styles.<br>
+<strong>Layout Engine:</strong> Box model, block/inline flow, flexbox, text wrapping.<br>
+<strong>Rendering:</strong> Software rasterizer with SDL2 and EoS display backends.<br>
+<strong>Network:</strong> HTTP/1.1, HTTPS (TLS 1.2/1.3), cookies, connection pooling.<br>
+<strong>Input:</strong> Keyboard, mouse, and touch input abstraction with focus management.<br>
+<strong>Platform:</strong> Portable abstraction layer for SDL2, EoS native, and WebAssembly.</p></div>
+
+<div class="callout callout-tip"><div class="callout-title">Quick Start</div>
+<pre><code>#include &lt;ebowser/ebowser.h&gt;
+
+int main(void) {
+    eb_config_t cfg = {
+        .width = 1024, .height = 768,
+        .title = "eBowser",
+        .flags = EB_FLAG_RESIZABLE
+    };
+    eb_handle_t browser = eb_create(&amp;cfg);
+    eb_navigate(browser, "https://example.com");
+    eb_run(browser);  // blocks until window closed
+    eb_destroy(browser);
+    return 0;
+}</code></pre></div>
+
+<!-- ═══════════════════════════════════════════════════════ CORE ENGINE ═══════════════════════════════════════════════════════ -->
+<div id="core" class="module-section"><h2 style="color:var(--cyan)">&#9881; Core Engine</h2>
+<p class="module-desc">Browser lifecycle, configuration, and embedding API. Header: <code>&lt;ebowser/ebowser.h&gt;</code></p></div>
+
+<h3>Configuration</h3>
+<div class="struct-card"><h4>eb_config_t</h4><table>
+<tr><td><code>width</code></td><td><code>uint32_t</code></td><td>Initial window width in pixels (default: 1024)</td></tr>
+<tr><td><code>height</code></td><td><code>uint32_t</code></td><td>Initial window height in pixels (default: 768)</td></tr>
+<tr><td><code>title</code></td><td><code>const char *</code></td><td>Window title string</td></tr>
+<tr><td><code>flags</code></td><td><code>uint32_t</code></td><td>Bitwise OR of EB_FLAG_* constants</td></tr>
+<tr><td><code>user_agent</code></td><td><code>const char *</code></td><td>Custom User-Agent string (NULL = default)</td></tr>
+<tr><td><code>cache_size_mb</code></td><td><code>uint32_t</code></td><td>Max cache size in MB (default: 64)</td></tr>
+<tr><td><code>home_url</code></td><td><code>const char *</code></td><td>Homepage URL (NULL = about:blank)</td></tr>
+<tr><td><code>proxy</code></td><td><code>const char *</code></td><td>HTTP proxy URL (NULL = direct)</td></tr>
+</table></div>
+
+<div class="callout callout-info"><div class="callout-title">Configuration Flags</div>
+<code>EB_FLAG_RESIZABLE=0x01</code> &bull; <code>EB_FLAG_FULLSCREEN=0x02</code> &bull; <code>EB_FLAG_BORDERLESS=0x04</code> &bull; <code>EB_FLAG_NO_JS=0x08</code> &bull; <code>EB_FLAG_KIOSK=0x10</code> &bull; <code>EB_FLAG_HEADLESS=0x20</code> &bull; <code>EB_FLAG_HARDWARE_ACCEL=0x40</code></div>
+
+<h3>Lifecycle</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">eb_handle_t</span> <span class="fn">eb_create</span>(<span class="param">const eb_config_t *config</span>)</code></div>
+<p class="api-desc">Create a new browser instance with the given configuration. Initializes the platform backend, rendering surface, and network stack.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>config</td><td>const eb_config_t *</td><td>Browser configuration. Pass NULL for defaults (1024&times;768, resizable).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>eb_handle_t</code> browser handle, or <code>EB_INVALID_HANDLE</code> on failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eb_config_t cfg = {
+    .width = 800, .height = 600,
+    .title = "My Embedded Browser",
+    .flags = EB_FLAG_RESIZABLE | EB_FLAG_HARDWARE_ACCEL,
+    .cache_size_mb = 32,
+    .home_url = "https://example.com"
+};
+eb_handle_t browser = eb_create(&amp;cfg);
+if (browser == EB_INVALID_HANDLE) {
+    fprintf(stderr, "Failed to create browser\n");
+    return 1;
+}</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_navigate</span>(<span class="param">eb_handle_t browser, const char *url</span>)</code></div>
+<p class="api-desc">Navigate to a URL. Initiates DNS resolution, HTTP request, HTML parsing, layout, and rendering pipeline. Non-blocking &mdash; the page loads asynchronously.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+<tr><td>url</td><td>const char *</td><td>URL to navigate to (http://, https://, file://, or about:).</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code on failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eb_navigate(browser, "https://example.com");
+eb_navigate(browser, "file:///data/local.html");
+eb_navigate(browser, "about:blank");</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_run</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Enter the main event loop. Processes input events, network I/O, layout updates, and rendering. Blocks until the browser window is closed or <code>eb_stop()</code> is called.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on clean exit.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_step</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Process a single frame of the event loop. Use instead of <code>eb_run()</code> when embedding the browser in a custom event loop.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>1</code> if the browser is still running, <code>0</code> if exit was requested.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>while (eb_step(browser)) {
+    // Custom per-frame logic
+    update_hud();
+    render_overlay();
+}</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_stop</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Signal the browser to exit the event loop. <code>eb_run()</code> or <code>eb_step()</code> will return on the next iteration.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+</table></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_destroy</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Destroy a browser instance and free all associated resources (DOM, stylesheets, network connections, cache, rendering surfaces).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle to destroy.</td></tr>
+</table></div></div>
+
+<h3>Navigation Control</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_go_back</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Navigate to the previous page in history. Returns <code>-1</code> if no history.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_go_forward</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Navigate to the next page in history. Returns <code>-1</code> if at the end.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_reload</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Reload the current page. Re-fetches resources from network (respects cache headers).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_get_url</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the current page URL. Returns pointer to internal string (valid until next navigation).</p>
+<div class="api-returns"><h5>Returns</h5><p>Current URL string.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_get_title</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the current page &lt;title&gt; content.</p>
+<div class="api-returns"><h5>Returns</h5><p>Page title string.</p></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">eb_load_state_t</span> <span class="fn">eb_get_load_state</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the current page loading state.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>EB_LOAD_IDLE</code>, <code>EB_LOAD_CONNECTING</code>, <code>EB_LOAD_LOADING</code>, <code>EB_LOAD_RENDERING</code>, or <code>EB_LOAD_COMPLETE</code>.</p></div></div>
+
+<h3>Callbacks</h3>
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_set_load_callback</span>(<span class="param">eb_handle_t browser, eb_load_callback_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Register a callback for page load events.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+<tr><td>cb</td><td>eb_load_callback_t</td><td><code>void (*)(eb_handle_t, eb_load_state_t state, const char *url, void *ctx)</code></td></tr>
+<tr><td>ctx</td><td>void *</td><td>User context.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>void on_load(eb_handle_t b, eb_load_state_t state, const char *url, void *ctx) {
+    if (state == EB_LOAD_COMPLETE)
+        printf("Page loaded: %s\n", url);
+}
+eb_set_load_callback(browser, on_load, NULL);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_set_navigate_callback</span>(<span class="param">eb_handle_t browser, eb_navigate_callback_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Register a callback invoked before navigation. Return <code>false</code> from the callback to block navigation (e.g., for URL filtering in kiosk mode).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>cb</td><td>eb_navigate_callback_t</td><td><code>bool (*)(eb_handle_t, const char *url, void *ctx)</code></td></tr>
+</table></div></div>
+
+<!-- ═══════════════════════════════════════════════════════ HTML PARSER ═══════════════════════════════════════════════════════ -->
+<div id="html-parser" class="module-section"><h2 style="color:var(--green)">&#128196; HTML Parser</h2>
+<p class="module-desc">Tokenizer and DOM tree construction with error recovery. Header: <code>&lt;ebowser/dom.h&gt;</code></p></div>
+
+<h3>DOM Node Types</h3>
+<div class="struct-card"><h4>eb_dom_node_t</h4><table>
+<tr><td><code>type</code></td><td><code>eb_node_type_t</code></td><td>ELEMENT, TEXT, COMMENT, DOCUMENT, DOCTYPE</td></tr>
+<tr><td><code>tag</code></td><td><code>const char *</code></td><td>Tag name (e.g., "div", "p") &mdash; ELEMENT nodes only</td></tr>
+<tr><td><code>text</code></td><td><code>const char *</code></td><td>Text content &mdash; TEXT and COMMENT nodes</td></tr>
+<tr><td><code>id</code></td><td><code>const char *</code></td><td>Element id attribute (or NULL)</td></tr>
+<tr><td><code>class_name</code></td><td><code>const char *</code></td><td>Element class attribute (or NULL)</td></tr>
+<tr><td><code>parent</code></td><td><code>eb_dom_node_t *</code></td><td>Parent node</td></tr>
+<tr><td><code>first_child</code></td><td><code>eb_dom_node_t *</code></td><td>First child node</td></tr>
+<tr><td><code>next_sibling</code></td><td><code>eb_dom_node_t *</code></td><td>Next sibling node</td></tr>
+<tr><td><code>attr_count</code></td><td><code>uint16_t</code></td><td>Number of attributes</td></tr>
+<tr><td><code>attrs</code></td><td><code>eb_attr_t *</code></td><td>Array of name/value attribute pairs</td></tr>
+</table></div>
+
+<h3>DOM Query API</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t *</span> <span class="fn">eb_dom_get_document</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the root document node of the current page&rsquo;s DOM tree.</p>
+<div class="api-returns"><h5>Returns</h5><p>Root document node, or NULL if no page is loaded.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t *</span> <span class="fn">eb_dom_get_element_by_id</span>(<span class="param">eb_handle_t browser, const char *id</span>)</code></div>
+<p class="api-desc">Find the first element with the given id attribute.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+<tr><td>id</td><td>const char *</td><td>Element id to search for.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Matching element node, or NULL if not found.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eb_dom_node_t *header = eb_dom_get_element_by_id(browser, "main-header");
+if (header) {
+    printf("Found header: &lt;%s id='%s'&gt;\n", header-&gt;tag, header-&gt;id);
+}</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t **</span> <span class="fn">eb_dom_query_selector_all</span>(<span class="param">eb_handle_t browser, const char *selector, uint32_t *count</span>)</code></div>
+<p class="api-desc">Find all elements matching a CSS selector. Supports tag, class, id, attribute, and descendant selectors.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+<tr><td>selector</td><td>const char *</td><td>CSS selector string.</td></tr>
+<tr><td>count</td><td>uint32_t *</td><td>Output: number of matches.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Array of matching nodes (caller must free with <code>eb_free()</code>). NULL if none found.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>uint32_t count;
+eb_dom_node_t **links = eb_dom_query_selector_all(browser, "a.nav-link", &amp;count);
+for (uint32_t i = 0; i &lt; count; i++) {
+    const char *href = eb_dom_get_attr(links[i], "href");
+    printf("Link: %s\n", href ? href : "(none)");
+}
+eb_free(links);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t *</span> <span class="fn">eb_dom_query_selector</span>(<span class="param">eb_handle_t browser, const char *selector</span>)</code></div>
+<p class="api-desc">Find the first element matching a CSS selector.</p>
+<div class="api-returns"><h5>Returns</h5><p>First matching node, or NULL.</p></div></div>
+
+<h3>DOM Attribute Access</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_dom_get_attr</span>(<span class="param">eb_dom_node_t *node, const char *name</span>)</code></div>
+<p class="api-desc">Get the value of a named attribute on a DOM element.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>node</td><td>eb_dom_node_t *</td><td>Element node.</td></tr>
+<tr><td>name</td><td>const char *</td><td>Attribute name (e.g., "href", "src", "class").</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Attribute value string, or NULL if not present.</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_dom_get_text_content</span>(<span class="param">eb_dom_node_t *node</span>)</code></div>
+<p class="api-desc">Get the concatenated text content of a node and all its descendants.</p>
+<div class="api-returns"><h5>Returns</h5><p>Text content string (caller must free with <code>eb_free()</code>).</p></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_dom_get_inner_html</span>(<span class="param">eb_dom_node_t *node</span>)</code></div>
+<p class="api-desc">Get the serialized HTML content of an element&rsquo;s children.</p>
+<div class="api-returns"><h5>Returns</h5><p>HTML string (caller must free with <code>eb_free()</code>).</p></div></div>
+
+<h3>Event Handling</h3>
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_dom_add_event_listener</span>(<span class="param">eb_dom_node_t *node, const char *event, eb_dom_event_cb_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Attach an event listener to a DOM node.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>node</td><td>eb_dom_node_t *</td><td>Target element.</td></tr>
+<tr><td>event</td><td>const char *</td><td>Event name: "click", "input", "submit", "load", "scroll".</td></tr>
+<tr><td>cb</td><td>eb_dom_event_cb_t</td><td><code>void (*)(eb_dom_node_t *target, const eb_dom_event_t *evt, void *ctx)</code></td></tr>
+<tr><td>ctx</td><td>void *</td><td>User context.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void on_click(eb_dom_node_t *target, const eb_dom_event_t *evt, void *ctx) {
+    printf("Clicked element: &lt;%s&gt;\n", target-&gt;tag);
+}
+eb_dom_node_t *btn = eb_dom_get_element_by_id(browser, "submit-btn");
+eb_dom_add_event_listener(btn, "click", on_click, NULL);</code></pre></div></div>
+
+<!-- ═══════════════════════════════════════════════════════ CSS ENGINE ═══════════════════════════════════════════════════════ -->
+<div id="css-engine" class="module-section"><h2 style="color:var(--purple)">&#127912; CSS Engine</h2>
+<p class="module-desc">Stylesheet parsing, cascade, specificity, and computed styles. Header: <code>&lt;ebowser/css.h&gt;</code></p></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">eb_stylesheet_t *</span> <span class="fn">eb_css_parse</span>(<span class="param">const char *css_text, size_t len</span>)</code></div>
+<p class="api-desc">Parse a CSS string into an internal stylesheet representation. Supports selectors, properties, media queries, and @-rules.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>css_text</td><td>const char *</td><td>CSS source text.</td></tr>
+<tr><td>len</td><td>size_t</td><td>Length of CSS text in bytes.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Parsed stylesheet, or NULL on parse failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>const char *css = "body { background: #fff; color: #333; font-size: 16px; }";
+eb_stylesheet_t *sheet = eb_css_parse(css, strlen(css));</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_css_apply</span>(<span class="param">eb_handle_t browser, eb_stylesheet_t *stylesheet</span>)</code></div>
+<p class="api-desc">Apply a stylesheet to the current document. Triggers cascade recalculation and relayout.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+<tr><td>stylesheet</td><td>eb_stylesheet_t *</td><td>Parsed stylesheet.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">eb_computed_style_t</span> <span class="fn">eb_css_computed_style</span>(<span class="param">eb_dom_node_t *node</span>)</code></div>
+<p class="api-desc">Get the fully resolved computed style for a DOM element after cascade, specificity, and inheritance.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>node</td><td>eb_dom_node_t *</td><td>Target element node.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>eb_computed_style_t</code> struct with all resolved CSS properties.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eb_dom_node_t *el = eb_dom_get_element_by_id(browser, "content");
+eb_computed_style_t style = eb_css_computed_style(el);
+printf("Font size: %dpx\n", style.font_size);
+printf("Color: #%06X\n", style.color);
+printf("Display: %s\n", eb_display_str(style.display));</code></pre></div></div>
+
+<div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_css_free</span>(<span class="param">eb_stylesheet_t *stylesheet</span>)</code></div>
+<p class="api-desc">Free a parsed stylesheet and all associated memory.</p></div>
+
+<h3>Computed Style Structure</h3>
+<div class="struct-card"><h4>eb_computed_style_t</h4><table>
+<tr><td><code>display</code></td><td><code>eb_display_t</code></td><td>BLOCK, INLINE, FLEX, NONE, INLINE_BLOCK</td></tr>
+<tr><td><code>color</code></td><td><code>uint32_t</code></td><td>Text color (0xRRGGBB)</td></tr>
+<tr><td><code>background_color</code></td><td><code>uint32_t</code></td><td>Background color (0xRRGGBB)</td></tr>
+<tr><td><code>font_size</code></td><td><code>uint16_t</code></td><td>Font size in pixels</td></tr>
+<tr><td><code>font_weight</code></td><td><code>uint16_t</code></td><td>Font weight (100-900)</td></tr>
+<tr><td><code>margin</code></td><td><code>eb_box_t</code></td><td>Margin (top, right, bottom, left) in px</td></tr>
+<tr><td><code>padding</code></td><td><code>eb_box_t</code></td><td>Padding (top, right, bottom, left) in px</td></tr>
+<tr><td><code>border_width</code></td><td><code>eb_box_t</code></td><td>Border widths in px</td></tr>
+<tr><td><code>border_color</code></td><td><code>uint32_t</code></td><td>Border color (0xRRGGBB)</td></tr>
+<tr><td><code>width</code> / <code>height</code></td><td><code>eb_css_value_t</code></td><td>Dimensions (px, %, auto)</td></tr>
+<tr><td><code>position</code></td><td><code>eb_position_t</code></td><td>STATIC, RELATIVE, ABSOLUTE, FIXED</td></tr>
+<tr><td><code>overflow</code></td><td><code>eb_overflow_t</code></td><td>VISIBLE, HIDDEN, SCROLL, AUTO</td></tr>
+</table></div>
+
+<div class="callout callout-tip"><div class="callout-title">Supported CSS Properties</div>
+<p><strong>Box Model:</strong> margin, padding, border, width, height, max-width, max-height, min-width, min-height, box-sizing<br>
+<strong>Typography:</strong> font-size, font-weight, font-family, line-height, text-align, text-decoration, color<br>
+<strong>Layout:</strong> display (block, inline, flex, none), position, top, right, bottom, left, float, clear<br>
+<strong>Flexbox:</strong> flex-direction, justify-content, align-items, flex-wrap, flex-grow, flex-shrink, gap<br>
+<strong>Visual:</strong> background-color, background-image, border-radius, opacity, overflow, visibility<br>
+<strong>Other:</strong> cursor, z-index, list-style, @media queries</p></div>
+
+<!-- ═══════════════════════════════════════════════════════ LAYOUT ENGINE ═══════════════════════════════════════════════════════ -->
+<div id="layout" class="module-section"><h2 style="color:var(--orange)">&#128208; Layout Engine</h2>
+<p class="module-desc">Box model computation, block/inline flow, flexbox, and text wrapping. Header: <code>&lt;ebowser/layout.h&gt;</code></p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_layout_compute</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Compute the layout for the entire document. Traverses the DOM tree, applies CSS box model, resolves widths/heights, positions elements, wraps text, and produces a layout tree with absolute coordinates.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success, negative error code.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">eb_rect_t</span> <span class="fn">eb_layout_get_rect</span>(<span class="param">eb_dom_node_t *node</span>)</code></div>
+<p class="api-desc">Get the computed bounding rectangle (position and size) of a DOM element after layout.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>node</td><td>eb_dom_node_t *</td><td>Element node with completed layout.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p><code>eb_rect_t</code> with x, y, width, height in pixels (relative to document).</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>eb_dom_node_t *el = eb_dom_get_element_by_id(browser, "content");
+eb_rect_t rect = eb_layout_get_rect(el);
+printf("Position: (%d, %d), Size: %dx%d\n", rect.x, rect.y, rect.width, rect.height);</code></pre></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">eb_box_metrics_t</span> <span class="fn">eb_layout_get_box_metrics</span>(<span class="param">eb_dom_node_t *node</span>)</code></div>
+<p class="api-desc">Get the full box model metrics (content, padding, border, margin) for an element.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>eb_box_metrics_t</code> with content_rect, padding_rect, border_rect, margin_rect.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t *</span> <span class="fn">eb_layout_hit_test</span>(<span class="param">eb_handle_t browser, int32_t x, int32_t y</span>)</code></div>
+<p class="api-desc">Find the topmost DOM element at the given document coordinates (used for click/hover handling).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>browser</td><td>eb_handle_t</td><td>Browser handle.</td></tr>
+<tr><td>x</td><td>int32_t</td><td>X coordinate in document space.</td></tr>
+<tr><td>y</td><td>int32_t</td><td>Y coordinate in document space.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Topmost element at the point, or NULL.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">eb_size_t</span> <span class="fn">eb_layout_get_document_size</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the total size of the laid-out document (for scroll bounds calculation).</p>
+<div class="api-returns"><h5>Returns</h5><p><code>eb_size_t</code> with width and height of the full document.</p></div></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_layout_scroll_to</span>(<span class="param">eb_handle_t browser, int32_t x, int32_t y</span>)</code></div>
+<p class="api-desc">Scroll the viewport to the specified document coordinates.</p></div>
+
+<div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="ret">eb_point_t</span> <span class="fn">eb_layout_get_scroll_pos</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the current scroll position of the viewport.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>eb_point_t</code> with x, y scroll offset.</p></div></div>
+
+<div class="struct-card"><h4>eb_rect_t</h4><table>
+<tr><td><code>x</code></td><td><code>int32_t</code></td><td>X position (px, document-relative)</td></tr>
+<tr><td><code>y</code></td><td><code>int32_t</code></td><td>Y position (px, document-relative)</td></tr>
+<tr><td><code>width</code></td><td><code>int32_t</code></td><td>Width in pixels</td></tr>
+<tr><td><code>height</code></td><td><code>int32_t</code></td><td>Height in pixels</td></tr>
+</table></div>
+
+<!-- ══════════════ RENDERING ══════════════ -->
+<div id="rendering" class="module-section"><h2 style="color:var(--pink)">&#127912; Rendering</h2>
+<p class="module-desc">Software rasterizer with SDL2 and EoS display backends. Header: <code>&lt;ebowser/render.h&gt;</code></p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_render_frame</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Render the current page to the display surface. Rasterizes backgrounds, borders, text, images, and scrollbars.</p>
+<div class="api-returns"><h5>Returns</h5><p><code>0</code> on success.</p></div></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_render_text</span>(<span class="param">eb_handle_t browser, const char *text, int32_t x, int32_t y, uint32_t color, uint16_t size</span>)</code></div>
+<p class="api-desc">Render text at screen coordinates. Used for HUD overlays.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>text</td><td>const char *</td><td>UTF-8 text string.</td></tr>
+<tr><td>x, y</td><td>int32_t</td><td>Screen coordinates.</td></tr>
+<tr><td>color</td><td>uint32_t</td><td>Text color (0xRRGGBB).</td></tr>
+<tr><td>size</td><td>uint16_t</td><td>Font size in pixels.</td></tr>
+</table></div></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_render_image</span>(<span class="param">eb_handle_t browser, const eb_image_t *img, const eb_rect_t *dest</span>)</code></div>
+<p class="api-desc">Render a decoded image to the display at the specified destination rectangle.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_render_rect</span>(<span class="param">eb_handle_t browser, const eb_rect_t *rect, uint32_t color, bool filled</span>)</code></div>
+<p class="api-desc">Render a filled or outline rectangle on the display surface.</p></div>
+
+<div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_render_to_bitmap</span>(<span class="param">eb_handle_t browser, uint8_t *pixels, uint32_t w, uint32_t h, uint32_t stride</span>)</code></div>
+<p class="api-desc">Render the page to an off-screen RGBA bitmap buffer (headless screenshot).</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>pixels</td><td>uint8_t *</td><td>Output buffer (RGBA, caller-allocated).</td></tr>
+<tr><td>w, h</td><td>uint32_t</td><td>Bitmap dimensions.</td></tr>
+<tr><td>stride</td><td>uint32_t</td><td>Row stride in bytes.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>uint8_t *buf = malloc(1024 * 768 * 4);
+eb_render_to_bitmap(browser, buf, 1024, 768, 1024 * 4);
+save_png("shot.png", buf, 1024, 768);
+free(buf);</code></pre></div></div>
+
+<div class="callout callout-info"><div class="callout-title">Rendering Pipeline</div>
+<p><strong>1.</strong> Backgrounds &rarr; borders &rarr; block content &rarr; inline/text &rarr; positioned elements &rarr; scrollbars.<br>
+<strong>2.</strong> Built-in bitmap font with UTF-8 and glyph caching. PNG/JPEG via stb_image.<br>
+<strong>3.</strong> Backends: SDL2 (desktop), EoS framebuffer (embedded), WASM Canvas (web).</p></div>
+
+<!-- ══════════════ NETWORK ══════════════ -->
+<div id="network" class="module-section"><h2 style="color:var(--blue)">&#127760; Network Stack</h2>
+<p class="module-desc">HTTP/HTTPS client, DNS, cookies, connection pooling. Header: <code>&lt;ebowser/net.h&gt;</code></p></div>
+
+<div class="api-card accent-blue"><div class="api-header"><code class="api-signature"><span class="ret">eb_net_request_t *</span> <span class="fn">eb_net_request</span>(<span class="param">const eb_net_config_t *config</span>)</code></div>
+<p class="api-desc">Create and send an HTTP/HTTPS request. Supports GET, POST, PUT, DELETE. Asynchronous with callback.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>config</td><td>const eb_net_config_t *</td><td>Request config: url, method, headers, body, timeout_ms, callback, ctx.</td></tr>
+</table></div>
+<div class="api-returns"><h5>Returns</h5><p>Request handle, or NULL on failure.</p></div>
+<div class="api-example"><h5>Example</h5><pre><code>void on_resp(eb_net_request_t *req, void *ctx) {
+    printf("Status: %d, Body: %.*s\n",
+        req-&gt;status_code, (int)req-&gt;body_len, req-&gt;body);
+}
+eb_net_config_t cfg = {
+    .url = "https://api.example.com/data",
+    .method = EB_NET_GET,
+    .timeout_ms = 10000,
+    .callback = on_resp
+};
+eb_net_request(&amp;cfg);</code></pre></div></div>
+
+<div class="api-card accent-blue"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_net_set_proxy</span>(<span class="param">eb_handle_t browser, const char *proxy_url</span>)</code></div>
+<p class="api-desc">Configure HTTP proxy. Pass NULL to disable.</p></div>
+
+<div class="api-card accent-blue"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_net_set_cookie</span>(<span class="param">eb_handle_t browser, const char *domain, const char *name, const char *value, uint32_t max_age</span>)</code></div>
+<p class="api-desc">Set a cookie. <code>max_age=0</code> for session cookie.</p></div>
+
+<div class="api-card accent-blue"><div class="api-header"><code class="api-signature"><span class="ret">const char *</span> <span class="fn">eb_net_get_cookie</span>(<span class="param">eb_handle_t browser, const char *domain, const char *name</span>)</code></div>
+<p class="api-desc">Retrieve a cookie value. Returns NULL if not found.</p></div>
+
+<div class="api-card accent-blue"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_net_clear_cookies</span>(<span class="param">eb_handle_t browser</span>) / <span class="fn">eb_net_clear_cache</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Clear all cookies or the HTTP response cache.</p></div>
+
+<div class="struct-card"><h4>eb_net_config_t</h4><table>
+<tr><td><code>url</code></td><td><code>const char *</code></td><td>Request URL</td></tr>
+<tr><td><code>method</code></td><td><code>eb_net_method_t</code></td><td>EB_NET_GET, POST, PUT, DELETE, HEAD</td></tr>
+<tr><td><code>headers</code></td><td><code>const eb_header_t *</code></td><td>Array of name/value header pairs</td></tr>
+<tr><td><code>header_count</code></td><td><code>uint32_t</code></td><td>Number of custom headers</td></tr>
+<tr><td><code>body</code></td><td><code>const uint8_t *</code></td><td>Request body (POST/PUT)</td></tr>
+<tr><td><code>body_len</code></td><td><code>size_t</code></td><td>Body length in bytes</td></tr>
+<tr><td><code>timeout_ms</code></td><td><code>uint32_t</code></td><td>Timeout (default: 30000)</td></tr>
+<tr><td><code>callback</code></td><td><code>eb_net_callback_t</code></td><td>Completion callback</td></tr>
+</table></div>
+
+<!-- ══════════════ INPUT ══════════════ -->
+<div id="input" class="module-section"><h2 style="color:var(--cyan)">&#9000; Input Layer</h2>
+<p class="module-desc">Keyboard, mouse, and touch input abstraction. Header: <code>&lt;ebowser/input.h&gt;</code></p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_input_inject_key</span>(<span class="param">eb_handle_t browser, eb_keycode_t key, eb_key_action_t action, uint32_t modifiers</span>)</code></div>
+<p class="api-desc">Inject a keyboard event. Used for programmatic input and on-screen keyboards.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>key</td><td>eb_keycode_t</td><td>Key code (EB_KEY_A..Z, 0..9, ENTER, TAB, ESCAPE, etc.).</td></tr>
+<tr><td>action</td><td>eb_key_action_t</td><td><code>EB_KEY_DOWN</code>, <code>EB_KEY_UP</code>, or <code>EB_KEY_PRESS</code>.</td></tr>
+<tr><td>modifiers</td><td>uint32_t</td><td>Bitwise OR: <code>EB_MOD_SHIFT</code>, <code>EB_MOD_CTRL</code>, <code>EB_MOD_ALT</code>.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>// Ctrl+A (select all)
+eb_input_inject_key(browser, EB_KEY_A, EB_KEY_PRESS, EB_MOD_CTRL);
+// Press Enter
+eb_input_inject_key(browser, EB_KEY_ENTER, EB_KEY_PRESS, 0);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_input_inject_mouse</span>(<span class="param">eb_handle_t browser, eb_mouse_event_t type, int32_t x, int32_t y, eb_mouse_button_t button</span>)</code></div>
+<p class="api-desc">Inject a mouse event.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>type</td><td>eb_mouse_event_t</td><td><code>EB_MOUSE_MOVE</code>, <code>DOWN</code>, <code>UP</code>, <code>SCROLL</code>.</td></tr>
+<tr><td>x, y</td><td>int32_t</td><td>Screen coordinates.</td></tr>
+<tr><td>button</td><td>eb_mouse_button_t</td><td><code>EB_MOUSE_LEFT</code>, <code>RIGHT</code>, <code>MIDDLE</code>.</td></tr>
+</table></div>
+<div class="api-example"><h5>Example</h5><pre><code>eb_input_inject_mouse(browser, EB_MOUSE_DOWN, 200, 300, EB_MOUSE_LEFT);
+eb_input_inject_mouse(browser, EB_MOUSE_UP, 200, 300, EB_MOUSE_LEFT);</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_input_inject_touch</span>(<span class="param">eb_handle_t browser, eb_touch_event_t type, uint32_t touch_id, int32_t x, int32_t y</span>)</code></div>
+<p class="api-desc">Inject a touch event for touchscreen devices.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>type</td><td>eb_touch_event_t</td><td><code>EB_TOUCH_START</code>, <code>MOVE</code>, <code>END</code>, <code>CANCEL</code>.</td></tr>
+<tr><td>touch_id</td><td>uint32_t</td><td>Unique touch point ID (multitouch).</td></tr>
+<tr><td>x, y</td><td>int32_t</td><td>Screen coordinates.</td></tr>
+</table></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_input_set_focus</span>(<span class="param">eb_handle_t browser, eb_dom_node_t *node</span>)</code></div>
+<p class="api-desc">Set keyboard focus to a DOM element (input, textarea).</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">eb_dom_node_t *</span> <span class="fn">eb_input_get_focus</span>(<span class="param">eb_handle_t browser</span>)</code></div>
+<p class="api-desc">Get the currently focused element. Returns NULL if none.</p></div>
+
+<!-- ══════════════ PLATFORM ══════════════ -->
+<div id="platform" class="module-section"><h2 style="color:var(--green)">&#128187; Platform Abstraction</h2>
+<p class="module-desc">SDL2, EoS native, and WASM backends. Header: <code>&lt;ebowser/platform.h&gt;</code></p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_platform_init</span>(<span class="param">eb_platform_t platform</span>)</code></div>
+<p class="api-desc">Initialize the platform backend. Auto-detected if not called.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>platform</td><td>eb_platform_t</td><td><code>EB_PLATFORM_SDL2</code>, <code>EB_PLATFORM_EOS</code>, <code>EB_PLATFORM_WASM</code>, or <code>EB_PLATFORM_AUTO</code>.</td></tr>
+</table></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_platform_get_display_info</span>(<span class="param">eb_display_info_t *info</span>)</code></div>
+<p class="api-desc">Get display info: resolution, DPI, refresh rate, color depth.</p>
+<div class="api-example"><h5>Example</h5><pre><code>eb_display_info_t info;
+eb_platform_get_display_info(&amp;info);
+printf("Display: %dx%d @ %d Hz, %d DPI\n",
+    info.width, info.height, info.refresh_hz, info.dpi);</code></pre></div></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">void</span> <span class="fn">eb_platform_deinit</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Deinitialize the platform backend and release display resources.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">uint64_t</span> <span class="fn">eb_platform_get_time_ms</span>(<span class="param">void</span>)</code></div>
+<p class="api-desc">Get monotonic time in milliseconds for animations and timing.</p></div>
+
+<div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_platform_set_clipboard</span>(<span class="param">const char *text</span>) / <span class="fn">eb_platform_get_clipboard</span>(<span class="param">char *buf, size_t len</span>)</code></div>
+<p class="api-desc">Set/get system clipboard text content.</p></div>
+
+<div class="struct-card"><h4>eb_display_info_t</h4><table>
+<tr><td><code>width</code></td><td><code>uint32_t</code></td><td>Display width in pixels</td></tr>
+<tr><td><code>height</code></td><td><code>uint32_t</code></td><td>Display height in pixels</td></tr>
+<tr><td><code>dpi</code></td><td><code>uint32_t</code></td><td>Dots per inch</td></tr>
+<tr><td><code>refresh_hz</code></td><td><code>uint32_t</code></td><td>Refresh rate in Hz</td></tr>
+<tr><td><code>color_depth</code></td><td><code>uint8_t</code></td><td>Bits per pixel (16, 24, or 32)</td></tr>
+<tr><td><code>platform</code></td><td><code>eb_platform_t</code></td><td>Active platform backend</td></tr>
+</table></div>
+
+<!-- ══════════════ SECURITY ══════════════ -->
+<div id="security" class="module-section"><h2 style="color:var(--red)">&#128274; Security</h2>
+<p class="module-desc">Content security policies, TLS, and sandboxing. Header: <code>&lt;ebowser/security.h&gt;</code></p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_security_set_policy</span>(<span class="param">eb_handle_t browser, eb_security_policy_t policy</span>)</code></div>
+<p class="api-desc">Set the content security policy level.</p>
+<div class="api-params"><h5>Parameters</h5><table>
+<tr><td>policy</td><td>eb_security_policy_t</td><td><code>EB_POLICY_PERMISSIVE</code>, <code>EB_POLICY_STANDARD</code> (same-origin), or <code>EB_POLICY_STRICT</code> (whitelist).</td></tr>
+</table></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_security_add_allowed_origin</span>(<span class="param">eb_handle_t browser, const char *origin</span>)</code></div>
+<p class="api-desc">Add an origin to the whitelist (for <code>EB_POLICY_STRICT</code>). Non-whitelisted origins are blocked.</p>
+<div class="api-example"><h5>Example</h5><pre><code>eb_security_set_policy(browser, EB_POLICY_STRICT);
+eb_security_add_allowed_origin(browser, "https://example.com");
+eb_security_add_allowed_origin(browser, "https://cdn.example.com");</code></pre></div></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_tls_set_ca_bundle</span>(<span class="param">eb_handle_t browser, const char *path</span>)</code></div>
+<p class="api-desc">Set the CA certificate bundle for TLS verification. NULL for system default.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_tls_set_verify</span>(<span class="param">eb_handle_t browser, bool verify</span>)</code></div>
+<p class="api-desc">Enable/disable TLS certificate verification. Disable only for development.</p></div>
+
+<div class="api-card"><div class="api-header"><code class="api-signature"><span class="ret">int</span> <span class="fn">eb_security_set_url_filter</span>(<span class="param">eb_handle_t browser, eb_url_filter_t cb, void *ctx</span>)</code></div>
+<p class="api-desc">Set a URL filter callback: <code>bool (*)(const char *url, void *ctx)</code> &mdash; return true to allow, false to block.</p>
+<div class="api-example"><h5>Example</h5><pre><code>bool kiosk_filter(const char *url, void *ctx) {
+    return strstr(url, "example.com") != NULL;
+}
+eb_security_set_url_filter(browser, kiosk_filter, NULL);</code></pre></div></div>
+
+<div class="struct-card"><h4>Security Features</h4><table>
+<tr><td><code>Same-Origin Policy</code></td><td></td><td>Cross-origin resource access restricted by default</td></tr>
+<tr><td><code>TLS 1.2/1.3</code></td><td></td><td>Encrypted connections with certificate verification</td></tr>
+<tr><td><code>URL Filtering</code></td><td></td><td>Whitelist/blacklist for kiosk and parental controls</td></tr>
+<tr><td><code>CSP Headers</code></td><td></td><td>Content-Security-Policy HTTP header enforcement</td></tr>
+<tr><td><code>Cookie Security</code></td><td></td><td>HttpOnly, Secure, SameSite attribute support</td></tr>
+<tr><td><code>Mixed Content</code></td><td></td><td>HTTP resources blocked on HTTPS pages</td></tr>
+</table></div>
+
+<!-- ══════════════ CLI ══════════════ -->
+<div id="cli" class="module-section"><h2 style="color:var(--orange)">&#128187; CLI Reference</h2>
+<p class="module-desc">Command-line options for the eBowser standalone executable.</p></div>
+
+<div class="callout callout-info"><div class="callout-title">Usage</div>
+<pre><code>ebowser [OPTIONS] [URL]
+
+ebowser https://example.com
+ebowser --resolution 800x480 --fullscreen https://dashboard.local
+ebowser --no-js --kiosk https://signage.example.com
+ebowser --headless --screenshot out.png https://example.com</code></pre></div>
+
+<div class="struct-card"><h4>Command-Line Options</h4><table>
+<tr><td><code>--resolution WxH</code></td><td>string</td><td>Window resolution (e.g., <code>1024x768</code>)</td></tr>
+<tr><td><code>--fullscreen</code></td><td>flag</td><td>Launch in fullscreen mode</td></tr>
+<tr><td><code>--no-js</code></td><td>flag</td><td>Disable JavaScript execution</td></tr>
+<tr><td><code>--kiosk</code></td><td>flag</td><td>Kiosk mode: fullscreen, no UI chrome</td></tr>
+<tr><td><code>--headless</code></td><td>flag</td><td>Run without display (server-side rendering)</td></tr>
+<tr><td><code>--cache-size N</code></td><td>integer</td><td>HTTP cache size in MB (default: 64)</td></tr>
+<tr><td><code>--log-level LEVEL</code></td><td>string</td><td><code>error</code>, <code>warn</code>, <code>info</code>, <code>debug</code>, <code>trace</code></td></tr>
+<tr><td><code>--proxy URL</code></td><td>string</td><td>HTTP proxy URL</td></tr>
+<tr><td><code>--user-agent STR</code></td><td>string</td><td>Custom User-Agent string</td></tr>
+<tr><td><code>--screenshot FILE</code></td><td>string</td><td>Save screenshot to FILE (headless)</td></tr>
+<tr><td><code>--ca-bundle FILE</code></td><td>string</td><td>Custom CA certificate bundle (PEM)</td></tr>
+<tr><td><code>--no-tls-verify</code></td><td>flag</td><td>Disable TLS verification (dev only)</td></tr>
+<tr><td><code>--allowed-origins</code></td><td>string</td><td>Comma-separated allowed origins</td></tr>
+<tr><td><code>--home URL</code></td><td>string</td><td>Homepage URL</td></tr>
+<tr><td><code>--version</code></td><td>flag</td><td>Print version and exit</td></tr>
+</table></div>
+
+<div class="callout callout-tip"><div class="callout-title">Embedded Kiosk Example</div>
+<pre><code>eb_config_t cfg = {
+    .width = 800, .height = 480,
+    .title = "Dashboard",
+    .flags = EB_FLAG_FULLSCREEN | EB_FLAG_KIOSK | EB_FLAG_NO_JS
+};
+eb_handle_t b = eb_create(&amp;cfg);
+eb_security_set_policy(b, EB_POLICY_STRICT);
+eb_security_add_allowed_origin(b, "https://dashboard.local");
+eb_navigate(b, "https://dashboard.local");
+eb_run(b);
+eb_destroy(b);</code></pre></div>
+</main></div>
+<footer class="footer"><div class="footer-inner">
+<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
+<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
+<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+</div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
+<div id="eos-search-overlay" class="search-overlay" hidden>
+<div class="search-modal">
+<div class="search-header">
+<span class="search-icon">&#128269;</span>
+<input type="text" id="eos-search-input" class="search-input" placeholder="Search EmbeddedOS docs..." autocomplete="off">
+<kbd class="search-kbd">Esc</kbd>
+</div>
+<ul id="eos-search-results" class="search-results"></ul>
+</div>
+</div>
+<script>
+const EosSearch={pages:[
+{t:'Home',u:'../index.html',d:'The Operating System for Every Device'},
+{t:'Get Started',u:'../getting-started.html',d:'Choose your path and get running in minutes'},
+{t:'Documentation Hub',u:'index.html',d:'Complete developer documentation for all components'},
+{t:'Platform Flow',u:'../flow.html',d:'EoS platform build and deployment flow'},
+{t:'Kids Guide',u:'../kids.html',d:'Welcome young explorers to EmbeddedOS'},
+{t:'Hardware Lab',u:'../hardware-lab.html',d:'Pick your board and get EoS running on real hardware'},
+{t:'App Store',u:'https://embeddedos-org.github.io/eApps/',d:'60+ apps across all platforms'},
+{t:'EoS Kernel',u:'eos.html',d:'Modular RTOS kernel with HAL and multicore framework'},
+{t:'eBoot Bootloader',u:'eboot.html',d:'Secure A/B bootloader with verified boot chain'},
+{t:'ebuild CLI',u:'ebuild.html',d:'Unified build system with cross-compilation'},
+{t:'EIPC Protocol',u:'eipc.html',d:'Secure real-time IPC framework'},
+{t:'EAI Framework',u:'eai.html',d:'Embedded AI for on-device LLM inference'},
+{t:'ENI Neural Interface',u:'eni.html',d:'Brain-computer interface framework'},
+{t:'EoSim Simulator',u:'eosim.html',d:'Multi-architecture simulation platform'},
+{t:'EoStudio',u:'eostudio.html',d:'Unified design suite with 12 editors'},
+{t:'eApps Suite',u:'eosuite.html',d:'60+ apps for all platforms'},
+{t:'eDB Database',u:'edb.html',d:'Unified multi-model database'},
+{t:'eBowser Browser',u:'ebowser.html',d:'Lightweight web browser engine'},
+{t:'eOffice Suite',u:'eoffice.html',d:'AI-powered office suite with 11 apps'},
+{t:'eServiceApps',u:'eserviceapps.html',d:'Flutter mobile service apps'}
+],
+overlay:null,input:null,results:null,
+init(){this.overlay=document.getElementById('eos-search-overlay');this.input=document.getElementById('eos-search-input');this.results=document.getElementById('eos-search-results')},
+open(){if(!this.overlay)this.init();this.overlay.hidden=false;this.input.value='';this.render(this.pages);this.input.focus()},
+close(){if(this.overlay)this.overlay.hidden=true},
+render(items){this.results.innerHTML=items.map(p=>'<li class="search-result-item"><a href="'+p.u+'"><strong>'+p.t+'</strong><span>'+p.d+'</span></a></li>').join('')||'<li class="search-result-item" style="color:var(--text-secondary)">No results found.</li>'},
+filter(q){const l=q.toLowerCase();this.render(this.pages.filter(p=>p.t.toLowerCase().includes(l)||p.d.toLowerCase().includes(l)))}
+};
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();EosSearch.open()}if(e.key==='Escape')EosSearch.close()});
+document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('eos-search-input');if(i)i.addEventListener('input',e=>EosSearch.filter(e.target.value));const o=document.getElementById('eos-search-overlay');if(o)o.addEventListener('click',e=>{if(e.target===o)EosSearch.close()})});
+</script>
+</body></html>
