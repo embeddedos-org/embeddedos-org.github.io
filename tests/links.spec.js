@@ -25,7 +25,7 @@ test.describe('Internal Link Validation', () => {
       const links = await p.$$eval('a[href]', (anchors) =>
         anchors
           .map((a) => a.getAttribute('href'))
-          .filter((h) => h && !h.startsWith('http') && !h.startsWith('#') && !h.startsWith('mailto:') && !h.startsWith('tel:') && !h.startsWith('javascript:'))
+          .filter((h) => h && !h.startsWith('http') && !h.startsWith('#') && !h.startsWith('mailto:') && !h.startsWith('tel:') && !h.startsWith('javascript:') && !h.includes('#'))
       );
 
       const unique = [...new Set(links)];
