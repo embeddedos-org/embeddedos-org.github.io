@@ -1,0 +1,45 @@
+name: PR Quality Check
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: HTML validation
+        run: |
+          npx html-validate "*.html" "docs/*.html" --config '{"extends":["html-validate:recommended"],"rules":{"no-inline-style":"off","no-trailing-whitespace":"off","attr-quotes":"off","element-permitted-content":"off","svg-focusable":"off","no-raw-characters":"off"}}' || true
+
+      - name: Start server
+        run: npx http-server . -p 8080 -s &
+      - name: Wait for server
+        run: npx wait-on http://localhost:8080 --timeout 15000
+
+      - name: Run tests
+        run: npx playwright test tests/ --reporter=list
+
+      - name: Link check
+        run: |
+          npx linkinator http://localhost:8080 \
+            --recurse \
+            --skip "github.com|googletagmanager" \
+            --timeout 10000 || true
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: pr-test-results
+          path: test-results/

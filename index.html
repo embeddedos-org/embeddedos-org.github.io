@@ -3,20 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EmbeddedOS - Open-Source Embedded Operating System</title>
-<meta name="description" content="A modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and comprehensive tooling for 52+ platforms.">
+<title>EmbeddedOS - Open-Source Embedded Operating System for 52+ Platforms</title>
+<meta name="description" content="EmbeddedOS is a modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and comprehensive tooling for 52+ platforms across 12 architectures.">
+<meta name="keywords" content="embedded OS, RTOS, real-time operating system, ARM, RISC-V, IoT, microcontroller, embedded systems, open source OS, STM32, Raspberry Pi, ESP32, embedded AI, bootloader, IPC, embedded browser, embedded database">
+<meta name="author" content="Srikanth Patchava">
+<meta name="creator" content="EmbeddedOS Project">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="theme-color" content="#0d1117">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://embeddedos-org.github.io/">
-<meta property="og:title" content="EmbeddedOS - Open-Source Embedded Operating System">
+<meta property="og:title" content="EmbeddedOS - Open-Source Embedded Operating System for 52+ Platforms">
 <meta property="og:description" content="A modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and comprehensive tooling for 52+ platforms.">
 <meta property="og:image" content="https://embeddedos-org.github.io/og-image.png">
+<meta property="og:site_name" content="EmbeddedOS">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="EmbeddedOS - Open-Source Embedded Operating System">
+<meta name="twitter:title" content="EmbeddedOS - Open-Source Embedded Operating System for 52+ Platforms">
 <meta name="twitter:description" content="A modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and comprehensive tooling for 52+ platforms.">
 <meta name="twitter:image" content="https://embeddedos-org.github.io/og-image.png">
 <link rel="canonical" href="https://embeddedos-org.github.io/">
 <link rel="preload" href="style.css" as="style">
 <link rel="stylesheet" href="style.css">
+<link rel="dns-prefetch" href="https://github.com">
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
@@ -25,8 +34,54 @@
   gtag('js', new Date());
   gtag('config', 'G-XXXXXXXXXX');
 </script>
+<!-- Structured Data: Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "EmbeddedOS",
+  "url": "https://embeddedos-org.github.io",
+  "logo": "https://embeddedos-org.github.io/og-image.png",
+  "description": "Open-source modular embedded operating system for 52+ platforms across 12 architectures",
+  "foundingDate": "2025",
+  "founder": { "@type": "Person", "name": "Srikanth Patchava" },
+  "sameAs": ["https://github.com/embeddedos-org"]
+}
+</script>
+<!-- Structured Data: WebSite with Search -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "EmbeddedOS",
+  "url": "https://embeddedos-org.github.io",
+  "description": "The Operating System for Every Device — from microcontrollers to spacecraft",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://embeddedos-org.github.io/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<!-- Structured Data: SoftwareApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "EmbeddedOS",
+  "operatingSystem": "ARM Cortex-M, ARM Cortex-A, RISC-V, Xtensa, x86_64, PowerPC, MIPS, ARC",
+  "applicationCategory": "DeveloperApplication",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "license": "https://opensource.org/licenses/MIT",
+  "author": { "@type": "Person", "name": "Srikanth Patchava" },
+  "softwareVersion": "1.0.0",
+  "description": "A modular, real-time embedded operating system with 14 components, 52+ platform definitions, and 60+ applications"
+}
+</script>
 </head>
 <body>
+
+<a href="#main-content" class="skip-to-content">Skip to content</a>
 
 <!-- Shared SVG Definitions -->
 <svg width="0" height="0" aria-hidden="true" style="position:absolute">
@@ -45,7 +100,7 @@
 </defs>
 </svg>
 
-<nav class="navbar">
+<nav class="navbar" role="navigation" aria-label="Main navigation">
 <div class="nav-inner">
   <a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v1.0.0</span></a>
   <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button>
@@ -64,7 +119,7 @@
 </div>
 </nav>
 
-<section class="hero">
+<section class="hero" id="main-content" role="main">
 <div class="hero-content">
   <div class="hero-text">
   <h1>The Operating System for Every Device</h1>
@@ -771,7 +826,7 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
   </div>
 </section>
 
-<footer class="footer">
+<footer class="footer" role="contentinfo">
 <div class="footer-inner">
   <div class="footer-brand">
     <h3 style="margin-bottom:0.5rem">EmbeddedOS</h3>
@@ -819,7 +874,7 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
   </div>
 </div>
 <div class="footer-bottom">
-  &copy; 2025 EmbeddedOS Project &bull; Licensed under MIT &bull; Built with care for embedded developers
+  &copy; 2025&ndash;2026 EmbeddedOS Project &bull; Licensed under MIT &bull; Built with care for embedded developers
 </div>
 </footer>
 
@@ -834,39 +889,9 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
 </div>
 </div>
 
-<script>
-const EosSearch={pages:[
-{t:'Home',u:'index.html',d:'The Operating System for Every Device'},
-{t:'Get Started',u:'getting-started.html',d:'Choose your path and get running in minutes'},
-{t:'Documentation Hub',u:'docs/index.html',d:'Complete developer documentation for all components'},
-{t:'Platform Flow',u:'flow.html',d:'EoS platform build and deployment flow'},
-{t:'Kids Guide',u:'kids.html',d:'Welcome young explorers to EmbeddedOS'},
-{t:'Hardware Lab',u:'hardware-lab.html',d:'Pick your board and get EoS running on real hardware'},
-{t:'App Store',u:'https://embeddedos-org.github.io/eApps/',d:'60+ apps across all platforms'},
-{t:'EoS Kernel',u:'docs/eos.html',d:'Modular RTOS kernel with HAL and multicore framework'},
-{t:'eBoot Bootloader',u:'docs/eboot.html',d:'Secure A/B bootloader with verified boot chain'},
-{t:'ebuild CLI',u:'docs/ebuild.html',d:'Unified build system with cross-compilation'},
-{t:'EIPC Protocol',u:'docs/eipc.html',d:'Secure real-time IPC framework with Go and C SDKs'},
-{t:'EAI Framework',u:'docs/eai.html',d:'Embedded AI for on-device LLM inference'},
-{t:'ENI Neural Interface',u:'docs/eni.html',d:'Brain-computer interface framework'},
-{t:'EoSim Simulator',u:'docs/eosim.html',d:'Multi-architecture simulation platform'},
-{t:'EoStudio',u:'docs/eostudio.html',d:'Unified design suite with 12 editors'},
-{t:'eApps Suite',u:'docs/eosuite.html',d:'60+ apps for all platforms'},
-{t:'eDB Database',u:'docs/edb.html',d:'Unified multi-model database'},
-{t:'eBrowser Browser',u:'docs/ebrowser.html',d:'Lightweight web browser engine for embedded devices'},
-{t:'eOffice Suite',u:'docs/eoffice.html',d:'AI-powered office suite with 11 apps'},
-{t:'eVera',u:'https://github.com/embeddedos-org/eVera',d:'AI virtual assistant with 24+ agents'}
-],
-overlay:null,input:null,results:null,
-init(){this.overlay=document.getElementById('eos-search-overlay');this.input=document.getElementById('eos-search-input');this.results=document.getElementById('eos-search-results')},
-open(){if(!this.overlay)this.init();this.overlay.hidden=false;this.input.value='';this.render(this.pages);this.input.focus()},
-close(){if(this.overlay)this.overlay.hidden=true},
-render(items){this.results.innerHTML=items.map(p=>'<li class="search-result-item"><a href="'+p.u+'"><strong>'+p.t+'</strong><span>'+p.d+'</span></a></li>').join('')||'<li class="search-result-item" style="color:var(--text-secondary)">No results found.</li>'},
-filter(q){const l=q.toLowerCase();this.render(this.pages.filter(p=>p.t.toLowerCase().includes(l)||p.d.toLowerCase().includes(l)))}
-};
-document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();EosSearch.open()}if(e.key==='Escape')EosSearch.close()});
-document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('eos-search-input');if(i)i.addEventListener('input',e=>EosSearch.filter(e.target.value));const o=document.getElementById('eos-search-overlay');if(o)o.addEventListener('click',e=>{if(e.target===o)EosSearch.close()})});
-</script>
+<script src="js/search.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/ebot-chat.js"></script>
 
 </body>
 </html>

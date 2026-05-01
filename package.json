@@ -1,15 +1,28 @@
 {
-  "name": "embeddedos-website-tests",
-  "version": "0.1.0",
+  "name": "embeddedos-website",
+  "version": "1.1.0",
   "private": true,
+  "description": "EmbeddedOS Developer Portal - Production website with comprehensive testing and CI/CD",
   "scripts": {
+    "serve": "npx http-server . -p 8080 -s",
     "test": "npx playwright test tests/",
     "test:headed": "npx playwright test tests/ --headed",
-    "serve": "npx http-server . -p 8080 -s",
-    "lighthouse": "npx @lhci/cli collect --url=http://localhost:8080/index.html --settings.preset=desktop"
+    "test:chromium": "npx playwright test tests/ --project=chromium",
+    "test:links": "npx playwright test tests/links.spec.js --project=chromium",
+    "test:seo": "npx playwright test tests/seo.spec.js --project=chromium",
+    "test:perf": "npx playwright test tests/performance.spec.js --project=chromium",
+    "test:a11y": "npx playwright test tests/accessibility.spec.js --project=chromium",
+    "test:responsive": "npx playwright test tests/responsive.spec.js",
+    "check:links": "npx linkinator http://localhost:8080 --recurse --skip 'github.com|googletagmanager' --timeout 10000",
+    "lint:html": "npx html-validate '*.html' 'docs/*.html' || true",
+    "lighthouse": "npx @lhci/cli collect --url=http://localhost:8080/index.html --settings.preset=desktop",
+    "audit": "npm run test && npm run check:links"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.0",
-    "http-server": "^14.1.0"
+    "http-server": "^14.1.0",
+    "linkinator": "^6.0.0",
+    "html-validate": "^8.0.0",
+    "wait-on": "^7.2.0"
   }
 }
