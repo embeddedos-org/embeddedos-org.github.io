@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      - run: npm install
       - run: npx playwright install --with-deps chromium
       - name: Start server
         run: npx http-server . -p 8080 -s &
