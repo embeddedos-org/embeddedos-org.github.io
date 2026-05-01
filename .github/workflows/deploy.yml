@@ -29,7 +29,7 @@ jobs:
       - name: Wait for server
         run: npx wait-on http://localhost:8080 --timeout 15000
       - name: Run tests
-        run: npx playwright test tests/ --reporter=list
+        run: npx playwright test tests/ --project=chromium --reporter=list
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

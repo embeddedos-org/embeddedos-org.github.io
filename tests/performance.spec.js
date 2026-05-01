@@ -71,7 +71,12 @@ test.describe('Performance: JavaScript Loading', () => {
     p.on('pageerror', (err) => errors.push(err.message));
 
     const failedRequests = [];
-    p.on('requestfailed', (req) => failedRequests.push(req.url()));
+    p.on('requestfailed', (req) => {
+      const url = req.url();
+      // Ignore external services that may be unreachable in CI
+      if (url.includes('googletagmanager') || url.includes('google-analytics') || url.includes('G-XXXXXXXXXX')) return;
+      failedRequests.push(url);
+    });
 
     await p.goto(`${BASE}/index.html`, { waitUntil: 'load' });
     await p.waitForTimeout(1000);

@@ -109,7 +109,7 @@ test.describe('Anchor Link Targets', () => {
 
     for (const anchor of anchorLinks) {
       const id = anchor.substring(1);
-      const target = await p.$(`#${CSS.escape(id)}`);
+      const target = await p.$('[id="' + id + '"]');
       expect(target, `Missing anchor target: ${anchor}`).not.toBeNull();
     }
     await ctx.close();

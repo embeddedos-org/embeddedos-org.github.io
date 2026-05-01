@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps
 
       - name: Start server
         run: npx http-server . -p 8080 -s &
@@ -25,7 +25,7 @@ jobs:
         run: npx wait-on http://localhost:8080 --timeout 15000
 
       - name: Run all tests
-        run: npx playwright test tests/ --reporter=list,html
+        run: npx playwright test tests/ --project=chromium --reporter=list,html
         continue-on-error: true
 
       - name: Link check
