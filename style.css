@@ -806,3 +806,141 @@ a:focus-visible, button:focus-visible {
   }
   #ebot-fab { bottom: 1rem; right: 1rem; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Colourful Refresh — Additive Visual Polish
+   All rules below are purely additive: they extend existing
+   selectors, add new pseudo-elements, or add new keyframes.
+   No existing CSS variable values are modified, and the
+   prefers-reduced-motion block above (line ~590) already
+   disables animations via the universal `*` selector.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 1. Rainbow strip — fixed 3px bar at the very top of every page */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--blue), var(--green), var(--purple), var(--orange),
+    var(--cyan), var(--pink), var(--yellow), var(--red), var(--blue)
+  );
+  background-size: 200% 100%;
+  z-index: 10000;
+  pointer-events: none;
+  animation: rainbowSlide 12s linear infinite;
+}
+@keyframes rainbowSlide {
+  0%   { background-position:   0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* 2. Section-divider underline gradient under every H2
+      (skip section-title which is centered & borderless by design) */
+h2:not(.section-title) {
+  position: relative;
+  border-bottom-color: transparent;
+}
+h2:not(.section-title)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--blue), var(--green), var(--purple), var(--orange),
+    var(--cyan), var(--pink), var(--yellow), var(--red)
+  );
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
+/* 3. Brighter card-hover glow — colour-matched per accent */
+.card-eos:hover     { box-shadow: 0 10px 32px rgba(88,166,255,0.40),  0 0 16px rgba(88,166,255,0.25); }
+.card-eboot:hover   { box-shadow: 0 10px 32px rgba(63,185,80,0.40),   0 0 16px rgba(63,185,80,0.25); }
+.card-ebuild:hover  { box-shadow: 0 10px 32px rgba(240,136,62,0.40),  0 0 16px rgba(240,136,62,0.25); }
+.card-eipc:hover    { box-shadow: 0 10px 32px rgba(121,192,255,0.40), 0 0 16px rgba(121,192,255,0.25); }
+.card-eai:hover     { box-shadow: 0 10px 32px rgba(188,140,255,0.40), 0 0 16px rgba(188,140,255,0.25); }
+.card-eni:hover     { box-shadow: 0 10px 32px rgba(247,120,186,0.40), 0 0 16px rgba(247,120,186,0.25); }
+.card-eosuite:hover { box-shadow: 0 10px 32px rgba(227,179,65,0.40),  0 0 16px rgba(227,179,65,0.25); }
+.card-eosim:hover   { box-shadow: 0 10px 32px rgba(248,81,73,0.40),   0 0 16px rgba(248,81,73,0.25); }
+
+/* book-card / sim-card / project-card / kid-card / path-btn — generic colourful lift */
+.book-card:hover,
+.sim-card:hover,
+.project-card:hover,
+.kid-card:hover,
+.path-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(188,140,255,0.30), 0 0 16px rgba(88,166,255,0.20);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* 4. Hero aurora — slow hue-rotate layer over the existing radial glows */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(247,120,186,0.08) 0%, transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(63,185,80,0.06)  0%, transparent 55%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: heroAurora 8s linear infinite alternate;
+  z-index: 0;
+}
+@keyframes heroAurora {
+  0%   { filter: hue-rotate(0deg)  saturate(1.0); opacity: 0.85; }
+  100% { filter: hue-rotate(30deg) saturate(1.2); opacity: 1.00; }
+}
+
+/* 5. Nav-pill colourful underline on hover */
+.navbar .nav-links li { position: relative; }
+.navbar .nav-links li a { position: relative; }
+.navbar .nav-links li a::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 4px;
+  height: 2px;
+  opacity: 0;
+  border-radius: 2px;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.navbar .nav-links li:nth-child(8n+1) a::after { background: var(--blue); }
+.navbar .nav-links li:nth-child(8n+2) a::after { background: var(--green); }
+.navbar .nav-links li:nth-child(8n+3) a::after { background: var(--purple); }
+.navbar .nav-links li:nth-child(8n+4) a::after { background: var(--orange); }
+.navbar .nav-links li:nth-child(8n+5) a::after { background: var(--cyan); }
+.navbar .nav-links li:nth-child(8n+6) a::after { background: var(--pink); }
+.navbar .nav-links li:nth-child(8n+7) a::after { background: var(--yellow); }
+.navbar .nav-links li:nth-child(8n)   a::after { background: var(--red); }
+.navbar .nav-links li a:hover::after,
+.navbar .nav-links li a.active::after { opacity: 1; }
+
+/* 6. Footer accent bar — gradient stripe on top edge */
+.footer { position: relative; }
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--blue), var(--green), var(--purple), var(--orange),
+    var(--cyan), var(--pink), var(--yellow), var(--red)
+  );
+  background-size: 200% 100%;
+  animation: rainbowSlide 18s linear infinite;
+  pointer-events: none;
+}
