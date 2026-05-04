@@ -71,7 +71,7 @@ draw.text((W // 2, 240), title, fill=WHITE, anchor='mm',
           font=font_title, align='center', spacing=10)
 
 # Subtitle (centered, multi-colour gradient effect via segments)
-subtitle = '15 Products  ·  83 Boards  ·  16 Books  ·  60+ Apps'
+subtitle = '13 Products  ·  83 Boards  ·  14 Books  ·  60+ Apps'
 draw.text((W // 2, 380), subtitle, fill=MUTED, anchor='mm', font=font_subtitle)
 
 # Stat pills (4 colourful badges)
