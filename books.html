@@ -315,20 +315,21 @@
 <body>
 
 <!-- ═══ Navbar ═══ -->
-<nav class="navbar">
+<nav class="navbar" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
-    <a href="index.html" class="logo">
-      <span class="logo-icon">EoS</span>
-      EmbeddedOS
-    </a>
+    <a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v1.0.0</span></a>
+    <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="getting-started.html">Get Started</a>
       <a href="docs/index.html">Docs</a>
-      <a href="books.html" class="active">Books</a>
-      <a href="flow.html">Architecture</a>
-      <a href="hardware-lab.html">Hardware</a>
-      <a href="https://github.com/embeddedos-org" target="_blank">GitHub ↗</a>
+      <a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a>
+      <a href="kids.html">Kids 🎮</a>
+      <a href="hardware-lab.html">Hardware Lab 🔌</a>
+      <a href="flow.html">Flow</a>
+      <a href="books.html" class="active">📚 Books</a>
+      <a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+      <button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
     </div>
   </div>
 </nav>
@@ -721,6 +722,17 @@
   <p style="margin-top:0.5rem;">All books are free and open source under CC BY-SA 4.0. PDFs auto-generated via GitHub Actions CI/CD.</p>
   <p style="margin-top:0.5rem;">© 2026 Srikanth Patchava & EmbeddedOS Contributors</p>
 </footer>
+
+<div id="eos-search-overlay" class="search-overlay" hidden>
+<div class="search-modal">
+<div class="search-header">
+<span class="search-icon">&#128269;</span>
+<input type="text" id="eos-search-input" class="search-input" placeholder="Search EmbeddedOS docs..." autocomplete="off">
+<kbd class="search-kbd">Esc</kbd>
+</div>
+<ul id="eos-search-results" class="search-results"></ul>
+</div>
+</div>
 
 <script>
 function filterBooks(cat) {

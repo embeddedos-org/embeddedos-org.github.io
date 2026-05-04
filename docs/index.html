@@ -15,8 +15,8 @@
 <link rel="stylesheet" href="../style.css"></head><body>
 <nav class="navbar"><div class="nav-inner">
 <a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
-<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="../kids.html">Kids 🎮</a><a href="../hardware-lab.html">Hardware Lab 🔌</a><a href="../flow.html">Flow</a>
-<a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a><button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="../kids.html">Kids 🎮</a><a href="../hardware-lab.html">Hardware Lab 🔌</a><a href="../flow.html">Flow</a><a href="../books.html">📚 Books</a>
+<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a><button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav>
 <div class="content-wrapper" style="max-width:1100px;margin:0 auto;padding:3rem 2rem">
 <h1>EmbeddedOS Documentation Hub <span class="version-badge">v0.1.0</span></h1>
 <p class="section-subtitle" style="color:var(--text-secondary);font-size:1.1rem;margin-bottom:2rem">Complete developer documentation for all EmbeddedOS components. Each page includes full API signatures, parameter tables, return values, and working code examples.</p>
@@ -80,10 +80,10 @@
 <div class="card-tags"><span class="badge badge-green">Multi-Model</span><span class="badge badge-blue">REST API</span><span class="badge badge-purple">Python</span></div>
 <div class="card-buttons"><a href="edb.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
 
-<div class="product-card" style="border-top:3px solid var(--cyan)"><div class="card-icon">eBw</div><h3>eBowser Browser</h3>
+<div class="product-card" style="border-top:3px solid var(--cyan)"><div class="card-icon">eBw</div><h3>eBrowser Browser</h3>
 <p>Lightweight web browser engine for embedded/IoT devices. HTML5/CSS rendering, modular architecture with rendering/network/input layers, platform abstraction for SDL2, EoS, and WASM. 130+ test cases across 7 suites.</p>
 <div class="card-tags"><span class="badge badge-cyan">Browser</span><span class="badge badge-orange">HTML5/CSS</span><span class="badge badge-blue">C/C++</span></div>
-<div class="card-buttons"><a href="ebowser.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
+<div class="card-buttons"><a href="ebrowser.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
 
 <div class="product-card" style="border-top:3px solid var(--orange)"><div class="card-icon">eOf</div><h3>eOffice Suite</h3>
 <p>AI-powered office suite with 11 apps: eDocs, eSheets, eSlides, eNotes, eMail, eDrive, eConnect, eForms, eSway, ePlanner. Powered by eBot AI for text rewriting, formula suggestions, and slide generation. Browser, Electron, Docker deployment.</p>
@@ -111,7 +111,7 @@
 <tr><td>EoSim</td><td>Python</td><td>CLI</td><td>eosim list, search, run, stats, gui</td></tr>
 <tr><td>eApps</td><td>C + LVGL</td><td><code>eapps/registry.h</code></td><td>43 apps: Snake, eCalc, eSSH, eBot, eGuard</td></tr>
 <tr><td>eDB</td><td>Python</td><td><code>edb.core</code></td><td>SQL, Document, Key-Value, REST API, eBot AI</td></tr>
-<tr><td>eBowser</td><td>C/C++</td><td><code>ebowser.h</code></td><td>eb_create, eb_navigate, eb_run, eb_destroy</td></tr>
+<tr><td>eBrowser</td><td>C/C++</td><td><code>ebrowser.h</code></td><td>eb_create, eb_navigate, eb_run, eb_destroy</td></tr>
 <tr><td>eOffice</td><td>TypeScript</td><td>React + Node.js</td><td>11 apps: eDocs, eSheets, eSlides, eBot AI</td></tr>
 <tr><td>eServiceApps</td><td>Dart/Flutter</td><td>lib/main.dart</td><td>4 modules: Social, Ride, Travel, Delivery</td></tr>
 </table></div>
@@ -153,7 +153,7 @@ const EosSearch={pages:[
 {t:'EoStudio',u:'eostudio.html',d:'Unified design suite with 12 editors'},
 {t:'eApps Suite',u:'eosuite.html',d:'60+ apps for all platforms'},
 {t:'eDB Database',u:'edb.html',d:'Unified multi-model database'},
-{t:'eBowser Browser',u:'ebowser.html',d:'Lightweight web browser engine'},
+{t:'eBrowser Browser',u:'ebrowser.html',d:'Lightweight web browser engine'},
 {t:'eOffice Suite',u:'eoffice.html',d:'AI-powered office suite with 11 apps'},
 {t:'eServiceApps',u:'eserviceapps.html',d:'Flutter mobile service apps'}
 ],

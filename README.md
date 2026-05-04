@@ -1,5 +1,10 @@
 # EoS — Embedded Operating System Developer Portal
 
+<!-- BEGIN PLATFORMS -->
+_The release pipeline will populate per-platform downloads here on the first release._
+<!-- END PLATFORMS -->
+
+
 [![Deploy](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/deploy.yml)
 [![CI](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/ci.yml)
 [![Scorecard](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/scorecard.yml/badge.svg)](https://github.com/embeddedos-org/embeddedos-org.github.io/actions/workflows/scorecard.yml)
@@ -122,7 +127,7 @@ embeddedos-org.github.io/
 │   ├── eosim.html          EoSim docs
 │   ├── eostudio.html       EoStudio docs
 │   ├── edb.html            eDB docs
-│   ├── ebowser.html        eBowser docs
+│   ├── ebrowser.html       eBrowser docs
 │   ├── eoffice.html        eOffice docs
 │   └── eserviceapps.html   eServiceApps docs
 ├── eApps/
