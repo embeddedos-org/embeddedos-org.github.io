@@ -246,7 +246,7 @@ details[open] summary { border-bottom: 1px solid var(--border-color); }
 .arch-arrow { text-align: center; font-size: 1.5rem; color: var(--text-muted); padding: 0.25rem 0; }
 
 .footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 3rem 2rem; margin-top: 4rem; }
-.footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; }
+.footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 2rem; }
 .footer h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 1rem; }
 .footer ul { list-style: none; padding: 0; }
 .footer li { margin-bottom: 0.4rem; }
@@ -944,3 +944,42 @@ h2:not(.section-title)::after {
   animation: rainbowSlide 18s linear infinite;
   pointer-events: none;
 }
+
+/* 7. Social-media link pills (footer "Connect" column) */
+.social-list { list-style: none; padding: 0; }
+.social-list li { margin-bottom: 0.5rem; }
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary) !important;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+}
+.social-link:hover { transform: translateY(-2px); color: var(--text-primary) !important; }
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  line-height: 1;
+}
+.social-youtube  .social-icon { background: var(--red-dim);    color: var(--red);    }
+.social-linkedin .social-icon { background: var(--blue-dim);   color: var(--blue);   font-style: italic; }
+.social-x        .social-icon { background: var(--bg-tertiary); color: var(--text-primary); }
+.social-facebook .social-icon { background: var(--purple-dim); color: var(--purple); font-family: Georgia, serif; font-style: italic; }
+.social-youtube:hover  { border-color: var(--red);    box-shadow: 0 6px 18px rgba(248,81,73,0.30); }
+.social-linkedin:hover { border-color: var(--blue);   box-shadow: 0 6px 18px rgba(88,166,255,0.30); }
+.social-x:hover        { border-color: var(--text-primary); box-shadow: 0 6px 18px rgba(230,237,243,0.20); }
+.social-facebook:hover { border-color: var(--purple); box-shadow: 0 6px 18px rgba(188,140,255,0.30); }
