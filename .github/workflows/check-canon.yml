@@ -1,0 +1,33 @@
+name: check-canon
+
+on:
+  push:
+    paths:
+      - '**/*.html'
+      - '**/*.md'
+      - 'scripts/check-product-canon.py'
+      - '.github/workflows/check-canon.yml'
+  pull_request:
+    paths:
+      - '**/*.html'
+      - '**/*.md'
+      - 'scripts/check-product-canon.py'
+      - '.github/workflows/check-canon.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate canonical product/book counts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run canonical-content validator
+        run: python scripts/check-product-canon.py
