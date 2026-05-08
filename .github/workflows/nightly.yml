@@ -72,7 +72,7 @@ jobs:
 
       - name: Create issue for broken links
         if: env.BROKEN_COUNT != '0' && env.BROKEN_COUNT != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
@@ -111,7 +111,7 @@ jobs:
 
       - name: Create issue for test failures
         if: steps.tests.outcome == 'failure'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
