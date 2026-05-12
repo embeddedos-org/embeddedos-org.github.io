@@ -23,8 +23,8 @@ All repositories at v0.1.0 — a complete embedded AI systems stack.
 
 | Repo | Description | Language | Version |
 |---|---|---|---|
-| [eos](https://github.com/embeddedos-org/eos) | Core OS — HAL (33 peripherals), RTOS kernel, multicore SMP/AMP, services, GDB stub, core dump, loadable drivers, device tree parser | C11 | v0.1.0 |
-| [eboot](https://github.com/embeddedos-org/eboot) | Bootloader — 24 board ports, A/B update, secure boot, crypto, multicore boot, UEFI device table | C11 | v0.1.0 |
+| [eos](https://github.com/embeddedos-org/eos) | Core OS — HAL (33 interface declarations; ARM Cortex-M kernel arch port + Linux host backend in production), RTOS kernel, multicore SMP/AMP API, services, GDB stub, core dump, loadable drivers, device tree parser | C11 | v0.1.0 |
+| [eboot](https://github.com/embeddedos-org/eboot) | A/B embedded bootloader — STM32F4 production reference + 5 partial boards (rpi4, nrf52, stm32h7, samd51, x86_64_serial), A/B update with rollback, RFC&nbsp;8032 Ed25519 verification (vendored ed25519-donna), staged boot, recovery | C11 | v0.1.0 |
 | [ebuild](https://github.com/embeddedos-org/ebuild) | Build system — SDK generator (14 targets), hardware analyzer, deliverable packager, 18 CLI commands | Python | v0.1.0 |
 | [eipc](https://github.com/embeddedos-org/eipc) | Secure IPC — Go + C SDK, HMAC-SHA256, replay protection, TCP/Unix/SHM transports, priority lanes | Go + C | v0.1.0 |
 | [eai](https://github.com/embeddedos-org/eai) | AI layer — llama.cpp, 12 LLM models, agent loop, LoRA fine-tuning, federated learning, 8-layer security | C11 | v0.1.0 |

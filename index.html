@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EmbeddedOS - Open-Source Embedded Operating System for 52+ Platforms</title>
-<meta name="description" content="EmbeddedOS is a modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and comprehensive tooling for 52+ platforms across 12 architectures.">
+<title>EmbeddedOS - Open-Source Embedded Operating System for MCU and Linux Targets</title>
+<meta name="description" content="EmbeddedOS is a modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and tooling. Production today: ARM Cortex-M kernel + Linux host backend + STM32F407 BSP. More backends and architectures on the roadmap.">
 <meta name="keywords" content="embedded OS, RTOS, real-time operating system, ARM, RISC-V, IoT, microcontroller, embedded systems, open source OS, STM32, Raspberry Pi, ESP32, embedded AI, bootloader, IPC, embedded browser, embedded database">
 <meta name="author" content="Srikanth Patchava">
 <meta name="creator" content="EmbeddedOS Project">
@@ -12,14 +12,14 @@
 <meta name="theme-color" content="#0d1117">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://embeddedos-org.github.io/">
-<meta property="og:title" content="EmbeddedOS - Open-Source Embedded Operating System for 52+ Platforms">
-<meta property="og:description" content="A modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and comprehensive tooling for 52+ platforms.">
+<meta property="og:title" content="EmbeddedOS - Open-Source Embedded OS (Cortex-M + Linux today; AArch64/x86_64/RISC-V on roadmap)">
+<meta property="og:description" content="A modular, real-time embedded operating system. Production today: ARM Cortex-M kernel, Linux host backend, STM32F407 BSP. Eboot ships an A/B bootloader with RFC 8032 Ed25519. More backends on the roadmap.">
 <meta property="og:image" content="https://embeddedos-org.github.io/og-image.png">
 <meta property="og:image:secure_url" content="https://embeddedos-org.github.io/og-image.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="EmbeddedOS — open-source embedded operating system, 13 products, 83 boards, 14 books, 60+ apps">
+<meta property="og:image:alt" content="EmbeddedOS — open-source embedded operating system, 13 products, 14 books, 60+ apps">
 <meta property="og:site_name" content="EmbeddedOS">
 <meta property="og:locale" content="en_US">
 <meta property="article:publisher" content="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/">
@@ -28,10 +28,10 @@
 <meta name="twitter:creator" content="@EmbeddedOS_ORG">
 <meta name="twitter:url" content="https://embeddedos-org.github.io/">
 <meta name="twitter:domain" content="embeddedos-org.github.io">
-<meta name="twitter:title" content="EmbeddedOS - Open-Source Embedded Operating System for 52+ Platforms">
-<meta name="twitter:description" content="A modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and comprehensive tooling for 52+ platforms.">
+<meta name="twitter:title" content="EmbeddedOS - Open-Source Embedded OS (Cortex-M + Linux today; AArch64/x86_64/RISC-V on roadmap)">
+<meta name="twitter:description" content="A modular, real-time embedded operating system. Production today: ARM Cortex-M kernel, Linux host backend, STM32F407 BSP.">
 <meta name="twitter:image" content="https://embeddedos-org.github.io/og-image.png">
-<meta name="twitter:image:alt" content="EmbeddedOS — open-source embedded operating system, 13 products, 83 boards, 14 books, 60+ apps">
+<meta name="twitter:image:alt" content="EmbeddedOS — open-source embedded operating system, 13 products, 14 books, 60+ apps">
 <link rel="me" href="https://www.youtube.com/@EmbeddedOS_ORG">
 <link rel="me" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation">
 <link rel="me" href="https://x.com/EmbeddedOS_ORG">
@@ -41,7 +41,8 @@
 <link rel="stylesheet" href="style.css">
 <link rel="dns-prefetch" href="https://github.com">
 <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-<!-- Google Analytics 4 -->
+<!-- Google Analytics 4 (uncomment + replace tracker ID before launch) -->
+<!--
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -49,6 +50,7 @@
   gtag('js', new Date());
   gtag('config', 'G-XXXXXXXXXX');
 </script>
+-->
 <!-- Structured Data: Organization -->
 <script type="application/ld+json">
 {
@@ -57,7 +59,7 @@
   "name": "EmbeddedOS",
   "url": "https://embeddedos-org.github.io",
   "logo": "https://embeddedos-org.github.io/og-image.png",
-  "description": "Open-source modular embedded operating system for 52+ platforms across 12 architectures",
+  "description": "Open-source modular embedded operating system. Production today: ARM Cortex-M kernel + Linux host backend + STM32F407 BSP. Other backends and architectures on the roadmap.",
   "foundingDate": "2025",
   "founder": { "@type": "Person", "name": "Srikanth Patchava" },
   "sameAs": [
@@ -96,7 +98,7 @@
   "license": "https://opensource.org/licenses/MIT",
   "author": { "@type": "Person", "name": "Srikanth Patchava" },
   "softwareVersion": "1.0.0",
-  "description": "A modular, real-time embedded operating system with 14 components, 52+ platform definitions, and 60+ applications"
+  "description": "A modular, real-time embedded operating system. 14 components shipping; production targets today: ARM Cortex-M and Linux host. STM32F4 vertical slice exercised end-to-end on QEMU. AArch64 / x86_64 / RISC-V kernel arch ports tracked as roadmap."
 }
 </script>
 </head>
@@ -190,9 +192,30 @@
 
 <section class="section-full section-alt">
 <div class="section">
-  <h2 class="section-title">The EmbeddedOS Ecosystem</h2>
-  <p class="section-subtitle">16 integrated repositories covering every aspect of embedded &amp; application development</p>
-  <div style="height:3px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--pink));border-radius:2px;max-width:80px;margin:0 auto 3rem;"></div>
+<h2 class="section-title">The EmbeddedOS Ecosystem</h2>
+<p class="section-subtitle">16 integrated repositories covering every aspect of embedded &amp; application development</p>
+
+<!-- What's New banner: links to the most recent honest-baseline work -->
+<div style="margin:2rem auto 2.5rem;max-width:900px;background:linear-gradient(135deg,rgba(63,185,80,0.08),rgba(88,166,255,0.08));border:1px solid rgba(63,185,80,0.35);border-radius:var(--radius-md);padding:1.25rem 1.5rem">
+  <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem">
+    <span style="background:var(--green);color:#0d1117;padding:0.15rem 0.55rem;border-radius:999px;font-size:0.7rem;font-weight:700;letter-spacing:0.04em">NEW</span>
+    <strong style="color:var(--text-primary)">Production-hardening sprint landed</strong>
+  </div>
+  <p style="margin:0;color:var(--text-secondary);font-size:0.92rem;line-height:1.55">
+    Truth-in-claims pass across <a href="https://github.com/embeddedos-org/eos">eos</a>,
+    <a href="https://github.com/embeddedos-org/eBoot">eBoot</a>, and
+    <a href="https://github.com/embeddedos-org/ebuild">ebuild</a> READMEs.
+    eBoot's Ed25519 verifier replaced with vendored
+    <a href="https://github.com/floodyberry/ed25519-donna">ed25519-donna</a> (RFC&nbsp;8032 §7.1 vectors green).
+    New <strong>STM32F4 vertical slice</strong> exercised end-to-end on QEMU via the new
+    <code>qemu-stm32f4.yml</code> CI workflows.
+    ebuild gained a <code>repos</code> manifest, plugin entry-point loading, an
+    <code>integration --target=stm32f4</code> driver, and 97 new unit tests.
+    EIPC C transport now ships a real POSIX/Winsock TCP + Unix-socket implementation.
+  </p>
+</div>
+
+<div style="height:3px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--pink));border-radius:2px;max-width:80px;margin:0 auto 3rem;"></div>
 </div>
 
 <div class="product-grid">
@@ -200,7 +223,7 @@
   <div class="product-card card-eos">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="8" width="16" height="16" rx="2" fill="none" stroke="#58a6ff" stroke-width="1.5"/><rect x="11" y="11" width="10" height="10" rx="1" fill="url(#grad-blue)" opacity="0.6"/><line x1="12" y1="8" x2="12" y2="4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="8" x2="16" y2="4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="8" x2="20" y2="4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="24" x2="12" y2="28" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="24" x2="16" y2="28" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="20" y1="24" x2="20" y2="28" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="12" x2="4" y2="12" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="16" x2="4" y2="16" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="20" x2="4" y2="20" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="12" x2="28" y2="12" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="16" x2="28" y2="16" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/><line x1="24" y1="20" x2="28" y2="20" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
     <h3>EoS</h3>
-    <p>Universal embedded OS framework supporting <strong>41 product categories</strong> with 33 HAL peripherals, RTOS kernel with SMP/AMP multicore, power management, networking (TCP/HTTP/MQTT), crypto (SHA-256, AES, RSA/ECC), OTA updates, sensor framework, motor control, and filesystem.</p>
+    <p>Universal embedded OS framework with <strong>41 product profiles</strong> (compile-time flag bundles) backed by 33 HAL interface declarations. Production today: ARM Cortex-M kernel arch port, Linux host backend, and the STM32F407 BSP (GPIO/UART/I2C/SPI/ADC/Timer). Other peripherals and arch ports are tracked as roadmap on a per-cell capability matrix.</p>
     <div class="card-tags">
       <span class="badge badge-blue">Multi-Platform</span>
       <span class="badge badge-cyan">HAL</span>
@@ -216,7 +239,7 @@
   <div class="product-card card-eboot">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4L20 14L24 14L16 22L18 15L14 15Z" fill="url(#grad-green)" stroke="#3fb950" stroke-width="1" stroke-linejoin="round"/><circle cx="16" cy="26" r="3" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.6"/><path d="M13 27Q16 32 19 27" stroke="#3fb950" stroke-width="1" fill="none" opacity="0.4"/></svg></div>
     <h3>eBoot</h3>
-    <p>Production-grade bootloader supporting <strong>24 board ports</strong> across 10 architectures. Staged boot (stage-0 + stage-1), A/B slots with automatic rollback, secure boot chain, stream-based firmware update, SMP/AMP/lockstep multicore boot, UEFI-style device table, and recovery mode.</p>
+    <p>A fast, safe, testable A/B embedded bootloader. Production reference: <strong>STM32F4</strong> (exercised end-to-end on QEMU). Partial: rpi4 / nrf52 / stm32h7 / samd51 / x86_64_serial. Staged boot (stage-0 + stage-1), A/B slots with rollback, stream-based firmware update, recovery mode. Ed25519 verification uses a vendored, RFC&nbsp;8032-conformant implementation.</p>
     <div class="card-tags">
       <span class="badge badge-green">Bootloader</span>
       <span class="badge badge-blue">A/B Slots</span>
@@ -430,7 +453,7 @@
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:2rem">
     <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--blue)">
       <h3 style="color:var(--blue);margin-top:0;border:none;font-size:1.1rem">&#9889; Universal</h3>
-      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">One OS framework for 41 product categories &mdash; smartwatches to spacecraft, gaming consoles to 5G base stations, medical devices to autonomous vehicles.</p>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin:0">One OS framework targeting 41 product profiles &mdash; smartwatches to spacecraft, gaming consoles to 5G base stations, medical devices to autonomous vehicles. Profiles are compile-time flag bundles; per-peripheral implementation status is tracked on the eos capability matrix.</p>
     </div>
     <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;border-left:4px solid var(--green)">
       <h3 style="color:var(--green);margin-top:0;border:none;font-size:1.1rem">&#128274; Secure by Default</h3>
@@ -562,11 +585,11 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
     </div>
     <div class="arch-arrow">&darr;</div>
     <div class="arch-row">
-      <div class="arch-box" style="border-color:var(--blue);color:var(--blue);min-width:350px">EoS Kernel (41 Profiles &bull; 33 HAL &bull; Multicore SMP/AMP)</div>
+      <div class="arch-box" style="border-color:var(--blue);color:var(--blue);min-width:350px">EoS Kernel (Cortex-M production &bull; 41 Product Profiles &bull; 33 HAL Interfaces)</div>
     </div>
     <div class="arch-arrow">&darr;</div>
     <div class="arch-row">
-      <div class="arch-box" style="border-color:var(--green);color:var(--green)">eBoot (24 Boards &bull; Secure Boot)</div>
+      <div class="arch-box" style="border-color:var(--green);color:var(--green)">eBoot (STM32F4 production + 5 partial &bull; A/B Slots)</div>
       <div class="arch-box" style="border-color:var(--orange);color:var(--orange)">ebuild (18 CLI &bull; SDK Gen)</div>
     </div>
     <div class="arch-arrow">&darr;</div>
@@ -604,7 +627,7 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
       <table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin-bottom:1.5rem">
         <tr style="border-bottom:1px solid var(--border-color)">
           <td style="padding:0.4rem 0;color:var(--blue);font-weight:600">Part I&ndash;II</td>
-          <td style="padding:0.4rem 0;color:var(--text-secondary)">Kernel, HAL (33 peripherals), Multicore SMP/AMP, Drivers</td>
+          <td style="padding:0.4rem 0;color:var(--text-secondary)">Kernel, HAL (33 interfaces), Multicore SMP/AMP, Drivers</td>
         </tr>
         <tr style="border-bottom:1px solid var(--border-color)">
           <td style="padding:0.4rem 0;color:var(--green);font-weight:600">Part III</td>
