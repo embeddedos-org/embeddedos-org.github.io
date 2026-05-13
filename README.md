@@ -180,6 +180,6 @@ canonical roster.
 
 | Repo | Role |
 |---|---|
-| [embeddedos-org](https://github.com/embeddedos-org/embeddedos-org) | Org landing index — visit-resolves at `github.com/embeddedos-org/embeddedos-org`. |
+| [.github](https://github.com/embeddedos-org/.github) | Org-wide configuration: org-profile page (rendered at <https://github.com/embeddedos-org>), default `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, issue/PR templates, canon validator. |
 | [embeddedos-org.github.io](https://github.com/embeddedos-org/embeddedos-org.github.io) | This site — developer portal, books, docs hub, downloads, stacks. |
 | [eFab](https://github.com/embeddedos-org/eFab) | **Stack fabricator** — manifest-only meta-repo that pins versions, fetches sources, and runs end-to-end smoke tests for opinionated bundles of canonical products. v0.1.0 ships the `eai-edge` profile (ENI + EIPC + eAI). See [/stacks/](https://embeddedos-org.github.io/stacks/). |
