@@ -1,7 +1,32 @@
 # EoS — Embedded Operating System Developer Portal
 
 <!-- BEGIN PLATFORMS -->
-_The release pipeline will populate per-platform downloads here on the first release._
+## v3.0.0 — Unified Production Release (2026-05-13)
+
+All 18 EmbeddedOS-org repositories released at v3.0.0. Per-platform binaries are produced by each repo's `release.yml` workflow and attached to its GitHub Release.
+
+| Repo | Release | Linux x64/arm64 | macOS x64/arm64 | Windows x64 | Docker | Other |
+|---|---|---|---|---|---|---|
+| [eos](https://github.com/embeddedos-org/eos/releases/tag/v3.0.0) | v3.0.0 | ELF/BIN per board (47 product profiles, AArch64/ARM-HF/RISC-V64) | — | — | ghcr.io/embeddedos-org/eos | mdBook · promo |
+| [eAI](https://github.com/embeddedos-org/eAI/releases/tag/v3.0.0) | v3.0.0 | ✓ | ✓ | ✓ | ghcr.io/embeddedos-org/eai | Conan + vcpkg pkgs |
+| [eIPC](https://github.com/embeddedos-org/eIPC/releases/tag/v3.0.0) | v3.0.0 | eipc-cli/-client/-server (linux/darwin/windows × amd64/arm64/armv7) | ✓ | ✓ | ghcr.io/embeddedos-org/eipc | C SDK static+shared |
+| [eNI](https://github.com/embeddedos-org/eNI/releases/tag/v3.0.0) | v3.0.0 | core lib + eni-cli | ✓ | ✓ | ghcr.io/embeddedos-org/eni | Python wheel · Rust crate · Node SDK · Java AAR |
+| [eBoot](https://github.com/embeddedos-org/eBoot/releases/tag/v3.0.0) | v3.0.0 | bootloader ELF/BIN per board (83 boards) | host eflash | host eflash | — | — |
+| [eBrowser](https://github.com/embeddedos-org/eBrowser/releases/tag/v3.0.0) | v3.0.0 | ✓ | ✓ | MSI installer | ghcr.io/embeddedos-org/ebrowser | — |
+| [eDB](https://github.com/embeddedos-org/eDB/releases/tag/v3.0.0) | v3.0.0 | wheel + sdist | wheel + sdist | wheel + sdist | ghcr.io/embeddedos-org/edb | standalone browser/edb.html |
+| [eOffice](https://github.com/embeddedos-org/eOffice/releases/tag/v3.0.0) | v3.0.0 | .AppImage/.deb/.snap | .dmg | .exe | ghcr.io/embeddedos-org/eoffice | .vsix · .crx · .safariextz · PWA |
+| [eVera](https://github.com/embeddedos-org/eVera/releases/tag/v3.0.0) | v3.0.0 | wheel + PyInstaller | dmg + wheel | exe + wheel | ghcr.io/embeddedos-org/evera | APK · AAB · IPA · .crx |
+| [EoSim](https://github.com/embeddedos-org/EoSim/releases/tag/v3.0.0) | v3.0.0 | wheel + GUI binary | wheel + GUI binary | wheel + GUI binary | ghcr.io/embeddedos-org/eosim | platform packs |
+| [EoStudio](https://github.com/embeddedos-org/EoStudio/releases/tag/v3.0.0) | v3.0.0 | wheel + GUI binary | wheel + GUI binary | wheel + GUI binary | ghcr.io/embeddedos-org/eostudio | promo MP4 |
+| [eosllm](https://github.com/embeddedos-org/eosllm/releases/tag/v3.0.0) | v3.0.0 | eosllm-cli/-bench/-convert/-quant-lab/-server | ✓ | ✓ | — | .vsix · .crx · .xpi |
+| [ebuild](https://github.com/embeddedos-org/ebuild/releases/tag/v3.0.0) | v3.0.0 | wheel + sdist + PyInstaller | ✓ | ✓ | — | SBOM |
+| [eApps](https://github.com/embeddedos-org/eApps/releases/tag/v3.0.0) | v3.0.0 | native + Electron + APK + AAB + IPA | .dmg | .exe + .msi | — | .vsix · .crx · .xpi · .safariextz |
+| [eFab](https://github.com/embeddedos-org/eFab/releases/tag/v3.0.0) | v3.0.0 | source tarball (manifest meta-repo) | — | — | — | eai-edge profile pinned to v3.0.0 |
+| [eCAD-Hardware-Products](https://github.com/embeddedos-org/eCAD-Hardware-Products/releases/tag/v3.0.0) | v3.0.0 | source tarball + PDF datasheets | — | — | — | KiCad/3D assets |
+| [embeddedos-org](https://github.com/embeddedos-org/embeddedos-org/releases/tag/v3.0.0) | v3.0.0 | source tarball | — | — | — | org index |
+| [embeddedos-org.github.io](https://github.com/embeddedos-org/embeddedos-org.github.io/releases/tag/v3.0.0) | v3.0.0 | static site (this) | — | — | — | this download matrix |
+
+Each release also includes: `<repo>-book-3.0.0.{pdf,epub,html.zip}` (mdBook), `<repo>_v3.0.0_promo.mp4` (promo video), `sbom.json` (CycloneDX), source tarball + zip.
 <!-- END PLATFORMS -->
 
 
