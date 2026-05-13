@@ -1,3 +1,12 @@
+# NOTE: This file uses Netlify / Cloudflare Pages syntax. GitHub Pages — which
+# serves this site today — silently IGNORES the rules below. The values are
+# kept here as a single source of truth for an eventual move to Cloudflare
+# Pages or Netlify, and as a reference for the security headers the project
+# intends to enforce in production. The subset of headers that browsers honour
+# from in-document <meta http-equiv> tags is mirrored elsewhere in the site
+# chrome where applicable; CSP via <meta> is intentionally not added here
+# because it cannot express the same directive set as a real HTTP header.
+
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff

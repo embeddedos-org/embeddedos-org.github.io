@@ -19,7 +19,7 @@ _The release pipeline will populate per-platform downloads here on the first rel
 
 All repositories at v0.1.0 — a complete embedded AI systems stack.
 
-### Ecosystem (14 Components)
+### Ecosystem (13 Components)
 
 | Repo | Description | Language | Version |
 |---|---|---|---|
@@ -35,8 +35,7 @@ All repositories at v0.1.0 — a complete embedded AI systems stack.
 | [eDB](https://github.com/embeddedos-org/eDB) | Database — SQL + Document + Key-Value, REST API, JWT auth, AES-256, eBot AI queries | Python | v0.1.0 |
 | [eBrowser](https://github.com/embeddedos-org/eBrowser) | Browser engine — HTML5/CSS rendering for embedded/IoT, modular architecture, plugin system | C | v0.1.0 |
 | [eOffice](https://github.com/embeddedos-org/eOffice) | Office suite — 11 apps (eDocs, eSheets, eSlides, eMail, eDrive), eBot AI assistant | JS/TS | v0.1.0 |
-| [eServiceApps](https://github.com/embeddedos-org/eServiceApps) | Mobile apps — eSocial, eRide, eTravel, eTrack, eWallet (Flutter) | Dart | v0.1.0 |
-| [eos-platform](https://github.com/embeddedos-org/eos-platform) | Platform layer — Desktop, TV, Laptop, Tablet, Kiosk profiles on EoS | C | v0.1.0 |
+| [eCAD-Hardware-Products](https://github.com/embeddedos-org/eCAD-Hardware-Products) | Hardware designs — KiCad PCBs, EE docs, board datasheets for reference products | KiCad | v0.1.0 |
 
 ### eApps — Unified Marketplace
 
@@ -129,7 +128,7 @@ embeddedos-org.github.io/
 │   ├── edb.html            eDB docs
 │   ├── ebrowser.html       eBrowser docs
 │   ├── eoffice.html        eOffice docs
-│   └── eserviceapps.html   eServiceApps docs
+│   └── embeddedos-ecosystem-guide.md  Long-form ecosystem guide
 ├── eApps/
 │   └── index.html          App Store frontend
 ├── style.css               Design system

@@ -22,9 +22,7 @@ var EosSearch = (function () {
     { t: 'eApps Suite', u: 'docs/eosuite.html', d: '60+ apps for all platforms', k: 'apps suite lvgl mobile desktop' },
     { t: 'eDB Database', u: 'docs/edb.html', d: 'Unified multi-model database', k: 'database sql nosql key-value sqlite' },
     { t: 'eBrowser', u: 'docs/ebrowser.html', d: 'Lightweight web browser engine for embedded devices', k: 'browser html css rendering engine' },
-    { t: 'eOffice Suite', u: 'docs/eoffice.html', d: 'AI-powered office suite with 11 apps', k: 'office docs sheets slides email' },
-    { t: 'eVera', u: 'https://github.com/embeddedos-org/eVera', d: 'AI virtual assistant with 24+ agents', k: 'assistant chatbot agent voice avatar' },
-    { t: 'eServiceApps', u: 'docs/eserviceapps.html', d: 'Flutter mobile service apps', k: 'flutter mobile android ios react native' }
+    { t: 'eOffice Suite', u: 'docs/eoffice.html', d: 'AI-powered office suite with 11 apps', k: 'office docs sheets slides email' }
   ];
 
   var overlay, input, results, selectedIdx = -1;

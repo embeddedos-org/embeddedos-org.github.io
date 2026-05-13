@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/og-image.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EmbeddedOS - Open-Source Embedded Operating System for MCU and Linux Targets</title>
 <meta name="description" content="EmbeddedOS is a modular, real-time embedded operating system with AI inference, IPC, browser engine, database, office suite, mobile apps, simulation, and tooling. Production today: ARM Cortex-M kernel + Linux host backend + STM32F407 BSP. More backends and architectures on the roadmap.">
@@ -40,7 +42,7 @@
 <link rel="preload" href="style.css" as="style">
 <link rel="stylesheet" href="style.css">
 <link rel="dns-prefetch" href="https://github.com">
-<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+<!-- TODO: re-enable preconnect to googletagmanager.com when GA is uncommented below. -->
 <!-- Google Analytics 4 (uncomment + replace tracker ID before launch) -->
 <!--
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -101,6 +103,7 @@
   "description": "A modular, real-time embedded operating system. 14 components shipping; production targets today: ARM Cortex-M and Linux host. STM32F4 vertical slice exercised end-to-end on QEMU. AArch64 / x86_64 / RISC-V kernel arch ports tracked as roadmap."
 }
 </script>
+<script src="/js/site-chrome.js" defer></script>
 </head>
 <body>
 
@@ -193,7 +196,7 @@
 <section class="section-full section-alt">
 <div class="section">
 <h2 class="section-title">The EmbeddedOS Ecosystem</h2>
-<p class="section-subtitle">16 integrated repositories covering every aspect of embedded &amp; application development</p>
+<p class="section-subtitle">13 integrated repositories covering every aspect of embedded &amp; application development</p>
 
 <!-- What's New banner: links to the most recent honest-baseline work -->
 <div style="margin:2rem auto 2.5rem;max-width:900px;background:linear-gradient(135deg,rgba(63,185,80,0.08),rgba(88,166,255,0.08));border:1px solid rgba(63,185,80,0.35);border-radius:var(--radius-md);padding:1.25rem 1.5rem">
@@ -565,7 +568,7 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
   <div class="arch-diagram">
     <div class="arch-row">
       <div class="arch-box" style="border-color:var(--orange);color:var(--orange)">eOffice (11 Apps)</div>
-      <div class="arch-box" style="border-color:var(--yellow);color:var(--yellow)">eApps (43 Apps)</div>
+      <div class="arch-box" style="border-color:var(--yellow);color:var(--yellow)">eApps (60+ Apps)</div>
       </div>
     <div class="arch-arrow">&darr;&darr;&darr;</div>
     <div class="arch-row">
@@ -621,7 +624,7 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
     <!-- Book details -->
     <div style="flex:1;min-width:300px">
       <p style="color:var(--text-primary);margin-bottom:1rem;line-height:1.8">
-        The definitive reference for the entire EmbeddedOS ecosystem &mdash; covering all 18 repositories from kernel internals to space vehicle design.
+        The definitive reference for the entire EmbeddedOS ecosystem &mdash; covering all 13 product repos from kernel internals to space vehicle design.
       </p>
 
       <table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin-bottom:1.5rem">
@@ -680,7 +683,7 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
   <div style="background:linear-gradient(135deg,#161b40,#1a1040);border:2px solid var(--purple);border-radius:16px;padding:2rem;margin-bottom:2rem;text-align:center">
     <div style="font-size:2.5rem;margin-bottom:0.5rem">&#128218;</div>
     <h3 style="color:var(--purple);border:none;margin:0 0 0.5rem;font-size:1.3rem">The EmbeddedOS Ecosystem &mdash; Complete Product Guide</h3>
-    <p style="color:var(--text-secondary);margin:0 0 1rem;font-size:0.9rem">All 18 repositories in one volume &bull; 2,355 lines &bull; CC BY-SA 4.0</p>
+    <p style="color:var(--text-secondary);margin:0 0 1rem;font-size:0.9rem">All 14 volumes in one PDF &bull; 2,355 lines &bull; CC BY-SA 4.0</p>
     <a href="https://github.com/embeddedos-org/embeddedos-org.github.io/releases/download/v1.0.0-ecosystem-guide/embeddedos-ecosystem-complete-guide.pdf"
        style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 2rem;background:var(--purple);color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:0.95rem">
       &#128196; Download Ecosystem Guide (PDF)
@@ -810,7 +813,7 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
 </section>
 
 <section class="section">
-  <h2 class="section-title">Quick Start</h2>
+  <h2 class="section-title">Try It in 60 Seconds</h2>
   <p class="section-subtitle">Get up and running in minutes</p>
   <div style="max-width:700px;margin:0 auto">
     <pre><code><span class="cm"># Install ebuild CLI</span>

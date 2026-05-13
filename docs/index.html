@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/og-image.png"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Documentation Hub v0.1.0 - EmbeddedOS</title>
 <meta name="description" content="Complete developer documentation for all EmbeddedOS components including EoS kernel, eBoot, EAI, ENI, EIPC, ebuild, EoSim, and more.">
 <meta property="og:type" content="website">
@@ -27,6 +29,7 @@
 <link rel="me" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation">
 <link rel="me" href="https://x.com/EmbeddedOS_ORG">
 <link rel="me" href="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/">
+<script src="/js/site-chrome.js" defer></script>
 </head><body>
 <nav class="navbar"><div class="nav-inner">
 <a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
@@ -104,11 +107,6 @@
 <p>AI-powered office suite with 11 apps: eDocs, eSheets, eSlides, eNotes, eMail, eDrive, eConnect, eForms, eSway, ePlanner. Powered by eBot AI for text rewriting, formula suggestions, and slide generation. Browser, Electron, Docker deployment.</p>
 <div class="card-tags"><span class="badge badge-orange">11 Apps</span><span class="badge badge-purple">eBot AI</span><span class="badge badge-blue">TypeScript</span></div>
 <div class="card-buttons"><a href="eoffice.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
-
-<div class="product-card" style="border-top:3px solid var(--pink)"><div class="card-icon">eSA</div><h3>eServiceApps Mobile</h3>
-<p>Feature-modular Flutter mobile super app with 4 service modules: social networking, ride-sharing, travel planning, and delivery. Riverpod state management, GoRouter navigation, Material 3 design, Firebase backend.</p>
-<div class="card-tags"><span class="badge badge-pink">Flutter</span><span class="badge badge-green">4 Modules</span><span class="badge badge-yellow">Firebase</span></div>
-<div class="card-buttons"><a href="eserviceapps.html" class="btn btn-sm btn-primary">API Reference</a></div></div>
 </div>
 
 <h2 style="margin-top:3rem">Quick Reference</h2>
@@ -128,7 +126,6 @@
 <tr><td>eDB</td><td>Python</td><td><code>edb.core</code></td><td>SQL, Document, Key-Value, REST API, eBot AI</td></tr>
 <tr><td>eBrowser</td><td>C/C++</td><td><code>ebrowser.h</code></td><td>eb_create, eb_navigate, eb_run, eb_destroy</td></tr>
 <tr><td>eOffice</td><td>TypeScript</td><td>React + Node.js</td><td>11 apps: eDocs, eSheets, eSlides, eBot AI</td></tr>
-<tr><td>eServiceApps</td><td>Dart/Flutter</td><td>lib/main.dart</td><td>4 modules: Social, Ride, Travel, Delivery</td></tr>
 </table></div>
 
 </div>
@@ -177,8 +174,7 @@ const EosSearch={pages:[
 {t:'eApps Suite',u:'eosuite.html',d:'60+ apps for all platforms'},
 {t:'eDB Database',u:'edb.html',d:'Unified multi-model database'},
 {t:'eBrowser Browser',u:'ebrowser.html',d:'Lightweight web browser engine'},
-{t:'eOffice Suite',u:'eoffice.html',d:'AI-powered office suite with 11 apps'},
-{t:'eServiceApps',u:'eserviceapps.html',d:'Flutter mobile service apps'}
+{t:'eOffice Suite',u:'eoffice.html',d:'AI-powered office suite with 11 apps'}
 ],
 overlay:null,input:null,results:null,
 init(){this.overlay=document.getElementById('eos-search-overlay');this.input=document.getElementById('eos-search-input');this.results=document.getElementById('eos-search-results')},
