@@ -18,6 +18,7 @@
     { href: '/hardware-lab.html',                       label: 'Hardware Lab \u{1F50C}', key: 'hardware-lab' },
     { href: '/flow.html',                               label: 'Flow',            key: 'flow' },
     { href: '/books.html',                              label: '\u{1F4DA} Books', key: 'books' },
+    { href: '/stacks/index.html',                       label: '\u{1F3ED} Stacks', key: 'stacks' },
     { href: '/get-involved.html',                       label: '\u{1F91D} Get Involved', key: 'get-involved' },
     { href: 'https://github.com/embeddedos-org',        label: '\u2605 GitHub',   key: 'github',          cls: 'nav-github' }
   ];
@@ -116,6 +117,8 @@
     if (/hardware-lab\.html$/.test(path)) return 'hardware-lab';
     if (/flow\.html$/.test(path)) return 'flow';
     if (/books\.html$/.test(path)) return 'books';
+    if (/\/stacks(\/(index\.html|eai-edge\.html))?$/.test(path)) return 'stacks';
+    if (/\/stacks\//.test(path)) return 'stacks';
     if (/get-involved\.html$/.test(path)) return 'get-involved';
     return null;
   }

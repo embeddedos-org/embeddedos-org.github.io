@@ -171,3 +171,15 @@ MIT License — see [LICENSE](LICENSE) for details.
 ## Contributing
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+## Related Meta-Repos
+
+These are **not** part of the canonical 13 product repos. They are
+organisation-level meta-repos that compose, route to, or describe the
+canonical roster.
+
+| Repo | Role |
+|---|---|
+| [embeddedos-org](https://github.com/embeddedos-org/embeddedos-org) | Org landing index — visit-resolves at `github.com/embeddedos-org/embeddedos-org`. |
+| [embeddedos-org.github.io](https://github.com/embeddedos-org/embeddedos-org.github.io) | This site — developer portal, books, docs hub, downloads, stacks. |
+| [eFab](https://github.com/embeddedos-org/eFab) | **Stack fabricator** — manifest-only meta-repo that pins versions, fetches sources, and runs end-to-end smoke tests for opinionated bundles of canonical products. v0.1.0 ships the `eai-edge` profile (ENI + EIPC + eAI). See [/stacks/](https://embeddedos-org.github.io/stacks/). |

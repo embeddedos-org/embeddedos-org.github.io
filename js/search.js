@@ -22,7 +22,9 @@ var EosSearch = (function () {
     { t: 'eApps Suite', u: 'docs/eosuite.html', d: '60+ apps for all platforms', k: 'apps suite lvgl mobile desktop' },
     { t: 'eDB Database', u: 'docs/edb.html', d: 'Unified multi-model database', k: 'database sql nosql key-value sqlite' },
     { t: 'eBrowser', u: 'docs/ebrowser.html', d: 'Lightweight web browser engine for embedded devices', k: 'browser html css rendering engine' },
-    { t: 'eOffice Suite', u: 'docs/eoffice.html', d: 'AI-powered office suite with 11 apps', k: 'office docs sheets slides email' }
+    { t: 'eOffice Suite', u: 'docs/eoffice.html', d: 'AI-powered office suite with 11 apps', k: 'office docs sheets slides email' },
+    { t: 'EmbeddedOS Stacks', u: 'stacks/index.html', d: 'Opinionated, version-pinned bundles of canonical product repos (eFab manifests)', k: 'stack stacks bundle manifest efab profile recipe' },
+    { t: 'eai-edge Stack', u: 'stacks/eai-edge.html', d: 'Intelligent edge node: ENI + EIPC + eAI (eFab profile)', k: 'eai-edge edge bci neural ai inference manifest pipeline' }
   ];
 
   var overlay, input, results, selectedIdx = -1;

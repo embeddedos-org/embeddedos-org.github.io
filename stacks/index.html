@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/og-image.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stacks — EmbeddedOS</title>
+<meta name="description" content="EmbeddedOS Stacks: opinionated, version-pinned bundles of canonical product repos for one-line installs. Powered by the eFab manifest meta-repo.">
+<meta name="keywords" content="EmbeddedOS, eFab, stack, manifest, ENI, EIPC, eAI, embedded AI, BCI, manifest repo, CMake superproject">
+<meta name="author" content="Srikanth Patchava">
+<meta name="theme-color" content="#0d1117">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://embeddedos-org.github.io/stacks/">
+<meta property="og:title" content="EmbeddedOS Stacks — Opinionated, Version-Pinned Bundles">
+<meta property="og:description" content="One-line installs for full EmbeddedOS use cases. Powered by the eFab manifest meta-repo. v0.1.0 ships the eai-edge profile (ENI + EIPC + eAI).">
+<meta property="og:image" content="https://embeddedos-org.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="EmbeddedOS — opinionated, version-pinned stacks fabricated by eFab">
+<meta property="og:site_name" content="EmbeddedOS">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@EmbeddedOS_ORG">
+<meta name="twitter:title" content="EmbeddedOS Stacks — eFab manifests">
+<meta name="twitter:description" content="One-line installs for full EmbeddedOS use cases.">
+<meta name="twitter:image" content="https://embeddedos-org.github.io/og-image.png">
+<link rel="canonical" href="https://embeddedos-org.github.io/stacks/">
+<link rel="me" href="https://www.youtube.com/@EmbeddedOS_ORG">
+<link rel="me" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation">
+<link rel="me" href="https://x.com/EmbeddedOS_ORG">
+<link rel="me" href="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "EmbeddedOS Stacks",
+  "url": "https://embeddedos-org.github.io/stacks/",
+  "description": "Opinionated, version-pinned bundles of EmbeddedOS canonical product repos. Powered by the eFab manifest meta-repo.",
+  "isPartOf": { "@type": "WebSite", "name": "EmbeddedOS", "url": "https://embeddedos-org.github.io" },
+  "hasPart": [
+    {
+      "@type": "TechArticle",
+      "name": "eai-edge profile",
+      "url": "https://embeddedos-org.github.io/stacks/eai-edge.html",
+      "description": "Intelligent edge node profile: ENI -> EIPC -> eAI."
+    }
+  ]
+}
+</script>
+<script src="/js/site-chrome.js" defer></script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v0.1.0</span></a>
+    <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../getting-started.html">Get Started</a>
+      <a href="../docs/index.html">Docs</a>
+      <a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a>
+      <a href="../kids.html">Kids 🎮</a>
+      <a href="../hardware-lab.html">Hardware Lab 🔌</a>
+      <a href="../flow.html">Flow</a>
+      <a href="../books.html">📚 Books</a>
+      <a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+      <button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
+    </div>
+  </div>
+</nav>
+
+<main id="main-content" role="main">
+
+<section class="hero" style="padding:4rem 2rem 3rem;text-align:center">
+  <div class="hero-content">
+    <h1 style="font-size:2.6rem">🏭 EmbeddedOS Stacks</h1>
+    <p class="subtitle" style="max-width:780px;margin:1rem auto">Opinionated, version-pinned bundles of canonical EmbeddedOS product repos &mdash; one git clone, one <code>cmake</code> invocation, one smoke test. Powered by the <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)">eFab</a> manifest meta-repo.</p>
+    <div class="hero-buttons">
+      <a href="eai-edge.html" class="btn btn-primary">Browse eai-edge →</a>
+      <a href="https://github.com/embeddedos-org/eFab" class="btn btn-outline">★ eFab on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <h2 class="section-title">What is a stack?</h2>
+  <p class="section-subtitle">A recipe, not a fork.</p>
+  <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem;margin-top:1.5rem">
+    <p style="color:var(--text-secondary);line-height:1.7;margin:0 0 1rem">
+      EmbeddedOS publishes <strong>13 small, independently-versioned product repositories</strong>. That is a deliberate design choice &mdash; <a href="../docs/eipc.html" style="color:var(--cyan)">eIPC</a> alone is a useful secure-IPC layer, <a href="../docs/eai.html" style="color:var(--cyan)">eAI</a> alone is a useful on-device inference framework, and so on.
+    </p>
+    <p style="color:var(--text-secondary);line-height:1.7;margin:0 0 1rem">
+      A <strong>Stack</strong> is a named, version-pinned bundle of those products built for one specific use case (intelligent edge node, production AI MCU, BCI prototype, &hellip;). Stacks are defined as YAML manifests inside the <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)"><code>eFab</code></a> meta-repo and consumed via a CMake superproject that fetches each pinned product at configure time.
+    </p>
+    <p style="color:var(--text-secondary);line-height:1.7;margin:0">
+      <strong>Stacks ship no product code.</strong> A stack is a recipe. Bugs in the products themselves still belong upstream (file in eAI / eIPC / eNI directly).
+    </p>
+  </div>
+</section>
+
+<section class="section-full section-alt">
+<div class="section" style="max-width:1100px;margin:0 auto;padding:2rem">
+  <h2 class="section-title">Available stacks</h2>
+  <p class="section-subtitle">v0.1.0 ships one profile. More land in v0.2 &ndash; v1.0 &mdash; see the <a href="https://github.com/embeddedos-org/eFab/blob/main/docs/roadmap.md" style="color:var(--cyan)">roadmap</a>.</p>
+
+  <div class="product-grid" style="margin-top:2rem">
+    <div class="product-card" style="border-top:3px solid var(--purple)">
+      <div class="card-icon" style="background:var(--purple-dim);color:var(--purple);font-size:1.4rem">🧠</div>
+      <h3>eai-edge <span class="badge badge-green" style="font-size:.65rem;vertical-align:middle">v0.1.0</span></h3>
+      <p>Intelligent edge node with neural-interface input. Pipeline: <strong>ENI ➜ EIPC ➜ eAI</strong>. Pulls eNI v0.1.0 + eIPC v0.1.0 + eAI v0.1.0. Smoke tested on host-x86_64-linux, host-x86_64-darwin, host-aarch64-linux; build-only on target-stm32f4.</p>
+      <div class="card-tags">
+        <span class="badge badge-purple">BCI + AI</span>
+        <span class="badge badge-cyan">3 repos</span>
+        <span class="badge badge-green">smoke-tested</span>
+      </div>
+      <div class="card-buttons">
+        <a href="eai-edge.html" class="btn btn-sm btn-purple">Profile page</a>
+        <a href="https://github.com/embeddedos-org/eFab/blob/main/manifests/eai-edge.yml" class="btn btn-sm btn-outline">manifest.yml</a>
+      </div>
+    </div>
+
+    <div class="product-card" style="border-top:3px solid var(--text-muted);opacity:0.55">
+      <div class="card-icon" style="background:var(--bg-secondary);color:var(--text-secondary);font-size:1.4rem">⚙️</div>
+      <h3>embedded-core <span class="badge" style="background:var(--bg-tertiary);color:var(--text-muted);font-size:.65rem;vertical-align:middle">v0.2 planned</span></h3>
+      <p>Minimum boot-and-run for any embedded target. Bundles eos + eBoot + ebuild. Universally needed by every product, but not yet a graduated stack &mdash; tracked in the <a href="https://github.com/embeddedos-org/eFab/blob/main/docs/roadmap.md" style="color:var(--cyan)">eFab roadmap</a>.</p>
+      <div class="card-tags">
+        <span class="badge badge-cyan">3 repos</span>
+        <span class="badge" style="background:var(--bg-tertiary);color:var(--text-muted)">planned</span>
+      </div>
+    </div>
+
+    <div class="product-card" style="border-top:3px solid var(--text-muted);opacity:0.55">
+      <div class="card-icon" style="background:var(--bg-secondary);color:var(--text-secondary);font-size:1.4rem">🤖</div>
+      <h3>smart-edge <span class="badge" style="background:var(--bg-tertiary);color:var(--text-muted);font-size:.65rem;vertical-align:middle">v0.3 planned</span></h3>
+      <p>Production AI on MCU / Cortex-A without BCI. embedded-core + eAI + eIPC. The non-neural sibling of <code>eai-edge</code>. Tracked in the eFab roadmap.</p>
+      <div class="card-tags">
+        <span class="badge badge-cyan">5 repos</span>
+        <span class="badge" style="background:var(--bg-tertiary);color:var(--text-muted)">planned</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<section class="section" style="max-width:1100px;margin:0 auto;padding:2rem">
+  <h2 class="section-title">Quick start</h2>
+  <pre style="background:var(--bg-secondary);padding:1.25rem;border-radius:var(--radius-md);overflow:auto"><code><span class="cm"># Clone the manifest repo (no product source vendored — just recipes)</span>
+git clone https://github.com/embeddedos-org/eFab.git
+<span class="kw">cd</span> eFab/superproject/eai-edge
+
+<span class="cm"># Configure — FetchContent will pull eNI, eIPC, eAI at the pinned tags</span>
+<span class="fn">cmake</span> -B build -DCMAKE_BUILD_TYPE=Release
+
+<span class="cm"># Build all three repos as one tree</span>
+<span class="fn">cmake</span> --build build -j
+
+<span class="cm"># Run the end-to-end smoke test (ENI -> EIPC -> eAI)</span>
+<span class="fn">python3</span> ../../tests/eai-edge/smoke_test.py</code></pre>
+</section>
+
+<section class="section">
+  <h2 class="section-title">FAQ</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto;padding:0 2rem">
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--blue);margin-top:0;border:none;font-size:1rem">Does eFab change the canonical 13 / 14?</h3>
+      <p style="color:var(--text-secondary);font-size:.92rem;margin:0">No. eFab is a meta-repo (like <code>embeddedos-org</code> and <code>embeddedos-org.github.io</code>), explicitly excluded from the canon count. Canonical roster stays at <strong>13 product repos / 14 reference books</strong>.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--green);margin-top:0;border:none;font-size:1rem">Where do I file bugs?</h3>
+      <p style="color:var(--text-secondary);font-size:.92rem;margin:0">Bugs in inference / transport / sensor behaviour: file in <a href="https://github.com/embeddedos-org/eAI" style="color:var(--cyan)">eAI</a>, <a href="https://github.com/embeddedos-org/eIPC" style="color:var(--cyan)">eIPC</a>, or <a href="https://github.com/embeddedos-org/eNI" style="color:var(--cyan)">eNI</a>. Wrong version pin, missing smoke test, or new profile request: file in <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)">eFab</a>.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--purple);margin-top:0;border:none;font-size:1rem">Why not just merge the three repos?</h3>
+      <p style="color:var(--text-secondary);font-size:.92rem;margin:0">Because eIPC standalone is useful for non-AI projects (any secure inter-process layer), eAI standalone runs without BCI hardware, and eNI standalone is meaningful for raw signal capture. Merging would force every consumer to ship all three. The manifest preserves independent evolution.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
+      <h3 style="color:var(--orange);margin-top:0;border:none;font-size:1rem">Can I propose a new stack?</h3>
+      <p style="color:var(--text-secondary);font-size:.92rem;margin:0">Yes &mdash; open a PR against <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)">eFab</a> adding a manifest, a CMake superproject, a smoke test, and a docs page. The intake checklist is in <a href="https://github.com/embeddedos-org/eFab/blob/main/docs/architecture.md" style="color:var(--cyan)">docs/architecture.md</a>.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3 style="margin-bottom:0.5rem">EmbeddedOS</h3>
+      <p>An open-source embedded operating system for the next generation of intelligent devices.</p>
+    </div>
+    <div><h4>Documentation</h4>
+      <ul>
+        <li><a href="../getting-started.html">Getting Started</a></li>
+        <li><a href="../docs/eos.html">EoS Kernel</a></li>
+        <li><a href="../docs/eboot.html">eBoot</a></li>
+        <li><a href="../docs/ebuild.html">ebuild</a></li>
+      </ul>
+    </div>
+    <div><h4>Components</h4>
+      <ul>
+        <li><a href="../docs/eipc.html">EIPC</a></li>
+        <li><a href="../docs/eai.html">EAI</a></li>
+        <li><a href="../docs/eni.html">ENI</a></li>
+        <li><a href="../docs/eosuite.html">eApps</a></li>
+        <li><a href="../docs/eosim.html">EoSim</a></li>
+      </ul>
+    </div>
+    <div><h4>Stacks</h4>
+      <ul>
+        <li><a href="index.html">All stacks</a></li>
+        <li><a href="eai-edge.html">eai-edge</a></li>
+        <li><a href="https://github.com/embeddedos-org/eFab">eFab on GitHub</a></li>
+      </ul>
+    </div>
+    <div><h4>Connect</h4>
+      <ul class="social-list">
+        <li><a class="social-link social-youtube" href="https://www.youtube.com/@EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="YouTube"><span class="social-icon">▶</span> YouTube</a></li>
+        <li><a class="social-link social-x" href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X (Twitter)"><span class="social-icon">𝕏</span> X (Twitter)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2025&ndash;2026 EmbeddedOS Project &bull; Licensed under MIT</div>
+</footer>
+
+<div id="eos-search-overlay" class="search-overlay" hidden>
+  <div class="search-modal">
+    <div class="search-header">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="eos-search-input" class="search-input" placeholder="Search EmbeddedOS docs..." autocomplete="off">
+      <kbd class="search-kbd">Esc</kbd>
+    </div>
+    <ul id="eos-search-results" class="search-results"></ul>
+  </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script src="/js/animations.js"></script>
+<script src="/js/ebot-chat.js"></script>
+
+</body>
+</html>
