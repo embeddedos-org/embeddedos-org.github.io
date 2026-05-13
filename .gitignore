@@ -3,3 +3,12 @@ tests/screenshots/
 playwright-report/
 test-results/
 lighthouse-results/
+build/
+build-*/
+dist/
+__pycache__/
+*.pyc
+.venv/
+target/
+.pytest_cache/
+.DS_Store
