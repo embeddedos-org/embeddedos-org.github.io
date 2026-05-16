@@ -1,11 +1,8 @@
-# NOTE: This file uses Netlify / Cloudflare Pages syntax. GitHub Pages — which
-# serves this site today — silently IGNORES the rules below. The values are
-# kept here as a single source of truth for an eventual move to Cloudflare
-# Pages or Netlify, and as a reference for the security headers the project
-# intends to enforce in production. The subset of headers that browsers honour
-# from in-document <meta http-equiv> tags is mirrored elsewhere in the site
-# chrome where applicable; CSP via <meta> is intentionally not added here
-# because it cannot express the same directive set as a real HTTP header.
+# NOTE: As of v3.0.1 the security headers are also served via <meta http-equiv>
+# tags in every HTML page (see scripts/check-csp-meta.sh). This file remains
+# for completeness when this site is mirrored to a CDN that honours _headers
+# (Netlify, Cloudflare Pages). GitHub Pages itself ignores _headers — the
+# <meta> tags are the operative defence on the live site.
 
 /*
   X-Frame-Options: DENY
@@ -13,4 +10,4 @@
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https:;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.github.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
