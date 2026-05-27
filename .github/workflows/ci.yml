@@ -50,7 +50,15 @@ jobs:
       - name: Link check (offline)
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --no-progress --verbose './**/*.html'
+          # Root-relative paths (/favicon.svg, /og-image.png, /index.html#*)
+          # are valid on the live GitHub Pages site but cannot be resolved by
+          # the offline checker without a --base URL. Exclude them explicitly.
+          args: >-
+            --offline
+            --no-progress
+            --verbose
+            --exclude '^/'
+            './**/*.html'
           fail: true
       - name: HTML minification dry-run
         run: |

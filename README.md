@@ -24,7 +24,6 @@ All 18 EmbeddedOS-org repositories released at v3.0.0. Per-platform binaries are
 | [eBrowser](https://github.com/embeddedos-org/eBrowser/releases/tag/v3.0.0) | v3.0.0 | ✓ | ✓ | MSI installer | ghcr.io/embeddedos-org/ebrowser | — |
 | [eDB](https://github.com/embeddedos-org/eDB/releases/tag/v3.0.0) | v3.0.0 | wheel + sdist | wheel + sdist | wheel + sdist | ghcr.io/embeddedos-org/edb | standalone browser/edb.html |
 | [eOffice](https://github.com/embeddedos-org/eOffice/releases/tag/v3.0.0) | v3.0.0 | .AppImage/.deb/.snap | .dmg | .exe | ghcr.io/embeddedos-org/eoffice | .vsix · .crx · .safariextz · PWA |
-| [eVera](https://github.com/embeddedos-org/eVera/releases/tag/v3.0.0) | v3.0.0 | wheel + PyInstaller | dmg + wheel | exe + wheel | ghcr.io/embeddedos-org/evera | APK · AAB · IPA · .crx |
 | [EoSim](https://github.com/embeddedos-org/EoSim/releases/tag/v3.0.0) | v3.0.0 | wheel + GUI binary | wheel + GUI binary | wheel + GUI binary | ghcr.io/embeddedos-org/eosim | platform packs |
 | [EoStudio](https://github.com/embeddedos-org/EoStudio/releases/tag/v3.0.0) | v3.0.0 | wheel + GUI binary | wheel + GUI binary | wheel + GUI binary | ghcr.io/embeddedos-org/eostudio | promo MP4 |
 | [eosllm](https://github.com/embeddedos-org/eosllm/releases/tag/v3.0.0) | v3.0.0 | eosllm-cli/-bench/-convert/-quant-lab/-server | ✓ | ✓ | — | .vsix · .crx · .xpi |
