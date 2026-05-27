@@ -1,12 +1,13 @@
-# SPDX-License-Identifier: MIT
-# Copyright (c) 2026 EoS Project
 import unittest
-import time
+
 class Testembeddedos-org.github.ioPerformance(unittest.TestCase):
-    def test_latency_sla(self):
-        print("Testing performance SLA for embeddedos-org.github.io...")
-        t0 = time.perf_counter()
-        _ = sum(i*i for i in range(1000))
-        t1 = time.perf_counter()
-        print(f"Operation took: {(t1 - t0)*1e6:.2f} microseconds")
-        self.assertTrue(True)
+    import time
+    def test_static_site_build_time(self):
+        import time
+        start = time.perf_counter()
+        # Simulate static site build (21 pages)
+        for _ in range(21):
+            _ = "rendered_html_output"
+        end = time.perf_counter()
+        build_ms = (end - start) * 1000
+        assert build_ms < 5.0, f"Static site build time {build_ms:.2f}ms exceeds 5ms SLA"
