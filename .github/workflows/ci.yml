@@ -1,64 +1,27 @@
-name: CI
+name: Production CI/CD Pipeline
 
 on:
   push:
-    branches: [main, master]
+    branches: [ main ]
   pull_request:
-    branches: [main, master]
-  workflow_dispatch:
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
-permissions:
-  contents: read
+    branches: [ main ]
 
 jobs:
-  validate:
-    name: Validate HTML, Links & Playwright
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          elif [ -f package.json ]; then
-            npm install
-          else
-            npm init -y && npm install --save-dev @playwright/test http-server
-          fi
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-      - name: Start static server
-        run: npx http-server . -p 8080 -s &
-      - name: Wait for server
-        run: npx wait-on http://localhost:8080 --timeout 15000
-      - name: Run Playwright tests
-        run: |
-          if [ -d tests ]; then
-            npx playwright test tests/ --project=chromium --reporter=list
-          else
-            echo "::warning::No tests/ directory found, running site smoke test"
-            curl -fsSL http://localhost:8080/ -o /dev/null
-          fi
-      - name: Link check (offline)
-        uses: lycheeverse/lychee-action@v2
-        with:
-          args: --offline --no-progress --verbose './**/*.html'
-          fail: true
-      - name: HTML minification dry-run
-        run: |
-          npx --yes html-minifier-terser \
-            --collapse-whitespace --remove-comments --minify-css true --minify-js true \
-            --output /tmp/min.html index.html 2>/dev/null || echo "(minify check skipped)"
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: test-results
-          path: test-results/
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-style: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov requests matplotlib numpy
+
+    - name: Run Domain-Specific Test Suite
+      run: |
+        python run_all_tests.py
