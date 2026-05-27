@@ -23,7 +23,7 @@ We continuously benchmark EoS Website against the entire EmbeddedOS ecosystem to
 
 ---
 
-## 🎬 Product Marketing Video
+## 🎬 Product Marketing Video (App Store Proof of Production)
 
 Experience EoS Website in action! Watch our high-fidelity product demonstration and marketing video:
 
