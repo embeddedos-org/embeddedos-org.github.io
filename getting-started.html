@@ -39,9 +39,9 @@
 </defs></svg>
 <nav class="navbar"><div class="nav-inner">
 <a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v1.0.0</span></a>
-<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html" class="active">Get Started</a><a href="docs/index.html">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="kids.html">Kids &#127918;</a><a href="hardware-lab.html">Hardware Lab &#128268;</a><a href="flow.html">Flow</a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html" class="active">Get Started</a><a href="docs/index.html">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github" target="_blank" rel="noopener">🏪 App Store</a><a href="kids.html">Kids &#127918;</a><a href="hardware-lab.html">Hardware Lab &#128268;</a><a href="flow.html">Flow</a>
     <a href="books.html">📚 Books</a>
-<a href="stacks/index.html">&#127981; Stacks</a><a href="/index.html#health-devices">&#10084;&#65039; Health</a><a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+<a href="stacks/index.html">&#127981; Stacks</a><a href="/index.html#health-devices">&#10084;&#65039; Health</a><a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">&#9733; GitHub</a>
 <button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav>
 
 <div class="content-wrapper" style="max-width:900px">
@@ -89,7 +89,7 @@ eosim run build/firmware.elf --platform stm32f4 --gui</code></pre></div>
 <p>Open <code>http://localhost:8080</code> in your browser to see GPIO pins, UART output, memory, and CPU registers all simulated in real time!</p></div>
 </div>
 <div class="callout callout-tip"><div class="callout-title">What's Next?</div>
-<p>Try different platforms: <code>eosim run --platform esp32 --gui</code> or <code>--platform raspi4</code>. See the <a href="docs/eosim.html">EoSim docs</a> for all 52 platforms, or browse the <a href="https://embeddedos-org.github.io/eApps/">App Store</a>.</p></div>
+<p>Try different platforms: <code>eosim run --platform esp32 --gui</code> or <code>--platform raspi4</code>. See the <a href="docs/eosim.html">EoSim docs</a> for all 52 platforms, or browse the <a href="https://embeddedos-org.github.io/eApps/" target="_blank" rel="noopener">App Store</a>.</p></div>
 </div>
 
 <!-- PATH: RASPBERRY PI -->
@@ -100,7 +100,7 @@ eosim run build/firmware.elf --platform stm32f4 --gui</code></pre></div>
 <p>Raspberry Pi 4 or 5, microSD card, USB-C power supply, keyboard/mouse, monitor. See <a href="hardware-lab.html#raspi">full shopping list</a>.</p></div>
 <div class="steps">
 <div class="step"><h3>Set Up Your Pi</h3>
-<p>Flash Raspberry Pi OS (64-bit) using <a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a>. Boot and open a terminal.</p></div>
+<p>Flash Raspberry Pi OS (64-bit) using <a href="https://www.raspberrypi.com/software/" target="_blank" rel="noopener">Raspberry Pi Imager</a>. Boot and open a terminal.</p></div>
 <div class="step"><h3>Install Build Tools</h3>
 <pre><code>sudo apt update &amp;&amp; sudo apt install -y cmake ninja-build gcc g++ git python3-pip
 pip install embeddedos-ebuild embeddedos-eosim</code></pre></div>
@@ -232,7 +232,7 @@ document.querySelector('.path-btn[onclick*="'+id+'"]').classList.add('active');
 <div class="footer-brand"><h3 style="margin-bottom:.5rem">EmbeddedOS</h3><p>Open-source embedded OS.</p></div>
 <div><h4>Docs</h4><ul><li><a href="docs/eos.html">EoS</a></li><li><a href="docs/eboot.html">eBoot</a></li><li><a href="docs/eai.html">EAI</a></li><li><a href="docs/ebuild.html">ebuild</a></li></ul></div>
 <div><h4>Components</h4><ul><li><a href="docs/eipc.html">EIPC</a></li><li><a href="docs/eni.html">ENI</a></li><li><a href="docs/eosuite.html">eApps</a></li><li><a href="docs/eosim.html">EoSim</a></li><li><a href="docs/eostudio.html">EoStudio</a></li></ul></div>
-<div><h4>Learn</h4><ul><li><a href="kids.html">Kids Guide 🎮</a></li><li><a href="hardware-lab.html">Hardware Lab 🔌</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="kids.html">Kids Guide 🎮</a></li><li><a href="hardware-lab.html">Hardware Lab 🔌</a></li><li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li></ul></div>
   <div>
     <h4>Connect</h4>
     <ul class="social-list">

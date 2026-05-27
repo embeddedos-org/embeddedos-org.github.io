@@ -69,12 +69,12 @@
       <a href="../index.html">Home</a>
       <a href="../getting-started.html">Get Started</a>
       <a href="../docs/index.html">Docs</a>
-      <a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a>
+      <a href="https://embeddedos-org.github.io/eApps/" class="nav-github" target="_blank" rel="noopener">🏪 App Store</a>
       <a href="../kids.html">Kids 🎮</a>
       <a href="../hardware-lab.html">Hardware Lab 🔌</a>
       <a href="../flow.html">Flow</a>
       <a href="../books.html">📚 Books</a>
-      <a href="/index.html#health-devices">&#10084;&#65039; Health</a><a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+      <a href="/index.html#health-devices">&#10084;&#65039; Health</a><a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">&#9733; GitHub</a>
       <button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
     </div>
   </div>
@@ -85,10 +85,10 @@
 <section class="hero" style="padding:4rem 2rem 3rem;text-align:center">
   <div class="hero-content">
     <h1 style="font-size:2.6rem">🏭 EmbeddedOS Stacks</h1>
-    <p class="subtitle" style="max-width:780px;margin:1rem auto">Opinionated, version-pinned bundles of canonical EmbeddedOS product repos &mdash; one git clone, one <code>cmake</code> invocation, one smoke test. Powered by the <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)">eFab</a> manifest meta-repo.</p>
+    <p class="subtitle" style="max-width:780px;margin:1rem auto">Opinionated, version-pinned bundles of canonical EmbeddedOS product repos &mdash; one git clone, one <code>cmake</code> invocation, one smoke test. Powered by the <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)" target="_blank" rel="noopener">eFab</a> manifest meta-repo.</p>
     <div class="hero-buttons">
       <a href="eai-edge.html" class="btn btn-primary">Browse eai-edge →</a>
-      <a href="https://github.com/embeddedos-org/eFab" class="btn btn-outline">★ eFab on GitHub</a>
+      <a href="https://github.com/embeddedos-org/eFab" class="btn btn-outline" target="_blank" rel="noopener">★ eFab on GitHub</a>
     </div>
   </div>
 </section>
@@ -101,7 +101,7 @@
       EmbeddedOS publishes <strong>13 small, independently-versioned product repositories</strong>. That is a deliberate design choice &mdash; <a href="../docs/eipc.html" style="color:var(--cyan)">eIPC</a> alone is a useful secure-IPC layer, <a href="../docs/eai.html" style="color:var(--cyan)">eAI</a> alone is a useful on-device inference framework, and so on.
     </p>
     <p style="color:var(--text-secondary);line-height:1.7;margin:0 0 1rem">
-      A <strong>Stack</strong> is a named, version-pinned bundle of those products built for one specific use case (intelligent edge node, production AI MCU, BCI prototype, &hellip;). Stacks are defined as YAML manifests inside the <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)"><code>eFab</code></a> meta-repo and consumed via a CMake superproject that fetches each pinned product at configure time.
+      A <strong>Stack</strong> is a named, version-pinned bundle of those products built for one specific use case (intelligent edge node, production AI MCU, BCI prototype, &hellip;). Stacks are defined as YAML manifests inside the <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)" target="_blank" rel="noopener"><code>eFab</code></a> meta-repo and consumed via a CMake superproject that fetches each pinned product at configure time.
     </p>
     <p style="color:var(--text-secondary);line-height:1.7;margin:0">
       <strong>Stacks ship no product code.</strong> A stack is a recipe. Bugs in the products themselves still belong upstream (file in eAI / eIPC / eNI directly).
@@ -112,7 +112,7 @@
 <section class="section-full section-alt">
 <div class="section" style="max-width:1100px;margin:0 auto;padding:2rem">
   <h2 class="section-title">Available stacks</h2>
-  <p class="section-subtitle">v0.1.0 ships one profile. More land in v0.2 &ndash; v1.0 &mdash; see the <a href="https://github.com/embeddedos-org/eFab/blob/main/docs/roadmap.md" style="color:var(--cyan)">roadmap</a>.</p>
+  <p class="section-subtitle">v0.1.0 ships one profile. More land in v0.2 &ndash; v1.0 &mdash; see the <a href="https://github.com/embeddedos-org/eFab/blob/main/docs/roadmap.md" style="color:var(--cyan)" target="_blank" rel="noopener">roadmap</a>.</p>
 
   <div class="product-grid" style="margin-top:2rem">
     <div class="product-card" style="border-top:3px solid var(--purple)">
@@ -126,14 +126,14 @@
       </div>
       <div class="card-buttons">
         <a href="eai-edge.html" class="btn btn-sm btn-purple">Profile page</a>
-        <a href="https://github.com/embeddedos-org/eFab/blob/main/manifests/eai-edge.yml" class="btn btn-sm btn-outline">manifest.yml</a>
+        <a href="https://github.com/embeddedos-org/eFab/blob/main/manifests/eai-edge.yml" class="btn btn-sm btn-outline" target="_blank" rel="noopener">manifest.yml</a>
       </div>
     </div>
 
     <div class="product-card" style="border-top:3px solid var(--text-muted);opacity:0.55">
       <div class="card-icon" style="background:var(--bg-secondary);color:var(--text-secondary);font-size:1.4rem">⚙️</div>
       <h3>embedded-core <span class="badge" style="background:var(--bg-tertiary);color:var(--text-muted);font-size:.65rem;vertical-align:middle">v0.2 planned</span></h3>
-      <p>Minimum boot-and-run for any embedded target. Bundles eos + eBoot + ebuild. Universally needed by every product, but not yet a graduated stack &mdash; tracked in the <a href="https://github.com/embeddedos-org/eFab/blob/main/docs/roadmap.md" style="color:var(--cyan)">eFab roadmap</a>.</p>
+      <p>Minimum boot-and-run for any embedded target. Bundles eos + eBoot + ebuild. Universally needed by every product, but not yet a graduated stack &mdash; tracked in the <a href="https://github.com/embeddedos-org/eFab/blob/main/docs/roadmap.md" style="color:var(--cyan)" target="_blank" rel="noopener">eFab roadmap</a>.</p>
       <div class="card-tags">
         <span class="badge badge-cyan">3 repos</span>
         <span class="badge" style="background:var(--bg-tertiary);color:var(--text-muted)">planned</span>
@@ -179,7 +179,7 @@ git clone https://github.com/embeddedos-org/eFab.git
     </div>
     <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
       <h3 style="color:var(--green);margin-top:0;border:none;font-size:1rem">Where do I file bugs?</h3>
-      <p style="color:var(--text-secondary);font-size:.92rem;margin:0">Bugs in inference / transport / sensor behaviour: file in <a href="https://github.com/embeddedos-org/eAI" style="color:var(--cyan)">eAI</a>, <a href="https://github.com/embeddedos-org/eIPC" style="color:var(--cyan)">eIPC</a>, or <a href="https://github.com/embeddedos-org/eNI" style="color:var(--cyan)">eNI</a>. Wrong version pin, missing smoke test, or new profile request: file in <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)">eFab</a>.</p>
+      <p style="color:var(--text-secondary);font-size:.92rem;margin:0">Bugs in inference / transport / sensor behaviour: file in <a href="https://github.com/embeddedos-org/eAI" style="color:var(--cyan)" target="_blank" rel="noopener">eAI</a>, <a href="https://github.com/embeddedos-org/eIPC" style="color:var(--cyan)" target="_blank" rel="noopener">eIPC</a>, or <a href="https://github.com/embeddedos-org/eNI" style="color:var(--cyan)" target="_blank" rel="noopener">eNI</a>. Wrong version pin, missing smoke test, or new profile request: file in <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)" target="_blank" rel="noopener">eFab</a>.</p>
     </div>
     <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
       <h3 style="color:var(--purple);margin-top:0;border:none;font-size:1rem">Why not just merge the three repos?</h3>
@@ -187,7 +187,7 @@ git clone https://github.com/embeddedos-org/eFab.git
     </div>
     <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:1.5rem">
       <h3 style="color:var(--orange);margin-top:0;border:none;font-size:1rem">Can I propose a new stack?</h3>
-      <p style="color:var(--text-secondary);font-size:.92rem;margin:0">Yes &mdash; open a PR against <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)">eFab</a> adding a manifest, a CMake superproject, a smoke test, and a docs page. The intake checklist is in <a href="https://github.com/embeddedos-org/eFab/blob/main/docs/architecture.md" style="color:var(--cyan)">docs/architecture.md</a>.</p>
+      <p style="color:var(--text-secondary);font-size:.92rem;margin:0">Yes &mdash; open a PR against <a href="https://github.com/embeddedos-org/eFab" style="color:var(--cyan)" target="_blank" rel="noopener">eFab</a> adding a manifest, a CMake superproject, a smoke test, and a docs page. The intake checklist is in <a href="https://github.com/embeddedos-org/eFab/blob/main/docs/architecture.md" style="color:var(--cyan)" target="_blank" rel="noopener">docs/architecture.md</a>.</p>
     </div>
   </div>
 </section>
@@ -221,7 +221,7 @@ git clone https://github.com/embeddedos-org/eFab.git
       <ul>
         <li><a href="index.html">All stacks</a></li>
         <li><a href="eai-edge.html">eai-edge</a></li>
-        <li><a href="https://github.com/embeddedos-org/eFab">eFab on GitHub</a></li>
+        <li><a href="https://github.com/embeddedos-org/eFab" target="_blank" rel="noopener">eFab on GitHub</a></li>
       </ul>
     </div>
     <div><h4>Connect</h4>

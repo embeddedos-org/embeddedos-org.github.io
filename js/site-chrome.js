@@ -33,7 +33,9 @@
       var cls = l.cls || '';
       if (l.key === activeKey) cls = (cls + ' active').trim();
       var clsAttr = cls ? ' class="' + escAttr(cls) + '"' : '';
-      return '<a href="' + escAttr(l.href) + '"' + clsAttr + '>' + l.label + '</a>';
+      // External links (start with http) open in new tab so the main site nav never disappears
+      var extAttr = l.href.startsWith('http') ? ' target="_blank" rel="noopener"' : '';
+      return '<a href="' + escAttr(l.href) + '"' + clsAttr + extAttr + '>' + l.label + '</a>';
     }).join('');
 
     return [
@@ -95,9 +97,9 @@
       '<div>',
         '<h4>Community</h4>',
         '<ul>',
-          '<li><a href="https://github.com/embeddedos-org">GitHub Organization</a></li>',
-          '<li><a href="https://github.com/embeddedos-org/eos/issues">Report Issues</a></li>',
-          '<li><a href="https://github.com/embeddedos-org/eos/discussions">Discussions</a></li>',
+          '<li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub Organization</a></li>',
+          '<li><a href="https://github.com/embeddedos-org/eos/issues" target="_blank" rel="noopener">Report Issues</a></li>',
+          '<li><a href="https://github.com/embeddedos-org/eos/discussions" target="_blank" rel="noopener">Discussions</a></li>',
           '<li><a href="https://github.com/embeddedos-org/eos/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li>',
           '<li><a href="/get-involved.html">\u{1F91D} Get Involved</a></li>',
         '</ul>',
