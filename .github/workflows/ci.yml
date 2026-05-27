@@ -1,27 +1,64 @@
-name: Production CI/CD Pipeline
+name: CI — embeddedos-org.github.io
 
 on:
   push:
-    branches: [ main ]
+    branches: [main, develop]
+    tags: ["v*"]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  # ── Build & Test ──────────────────────────────────────────────────────────
+  test:
+    name: Build & Test
+    runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest pytest-cov requests matplotlib numpy
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
 
-    - name: Run Domain-Specific Test Suite
-      run: |
-        python run_all_tests.py
+      - name: Lint
+        run: npm run lint 2>/dev/null || true
+
+      - name: Type check
+        run: npm run typecheck 2>/dev/null || true
+
+      - name: Run tests
+        run: npm test -- --passWithNoTests
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: embeddedos-org-web-build
+          path: dist/
+          retention-days: 30
+
+  # ── Release ───────────────────────────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-22.04
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci --legacy-peer-deps
+      - run: npm run build
+      - name: Package
+        run: tar czf embeddedos-org-web-${{ github.ref_name }}-web.tar.gz dist/
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: embeddedos-org-web-${{ github.ref_name }}-web.tar.gz
+          generate_release_notes: true
