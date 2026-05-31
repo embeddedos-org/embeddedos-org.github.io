@@ -17,6 +17,9 @@
 <meta name="twitter:image" content="https://embeddedos-org.github.io/og-image.png">
 <link rel="canonical" href="https://embeddedos-org.github.io/hardware-lab.html">
 <link rel="preload" href="style.css" as="style">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
 .board-section{margin:3rem 0;padding:2rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg)}
@@ -36,9 +39,9 @@
 </head><body>
 <nav class="navbar"><div class="nav-inner">
 <a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v1.0.0</span></a>
-<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html">Get Started</a><a href="docs/index.html">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a><a href="kids.html">Kids 🎮</a><a href="hardware-lab.html" class="active">Hardware Lab 🔌</a><a href="flow.html">Flow</a>
+<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="index.html">Home</a><a href="getting-started.html">Get Started</a><a href="docs/index.html">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github" target="_blank" rel="noopener">🏪 App Store</a><a href="kids.html">Kids 🎮</a><a href="hardware-lab.html" class="active">Hardware Lab 🔌</a><a href="flow.html">Flow</a>
     <a href="books.html">📚 Books</a>
-<a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+<a href="stacks/index.html">&#127981; Stacks</a><a href="/index.html#health-devices">&#10084;&#65039; Health</a><a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">&#9733; GitHub</a>
 <button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav>
 
 <section class="hero" style="padding:4rem 2rem 3rem"><div class="hero-content">
@@ -72,7 +75,7 @@
 </ul></div>
 <h3>📦 Setup Steps</h3>
 <div class="steps step-green">
-<div class="step"><h3>Install Raspberry Pi OS</h3><p>Download <a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a>, flash Raspberry Pi OS (64-bit) to your microSD card, and boot.</p></div>
+<div class="step"><h3>Install Raspberry Pi OS</h3><p>Download <a href="https://www.raspberrypi.com/software/" target="_blank" rel="noopener">Raspberry Pi Imager</a>, flash Raspberry Pi OS (64-bit) to your microSD card, and boot.</p></div>
 <div class="step"><h3>Install EmbeddedOS Tools</h3>
 <pre><code>sudo apt update &amp;&amp; sudo apt install -y cmake ninja-build gcc g++ git python3-pip
 pip install embeddedos-ebuild embeddedos-eosim</code></pre></div>
@@ -108,7 +111,7 @@ cd my-blink &amp;&amp; ebuild build</code></pre></div>
 </ul></div>
 <h3>📦 Setup Steps</h3>
 <div class="steps">
-<div class="step"><h3>Flash the Board</h3><p>Download Debian image from <a href="https://beagleboard.org/latest-images">beagleboard.org</a>. Flash to microSD with Balena Etcher.</p></div>
+<div class="step"><h3>Flash the Board</h3><p>Download Debian image from <a href="https://beagleboard.org/latest-images" target="_blank" rel="noopener">beagleboard.org</a>. Flash to microSD with Balena Etcher.</p></div>
 <div class="step"><h3>Connect via USB</h3>
 <pre><code>ssh debian@192.168.7.2
 # Default password: temppwd</code></pre></div>
@@ -290,7 +293,7 @@ cd my-riscv &amp;&amp; ebuild build &amp;&amp; ebuild flash --verify</code></pre
 <div style="display:flex;gap:.5rem;flex-wrap:wrap"><span class="badge badge-blue">MIT</span><span class="badge badge-green">Open Source</span></div></div>
 <div><h4>Documentation</h4><ul><li><a href="getting-started.html">Getting Started</a></li><li><a href="docs/eos.html">EoS Kernel</a></li><li><a href="docs/eboot.html">eBoot</a></li><li><a href="docs/ebuild.html">ebuild</a></li></ul></div>
 <div><h4>Components</h4><ul><li><a href="docs/eipc.html">EIPC</a></li><li><a href="docs/eai.html">EAI</a></li><li><a href="docs/eni.html">ENI</a></li><li><a href="docs/eosuite.html">eApps</a></li><li><a href="docs/eosim.html">EoSim</a></li><li><a href="docs/eostudio.html">EoStudio</a></li></ul></div>
-<div><h4>Learn</h4><ul><li><a href="kids.html">Kids Guide 🎮</a></li><li><a href="hardware-lab.html">Hardware Lab 🔌</a></li><li><a href="https://github.com/embeddedos-org">GitHub</a></li></ul></div>
+<div><h4>Learn</h4><ul><li><a href="kids.html">Kids Guide 🎮</a></li><li><a href="hardware-lab.html">Hardware Lab 🔌</a></li><li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li></ul></div>
   <div>
     <h4>Connect</h4>
     <ul class="social-list">

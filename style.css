@@ -25,7 +25,7 @@
   --pink-dim: rgba(247,120,186,0.15);
   --yellow-dim: rgba(227,179,65,0.15);
   --red-dim: rgba(248,81,73,0.15);
-  --gradient-hero: linear-gradient(135deg, #0d1117 0%, #161b40 30%, #1a1040 60%, #0d1117 100%);
+  --gradient-hero: linear-gradient(135deg, #0d1117 0%, #0f1a35 25%, #1a1040 55%, #0d1117 100%);
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
@@ -33,8 +33,8 @@
   --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
-  --font-sans: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  --font-sans: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Fira Code', 'Cascadia Code', Consolas, monospace;
   --sidebar-width: 260px;
   --nav-height: 64px;
 }
@@ -62,7 +62,7 @@ h3 { font-size: 1.25rem; margin: 2rem 0 0.75rem; }
 .nav-github { display: inline-flex; align-items: center; gap: 6px; padding: 0.4rem 1rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-secondary); font-size: 0.85rem; transition: all 0.2s; }
 .nav-github:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--text-muted); text-decoration: none; }
 .hero { background: var(--gradient-hero); padding: 6rem 2rem 5rem; text-align: center; position: relative; overflow: hidden; }
-.hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 50%, rgba(88,166,255,0.08) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(188,140,255,0.08) 0%, transparent 50%); animation: heroGlow 8s ease-in-out infinite alternate; }
+.hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 50%, rgba(88,166,255,0.10) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(188,140,255,0.10) 0%, transparent 50%), radial-gradient(circle at 50% 80%, rgba(63,185,80,0.05) 0%, transparent 40%); animation: heroGlow 8s ease-in-out infinite alternate; }
 @keyframes heroGlow { 0% { transform: translate(0, 0); } 100% { transform: translate(-3%, 3%); } }
 .hero-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
 .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem; background: linear-gradient(135deg, var(--blue), var(--purple), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -75,7 +75,8 @@ h3 { font-size: 1.25rem; margin: 2rem 0 0.75rem; }
 
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 0.7rem 1.5rem; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.25s ease; border: none; text-decoration: none !important; }
 .btn-primary { background: var(--blue); color: #fff !important; }
-.btn-primary:hover { background: #79b8ff; box-shadow: 0 0 20px rgba(88,166,255,0.3); transform: translateY(-2px); }
+.btn-primary:hover { background: #79b8ff; box-shadow: 0 0 24px rgba(88,166,255,0.4); transform: translateY(-2px); }
+.btn:active { transform: scale(0.97) !important; transition: transform 0.12s ease-out !important; }
 .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary) !important; border: 1px solid var(--border-color); }
 .btn-secondary:hover { background: var(--bg-hover); border-color: var(--text-muted); transform: translateY(-2px); }
 .btn-green { background: var(--green); color: #fff !important; }
@@ -89,7 +90,7 @@ h3 { font-size: 1.25rem; margin: 2rem 0 0.75rem; }
 .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
 .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
 .product-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-.product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--text-muted); }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.6); border-color: var(--text-muted); }
 .card-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; margin-bottom: 1rem; }
 .product-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; border: none; padding: 0; margin-top: 0; }
 .product-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5; }

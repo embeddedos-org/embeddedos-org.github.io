@@ -7,7 +7,7 @@
 (function () {
   'use strict';
 
-  var SITE_VERSION = 'v0.1.0';
+  var SITE_VERSION = 'v1.0.0';
 
   var NAV_LINKS = [
     { href: '/index.html',                              label: 'Home',            key: 'home' },
@@ -20,7 +20,8 @@
     { href: '/books.html',                              label: '\u{1F4DA} Books', key: 'books' },
     { href: '/stacks/index.html',                       label: '\u{1F3ED} Stacks', key: 'stacks' },
     { href: '/get-involved.html',                       label: '\u{1F91D} Get Involved', key: 'get-involved' },
-    { href: 'https://github.com/embeddedos-org',        label: '\u2605 GitHub',   key: 'github',          cls: 'nav-github' }
+    { href: '/index.html#health-devices',               label: '\u2764\uFE0F Health',    key: 'health' },
+    { href: 'https://github.com/embeddedos-org',        label: '\u2605 GitHub',          key: 'github',        cls: 'nav-github' }
   ];
 
   function escAttr(s) {
@@ -32,7 +33,9 @@
       var cls = l.cls || '';
       if (l.key === activeKey) cls = (cls + ' active').trim();
       var clsAttr = cls ? ' class="' + escAttr(cls) + '"' : '';
-      return '<a href="' + escAttr(l.href) + '"' + clsAttr + '>' + l.label + '</a>';
+      // External links (start with http) open in new tab so the main site nav never disappears
+      var extAttr = l.href.startsWith('http') ? ' target="_blank" rel="noopener"' : '';
+      return '<a href="' + escAttr(l.href) + '"' + clsAttr + extAttr + '>' + l.label + '</a>';
     }).join('');
 
     return [
@@ -51,7 +54,7 @@
       '<div class="footer-brand">',
         '<h3 style="margin-bottom:0.5rem">EmbeddedOS</h3>',
         '<p>An open-source embedded operating system for the next generation of intelligent devices.</p>',
-        '<div style="display:flex;gap:0.5rem;flex-wrap:wrap">',
+        '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem">',
           '<span class="badge badge-blue">MIT</span>',
           '<span class="badge badge-green">Open Source</span>',
           '<span class="badge badge-purple">Community</span>',
@@ -78,15 +81,27 @@
           '<li><a href="/docs/edb.html">eDB</a></li>',
           '<li><a href="/docs/ebrowser.html">eBrowser</a></li>',
           '<li><a href="/docs/eoffice.html">eOffice</a></li>',
+          '<li><a href="/stacks/index.html">\u{1F3ED} Stacks</a></li>',
+        '</ul>',
+      '</div>',
+      '<div>',
+        '<h4>Health Devices</h4>',
+        '<ul>',
+          '<li><a href="/index.html#health-devices">\u2764\uFE0F Overview</a></li>',
+          '<li><a href="https://github.com/embeddedos-org/HealthKey-Ulta" target="_blank" rel="noopener">HEALTH-KEY ULTRA</a></li>',
+          '<li><a href="https://github.com/embeddedos-org/HEALTH-BAND-Neuro" target="_blank" rel="noopener">HEALTH-BAND Neuro</a></li>',
+          '<li><a href="https://github.com/embeddedos-org/HealthKey-Ulta/tree/main/companion-app" target="_blank" rel="noopener">EoS Health App</a></li>',
+          '<li><a href="https://github.com/embeddedos-org/HealthKey-Ulta/tree/main/patent" target="_blank" rel="noopener">Patent Docs</a></li>',
         '</ul>',
       '</div>',
       '<div>',
         '<h4>Community</h4>',
         '<ul>',
-          '<li><a href="https://github.com/embeddedos-org">GitHub Organization</a></li>',
-          '<li><a href="https://github.com/embeddedos-org/eos/issues">Report Issues</a></li>',
-          '<li><a href="https://github.com/embeddedos-org/eos/discussions">Discussions</a></li>',
-          '<li><a href="https://github.com/embeddedos-org/eos/blob/main/CONTRIBUTING.md">Contributing</a></li>',
+          '<li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub Organization</a></li>',
+          '<li><a href="https://github.com/embeddedos-org/eos/issues" target="_blank" rel="noopener">Report Issues</a></li>',
+          '<li><a href="https://github.com/embeddedos-org/eos/discussions" target="_blank" rel="noopener">Discussions</a></li>',
+          '<li><a href="https://github.com/embeddedos-org/eos/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li>',
+          '<li><a href="/get-involved.html">\u{1F91D} Get Involved</a></li>',
         '</ul>',
       '</div>',
       '<div>',

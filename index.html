@@ -43,6 +43,9 @@
 <link rel="me" href="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/">
 <link rel="canonical" href="https://embeddedos-org.github.io/">
 <link rel="preload" href="style.css" as="style">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="dns-prefetch" href="https://github.com">
 <!-- TODO: re-enable preconnect to googletagmanager.com when GA is uncommented below. -->
@@ -137,13 +140,14 @@
     <a href="index.html" class="active">Home</a>
     <a href="getting-started.html">Get Started</a>
     <a href="docs/index.html">Docs</a>
-    <a href="https://embeddedos-org.github.io/eApps/" class="nav-github">🏪 App Store</a>
+    <a href="https://embeddedos-org.github.io/eApps/" class="nav-github" target="_blank" rel="noopener">🏪 App Store</a>
     <a href="kids.html">Kids &#127918;</a>
     <a href="hardware-lab.html">Hardware Lab &#128268;</a>
     <a href="flow.html">Flow</a>
     <a href="books.html">📚 Books</a>
     <a href="get-involved.html">🤝 Get Involved</a>
-    <a href="https://github.com/embeddedos-org" class="nav-github">&#9733; GitHub</a>
+    <a href="#health-devices">&#10084;&#65039; Health</a>
+    <a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">&#9733; GitHub</a>
     <button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
   </div>
 </div>
@@ -157,7 +161,7 @@
   <div class="hero-buttons">
     <a href="getting-started.html" class="btn btn-primary">&#9654; Get Started</a>
     <a href="docs/index.html" class="btn btn-secondary">&#128214; Documentation</a>
-    <a href="https://github.com/embeddedos-org" class="btn btn-outline">&#9733; Star on GitHub</a>
+    <a href="https://github.com/embeddedos-org" class="btn btn-outline" target="_blank" rel="noopener">&#9733; Star on GitHub</a>
   </div>
   <div class="hero-stats">
     <div class="stat"><span class="stat-number" style="color:var(--blue)">14</span><span class="stat-label">Components</span></div>
@@ -208,11 +212,11 @@
     <strong style="color:var(--text-primary)">Production-hardening sprint landed</strong>
   </div>
   <p style="margin:0;color:var(--text-secondary);font-size:0.92rem;line-height:1.55">
-    Truth-in-claims pass across <a href="https://github.com/embeddedos-org/eos">eos</a>,
-    <a href="https://github.com/embeddedos-org/eBoot">eBoot</a>, and
-    <a href="https://github.com/embeddedos-org/ebuild">ebuild</a> READMEs.
+    Truth-in-claims pass across <a href="https://github.com/embeddedos-org/eos" target="_blank" rel="noopener">eos</a>,
+    <a href="https://github.com/embeddedos-org/eBoot" target="_blank" rel="noopener">eBoot</a>, and
+    <a href="https://github.com/embeddedos-org/ebuild" target="_blank" rel="noopener">ebuild</a> READMEs.
     eBoot's Ed25519 verifier replaced with vendored
-    <a href="https://github.com/floodyberry/ed25519-donna">ed25519-donna</a> (RFC&nbsp;8032 §7.1 vectors green).
+    <a href="https://github.com/floodyberry/ed25519-donna" target="_blank" rel="noopener">ed25519-donna</a> (RFC&nbsp;8032 §7.1 vectors green).
     New <strong>STM32F4 vertical slice</strong> exercised end-to-end on QEMU via the new
     <code>qemu-stm32f4.yml</code> CI workflows.
     ebuild gained a <code>repos</code> manifest, plugin entry-point loading, an
@@ -236,9 +240,9 @@
       <span class="badge badge-green">Multicore</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eos/" class="btn btn-sm btn-primary">Product Page</a>
+      <a href="https://embeddedos-org.github.io/eos/" class="btn btn-sm btn-primary" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/eos.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/eos" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/eos" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -252,9 +256,9 @@
       <span class="badge badge-orange">Verified</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eBoot/" class="btn btn-sm btn-green">Product Page</a>
+      <a href="https://embeddedos-org.github.io/eBoot/" class="btn btn-sm btn-green" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/eboot.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/eBoot" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/eBoot" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -268,9 +272,9 @@
       <span class="badge badge-purple">Auto-Deps</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/ebuild/" class="btn btn-sm" style="background:var(--orange);color:#fff">Product Page</a>
+      <a href="https://embeddedos-org.github.io/ebuild/" class="btn btn-sm" style="background:var(--orange);color:#fff" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/ebuild.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/ebuild" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/ebuild" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -284,9 +288,9 @@
       <span class="badge badge-green">mTLS</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eIPC/" class="btn btn-sm" style="background:var(--cyan);color:#fff">Product Page</a>
+      <a href="https://embeddedos-org.github.io/eIPC/" class="btn btn-sm" style="background:var(--cyan);color:#fff" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/eipc.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/eIPC" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/eIPC" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -300,9 +304,9 @@
       <span class="badge badge-orange">12 Models</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eAI/" class="btn btn-sm btn-purple">Product Page</a>
+      <a href="https://embeddedos-org.github.io/eAI/" class="btn btn-sm btn-purple" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/eai.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/eAI" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/eAI" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -316,16 +320,16 @@
       <span class="badge badge-yellow">Neuralink</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eNI/" class="btn btn-sm" style="background:var(--pink);color:#fff">Product Page</a>
+      <a href="https://embeddedos-org.github.io/eNI/" class="btn btn-sm" style="background:var(--pink);color:#fff" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/eni.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/eNI" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/eNI" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
   <div class="product-card card-eosuite">
     <div class="card-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="11" height="11" rx="3" fill="url(#grad-yellow)" opacity="0.5" stroke="#e3b341" stroke-width="1"/><rect x="17" y="4" width="11" height="11" rx="3" fill="url(#grad-blue)" opacity="0.5" stroke="#58a6ff" stroke-width="1"/><rect x="4" y="17" width="11" height="11" rx="3" fill="url(#grad-green)" opacity="0.5" stroke="#3fb950" stroke-width="1"/><rect x="17" y="17" width="11" height="11" rx="3" fill="url(#grad-purple)" opacity="0.5" stroke="#bc8cff" stroke-width="1"/></svg></div>
     <h3>eApps &mdash; Unified App Store</h3>
-    <p><strong>60+ apps across all platforms</strong>: 11 browser/editor extensions, 4 desktop apps (eOffice, EoStudio, EoSim, eBrowser), 5 mobile apps (eRide, eSocial, eTrack, eTravel, eWallet), 40+ native LVGL apps, cloud services. Automated CI/CD builds .exe, .dmg, .apk, .zip, .xpi, .vsix and deploys to <a href="https://embeddedos-org.github.io/eApps/" style="color:#58a6ff">GitHub Pages App Store</a>.</p>
+    <p><strong>60+ apps across all platforms</strong>: 11 browser/editor extensions, 4 desktop apps (eOffice, EoStudio, EoSim, eBrowser), 5 mobile apps (eRide, eSocial, eTrack, eTravel, eWallet), 40+ native LVGL apps, cloud services. Automated CI/CD builds .exe, .dmg, .apk, .zip, .xpi, .vsix and deploys to <a href="https://embeddedos-org.github.io/eApps/" style="color:#58a6ff" target="_blank" rel="noopener">GitHub Pages App Store</a>.</p>
     <div class="card-tags">
       <span class="badge badge-yellow">60+ Apps</span>
       <span class="badge badge-green">All Platforms</span>
@@ -333,9 +337,9 @@
       <span class="badge badge-purple">CI/CD</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eApps/" class="btn btn-sm" style="background:var(--yellow);color:#000">&#127978; App Store</a>
+      <a href="https://embeddedos-org.github.io/eApps/" class="btn btn-sm" style="background:var(--yellow);color:#000" target="_blank" rel="noopener">&#127978; App Store</a>
       <a href="docs/eosuite.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/eApps" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/eApps" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -349,9 +353,9 @@
       <span class="badge badge-cyan">Cluster</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/EoSim/" class="btn btn-sm" style="background:var(--red);color:#fff">Product Page</a>
+      <a href="https://embeddedos-org.github.io/EoSim/" class="btn btn-sm" style="background:var(--red);color:#fff" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/eosim.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/EoSim" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/EoSim" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -365,9 +369,9 @@
       <span class="badge badge-blue">10 Editors</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/EoStudio/" class="btn btn-sm" style="background:var(--pink);color:#fff">Product Page</a>
+      <a href="https://embeddedos-org.github.io/EoStudio/" class="btn btn-sm" style="background:var(--pink);color:#fff" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/eostudio.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/EoStudio" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/EoStudio" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -381,9 +385,9 @@
       <span class="badge badge-purple">AI Queries</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eDB/" class="btn btn-sm btn-green">Product Page</a>
+      <a href="https://embeddedos-org.github.io/eDB/" class="btn btn-sm btn-green" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/edb.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/eDB" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/eDB" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -397,9 +401,9 @@
       <span class="badge badge-orange">Embedded</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eBrowser/" class="btn btn-sm" style="background:var(--cyan);color:#fff">Product Page</a>
+      <a href="https://embeddedos-org.github.io/eBrowser/" class="btn btn-sm" style="background:var(--cyan);color:#fff" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/ebrowser.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/eBrowser" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/eBrowser" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -413,9 +417,9 @@
       <span class="badge badge-blue">Real-time</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eOffice/" class="btn btn-sm" style="background:var(--orange);color:#fff">Product Page</a>
+      <a href="https://embeddedos-org.github.io/eOffice/" class="btn btn-sm" style="background:var(--orange);color:#fff" target="_blank" rel="noopener">Product Page</a>
       <a href="docs/eoffice.html" class="btn btn-sm btn-outline">Docs</a>
-      <a href="https://github.com/embeddedos-org/eOffice" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/eOffice" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -432,8 +436,8 @@
       <span class="badge badge-purple">Schematics</span>
     </div>
     <div class="card-buttons">
-      <a href="https://embeddedos-org.github.io/eCAD-Hardware-Products/" class="btn btn-sm btn-green">Product Page</a>
-      <a href="https://github.com/embeddedos-org/eCAD-Hardware-Products" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://embeddedos-org.github.io/eCAD-Hardware-Products/" class="btn btn-sm btn-green" target="_blank" rel="noopener">Product Page</a>
+      <a href="https://github.com/embeddedos-org/eCAD-Hardware-Products" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 
@@ -446,8 +450,97 @@
       <span class="badge badge-blue">Docs</span>
     </div>
     <div class="card-buttons">
-      <a href="https://github.com/embeddedos-org/embeddedos-org.github.io" class="btn btn-sm btn-outline">GitHub</a>
+      <a href="https://github.com/embeddedos-org/embeddedos-org.github.io" class="btn btn-sm btn-outline" target="_blank" rel="noopener">GitHub</a>
     </div>
+  </div>
+</div>
+</section>
+
+<!-- HEALTH DEVICES SECTION -->
+<section class="section section-alt" id="health-devices">
+<div class="section">
+  <h2 class="section-title">&#10084;&#65039; Health Devices</h2>
+  <p class="section-subtitle">Patent-protected wearable health intelligence &mdash; two flagship products powered by EmbeddedOS on nRF52840</p>
+  <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem">
+    <span style="background:rgba(63,185,80,0.12);color:#3fb950;padding:0.3rem 0.9rem;border-radius:999px;font-size:0.75rem;font-weight:700;border:1px solid rgba(63,185,80,0.3)">&#9679; HEALTH-KEY ULTRA &mdash; U.S. App. No. 64/073,334 &bull; Filed May 23, 2026</span>
+    <span style="background:rgba(63,185,80,0.12);color:#3fb950;padding:0.3rem 0.9rem;border-radius:999px;font-size:0.75rem;font-weight:700;border:1px solid rgba(63,185,80,0.3)">&#9679; HEALTH-BAND Neuro &mdash; U.S. App. No. 64/076,078 &bull; Filed May 27, 2026</span>
+  </div>
+  <div style="height:3px;background:linear-gradient(90deg,#00e5cc,#7c3aed,#00e5cc);border-radius:2px;max-width:80px;margin:0 auto 2.5rem;"></div>
+  <div class="product-grid">
+
+    <!-- HEALTH-KEY ULTRA -->
+    <div class="product-card" style="border-top:3px solid #00e5cc;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;right:0;background:linear-gradient(135deg,rgba(0,229,204,0.10),transparent);width:100px;height:100px;border-radius:0 0 0 100px;pointer-events:none"></div>
+      <div class="card-icon" style="background:rgba(0,229,204,0.12);color:#00e5cc">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="11" y="2" width="10" height="28" rx="3" fill="none" stroke="#00e5cc" stroke-width="1.5"/><rect x="13" y="5" width="6" height="4" rx="1" fill="rgba(0,229,204,0.3)"/><circle cx="16" cy="14" r="2" fill="none" stroke="#00e5cc" stroke-width="1"/><path d="M13 19 Q16 17 19 19" stroke="#00e5cc" stroke-width="1" fill="none"/><rect x="14" y="24" width="4" height="3" rx="1" fill="rgba(0,229,204,0.4)"/></svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem">
+        <h3 style="margin:0">HEALTH-KEY ULTRA</h3>
+        <span style="background:rgba(0,229,204,0.15);color:#00e5cc;padding:0.1rem 0.45rem;border-radius:999px;font-size:0.65rem;font-weight:700;letter-spacing:0.05em;border:1px solid rgba(0,229,204,0.3)">PATENT PENDING</span>
+      </div>
+      <p>The world&#8217;s first <strong>keychain health monitor</strong> with USB-C Male plug that connects directly to any device. ECG via USB-C shield conductor, SpO&#8322;, BAC breath analysis, sEMG, TENS neuromodulation, <strong>64GB onboard flash</strong>, and BLE 5.0 &mdash; all in a form factor smaller than a house key.</p>
+      <div class="card-tags">
+        <span class="badge" style="background:rgba(0,229,204,0.15);color:#00e5cc;border:1px solid rgba(0,229,204,0.25)">USB-C Health</span>
+        <span class="badge" style="background:rgba(88,166,255,0.15);color:#58a6ff;border:1px solid rgba(88,166,255,0.25)">ECG + SpO&#8322;</span>
+        <span class="badge" style="background:rgba(124,58,237,0.15);color:#bc8cff;border:1px solid rgba(124,58,237,0.25)">64GB Vault</span>
+        <span class="badge" style="background:rgba(240,136,62,0.15);color:#f0883e;border:1px solid rgba(240,136,62,0.25)">BLE 5.0</span>
+      </div>
+      <div class="card-buttons">
+        <a href="https://github.com/embeddedos-org/HealthKey-Ulta" class="btn btn-sm" style="background:#00e5cc;color:#0d1117;font-weight:600" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/embeddedos-org/HealthKey-Ulta/tree/main/patent" class="btn btn-sm btn-outline" target="_blank" rel="noopener">Patent Docs</a>
+        <a href="https://zenodo.org/records/20361196" class="btn btn-sm btn-outline" target="_blank" rel="noopener">Zenodo</a>
+        <a href="https://github.com/embeddedos-org/HealthKey-Ulta/tree/main/companion-app" class="btn btn-sm btn-outline" target="_blank" rel="noopener">App</a>
+      </div>
+    </div>
+
+    <!-- HEALTH-BAND Neuro -->
+    <div class="product-card" style="border-top:3px solid #7c3aed;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;right:0;background:linear-gradient(135deg,rgba(124,58,237,0.10),transparent);width:100px;height:100px;border-radius:0 0 0 100px;pointer-events:none"></div>
+      <div class="card-icon" style="background:rgba(124,58,237,0.12);color:#bc8cff">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="11" width="24" height="10" rx="5" fill="none" stroke="#bc8cff" stroke-width="1.5"/><rect x="7" y="14" width="18" height="4" rx="2" fill="rgba(124,58,237,0.25)"/><path d="M10 16 L12 13 L14 19 L16 14 L18 18 L20 16 L22 16" stroke="#00e5cc" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="13" width="2" height="6" rx="1" fill="#bc8cff" opacity="0.6"/><rect x="28" y="13" width="2" height="6" rx="1" fill="#bc8cff" opacity="0.6"/></svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem">
+        <h3 style="margin:0">HEALTH-BAND Neuro</h3>
+        <span style="background:rgba(124,58,237,0.15);color:#bc8cff;padding:0.1rem 0.45rem;border-radius:999px;font-size:0.65rem;font-weight:700;letter-spacing:0.05em;border:1px solid rgba(124,58,237,0.3)">PATENT PENDING</span>
+      </div>
+      <p>The world&#8217;s first <strong>zero-hole wristband</strong> with bidirectional neuromuscular interface. USB-C Male clasp for pass-through charging, <strong>Micro OLED display</strong>, sEMG gesture recognition, TENS therapy, ECG, SpO&#8322;, BAC breath analysis, 64GB onboard flash, and a CIP patent covering holographic Micro-LED display technology.</p>
+      <div class="card-tags">
+        <span class="badge" style="background:rgba(124,58,237,0.15);color:#bc8cff;border:1px solid rgba(124,58,237,0.25)">sEMG + TENS</span>
+        <span class="badge" style="background:rgba(0,229,204,0.15);color:#00e5cc;border:1px solid rgba(0,229,204,0.25)">Zero-Hole</span>
+        <span class="badge" style="background:rgba(88,166,255,0.15);color:#58a6ff;border:1px solid rgba(88,166,255,0.25)">OLED Display</span>
+        <span class="badge" style="background:rgba(63,185,80,0.15);color:#3fb950;border:1px solid rgba(63,185,80,0.25)">U.S. 64/076,078</span>
+      </div>
+      <div class="card-buttons">
+        <a href="https://github.com/embeddedos-org/HEALTH-BAND-Neuro" class="btn btn-sm" style="background:#7c3aed;color:#fff;font-weight:600" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/embeddedos-org/HEALTH-BAND-Neuro/tree/main/patent" class="btn btn-sm btn-outline" target="_blank" rel="noopener">Patent Docs</a>
+        <a href="https://github.com/embeddedos-org/HEALTH-BAND-Neuro/tree/main/companion-app" class="btn btn-sm btn-outline" target="_blank" rel="noopener">App</a>
+      </div>
+    </div>
+
+    <!-- EoS Health Companion App -->
+    <div class="product-card" style="border-top:3px solid #f0883e;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;right:0;background:linear-gradient(135deg,rgba(240,136,62,0.10),transparent);width:100px;height:100px;border-radius:0 0 0 100px;pointer-events:none"></div>
+      <div class="card-icon" style="background:rgba(240,136,62,0.12);color:#f0883e">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="3" width="16" height="26" rx="3" fill="none" stroke="#f0883e" stroke-width="1.5"/><rect x="11" y="6" width="10" height="7" rx="1" fill="rgba(240,136,62,0.25)"/><path d="M11 17 L13 14 L15 20 L17 15 L19 18 L21 17" stroke="#00e5cc" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="26" r="1.5" fill="#f0883e" opacity="0.6"/></svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem">
+        <h3 style="margin:0">EoS Health App</h3>
+        <span style="background:rgba(240,136,62,0.15);color:#f0883e;padding:0.1rem 0.45rem;border-radius:999px;font-size:0.65rem;font-weight:700;letter-spacing:0.05em;border:1px solid rgba(240,136,62,0.3)">WEB &bull; MOBILE &bull; DESKTOP</span>
+      </div>
+      <p>Unified companion app for both health devices. <strong>Live ECG waveform</strong>, real-time HR/SpO&#8322;/BAC dashboard, TENS control panel, sEMG gesture trainer, 64GB Data Vault, and OTA firmware updates. Available as a <strong>React web app, React Native iOS/Android app, and Electron desktop app</strong>.</p>
+      <div class="card-tags">
+        <span class="badge" style="background:rgba(240,136,62,0.15);color:#f0883e;border:1px solid rgba(240,136,62,0.25)">React Native</span>
+        <span class="badge" style="background:rgba(88,166,255,0.15);color:#58a6ff;border:1px solid rgba(88,166,255,0.25)">Electron</span>
+        <span class="badge" style="background:rgba(63,185,80,0.15);color:#3fb950;border:1px solid rgba(63,185,80,0.25)">BLE + USB-C</span>
+        <span class="badge" style="background:rgba(124,58,237,0.15);color:#bc8cff;border:1px solid rgba(124,58,237,0.25)">Live Sim</span>
+      </div>
+      <div class="card-buttons">
+        <a href="https://github.com/embeddedos-org/HealthKey-Ulta/tree/main/companion-app" class="btn btn-sm" style="background:#f0883e;color:#0d1117;font-weight:600" target="_blank" rel="noopener">Web App</a>
+        <a href="https://github.com/embeddedos-org/HealthKey-Ulta/tree/main/mobile-app" class="btn btn-sm btn-outline" target="_blank" rel="noopener">Mobile</a>
+        <a href="https://github.com/embeddedos-org/HealthKey-Ulta/tree/main/desktop-app" class="btn btn-sm btn-outline" target="_blank" rel="noopener">Desktop</a>
+      </div>
+    </div>
+
   </div>
 </div>
 </section>
@@ -655,15 +748,15 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
 
       <div style="display:flex;gap:1rem;flex-wrap:wrap">
         <a href="https://github.com/embeddedos-org/eos/releases/download/v0.2.0-book/embeddedos-complete-guide.pdf"
-           style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;background:var(--purple);color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:0.9rem">
+           style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;background:var(--purple);color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:0.9rem" target="_blank" rel="noopener">
           &#128196; Download PDF
         </a>
         <a href="https://github.com/embeddedos-org/eos/tree/master/docs/book"
-           style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;border:1px solid var(--border-color);color:var(--text-primary);border-radius:8px;font-weight:600;text-decoration:none;font-size:0.9rem">
+           style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;border:1px solid var(--border-color);color:var(--text-primary);border-radius:8px;font-weight:600;text-decoration:none;font-size:0.9rem" target="_blank" rel="noopener">
           &#128209; Read Online (GitHub)
         </a>
         <a href="https://github.com/embeddedos-org/eos/releases/tag/v0.2.0-book"
-           style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;border:1px solid var(--border-color);color:var(--text-primary);border-radius:8px;font-weight:600;text-decoration:none;font-size:0.9rem">
+           style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;border:1px solid var(--border-color);color:var(--text-primary);border-radius:8px;font-weight:600;text-decoration:none;font-size:0.9rem" target="_blank" rel="noopener">
           &#127991; Release Page
         </a>
       </div>
@@ -688,7 +781,7 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
     <h3 style="color:var(--purple);border:none;margin:0 0 0.5rem;font-size:1.3rem">The EmbeddedOS Ecosystem &mdash; Complete Product Guide</h3>
     <p style="color:var(--text-secondary);margin:0 0 1rem;font-size:0.9rem">All 14 volumes in one PDF &bull; 2,355 lines &bull; CC BY-SA 4.0</p>
     <a href="https://github.com/embeddedos-org/embeddedos-org.github.io/releases/download/v1.0.0-ecosystem-guide/embeddedos-ecosystem-complete-guide.pdf"
-       style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 2rem;background:var(--purple);color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:0.95rem">
+       style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 2rem;background:var(--purple);color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:0.95rem" target="_blank" rel="noopener">
       &#128196; Download Ecosystem Guide (PDF)
     </a>
   </div>
@@ -699,79 +792,79 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--blue);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">EoS</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Kernel, HAL, Services &bull; 12,500+ lines</div>
-      <a href="https://github.com/embeddedos-org/eos/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eos/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--blue);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">eBoot</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Secure Bootloader &bull; 1,679 lines</div>
-      <a href="https://github.com/embeddedos-org/eBoot/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eBoot/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--green);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">ebuild</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Build System &bull; 1,340 lines</div>
-      <a href="https://github.com/embeddedos-org/ebuild/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/ebuild/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--cyan);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">eIPC</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Inter-Process Communication &bull; 1,353 lines</div>
-      <a href="https://github.com/embeddedos-org/eIPC/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eIPC/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--purple);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">eAI</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Embedded AI / ML &bull; 1,390 lines</div>
-      <a href="https://github.com/embeddedos-org/eAI/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eAI/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--pink);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">eNI</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Neural Interface / BCI &bull; 1,698 lines</div>
-      <a href="https://github.com/embeddedos-org/eNI/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eNI/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--red);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">EoSim</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Simulation Platform &bull; 1,899 lines</div>
-      <a href="https://github.com/embeddedos-org/EoSim/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/EoSim/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--purple);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">EoStudio</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Design Suite &bull; 1,654 lines</div>
-      <a href="https://github.com/embeddedos-org/EoStudio/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/EoStudio/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--yellow);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">eApps</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">App Marketplace &bull; 1,412 lines</div>
-      <a href="https://github.com/embeddedos-org/eApps/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eApps/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--green);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">eDB</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Multi-Model Database &bull; 1,632 lines</div>
-      <a href="https://github.com/embeddedos-org/eDB/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eDB/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--cyan);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">eBrowser</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Embedded Browser &bull; 2,678 lines</div>
-      <a href="https://github.com/embeddedos-org/eBrowser/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eBrowser/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--orange);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">eOffice</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">Office Suite &bull; 3,438 lines</div>
-      <a href="https://github.com/embeddedos-org/eOffice/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eOffice/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
     <div style="background:var(--bg-card);border-radius:10px;padding:1.2rem;border:1px solid var(--border-color)">
       <div style="color:var(--green);font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">eCAD-Hardware-Products</div>
       <div style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:0.8rem">HW Designs (Radar, Health, PAM) &bull; 2,231 lines</div>
-      <a href="https://github.com/embeddedos-org/eCAD-Hardware-Products/releases/tag/v0.2.0-book" style="font-size:0.8rem">&#128196; Download PDF</a>
+      <a href="https://github.com/embeddedos-org/eCAD-Hardware-Products/releases/tag/v0.2.0-book" style="font-size:0.8rem" target="_blank" rel="noopener">&#128196; Download PDF</a>
     </div>
 
   </div>
@@ -862,19 +955,28 @@ cd eBrowser &amp;&amp; ./setup.sh</code></pre>
       <li><a href="docs/eosuite.html">eApps</a></li>
       <li><a href="docs/eosim.html">EoSim</a></li>
       <li><a href="docs/eostudio.html">EoStudio</a></li>
-      <li><a href="https://github.com/embeddedos-org/eDB">eDB</a></li>
-      <li><a href="https://github.com/embeddedos-org/eBrowser">eBrowser</a></li>
-      <li><a href="https://github.com/embeddedos-org/eOffice">eOffice</a></li>
-      <li><a href="https://github.com/embeddedos-org/eCAD-Hardware-Products">eCAD-Hardware-Products</a></li>
+      <li><a href="docs/edb.html">eDB</a></li>
+      <li><a href="docs/ebrowser.html">eBrowser</a></li>
+      <li><a href="docs/eoffice.html">eOffice</a></li>
+      <li><a href="stacks/index.html">&#127981; Stacks</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Health Devices</h4>
+    <ul>
+      <li><a href="#health-devices">&#10084;&#65039; Overview</a></li>
+      <li><a href="https://github.com/embeddedos-org/HealthKey-Ulta" target="_blank" rel="noopener">HEALTH-KEY ULTRA</a></li>
+      <li><a href="https://github.com/embeddedos-org/HEALTH-BAND-Neuro" target="_blank" rel="noopener">HEALTH-BAND Neuro</a></li>
+      <li><a href="https://github.com/embeddedos-org/HealthKey-Ulta/tree/main/companion-app" target="_blank" rel="noopener">EoS Health App</a></li>
     </ul>
   </div>
   <div>
     <h4>Community</h4>
     <ul>
-      <li><a href="https://github.com/embeddedos-org">GitHub Organization</a></li>
-      <li><a href="https://github.com/embeddedos-org/eos/issues">Report Issues</a></li>
-      <li><a href="https://github.com/embeddedos-org/eos/discussions">Discussions</a></li>
-      <li><a href="https://github.com/embeddedos-org/eos/blob/main/CONTRIBUTING.md">Contributing</a></li>
+      <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub Organization</a></li>
+      <li><a href="https://github.com/embeddedos-org/eos/issues" target="_blank" rel="noopener">Report Issues</a></li>
+      <li><a href="https://github.com/embeddedos-org/eos/discussions" target="_blank" rel="noopener">Discussions</a></li>
+      <li><a href="https://github.com/embeddedos-org/eos/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li>
     </ul>
   </div>
   <div>

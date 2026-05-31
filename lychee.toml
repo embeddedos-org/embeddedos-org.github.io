@@ -1,0 +1,24 @@
+# Lychee link checker configuration
+# Exclude root-relative paths that the offline checker cannot resolve
+# (these are valid paths on the live GitHub Pages site)
+
+[lychee]
+# Exclude patterns for offline checking
+exclude = [
+  # Root-relative assets (valid on live site, unresolvable offline)
+  "^/favicon\\.svg$",
+  "^/favicon\\.ico$",
+  "^/og-image\\.png$",
+  "^/og-image\\.jpg$",
+  # Root-relative page anchors (valid on live site)
+  "^/index\\.html#",
+  "^/index\\.html$",
+  "^/docs/",
+  "^/stacks/",
+  "^/getting-started\\.html$",
+  "^/kids\\.html$",
+  "^/hardware-lab\\.html$",
+  "^/flow\\.html$",
+  "^/books\\.html$",
+  "^/get-involved\\.html$",
+]
