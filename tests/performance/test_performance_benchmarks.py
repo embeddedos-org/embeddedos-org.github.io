@@ -1,6 +1,6 @@
 import unittest
 import time
-class Testembeddedos-org.github.ioPerformance(unittest.TestCase):
+class TestEmbeddedOsGitHubIoPerformance(unittest.TestCase):
     def test_perf_sla(self):
         start = time.perf_counter()
         for _ in range(100):
