@@ -58,7 +58,7 @@ jobs:
       - name: Package
         run: tar czf embeddedos-org-web-${{ github.ref_name }}-web.tar.gz dist/
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: embeddedos-org-web-${{ github.ref_name }}-web.tar.gz
           generate_release_notes: true
