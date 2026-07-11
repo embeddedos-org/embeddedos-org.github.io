@@ -327,20 +327,20 @@
 <nav class="navbar" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
     <a href="index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v1.0.0</span></a>
-    <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="getting-started.html">Get Started</a>
-      <a href="docs/index.html">Docs</a>
-      <a href="https://embeddedos-org.github.io/eApps/" class="nav-github" target="_blank" rel="noopener">🏪 App Store</a>
-      <a href="kids.html">Kids 🎮</a>
-      <a href="hardware-lab.html">Hardware Lab 🔌</a>
-      <a href="flow.html">Flow</a>
-      <a href="books.html" class="active">📚 Books</a>
-      <a href="stacks/index.html">&#127981; Stacks</a><a href="/index.html#health-devices">&#10084;&#65039; Health</a><a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">&#9733; GitHub</a>
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false"><span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span></button>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="getting-started.html">Get Started</a></li>
+      <li><a href="docs/index.html">Docs</a></li>
+      <li><a href="https://embeddedos-org.github.io/eApps/" class="nav-github" target="_blank" rel="noopener">🏪 App Store</a></li>
+      <li><a href="kids.html">Kids 🎮</a></li>
+      <li><a href="hardware-lab.html">Hardware Lab 🔌</a></li>
+      <li><a href="flow.html">Flow</a></li>
+      <li><a href="books.html" class="active">📚 Books</a></li>
+      <li><a href="stacks/index.html">&#127981; Stacks</a></li><li><a href="/index.html#health-devices">&#10084;&#65039; Health</a></li><li><a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">&#9733; GitHub</a></li>
       <button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
-    </div>
-  </div>
+    </ul>
+</div>
 </nav>
 
 <!-- ═══ Hero ═══ -->
@@ -377,8 +377,8 @@
         <span>Safety Certification</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eos/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ Download PDF</a>
-        <a href="https://github.com/embeddedos-org/eos/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">📖 Source</a>
+        <a href="https://github.com/embeddedos-org/eos/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ Download PDF</a>
+        <a href="https://github.com/embeddedos-org/eos/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">📖 Source</a>
       </div>
     </div>
   </div>
@@ -417,8 +417,8 @@
         <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">OTA</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eBoot/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/eBoot/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/eBoot/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eBoot/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -438,8 +438,8 @@
         <span class="book-tag" style="color:var(--cyan);border-color:var(--cyan)">CMake</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/ebuild/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/ebuild/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/ebuild/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/ebuild/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -460,8 +460,8 @@
         <span class="book-tag" style="color:var(--red);border-color:var(--red)">Security</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eIPC/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/eIPC/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/eIPC/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eIPC/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -482,8 +482,8 @@
         <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">Edge</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eAI/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/eAI/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/eAI/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eAI/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -503,8 +503,8 @@
         <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">Neural</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eNI/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/eNI/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/eNI/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eNI/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -524,8 +524,8 @@
         <span class="book-tag" style="color:var(--cyan);border-color:var(--cyan)">Simulation</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/EoSim/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/EoSim/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/EoSim/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/EoSim/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -545,8 +545,8 @@
         <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">PCB</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/EoStudio/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/EoStudio/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/EoStudio/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/EoStudio/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -566,8 +566,8 @@
         <span class="book-tag" style="color:var(--green);border-color:var(--green)">LVGL</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eApps/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/eApps/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/eApps/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eApps/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -588,8 +588,8 @@
         <span class="book-tag" style="color:var(--orange);border-color:var(--orange)">FTS</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eDB/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/eDB/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/eDB/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eDB/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -610,8 +610,8 @@
         <span class="book-tag" style="color:var(--yellow);border-color:var(--yellow)">JS</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eBrowser/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/eBrowser/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/eBrowser/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eBrowser/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -631,8 +631,8 @@
         <span class="book-tag" style="color:var(--purple);border-color:var(--purple)">CRDT</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eOffice/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/eOffice/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/eOffice/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eOffice/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -653,8 +653,8 @@
         <span class="book-tag" style="color:var(--cyan);border-color:var(--cyan)">Sensors</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org/eCAD-Hardware-Products/releases/latest" class="btn-pdf btn-download" target="_blank">⬇ PDF</a>
-        <a href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/docs/book" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org/eCAD-Hardware-Products/releases/latest" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">⬇ PDF</a>
+        <a href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/docs/book" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>
@@ -674,8 +674,8 @@
         <span class="book-tag" style="color:var(--blue);border-color:var(--blue)">Platform</span>
       </div>
       <div class="book-actions">
-        <a href="https://github.com/embeddedos-org" class="btn-pdf btn-download" target="_blank">🌐 Explore</a>
-        <a href="https://github.com/embeddedos-org/embeddedos-org.github.io" class="btn-pdf btn-github" target="_blank">Source</a>
+        <a href="https://github.com/embeddedos-org" class="btn-pdf btn-download" target="_blank" rel="noopener noreferrer">🌐 Explore</a>
+        <a href="https://github.com/embeddedos-org/embeddedos-org.github.io" class="btn-pdf btn-github" target="_blank" rel="noopener noreferrer">Source</a>
       </div>
     </div>
   </div>

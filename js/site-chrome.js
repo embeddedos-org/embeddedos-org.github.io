@@ -1,27 +1,24 @@
 /* EmbeddedOS Site Chrome — single source of truth for navbar + footer.
-   Replaces any existing .navbar / .footer on DOMContentLoaded. The baked-in
-   HTML on each page is kept as a graceful fallback when JS is disabled or
-   this script fails to load. CSS class names are intentionally identical to
-   the legacy markup so the existing stylesheet and Playwright tests keep
-   working without modification. */
+   v1.1.0 — nav links wrapped in <li> for proper CSS nth-child alignment,
+   improved hamburger with aria-expanded, mobile menu auto-close on link click. */
 (function () {
   'use strict';
 
   var SITE_VERSION = 'v1.0.0';
 
   var NAV_LINKS = [
-    { href: '/index.html',                              label: 'Home',            key: 'home' },
-    { href: '/getting-started.html',                    label: 'Get Started',     key: 'getting-started' },
-    { href: '/docs/index.html',                         label: 'Docs',            key: 'docs' },
-    { href: 'https://embeddedos-org.github.io/eApps/',  label: '\u{1F3EA} App Store', key: 'eapps',         cls: 'nav-github' },
-    { href: '/kids.html',                               label: 'Kids \u{1F3AE}',  key: 'kids' },
+    { href: '/index.html',                              label: 'Home',                   key: 'home' },
+    { href: '/getting-started.html',                    label: 'Get Started',            key: 'getting-started' },
+    { href: '/docs/index.html',                         label: 'Docs',                   key: 'docs' },
+    { href: 'https://embeddedos-org.github.io/eApps/', label: '\u{1F3EA} App Store',    key: 'eapps',        cls: 'nav-github' },
+    { href: '/kids.html',                               label: 'Kids \u{1F3AE}',         key: 'kids' },
     { href: '/hardware-lab.html',                       label: 'Hardware Lab \u{1F50C}', key: 'hardware-lab' },
-    { href: '/flow.html',                               label: 'Flow',            key: 'flow' },
-    { href: '/books.html',                              label: '\u{1F4DA} Books', key: 'books' },
-    { href: '/stacks/index.html',                       label: '\u{1F3ED} Stacks', key: 'stacks' },
+    { href: '/flow.html',                               label: 'Flow',                   key: 'flow' },
+    { href: '/books.html',                              label: '\u{1F4DA} Books',         key: 'books' },
+    { href: '/stacks/index.html',                       label: '\u{1F3ED} Stacks',       key: 'stacks' },
     { href: '/get-involved.html',                       label: '\u{1F91D} Get Involved', key: 'get-involved' },
     { href: '/index.html#health-devices',               label: '\u2764\uFE0F Health',    key: 'health' },
-    { href: 'https://github.com/embeddedos-org',        label: '\u2605 GitHub',          key: 'github',        cls: 'nav-github' }
+    { href: 'https://github.com/embeddedos-org',        label: '\u2605 GitHub',          key: 'github',       cls: 'nav-github' }
   ];
 
   function escAttr(s) {
@@ -33,18 +30,25 @@
       var cls = l.cls || '';
       if (l.key === activeKey) cls = (cls + ' active').trim();
       var clsAttr = cls ? ' class="' + escAttr(cls) + '"' : '';
-      // External links (start with http) open in new tab so the main site nav never disappears
       var extAttr = l.href.startsWith('http') ? ' target="_blank" rel="noopener"' : '';
-      return '<a href="' + escAttr(l.href) + '"' + clsAttr + extAttr + '>' + l.label + '</a>';
+      return '<li><a href="' + escAttr(l.href) + '"' + clsAttr + extAttr + '>' + l.label + '</a></li>';
     }).join('');
 
     return [
       '<div class="nav-inner">',
-        '<a href="/index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">', SITE_VERSION, '</span></a>',
-        '<button class="nav-toggle" type="button" aria-label="Menu">&#9776;</button>',
-        '<div class="nav-links">', linksHtml,
-          '<button class="nav-search-btn" type="button" aria-label="Search" title="Search (/)">&#128269;</button>',
-        '</div>',
+        '<a href="/index.html" class="logo">',
+          '<span class="logo-icon">EoS</span>',
+          ' EmbeddedOS ',
+          '<span class="nav-version">', SITE_VERSION, '</span>',
+        '</a>',
+        '<button class="nav-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false">',
+          '<span class="hamburger-bar"></span>',
+          '<span class="hamburger-bar"></span>',
+          '<span class="hamburger-bar"></span>',
+        '</button>',
+        '<ul class="nav-links" role="list">', linksHtml,
+          '<li class="nav-search-item"><button class="nav-search-btn" type="button" aria-label="Search (press /)" title="Search (/)">&#128269;</button></li>',
+        '</ul>',
       '</div>'
     ].join('');
   }
@@ -52,9 +56,12 @@
   var FOOTER_INNER_HTML = [
     '<div class="footer-inner">',
       '<div class="footer-brand">',
-        '<h3 style="margin-bottom:0.5rem">EmbeddedOS</h3>',
+        '<div class="footer-logo">',
+          '<span class="logo-icon">EoS</span>',
+          '<span class="footer-logo-text">EmbeddedOS</span>',
+        '</div>',
         '<p>An open-source embedded operating system for the next generation of intelligent devices.</p>',
-        '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem">',
+        '<div class="footer-badges">',
           '<span class="badge badge-blue">MIT</span>',
           '<span class="badge badge-green">Open Source</span>',
           '<span class="badge badge-purple">Community</span>',
@@ -67,6 +74,7 @@
           '<li><a href="/docs/eos.html">EoS Kernel</a></li>',
           '<li><a href="/docs/eboot.html">eBoot</a></li>',
           '<li><a href="/docs/ebuild.html">ebuild</a></li>',
+          '<li><a href="/docs/index.html">All Docs</a></li>',
         '</ul>',
       '</div>',
       '<div>',
@@ -151,18 +159,26 @@
         footer.setAttribute('role', 'contentinfo');
         footer.innerHTML = FOOTER_INNER_HTML;
       }
-
-      // Wire hamburger toggle (matches legacy inline-onclick behaviour:
-      // toggling .open on the sibling .nav-links container).
+      // Wire hamburger toggle with aria-expanded
       var toggle = document.querySelector('.nav-toggle');
       if (toggle) {
         toggle.addEventListener('click', function () {
           var links = document.querySelector('.nav-links');
+          var expanded = toggle.getAttribute('aria-expanded') === 'true';
           if (links) links.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', String(!expanded));
         });
       }
-
-      // Wire search button (legacy used inline onclick="EosSearch.open()").
+      // Close mobile menu when a nav link is clicked
+      document.querySelectorAll('.nav-links a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          var links = document.querySelector('.nav-links');
+          var t = document.querySelector('.nav-toggle');
+          if (links) links.classList.remove('open');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+      });
+      // Wire search button
       var searchBtn = document.querySelector('.nav-search-btn');
       if (searchBtn) {
         searchBtn.addEventListener('click', function () {
