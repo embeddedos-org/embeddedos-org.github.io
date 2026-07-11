@@ -165,8 +165,11 @@
         toggle.addEventListener('click', function () {
           var links = document.querySelector('.nav-links');
           var expanded = toggle.getAttribute('aria-expanded') === 'true';
-          if (links) links.classList.toggle('open');
-          toggle.setAttribute('aria-expanded', String(!expanded));
+          var willOpen = !expanded;
+          if (links) links.classList.toggle('open', willOpen);
+          toggle.setAttribute('aria-expanded', String(willOpen));
+          // Scroll lock: prevent body scroll when menu is open
+          document.body.classList.toggle('nav-open', willOpen);
         });
       }
       // Close mobile menu when a nav link is clicked
@@ -176,7 +179,33 @@
           var t = document.querySelector('.nav-toggle');
           if (links) links.classList.remove('open');
           if (t) t.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('nav-open');
         });
+      });
+      // Close on outside click
+      document.addEventListener('click', function (e) {
+        var nav = document.querySelector('.navbar');
+        if (nav && !nav.contains(e.target)) {
+          var links = document.querySelector('.nav-links');
+          var t = document.querySelector('.nav-toggle');
+          if (links && links.classList.contains('open')) {
+            links.classList.remove('open');
+            if (t) t.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('nav-open');
+          }
+        }
+      });
+      // Close on Escape key
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          var links = document.querySelector('.nav-links');
+          var t = document.querySelector('.nav-toggle');
+          if (links && links.classList.contains('open')) {
+            links.classList.remove('open');
+            if (t) { t.setAttribute('aria-expanded', 'false'); t.focus(); }
+            document.body.classList.remove('nav-open');
+          }
+        }
       });
       // Wire search button
       var searchBtn = document.querySelector('.nav-search-btn');
