@@ -1,40 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.github.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/og-image.png"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ebuild CLI Reference v0.1.0 - EmbeddedOS</title>
-<meta name="description" content="ebuild unified build system documentation with project scaffolding, cross-compilation, flash programming, and SDK management.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://embeddedos-org.github.io/docs/ebuild.html">
-<meta property="og:title" content="ebuild CLI Reference - EmbeddedOS">
-<meta property="og:description" content="ebuild unified build system documentation with project scaffolding, cross-compilation, flash programming, and SDK management.">
-<meta property="og:image" content="https://embeddedos-org.github.io/og-image.png">
-<meta property="og:image:secure_url" content="https://embeddedos-org.github.io/og-image.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="EmbeddedOS — open-source embedded operating system, 13 products, 14 books, 60+ apps">
-<meta property="article:publisher" content="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ebuild CLI Reference - EmbeddedOS">
-<meta name="twitter:description" content="ebuild unified build system documentation with project scaffolding, cross-compilation, flash programming, and SDK management.">
-<meta name="twitter:image" content="https://embeddedos-org.github.io/og-image.png">
-<meta name="twitter:site" content="@EmbeddedOS_ORG">
-<meta name="twitter:creator" content="@EmbeddedOS_ORG">
-<meta name="twitter:url" content="https://embeddedos-org.github.io/">
-<meta name="twitter:domain" content="embeddedos-org.github.io">
-<meta name="twitter:image:alt" content="EmbeddedOS — open-source embedded operating system, 13 products, 14 books, 60+ apps">
-<link rel="canonical" href="https://embeddedos-org.github.io/docs/ebuild.html">
-<link rel="preload" href="../style.css" as="style">
-<link rel="stylesheet" href="../style.css"><link rel="me" href="https://www.youtube.com/@EmbeddedOS_ORG">
-<link rel="me" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation">
-<link rel="me" href="https://x.com/EmbeddedOS_ORG">
-<link rel="me" href="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/">
-<script src="/js/site-chrome.js" defer></script>
-<script type="application/ld+json">
-{
+<!doctype html><html lang="en"><meta charset="UTF-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.github.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"><meta http-equiv="X-Content-Type-Options" content="nosniff"><meta name="referrer" content="strict-origin-when-cross-origin"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/og-image.png"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ebuild CLI Reference v0.1.0 - EmbeddedOS</title><meta name="description" content="ebuild unified build system documentation with project scaffolding, cross-compilation, flash programming, and SDK management."><meta property="og:type" content="website"><meta property="og:url" content="https://embeddedos-org.github.io/docs/ebuild.html"><meta property="og:title" content="ebuild CLI Reference - EmbeddedOS"><meta property="og:description" content="ebuild unified build system documentation with project scaffolding, cross-compilation, flash programming, and SDK management."><meta property="og:image" content="https://embeddedos-org.github.io/og-image.png"><meta property="og:image:secure_url" content="https://embeddedos-org.github.io/og-image.png"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="EmbeddedOS — open-source embedded operating system, 13 products, 14 books, 60+ apps"><meta property="article:publisher" content="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="ebuild CLI Reference - EmbeddedOS"><meta name="twitter:description" content="ebuild unified build system documentation with project scaffolding, cross-compilation, flash programming, and SDK management."><meta name="twitter:image" content="https://embeddedos-org.github.io/og-image.png"><meta name="twitter:site" content="@EmbeddedOS_ORG"><meta name="twitter:creator" content="@EmbeddedOS_ORG"><meta name="twitter:url" content="https://embeddedos-org.github.io/"><meta name="twitter:domain" content="embeddedos-org.github.io"><meta name="twitter:image:alt" content="EmbeddedOS — open-source embedded operating system, 13 products, 14 books, 60+ apps"><link rel="canonical" href="https://embeddedos-org.github.io/docs/ebuild.html"><link rel="preload" href="../style.css" as="style"><link rel="stylesheet" href="../style.css"><link rel="me" href="https://www.youtube.com/@EmbeddedOS_ORG"><link rel="me" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation"><link rel="me" href="https://x.com/EmbeddedOS_ORG"><link rel="me" href="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/"><script src="/js/site-chrome.js" defer="defer"></script><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "ebuild CLI Reference v0.1.0 - EmbeddedOS",
@@ -56,32 +20,7 @@
     "url": "https://embeddedos-org.github.io"
   },
   "license": "https://opensource.org/licenses/MIT"
-}
-</script>
-</head><body>
-<nav class="navbar"><div class="nav-inner">
-<a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v1.0.0</span></a>
-<button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github" target="_blank" rel="noopener">🏪 App Store</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a><a href="../books.html">📚 Books</a>
-<a href="/stacks/index.html">&#127981; Stacks</a><a href="/index.html#health-devices">&#10084;&#65039; Health</a><a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">&#9733; GitHub</a><button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav>
-<div class="doc-layout"><aside class="doc-sidebar"><div class="sidebar-section"><div class="sidebar-title">ebuild</div>
-<a href="#install" class="sidebar-link active">Installation</a><a href="#init" class="sidebar-link">ebuild init</a>
-<a href="#build" class="sidebar-link">ebuild build</a><a href="#flash" class="sidebar-link">ebuild flash</a>
-<a href="#monitor" class="sidebar-link">ebuild monitor</a><a href="#test" class="sidebar-link">ebuild test</a>
-<a href="#clean" class="sidebar-link">ebuild clean</a><a href="#sdk" class="sidebar-link">SDK Structure</a>
-<a href="#buildyaml" class="sidebar-link">build.yaml</a><a href="#platforms" class="sidebar-link">Platforms</a>
-</div><div class="sidebar-section"><div class="sidebar-title">Products</div>
-<a href="eos.html" class="sidebar-link">EoS</a><a href="eboot.html" class="sidebar-link">eBoot</a>
-<a href="eai.html" class="sidebar-link">EAI</a><a href="eni.html" class="sidebar-link">ENI</a>
-<a href="eipc.html" class="sidebar-link">EIPC</a><a href="eosim.html" class="sidebar-link">EoSim</a>
-<a href="eosuite.html" class="sidebar-link">eApps</a><a href="eostudio.html" class="sidebar-link">EoStudio</a></div></aside>
-<main class="doc-content">
-<h1>ebuild Developer Documentation <span class="version-badge">v1.0.0</span></h1>
-<p>Unified build system and SDK manager for EmbeddedOS. Handles project scaffolding, cross-compilation, flashing, serial monitoring, testing, and SDK component management across all supported platforms &mdash; from bare-metal MCUs to desktops, TVs, tablets, and any device.</p>
-<div class="callout callout-tip"><div class="callout-title">Smart Dependency Resolution</div>
-<p><code>ebuild</code> automatically resolves <strong>all dependencies</strong> based on the target platform and the products you include. Building for desktop with EoStudio? <code>ebuild</code> pulls in Python 3.10+, OpenGL 3.3+, and GUI frameworks. Building for an MCU? It fetches the bare-metal toolchain. You declare <em>what</em> you want &mdash; <code>ebuild</code> figures out <em>everything</em> else.</p></div>
-
-<div id="install" class="module-section"><h2 style="color:var(--green)">&#128230; Installation</h2></div>
-<div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:0.85rem"># Install from Go source
+}</script><nav class="navbar"><div class="nav-inner"><a href="../index.html" class="logo"><span class="logo-icon">EoS</span> EmbeddedOS <span class="nav-version">v1.0.0</span></a> <button class="nav-toggle" onclick='this.nextElementSibling.classList.toggle("open")' aria-label="Menu">&#9776;</button><div class="nav-links"><a href="../index.html">Home</a><a href="../getting-started.html">Get Started</a><a href="index.html" class="active">Docs</a><a href="https://embeddedos-org.github.io/eApps/" class="nav-github" target="_blank" rel="noopener">🏪 App Store</a><a href="../kids.html">Kids &#127918;</a><a href="../hardware-lab.html">Hardware Lab &#128268;</a><a href="../flow.html">Flow</a><a href="../books.html">📚 Books</a> <a href="/stacks/index.html">&#127981; Stacks</a><a href="/index.html#health-devices">&#10084;&#65039; Health</a><a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">&#9733; GitHub</a><button class="nav-search-btn" onclick="EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button></div></div></nav><div class="doc-layout"><aside class="doc-sidebar"><div class="sidebar-section"><div class="sidebar-title">ebuild</div><a href="#install" class="sidebar-link active">Installation</a><a href="#init" class="sidebar-link">ebuild init</a> <a href="#build" class="sidebar-link">ebuild build</a><a href="#flash" class="sidebar-link">ebuild flash</a> <a href="#monitor" class="sidebar-link">ebuild monitor</a><a href="#test" class="sidebar-link">ebuild test</a> <a href="#clean" class="sidebar-link">ebuild clean</a><a href="#sdk" class="sidebar-link">SDK Structure</a> <a href="#buildyaml" class="sidebar-link">build.yaml</a><a href="#platforms" class="sidebar-link">Platforms</a></div><div class="sidebar-section"><div class="sidebar-title">Products</div><a href="eos.html" class="sidebar-link">EoS</a><a href="eboot.html" class="sidebar-link">eBoot</a> <a href="eai.html" class="sidebar-link">EAI</a><a href="eni.html" class="sidebar-link">ENI</a> <a href="eipc.html" class="sidebar-link">EIPC</a><a href="eosim.html" class="sidebar-link">EoSim</a> <a href="eosuite.html" class="sidebar-link">eApps</a><a href="eostudio.html" class="sidebar-link">EoStudio</a></div></aside><main class="doc-content"><h1>ebuild Developer Documentation <span class="version-badge">v1.0.0</span></h1><p>Unified build system and SDK manager for EmbeddedOS. Handles project scaffolding, cross-compilation, flashing, serial monitoring, testing, and SDK component management across all supported platforms &mdash; from bare-metal MCUs to desktops, TVs, tablets, and any device.<div class="callout callout-tip"><div class="callout-title">Smart Dependency Resolution</div><p><code>ebuild</code> automatically resolves <strong>all dependencies</strong> based on the target platform and the products you include. Building for desktop with EoStudio? <code>ebuild</code> pulls in Python 3.10+, OpenGL 3.3+, and GUI frameworks. Building for an MCU? It fetches the bare-metal toolchain. You declare <em>what</em> you want &mdash; <code>ebuild</code> figures out <em>everything</em> else.</div><div id="install" class="module-section"><h2 style="color:var(--green)">&#128230; Installation</h2></div><div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:.85rem"># Install from Go source
 go install github.com/embeddedos-org/ebuild@latest
 
 # Or download pre-built binary
@@ -90,22 +29,7 @@ curl -L https://github.com/embeddedos-org/ebuild/releases/latest/download/ebuild
 
 # Verify installation
 ebuild --version
-# ebuild v0.3.0 (EmbeddedOS Build System)</code></pre></div>
-
-<div id="init" class="module-section"><h2 style="color:var(--cyan)">&#128196; ebuild init</h2></div>
-<div class="api-card accent-cyan"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild init</span> <span class="param">&lt;project-name&gt; [options]</span></code></div>
-<p class="api-desc">Scaffold a new EmbeddedOS project with directory structure, build.yaml, main.c, linker scripts, and Makefile for the target platform.</p>
-<div class="api-params"><h5>Options</h5><table>
-<tr><td><code>--platform &lt;name&gt;</code></td><td><code>string</code></td><td>Target: stm32f4, esp32, nrf52, raspi4, desktop, tv, tablet, laptop, kiosk, linux. Default: linux.</td></tr>
-<tr><td><code>--template &lt;type&gt;</code></td><td><code>string</code></td><td>bare (minimal), rtos (kernel), ai (EAI), full (all modules).</td></tr>
-<tr><td><code>--with-eboot</code></td><td><code>flag</code></td><td>Include eBoot bootloader configuration.</td></tr>
-<tr><td><code>--with-eai</code></td><td><code>flag</code></td><td>Include EAI agent framework.</td></tr>
-<tr><td><code>--with-eni</code></td><td><code>flag</code></td><td>Include ENI neural interface.</td></tr>
-<tr><td><code>--with-eostudio</code></td><td><code>flag</code></td><td>Include EoStudio (desktop/tablet only, auto-pulls Python, OpenGL).</td></tr>
-<tr><td><code>--with-eapps</code></td><td><code>flag</code></td><td>Include eApps suite.</td></tr>
-</table></div>
-<div class="api-example"><h5>Example &mdash; Embedded</h5><pre><code>$ ebuild init my-robot --platform stm32f4 --template rtos --with-eai
+# ebuild v0.3.0 (EmbeddedOS Build System)</code></pre></div><div id="init" class="module-section"><h2 style="color:var(--cyan)">&#128196; ebuild init</h2></div><div class="api-card accent-cyan"><div class="api-header"><code class="api-signature"><span class="fn">ebuild init</span> <span class="param">&lt;project-name&gt; [options]</span></code></div><p class="api-desc">Scaffold a new EmbeddedOS project with directory structure, build.yaml, main.c, linker scripts, and Makefile for the target platform.<div class="api-params"><h5>Options</h5><table><tr><td><code>--platform &lt;name&gt;</code><td><code>string</code><td>Target: stm32f4, esp32, nrf52, raspi4, desktop, tv, tablet, laptop, kiosk, linux. Default: linux.<tr><td><code>--template &lt;type&gt;</code><td><code>string</code><td>bare (minimal), rtos (kernel), ai (EAI), full (all modules).<tr><td><code>--with-eboot</code><td><code>flag</code><td>Include eBoot bootloader configuration.<tr><td><code>--with-eai</code><td><code>flag</code><td>Include EAI agent framework.<tr><td><code>--with-eni</code><td><code>flag</code><td>Include ENI neural interface.<tr><td><code>--with-eostudio</code><td><code>flag</code><td>Include EoStudio (desktop/tablet only, auto-pulls Python, OpenGL).<tr><td><code>--with-eapps</code><td><code>flag</code><td>Include eApps suite.</table></div><div class="api-example"><h5>Example &mdash; Embedded</h5><pre><code>$ ebuild init my-robot --platform stm32f4 --template rtos --with-eai
 
 Creating project: my-robot
   Platform: stm32f4 (ARM Cortex-M4F, 168MHz, 1MB Flash, 192KB RAM)
@@ -121,8 +45,7 @@ Created:
   ├── eai/agent_config.yml
   └── Makefile
 
-Run: cd my-robot &amp;&amp; ebuild build</code></pre>
-<h5>Example &mdash; Desktop with EoStudio</h5><pre><code>$ ebuild init my-workstation --platform desktop --with-eostudio --with-eapps
+Run: cd my-robot &amp;&amp; ebuild build</code></pre><h5>Example &mdash; Desktop with EoStudio</h5><pre><code>$ ebuild init my-workstation --platform desktop --with-eostudio --with-eapps
 
 Creating project: my-workstation
   Platform: desktop (x86_64, Full GUI)
@@ -145,8 +68,7 @@ Created:
   ├── eapps/manifest.yml
   └── Makefile
 
-Run: cd my-workstation &amp;&amp; ebuild build</code></pre>
-<h5>Example &mdash; Smart TV</h5><pre><code>$ ebuild init my-tv --platform tv --with-eapps
+Run: cd my-workstation &amp;&amp; ebuild build</code></pre><h5>Example &mdash; Smart TV</h5><pre><code>$ ebuild init my-tv --platform tv --with-eapps
 
 Creating project: my-tv
   Platform: tv (ARM64, 4K UI)
@@ -159,20 +81,7 @@ Resolving dependencies...
   ✓ media codecs     (H.264/H.265/AV1)
   ✓ audio stack      (surround sound)
 
-Run: cd my-tv &amp;&amp; ebuild build</code></pre></div></div>
-
-<div id="build" class="module-section"><h2 style="color:var(--blue)">&#128295; ebuild build</h2></div>
-<div class="api-card"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild build</span> <span class="param">[options]</span></code></div>
-<p class="api-desc">Cross-compile the project. Reads build.yaml for platform, toolchain, and modules. Outputs ELF, BIN, and HEX.</p>
-<div class="api-params"><h5>Options</h5><table>
-<tr><td><code>--release</code></td><td><code>flag</code></td><td>Build with -O2 and LTO. Default: debug (-Og -g).</td></tr>
-<tr><td><code>--verbose</code></td><td><code>flag</code></td><td>Show compiler commands.</td></tr>
-<tr><td><code>--jobs &lt;N&gt;</code></td><td><code>int</code></td><td>Parallel jobs. Default: CPU count.</td></tr>
-<tr><td><code>--define &lt;K=V&gt;</code></td><td><code>string</code></td><td>Add preprocessor define (repeatable).</td></tr>
-<tr><td><code>--target &lt;name&gt;</code></td><td><code>string</code></td><td>Build specific target from build.yaml.</td></tr>
-</table></div>
-<div class="api-example"><h5>Example</h5><pre><code>$ ebuild build --release --verbose
+Run: cd my-tv &amp;&amp; ebuild build</code></pre></div></div><div id="build" class="module-section"><h2 style="color:var(--blue)">&#128295; ebuild build</h2></div><div class="api-card"><div class="api-header"><code class="api-signature"><span class="fn">ebuild build</span> <span class="param">[options]</span></code></div><p class="api-desc">Cross-compile the project. Reads build.yaml for platform, toolchain, and modules. Outputs ELF, BIN, and HEX.<div class="api-params"><h5>Options</h5><table><tr><td><code>--release</code><td><code>flag</code><td>Build with -O2 and LTO. Default: debug (-Og -g).<tr><td><code>--verbose</code><td><code>flag</code><td>Show compiler commands.<tr><td><code>--jobs &lt;N&gt;</code><td><code>int</code><td>Parallel jobs. Default: CPU count.<tr><td><code>--define &lt;K=V&gt;</code><td><code>string</code><td>Add preprocessor define (repeatable).<tr><td><code>--target &lt;name&gt;</code><td><code>string</code><td>Build specific target from build.yaml.</table></div><div class="api-example"><h5>Example</h5><pre><code>$ ebuild build --release --verbose
 
 [ebuild] Platform: stm32f4 (arm-none-eabi-gcc 13.2)
 [CC] src/main.c
@@ -183,58 +92,21 @@ Run: cd my-tv &amp;&amp; ebuild build</code></pre></div></div>
 
 Build complete: 0.8s (4 modules, 23 files)
   Flash: 139 KB / 1024 KB (13.6%)
-  RAM:   42 KB / 192 KB (21.9%)</code></pre></div></div>
-<div id="flash" class="module-section"><h2 style="color:var(--orange)">&#9889; ebuild flash</h2></div>
-<div class="api-card accent-orange"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild flash</span> <span class="param">[options]</span></code></div>
-<p class="api-desc">Flash firmware to the target device. Auto-detects debug probe (ST-Link, J-Link, CMSIS-DAP). Supports eBoot A/B slot targeting.</p>
-<div class="api-params"><h5>Options</h5><table>
-<tr><td><code>--probe &lt;type&gt;</code></td><td><code>string</code></td><td>Force probe: stlink, jlink, cmsis-dap, openocd.</td></tr>
-<tr><td><code>--slot &lt;A|B&gt;</code></td><td><code>string</code></td><td>Target eBoot slot (default: inactive slot).</td></tr>
-<tr><td><code>--verify</code></td><td><code>flag</code></td><td>Verify flash after writing.</td></tr>
-<tr><td><code>--reset</code></td><td><code>flag</code></td><td>Reset target after flash. Default: true.</td></tr>
-<tr><td><code>--binary &lt;path&gt;</code></td><td><code>string</code></td><td>Flash specific binary (default: last build output).</td></tr>
-</table></div>
-<div class="api-example"><h5>Example</h5><pre><code>$ ebuild flash --verify
+  RAM:   42 KB / 192 KB (21.9%)</code></pre></div></div><div id="flash" class="module-section"><h2 style="color:var(--orange)">&#9889; ebuild flash</h2></div><div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">ebuild flash</span> <span class="param">[options]</span></code></div><p class="api-desc">Flash firmware to the target device. Auto-detects debug probe (ST-Link, J-Link, CMSIS-DAP). Supports eBoot A/B slot targeting.<div class="api-params"><h5>Options</h5><table><tr><td><code>--probe &lt;type&gt;</code><td><code>string</code><td>Force probe: stlink, jlink, cmsis-dap, openocd.<tr><td><code>--slot &lt;A|B&gt;</code><td><code>string</code><td>Target eBoot slot (default: inactive slot).<tr><td><code>--verify</code><td><code>flag</code><td>Verify flash after writing.<tr><td><code>--reset</code><td><code>flag</code><td>Reset target after flash. Default: true.<tr><td><code>--binary &lt;path&gt;</code><td><code>string</code><td>Flash specific binary (default: last build output).</table></div><div class="api-example"><h5>Example</h5><pre><code>$ ebuild flash --verify
 [ebuild] Detected: ST-Link V2 (serial: 066DFF343...)
 [ebuild] Target: STM32F407VG
 [flash] Erasing sectors 0-5...
 [flash] Writing build/release/my-robot.bin (142,336 bytes)
 [flash] Verifying... OK
 [flash] Resetting target...
-Flash complete in 2.3s</code></pre></div></div>
-
-<div id="monitor" class="module-section"><h2 style="color:var(--purple)">&#128187; ebuild monitor</h2></div>
-<div class="api-card accent-purple"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild monitor</span> <span class="param">[options]</span></code></div>
-<p class="api-desc">Open serial monitor for UART output. Supports log coloring, timestamps, and level filtering.</p>
-<div class="api-params"><h5>Options</h5><table>
-<tr><td><code>--port &lt;path&gt;</code></td><td><code>string</code></td><td>Serial port (auto-detected if omitted).</td></tr>
-<tr><td><code>--baud &lt;rate&gt;</code></td><td><code>int</code></td><td>Baud rate. Default: 115200.</td></tr>
-<tr><td><code>--filter &lt;level&gt;</code></td><td><code>string</code></td><td>Min log level: TRACE, DEBUG, INFO, WARN, ERROR.</td></tr>
-<tr><td><code>--log &lt;file&gt;</code></td><td><code>string</code></td><td>Save output to file.</td></tr>
-<tr><td><code>--timestamp</code></td><td><code>flag</code></td><td>Prefix lines with host timestamp.</td></tr>
-</table></div>
-<div class="api-example"><h5>Example</h5><pre><code>$ ebuild monitor --filter INFO --timestamp
+Flash complete in 2.3s</code></pre></div></div><div id="monitor" class="module-section"><h2 style="color:var(--purple)">&#128187; ebuild monitor</h2></div><div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="fn">ebuild monitor</span> <span class="param">[options]</span></code></div><p class="api-desc">Open serial monitor for UART output. Supports log coloring, timestamps, and level filtering.<div class="api-params"><h5>Options</h5><table><tr><td><code>--port &lt;path&gt;</code><td><code>string</code><td>Serial port (auto-detected if omitted).<tr><td><code>--baud &lt;rate&gt;</code><td><code>int</code><td>Baud rate. Default: 115200.<tr><td><code>--filter &lt;level&gt;</code><td><code>string</code><td>Min log level: TRACE, DEBUG, INFO, WARN, ERROR.<tr><td><code>--log &lt;file&gt;</code><td><code>string</code><td>Save output to file.<tr><td><code>--timestamp</code><td><code>flag</code><td>Prefix lines with host timestamp.</table></div><div class="api-example"><h5>Example</h5><pre><code>$ ebuild monitor --filter INFO --timestamp
 [ebuild] Port: /dev/ttyACM0 @ 115200
 --- EoS Serial Monitor (Ctrl+C to exit) ---
 [14:23:01.234] [INFO]  kernel: EoS v0.1.0 starting on STM32F407
 [14:23:01.238] [INFO]  hal: GPIO, UART, SPI, I2C initialized
 [14:23:01.240] [INFO]  power: Battery 87%, 3.92V
 [14:23:01.245] [INFO]  eai: TinyLlama-1.1B loaded (680MB RAM)
-[14:23:01.300] [INFO]  app: System ready</code></pre></div></div>
-
-<div id="test" class="module-section"><h2 style="color:var(--green)">&#9989; ebuild test</h2></div>
-<div class="api-card accent-green"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild test</span> <span class="param">[options]</span></code></div>
-<p class="api-desc">Run unit tests. Builds for host (x86/ARM Linux) and executes, or runs on-target via debug probe.</p>
-<div class="api-params"><h5>Options</h5><table>
-<tr><td><code>--on-target</code></td><td><code>flag</code></td><td>Run tests on physical hardware.</td></tr>
-<tr><td><code>--coverage</code></td><td><code>flag</code></td><td>Generate code coverage report.</td></tr>
-<tr><td><code>--filter &lt;pat&gt;</code></td><td><code>string</code></td><td>Run matching tests only.</td></tr>
-<tr><td><code>--xml &lt;path&gt;</code></td><td><code>string</code></td><td>Output JUnit XML report.</td></tr>
-</table></div>
-<div class="api-example"><h5>Example</h5><pre><code>$ ebuild test --coverage
+[14:23:01.300] [INFO]  app: System ready</code></pre></div></div><div id="test" class="module-section"><h2 style="color:var(--green)">&#9989; ebuild test</h2></div><div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="fn">ebuild test</span> <span class="param">[options]</span></code></div><p class="api-desc">Run unit tests. Builds for host (x86/ARM Linux) and executes, or runs on-target via debug probe.<div class="api-params"><h5>Options</h5><table><tr><td><code>--on-target</code><td><code>flag</code><td>Run tests on physical hardware.<tr><td><code>--coverage</code><td><code>flag</code><td>Generate code coverage report.<tr><td><code>--filter &lt;pat&gt;</code><td><code>string</code><td>Run matching tests only.<tr><td><code>--xml &lt;path&gt;</code><td><code>string</code><td>Output JUnit XML report.</table></div><div class="api-example"><h5>Example</h5><pre><code>$ ebuild test --coverage
 [test] Building for host (x86_64-linux-gnu)
 [test] Running 47 tests...
   ✓ test_gpio_init (0.1ms)
@@ -242,15 +114,7 @@ Flash complete in 2.3s</code></pre></div></div>
   ✓ test_kernel_task_create (0.5ms)
   ... (44 more)
 [test] 47/47 passed (0 failed, 0 skipped)
-[coverage] Line coverage: 78.3% (1,247/1,593)</code></pre></div></div>
-
-<div id="clean" class="module-section"><h2 style="color:var(--pink)">&#128465; ebuild clean</h2></div>
-<div class="api-card accent-pink"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild clean</span> <span class="param">[--all]</span></code></div>
-<p class="api-desc">Remove build artifacts. <code>--all</code> also removes downloaded SDK components and toolchains.</p></div>
-
-<div id="sdk" class="module-section"><h2 style="color:var(--blue)">&#128193; SDK Structure</h2></div>
-<div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:0.82rem">$HOME/.ebuild/
+[coverage] Line coverage: 78.3% (1,247/1,593)</code></pre></div></div><div id="clean" class="module-section"><h2 style="color:var(--pink)">&#128465; ebuild clean</h2></div><div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="fn">ebuild clean</span> <span class="param">[--all]</span></code></div><p class="api-desc">Remove build artifacts. <code>--all</code> also removes downloaded SDK components and toolchains.</div><div id="sdk" class="module-section"><h2 style="color:var(--blue)">&#128193; SDK Structure</h2></div><div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:.82rem">$HOME/.ebuild/
 ├── toolchains/
 │   ├── arm-none-eabi-gcc-13.2/
 │   ├── riscv64-unknown-elf-gcc-13/
@@ -265,10 +129,7 @@ Flash complete in 2.3s</code></pre></div></div>
 │   ├── stm32f4/   # Platform support packages
 │   ├── esp32/
 │   └── nrf52/
-└── cache/         # Downloaded archives</code></pre></div>
-
-<div id="buildyaml" class="module-section"><h2 style="color:var(--orange)">&#128220; build.yaml Reference</h2></div>
-<div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:0.82rem"># build.yaml - EmbeddedOS project configuration
+└── cache/         # Downloaded archives</code></pre></div><div id="buildyaml" class="module-section"><h2 style="color:var(--orange)">&#128220; build.yaml Reference</h2></div><div class="struct-card"><pre><code style="color:var(--text-secondary);font-size:.82rem"># build.yaml - EmbeddedOS project configuration
 project:
   name: my-robot
   version: 1.0.0
@@ -320,44 +181,7 @@ flash:
 
 monitor:
   port: auto
-  baud: 115200</code></pre></div>
-
-<div id="platforms" class="module-section"><h2 style="color:var(--purple)">&#127758; Supported Platforms</h2></div>
-<div class="struct-card"><table>
-<tr style="font-weight:bold;color:var(--cyan)"><td>Platform</td><td>Arch</td><td>MCU/SoC</td><td>Flash</td><td>RAM</td><td>Toolchain</td></tr>
-<tr style="background:rgba(100,149,237,.08)"><td colspan="6" style="font-weight:bold;color:var(--blue)">Embedded &amp; MCU</td></tr>
-<tr><td>stm32f4</td><td>Cortex-M4F</td><td>STM32F407VG</td><td>1MB</td><td>192KB</td><td>arm-none-eabi-gcc</td></tr>
-<tr><td>stm32h7</td><td>Cortex-M7</td><td>STM32H743ZI</td><td>2MB</td><td>1MB</td><td>arm-none-eabi-gcc</td></tr>
-<tr><td>nrf52</td><td>Cortex-M4F</td><td>nRF52840</td><td>1MB</td><td>256KB</td><td>arm-none-eabi-gcc</td></tr>
-<tr><td>nrf5340</td><td>Cortex-M33</td><td>nRF5340</td><td>1MB</td><td>512KB</td><td>arm-none-eabi-gcc</td></tr>
-<tr><td>esp32</td><td>Xtensa LX6</td><td>ESP32</td><td>4MB</td><td>520KB</td><td>xtensa-esp32-elf</td></tr>
-<tr><td>k64f</td><td>Cortex-M4F</td><td>MK64FN1M0</td><td>1MB</td><td>256KB</td><td>arm-none-eabi-gcc</td></tr>
-<tr style="background:rgba(100,149,237,.08)"><td colspan="6" style="font-weight:bold;color:var(--green)">Application Processors</td></tr>
-<tr><td>raspi4</td><td>Cortex-A72</td><td>BCM2711</td><td>SD</td><td>1-8GB</td><td>aarch64-linux-gnu</td></tr>
-<tr><td>imx8m</td><td>Cortex-A53</td><td>i.MX8M Mini</td><td>eMMC</td><td>1-4GB</td><td>aarch64-linux-gnu</td></tr>
-<tr style="background:rgba(100,149,237,.08)"><td colspan="6" style="font-weight:bold;color:var(--orange)">Desktop, TV &amp; Multi-Platform</td></tr>
-<tr><td><strong>desktop</strong></td><td>x86_64 / ARM64</td><td>PC / Mac</td><td>SSD/NVMe</td><td>4-64GB</td><td>gcc/clang + Python, OpenGL, GUI</td></tr>
-<tr><td><strong>laptop</strong></td><td>x86_64 / ARM64</td><td>Laptop SoC</td><td>SSD</td><td>4-32GB</td><td>gcc/clang + battery, GUI</td></tr>
-<tr><td><strong>tv</strong></td><td>ARM64 / x86_64</td><td>Smart TV SoC</td><td>eMMC</td><td>2-8GB</td><td>gcc/clang + HDMI, 4K, media</td></tr>
-<tr><td><strong>tablet</strong></td><td>ARM64</td><td>Tablet SoC</td><td>eMMC</td><td>2-8GB</td><td>aarch64-gnu + touch, stylus</td></tr>
-<tr><td><strong>kiosk</strong></td><td>x86 / ARM</td><td>Kiosk SoC</td><td>eMMC/SSD</td><td>2-8GB</td><td>gcc/clang + touchscreen, single-app</td></tr>
-<tr><td>linux</td><td>x86_64/aarch64</td><td>Host</td><td>N/A</td><td>N/A</td><td>gcc/clang</td></tr>
-</table></div>
-
-<p style="color:var(--text-muted);margin-top:3rem;font-size:0.85rem">ebuild auto-downloads required toolchains, SDK components, and all platform-specific packages on first use. For desktop/TV platforms, this includes runtimes (Python), GPU drivers (OpenGL/Vulkan), window systems (Wayland/X11), media codecs, and more. Set <code>EBUILD_HOME</code> to change install directory (default: <code>~/.ebuild</code>).</p>
-
-<div class="module-section"><h2 style="color:var(--pink)">&#128230; ebuild deps</h2></div>
-<div class="api-card accent-pink"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild deps</span> <span class="param">&lt;command&gt; [options]</span></code></div>
-<p class="api-desc">Manage platform and product dependencies. ebuild automatically resolves what packages are needed based on the target platform and included products.</p>
-<div class="api-params"><h5>Subcommands</h5><table>
-<tr><td><code>deps resolve</code></td><td>Analyze build.yaml and resolve all required packages for the target platform.</td></tr>
-<tr><td><code>deps list</code></td><td>List all resolved dependencies and their versions.</td></tr>
-<tr><td><code>deps install</code></td><td>Download and install all resolved dependencies.</td></tr>
-<tr><td><code>deps check</code></td><td>Verify all dependencies are satisfied.</td></tr>
-<tr><td><code>deps tree</code></td><td>Show full dependency tree including transitive dependencies.</td></tr>
-</table></div>
-<div class="api-example"><h5>Example &mdash; Desktop with EoStudio</h5><pre><code>$ ebuild deps resolve
+  baud: 115200</code></pre></div><div id="platforms" class="module-section"><h2 style="color:var(--purple)">&#127758; Supported Platforms</h2></div><div class="struct-card"><table><tr style="font-weight:700;color:var(--cyan)"><td>Platform<td>Arch<td>MCU/SoC<td>Flash<td>RAM<td>Toolchain<tr style="background:rgba(100,149,237,.08)"><td colspan="6" style="font-weight:700;color:var(--blue)">Embedded &amp; MCU<tr><td>stm32f4<td>Cortex-M4F<td>STM32F407VG<td>1MB<td>192KB<td>arm-none-eabi-gcc<tr><td>stm32h7<td>Cortex-M7<td>STM32H743ZI<td>2MB<td>1MB<td>arm-none-eabi-gcc<tr><td>nrf52<td>Cortex-M4F<td>nRF52840<td>1MB<td>256KB<td>arm-none-eabi-gcc<tr><td>nrf5340<td>Cortex-M33<td>nRF5340<td>1MB<td>512KB<td>arm-none-eabi-gcc<tr><td>esp32<td>Xtensa LX6<td>ESP32<td>4MB<td>520KB<td>xtensa-esp32-elf<tr><td>k64f<td>Cortex-M4F<td>MK64FN1M0<td>1MB<td>256KB<td>arm-none-eabi-gcc<tr style="background:rgba(100,149,237,.08)"><td colspan="6" style="font-weight:700;color:var(--green)">Application Processors<tr><td>raspi4<td>Cortex-A72<td>BCM2711<td>SD<td>1-8GB<td>aarch64-linux-gnu<tr><td>imx8m<td>Cortex-A53<td>i.MX8M Mini<td>eMMC<td>1-4GB<td>aarch64-linux-gnu<tr style="background:rgba(100,149,237,.08)"><td colspan="6" style="font-weight:700;color:var(--orange)">Desktop, TV &amp; Multi-Platform<tr><td><strong>desktop</strong><td>x86_64 / ARM64<td>PC / Mac<td>SSD/NVMe<td>4-64GB<td>gcc/clang + Python, OpenGL, GUI<tr><td><strong>laptop</strong><td>x86_64 / ARM64<td>Laptop SoC<td>SSD<td>4-32GB<td>gcc/clang + battery, GUI<tr><td><strong>tv</strong><td>ARM64 / x86_64<td>Smart TV SoC<td>eMMC<td>2-8GB<td>gcc/clang + HDMI, 4K, media<tr><td><strong>tablet</strong><td>ARM64<td>Tablet SoC<td>eMMC<td>2-8GB<td>aarch64-gnu + touch, stylus<tr><td><strong>kiosk</strong><td>x86 / ARM<td>Kiosk SoC<td>eMMC/SSD<td>2-8GB<td>gcc/clang + touchscreen, single-app<tr><td>linux<td>x86_64/aarch64<td>Host<td>N/A<td>N/A<td>gcc/clang</table></div><p style="color:var(--text-muted);margin-top:3rem;font-size:.85rem">ebuild auto-downloads required toolchains, SDK components, and all platform-specific packages on first use. For desktop/TV platforms, this includes runtimes (Python), GPU drivers (OpenGL/Vulkan), window systems (Wayland/X11), media codecs, and more. Set <code>EBUILD_HOME</code> to change install directory (default: <code>~/.ebuild</code>).<div class="module-section"><h2 style="color:var(--pink)">&#128230; ebuild deps</h2></div><div class="api-card accent-pink"><div class="api-header"><code class="api-signature"><span class="fn">ebuild deps</span> <span class="param">&lt;command&gt; [options]</span></code></div><p class="api-desc">Manage platform and product dependencies. ebuild automatically resolves what packages are needed based on the target platform and included products.<div class="api-params"><h5>Subcommands</h5><table><tr><td><code>deps resolve</code><td>Analyze build.yaml and resolve all required packages for the target platform.<tr><td><code>deps list</code><td>List all resolved dependencies and their versions.<tr><td><code>deps install</code><td>Download and install all resolved dependencies.<tr><td><code>deps check</code><td>Verify all dependencies are satisfied.<tr><td><code>deps tree</code><td>Show full dependency tree including transitive dependencies.</table></div><div class="api-example"><h5>Example &mdash; Desktop with EoStudio</h5><pre><code>$ ebuild deps resolve
 [deps] Platform: desktop (x86_64)
 [deps] Products: eostudio, eapps, eai
 
@@ -387,8 +211,7 @@ $ ebuild deps install
 [deps] ✓ opengl-4.6        installed
 [deps] ✓ lvgl-9.1          installed
 [deps] ... (20 more)
-[deps] All dependencies satisfied.</code></pre>
-<h5>Example &mdash; Embedded (minimal)</h5><pre><code>$ ebuild deps resolve
+[deps] All dependencies satisfied.</code></pre><h5>Example &mdash; Embedded (minimal)</h5><pre><code>$ ebuild deps resolve
 [deps] Platform: stm32f4 (ARM Cortex-M4F)
 [deps] Products: kernel, hal, eai
 
@@ -397,22 +220,7 @@ Resolved dependencies:
   ├─ newlib                   (embedded C library)
   └─ cmsis                    (ARM headers)
 
-Total: 3 packages (560 MB)</code></pre></div></div>
-
-
-<div class="module-section"><h2 style="color:var(--cyan)">&#128268; ebuild sdk</h2></div>
-<div class="api-card accent-cyan"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild sdk</span> <span class="param">&lt;command&gt; [options]</span></code></div>
-<p class="api-desc">Manage EoS SDK components. Download, update, remove, and list installed SDK modules and toolchains.</p>
-<div class="api-params"><h5>Subcommands</h5><table>
-<tr><td><code>sdk install &lt;module&gt;</code></td><td>Install SDK module: kernel, hal, eai, eni, eipc, eboot.</td></tr>
-<tr><td><code>sdk update [module]</code></td><td>Update all or specific module to latest version.</td></tr>
-<tr><td><code>sdk remove &lt;module&gt;</code></td><td>Remove installed module.</td></tr>
-<tr><td><code>sdk list</code></td><td>List installed modules with versions.</td></tr>
-<tr><td><code>sdk toolchain install &lt;name&gt;</code></td><td>Install toolchain (arm-none-eabi-gcc, riscv64-elf-gcc).</td></tr>
-<tr><td><code>sdk toolchain list</code></td><td>List installed toolchains.</td></tr>
-</table></div>
-<div class="api-example"><h5>Example</h5><pre><code>$ ebuild sdk install eai
+Total: 3 packages (560 MB)</code></pre></div></div><div class="module-section"><h2 style="color:var(--cyan)">&#128268; ebuild sdk</h2></div><div class="api-card accent-cyan"><div class="api-header"><code class="api-signature"><span class="fn">ebuild sdk</span> <span class="param">&lt;command&gt; [options]</span></code></div><p class="api-desc">Manage EoS SDK components. Download, update, remove, and list installed SDK modules and toolchains.<div class="api-params"><h5>Subcommands</h5><table><tr><td><code>sdk install &lt;module&gt;</code><td>Install SDK module: kernel, hal, eai, eni, eipc, eboot.<tr><td><code>sdk update [module]</code><td>Update all or specific module to latest version.<tr><td><code>sdk remove &lt;module&gt;</code><td>Remove installed module.<tr><td><code>sdk list</code><td>List installed modules with versions.<tr><td><code>sdk toolchain install &lt;name&gt;</code><td>Install toolchain (arm-none-eabi-gcc, riscv64-elf-gcc).<tr><td><code>sdk toolchain list</code><td>List installed toolchains.</table></div><div class="api-example"><h5>Example</h5><pre><code>$ ebuild sdk install eai
 [sdk] Downloading EAI v0.1.0 (2.3 MB)...
 [sdk] Installing to ~/.ebuild/sdks/eai/
 [sdk] Done. EAI framework ready.
@@ -427,20 +235,7 @@ Installed SDK modules:
 $ ebuild sdk toolchain list
 Installed toolchains:
   arm-none-eabi-gcc  13.2.1  (560 MB)
-  riscv64-elf-gcc    13.2.0  (420 MB)</code></pre></div></div>
-
-<div class="module-section"><h2 style="color:var(--green)">&#128196; ebuild generate</h2></div>
-<div class="api-card accent-green"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild generate</span> <span class="param">&lt;type&gt; &lt;name&gt; [options]</span></code></div>
-<p class="api-desc">Generate boilerplate code for common patterns.</p>
-<div class="api-params"><h5>Types</h5><table>
-<tr><td><code>generate driver &lt;name&gt;</code></td><td>Generate driver skeleton (probe, remove, suspend, resume, ioctl).</td></tr>
-<tr><td><code>generate service &lt;name&gt;</code></td><td>Generate service skeleton (start, stop, health).</td></tr>
-<tr><td><code>generate tool &lt;name&gt;</code></td><td>Generate EAI tool skeleton with params and exec callback.</td></tr>
-<tr><td><code>generate provider &lt;name&gt;</code></td><td>Generate ENI provider skeleton (init, poll, start, stop).</td></tr>
-<tr><td><code>generate test &lt;module&gt;</code></td><td>Generate unit test file for a module.</td></tr>
-</table></div>
-<div class="api-example"><h5>Example</h5><pre><code>$ ebuild generate driver bme280
+  riscv64-elf-gcc    13.2.0  (420 MB)</code></pre></div></div><div class="module-section"><h2 style="color:var(--green)">&#128196; ebuild generate</h2></div><div class="api-card accent-green"><div class="api-header"><code class="api-signature"><span class="fn">ebuild generate</span> <span class="param">&lt;type&gt; &lt;name&gt; [options]</span></code></div><p class="api-desc">Generate boilerplate code for common patterns.<div class="api-params"><h5>Types</h5><table><tr><td><code>generate driver &lt;name&gt;</code><td>Generate driver skeleton (probe, remove, suspend, resume, ioctl).<tr><td><code>generate service &lt;name&gt;</code><td>Generate service skeleton (start, stop, health).<tr><td><code>generate tool &lt;name&gt;</code><td>Generate EAI tool skeleton with params and exec callback.<tr><td><code>generate provider &lt;name&gt;</code><td>Generate ENI provider skeleton (init, poll, start, stop).<tr><td><code>generate test &lt;module&gt;</code><td>Generate unit test file for a module.</table></div><div class="api-example"><h5>Example</h5><pre><code>$ ebuild generate driver bme280
 [gen] Created: drivers/bme280/bme280.c
 [gen] Created: drivers/bme280/bme280.h
 [gen] Created: drivers/bme280/Makefile
@@ -449,13 +244,7 @@ Installed toolchains:
 $ ebuild generate tool temperature_read
 [gen] Created: tools/temperature_read.c
 [gen] Created: tools/temperature_read.h
-[gen] Tool registered in tools/registry.c</code></pre></div></div>
-
-<div class="module-section"><h2 style="color:var(--orange)">&#128202; ebuild info</h2></div>
-<div class="api-card accent-orange"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild info</span> <span class="param">[platform]</span></code></div>
-<p class="api-desc">Display project or platform information: target MCU specs, memory map, peripheral list, toolchain version, SDK versions.</p>
-<div class="api-example"><h5>Example</h5><pre><code>$ ebuild info
+[gen] Tool registered in tools/registry.c</code></pre></div></div><div class="module-section"><h2 style="color:var(--orange)">&#128202; ebuild info</h2></div><div class="api-card accent-orange"><div class="api-header"><code class="api-signature"><span class="fn">ebuild info</span> <span class="param">[platform]</span></code></div><p class="api-desc">Display project or platform information: target MCU specs, memory map, peripheral list, toolchain version, SDK versions.<div class="api-example"><h5>Example</h5><pre><code>$ ebuild info
 Project: my-robot v1.0.0
 Platform: stm32f4 (STM32F407VG)
   CPU:    ARM Cortex-M4F @ 168MHz (FPU, MPU)
@@ -466,19 +255,7 @@ Toolchain: arm-none-eabi-gcc 13.2.1
 SDK:
   kernel v0.1.0, hal v0.1.0, eai v0.1.0
 Modules: kernel, hal, power, eai
-eBoot: enabled (max_attempts=3, slot_size=256KB)</code></pre></div></div>
-
-<div class="module-section"><h2 style="color:var(--purple)">&#128260; ebuild ota</h2></div>
-<div class="api-card accent-purple"><div class="api-header">
-<code class="api-signature"><span class="fn">ebuild ota</span> <span class="param">&lt;command&gt; [options]</span></code></div>
-<p class="api-desc">Over-the-air firmware update management. Build, sign, and deploy OTA packages to devices.</p>
-<div class="api-params"><h5>Subcommands</h5><table>
-<tr><td><code>ota package</code></td><td>Build OTA package (.eos_fw) with header, CRC, and optional signature.</td></tr>
-<tr><td><code>ota push &lt;host&gt;</code></td><td>Push OTA package to device via HTTP/MQTT.</td></tr>
-<tr><td><code>ota status &lt;host&gt;</code></td><td>Check OTA status on device (active slot, pending, version).</td></tr>
-<tr><td><code>ota rollback &lt;host&gt;</code></td><td>Force rollback to confirmed slot.</td></tr>
-</table></div>
-<div class="api-example"><h5>Example</h5><pre><code>$ ebuild ota package --sign key.pem
+eBoot: enabled (max_attempts=3, slot_size=256KB)</code></pre></div></div><div class="module-section"><h2 style="color:var(--purple)">&#128260; ebuild ota</h2></div><div class="api-card accent-purple"><div class="api-header"><code class="api-signature"><span class="fn">ebuild ota</span> <span class="param">&lt;command&gt; [options]</span></code></div><p class="api-desc">Over-the-air firmware update management. Build, sign, and deploy OTA packages to devices.<div class="api-params"><h5>Subcommands</h5><table><tr><td><code>ota package</code><td>Build OTA package (.eos_fw) with header, CRC, and optional signature.<tr><td><code>ota push &lt;host&gt;</code><td>Push OTA package to device via HTTP/MQTT.<tr><td><code>ota status &lt;host&gt;</code><td>Check OTA status on device (active slot, pending, version).<tr><td><code>ota rollback &lt;host&gt;</code><td>Force rollback to confirmed slot.</table></div><div class="api-example"><h5>Example</h5><pre><code>$ ebuild ota package --sign key.pem
 [ota] Building OTA package...
 [ota] Image: build/release/my-robot.bin (142,336 bytes)
 [ota] CRC32: 0xA3B7C1D2
@@ -490,63 +267,4 @@ $ ebuild ota push 192.168.1.100
 [ota] Progress: 100% (142,512 bytes)
 [ota] Device: installing to slot B...
 [ota] Device: rebooting into test boot...
-[ota] Device: boot confirmed! OTA success.</code></pre></div></div>
-
-</main></div><footer class="footer"><div class="footer-inner">
-<div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</p></div>
-<div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a></li><li><a href="eos.html">EoS</a></li><li><a href="eboot.html">eBoot</a></li><li><a href="ebuild.html">ebuild</a></li></ul></div>
-<div><h4>Components</h4><ul><li><a href="eai.html">EAI</a></li><li><a href="eni.html">ENI</a></li><li><a href="eipc.html">EIPC</a></li><li><a href="eosuite.html">eApps</a></li><li><a href="eosim.html">EoSim</a></li><li><a href="eostudio.html">EoStudio</a></li></ul></div>
-<div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a></li><li><a href="../hardware-lab.html">Hardware Lab</a></li><li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li></ul></div>
-  <div>
-    <h4>Connect</h4>
-    <ul class="social-list">
-      <li><a class="social-link social-youtube" href="https://www.youtube.com/@EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="YouTube"><span class="social-icon">▶</span> YouTube</a></li>
-      <li><a class="social-link social-linkedin" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="social-icon">in</span> LinkedIn</a></li>
-      <li><a class="social-link social-x" href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X (Twitter)"><span class="social-icon">𝕏</span> X (Twitter)</a></li>
-      <li><a class="social-link social-facebook" href="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/" target="_blank" rel="noopener" aria-label="Facebook"><span class="social-icon">f</span> Facebook</a></li>
-    </ul>
-  </div></div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer>
-<div id="eos-search-overlay" class="search-overlay" hidden>
-<div class="search-modal">
-<div class="search-header">
-<span class="search-icon">&#128269;</span>
-<input type="text" id="eos-search-input" class="search-input" placeholder="Search EmbeddedOS docs..." autocomplete="off">
-<kbd class="search-kbd">Esc</kbd>
-</div>
-<ul id="eos-search-results" class="search-results"></ul>
-</div>
-</div>
-<script>
-const EosSearch={pages:[
-{t:'Home',u:'../index.html',d:'The Operating System for Every Device'},
-{t:'Get Started',u:'../getting-started.html',d:'Choose your path and get running in minutes'},
-{t:'Documentation Hub',u:'index.html',d:'Complete developer documentation for all components'},
-{t:'Platform Flow',u:'../flow.html',d:'EoS platform build and deployment flow'},
-{t:'Kids Guide',u:'../kids.html',d:'Welcome young explorers to EmbeddedOS'},
-{t:'Hardware Lab',u:'../hardware-lab.html',d:'Pick your board and get EoS running on real hardware'},
-{t:'App Store',u:'https://embeddedos-org.github.io/eApps/',d:'60+ apps across all platforms'},
-{t:'EoS Kernel',u:'eos.html',d:'Modular RTOS kernel with HAL and multicore framework'},
-{t:'eBoot Bootloader',u:'eboot.html',d:'Secure A/B bootloader with verified boot chain'},
-{t:'ebuild CLI',u:'ebuild.html',d:'Unified build system with cross-compilation'},
-{t:'EIPC Protocol',u:'eipc.html',d:'Secure real-time IPC framework'},
-{t:'EAI Framework',u:'eai.html',d:'Embedded AI for on-device LLM inference'},
-{t:'ENI Neural Interface',u:'eni.html',d:'Brain-computer interface framework'},
-{t:'EoSim Simulator',u:'eosim.html',d:'Multi-architecture simulation platform'},
-{t:'EoStudio',u:'eostudio.html',d:'Unified design suite with 12 editors'},
-{t:'eApps Suite',u:'eosuite.html',d:'60+ apps for all platforms'},
-{t:'eDB Database',u:'edb.html',d:'Unified multi-model database'},
-{t:'eBrowser Browser',u:'ebrowser.html',d:'Lightweight web browser engine'},
-{t:'eOffice Suite',u:'eoffice.html',d:'AI-powered office suite with 11 apps'},
-{t:'eServiceApps',u:'eserviceapps.html',d:'Flutter mobile service apps'}
-],
-overlay:null,input:null,results:null,
-init(){this.overlay=document.getElementById('eos-search-overlay');this.input=document.getElementById('eos-search-input');this.results=document.getElementById('eos-search-results')},
-open(){if(!this.overlay)this.init();this.overlay.hidden=false;this.input.value='';this.render(this.pages);this.input.focus()},
-close(){if(this.overlay)this.overlay.hidden=true},
-render(items){this.results.innerHTML=items.map(p=>'<li class="search-result-item"><a href="'+p.u+'"><strong>'+p.t+'</strong><span>'+p.d+'</span></a></li>').join('')||'<li class="search-result-item" style="color:var(--text-secondary)">No results found.</li>'},
-filter(q){const l=q.toLowerCase();this.render(this.pages.filter(p=>p.t.toLowerCase().includes(l)||p.d.toLowerCase().includes(l)))}
-};
-document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();EosSearch.open()}if(e.key==='Escape')EosSearch.close()});
-document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('eos-search-input');if(i)i.addEventListener('input',e=>EosSearch.filter(e.target.value));const o=document.getElementById('eos-search-overlay');if(o)o.addEventListener('click',e=>{if(e.target===o)EosSearch.close()})});
-</script>
-</body></html>
+[ota] Device: boot confirmed! OTA success.</code></pre></div></div></main></div><footer class="footer"><div class="footer-inner"><div class="footer-brand"><h3>EmbeddedOS</h3><p>Open-source embedded OS for intelligent devices.</div><div><h4>Docs</h4><ul><li><a href="../getting-started.html">Get Started</a><li><a href="eos.html">EoS</a><li><a href="eboot.html">eBoot</a><li><a href="ebuild.html">ebuild</a></ul></div><div><h4>Components</h4><ul><li><a href="eai.html">EAI</a><li><a href="eni.html">ENI</a><li><a href="eipc.html">EIPC</a><li><a href="eosuite.html">eApps</a><li><a href="eosim.html">EoSim</a><li><a href="eostudio.html">EoStudio</a></ul></div><div><h4>Learn</h4><ul><li><a href="../kids.html">Kids Guide</a><li><a href="../hardware-lab.html">Hardware Lab</a><li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></ul></div><div><h4>Connect</h4><ul class="social-list"><li><a class="social-link social-youtube" href="https://www.youtube.com/@EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="YouTube"><span class="social-icon">▶</span> YouTube</a><li><a class="social-link social-linkedin" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="social-icon">in</span> LinkedIn</a><li><a class="social-link social-x" href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X (Twitter)"><span class="social-icon">𝕏</span> X (Twitter)</a><li><a class="social-link social-facebook" href="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/" target="_blank" rel="noopener" aria-label="Facebook"><span class="social-icon">f</span> Facebook</a></ul></div></div><div class="footer-bottom">&copy; 2025 EmbeddedOS Project &bull; MIT License</div></footer><div id="eos-search-overlay" class="search-overlay" hidden><div class="search-modal"><div class="search-header"><span class="search-icon">&#128269;</span> <input id="eos-search-input" class="search-input" placeholder="Search EmbeddedOS docs..." autocomplete="off"> <kbd class="search-kbd">Esc</kbd></div><ul id="eos-search-results" class="search-results"></ul></div></div><script>const EosSearch={pages:[{t:"Home",u:"../index.html",d:"The Operating System for Every Device"},{t:"Get Started",u:"../getting-started.html",d:"Choose your path and get running in minutes"},{t:"Documentation Hub",u:"index.html",d:"Complete developer documentation for all components"},{t:"Platform Flow",u:"../flow.html",d:"EoS platform build and deployment flow"},{t:"Kids Guide",u:"../kids.html",d:"Welcome young explorers to EmbeddedOS"},{t:"Hardware Lab",u:"../hardware-lab.html",d:"Pick your board and get EoS running on real hardware"},{t:"App Store",u:"https://embeddedos-org.github.io/eApps/",d:"60+ apps across all platforms"},{t:"EoS Kernel",u:"eos.html",d:"Modular RTOS kernel with HAL and multicore framework"},{t:"eBoot Bootloader",u:"eboot.html",d:"Secure A/B bootloader with verified boot chain"},{t:"ebuild CLI",u:"ebuild.html",d:"Unified build system with cross-compilation"},{t:"EIPC Protocol",u:"eipc.html",d:"Secure real-time IPC framework"},{t:"EAI Framework",u:"eai.html",d:"Embedded AI for on-device LLM inference"},{t:"ENI Neural Interface",u:"eni.html",d:"Brain-computer interface framework"},{t:"EoSim Simulator",u:"eosim.html",d:"Multi-architecture simulation platform"},{t:"EoStudio",u:"eostudio.html",d:"Unified design suite with 12 editors"},{t:"eApps Suite",u:"eosuite.html",d:"60+ apps for all platforms"},{t:"eDB Database",u:"edb.html",d:"Unified multi-model database"},{t:"eBrowser Browser",u:"ebrowser.html",d:"Lightweight web browser engine"},{t:"eOffice Suite",u:"eoffice.html",d:"AI-powered office suite with 11 apps"},{t:"eServiceApps",u:"eserviceapps.html",d:"Flutter mobile service apps"}],overlay:null,input:null,results:null,init(){this.overlay=document.getElementById("eos-search-overlay"),this.input=document.getElementById("eos-search-input"),this.results=document.getElementById("eos-search-results")},open(){this.overlay||this.init(),this.overlay.hidden=!1,this.input.value="",this.render(this.pages),this.input.focus()},close(){this.overlay&&(this.overlay.hidden=!0)},render(e){this.results.innerHTML=e.map(e=>'<li class="search-result-item"><a href="'+e.u+'"><strong>'+e.t+"</strong><span>"+e.d+"</span></a></li>").join("")||'<li class="search-result-item" style="color:var(--text-secondary)">No results found.</li>'},filter(e){const t=e.toLowerCase();this.render(this.pages.filter(e=>e.t.toLowerCase().includes(t)||e.d.toLowerCase().includes(t)))}};document.addEventListener("keydown",e=>{"/"!==e.key||["INPUT","TEXTAREA"].includes(document.activeElement.tagName)||(e.preventDefault(),EosSearch.open()),"Escape"===e.key&&EosSearch.close()}),document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("eos-search-input");e&&e.addEventListener("input",e=>EosSearch.filter(e.target.value));const t=document.getElementById("eos-search-overlay");t&&t.addEventListener("click",e=>{e.target===t&&EosSearch.close()})})</script>
