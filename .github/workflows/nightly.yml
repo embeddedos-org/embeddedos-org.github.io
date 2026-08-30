@@ -41,22 +41,34 @@ jobs:
             --recurse \
             --skip "github.com|googletagmanager" \
             --timeout 10000 \
+            --retry \
             --format json > link-report.json || true
 
-          # Parse broken links
+          # Parse broken links. Split first-party (this site, localhost:8080)
+          # from third-party: a third-party site returning a transient
+          # failure (rate-limit, bot-block, blip) to this runner's single,
+          # unretried request is not a broken link on our site, and filing a
+          # new dated issue for it every night just because a runner IP got
+          # rate-limited teaches people to ignore the report. Same reasoning
+          # already applied in www.embeddedos.org's audit-mobile.mjs: only a
+          # first-party failure is a build problem; third-party failures are
+          # noted, never gate.
           node -e "
             const r = require('./link-report.json');
             const broken = (r.links || []).filter(l => l.state === 'BROKEN');
+            const isFirstParty = u => u.startsWith('http://localhost:8080');
+            const firstParty = broken.filter(l => isFirstParty(l.url));
+            const thirdParty = broken.filter(l => !isFirstParty(l.url));
             const total = (r.links || []).length;
             console.log('Total links: ' + total);
-            console.log('Broken: ' + broken.length);
-            if (broken.length) {
-              broken.forEach(l => console.log('  BROKEN: ' + l.url + ' (from ' + l.parent + ')'));
-            }
-            // Export for issue creation
+            console.log('Broken (first-party, gates the build): ' + firstParty.length);
+            console.log('Broken (third-party, logged only): ' + thirdParty.length);
+            firstParty.forEach(l => console.log('  BROKEN (first-party): ' + l.url + ' (from ' + l.parent + ')'));
+            thirdParty.forEach(l => console.log('  note: third-party link failed: ' + l.url + ' (from ' + l.parent + ')'));
+            // Export for issue creation — first-party only.
             const fs = require('fs');
-            fs.writeFileSync('broken-links.txt', broken.map(l => l.url + ' (from ' + l.parent + ')').join('\n') || 'None');
-            fs.appendFileSync(process.env.GITHUB_ENV, 'BROKEN_COUNT=' + broken.length + '\n');
+            fs.writeFileSync('broken-links.txt', firstParty.map(l => l.url + ' (from ' + l.parent + ')').join('\n') || 'None');
+            fs.appendFileSync(process.env.GITHUB_ENV, 'BROKEN_COUNT=' + firstParty.length + '\n');
           " | tee -a $GITHUB_STEP_SUMMARY
 
       - name: Lighthouse audit
@@ -80,7 +92,11 @@ jobs:
             const today = new Date().toISOString().split('T')[0];
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
-            // Check if an open issue already exists for today
+            // One persistent tracking issue, not one per day: a dated title
+            // only matched "today's" issue, so a still-broken link from
+            // yesterday always opened a brand new issue instead of updating
+            // the existing one. Reuse any open issue carrying both labels,
+            // regardless of when it was filed.
             const existing = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -89,14 +105,14 @@ jobs:
               per_page: 5
             });
 
-            const todayIssue = existing.data.find(i => i.title.includes(today));
-            if (todayIssue) {
+            const trackingIssue = existing.data[0];
+            if (trackingIssue) {
               // Update existing issue
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: todayIssue.number,
-                body: `## Updated Broken Link Report\n\n**Run:** [${context.runId}](${runUrl})\n\n\`\`\`\n${brokenLinks}\n\`\`\``
+                issue_number: trackingIssue.number,
+                body: `## Updated Broken Link Report — ${today}\n\n**Run:** [${context.runId}](${runUrl})\n\n\`\`\`\n${brokenLinks}\n\`\`\``
               });
             } else {
               // Create new issue
@@ -105,7 +121,7 @@ jobs:
                 repo: context.repo.repo,
                 title: `[CI] Broken links detected — ${today}`,
                 labels: ['bug', 'ci-automated', 'links'],
-                body: `## Broken Links Detected\n\nThe nightly CI/CD audit found broken links on the website.\n\n**Workflow Run:** [View on GitHub](${runUrl})\n**Date:** ${today}\n\n### Broken Links\n\n\`\`\`\n${brokenLinks}\n\`\`\`\n\n### How to Fix\n\n1. Check if the target page/URL still exists\n2. Update or remove the broken link in the source HTML file\n3. Push the fix — the deploy workflow will re-test automatically`
+                body: `## Broken Links Detected\n\nThe nightly CI/CD audit found broken links on the website.\n\n**Workflow Run:** [View on GitHub](${runUrl})\n**Date:** ${today}\n\n### Broken Links\n\n\`\`\`\n${brokenLinks}\n\`\`\`\n\n### How to Fix\n\n1. Check if the target page/URL still exists\n2. Update or remove the broken link in the source HTML file\n3. Push the fix — the deploy workflow will re-test automatically\n\n_This issue is reused for every future report while still open — see the comments below for the latest run, rather than a new issue being filed each night._`
               });
             }
 
