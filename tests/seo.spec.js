@@ -143,13 +143,9 @@ test.describe('SEO: Robots & Sitemap', () => {
     await ctx.close();
   });
 
-  test('sitemap.xml is valid', async ({ browser }) => {
-    const ctx = await browser.newContext();
-    const p = await ctx.newPage();
-    const response = await p.goto(`${BASE}/sitemap.xml`);
+  test('sitemap.xml is valid', async ({ request }) => {
+    const response = await request.get(`${BASE}/sitemap.xml`);
     expect(response.status()).toBe(200);
-    const text = await p.textContent('body');
-    expect(text).toContain('embeddedos-org.github.io');
-    await ctx.close();
+    expect(await response.text()).toContain('embeddedos-org.github.io');
   });
 });

@@ -1,0 +1,39 @@
+name: health-check
+
+on:
+  schedule:
+    # Weekly — Mondays 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  linkinator:
+    name: Crawl live sites for broken links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Crawl developer portal
+        run: |
+          npx --yes linkinator@6 https://embeddedos-org.github.io \
+            --recurse \
+            --skip 'github.com|googletagmanager|fonts.googleapis' \
+            --timeout 10000 \
+            --retry \
+            --retry-errors-count 2
+
+      - name: Crawl org profile
+        run: |
+          npx --yes linkinator@6 https://github.com/embeddedos-org \
+            --skip 'login|signup|sponsors' \
+            --timeout 10000
