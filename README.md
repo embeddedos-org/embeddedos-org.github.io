@@ -31,10 +31,21 @@ js/          animations.js, ebot-chat.js, search.js, site-chrome.js
 stacks/      Technology stack pages (eai-edge.html, index.html)
 eApps/       eApps index + icons
 downloads/   Downloads index
-docs/        Component docs (ebrowser, ebuild, eai, eos, ...) + book/
+docs/        Component docs (ebrowser, ebuild, eai, eos, ...) + book/ + wiki/
 style.css    Global styles
 sitemap.xml, robots.txt, _headers, favicon.svg, og-image.png
 ```
+
+## Community
+
+- [Wiki](https://github.com/embeddedos-org/embeddedos-org.github.io/wiki)
+- [Discussions](https://github.com/embeddedos-org/embeddedos-org.github.io/discussions)
+- [Issues](https://github.com/embeddedos-org/embeddedos-org.github.io/issues)
+- [Projects](https://github.com/orgs/embeddedos-org/projects)
+- [Agent guide](AGENTS.md)
+
+The six published Wiki pages are also preserved in [`docs/wiki/`](docs/wiki/Home.md)
+so their content can be reviewed and maintained with the site source.
 
 ## Develop
 
