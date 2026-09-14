@@ -16,7 +16,8 @@
     "check:links": "npx linkinator http://localhost:8080 --recurse --skip 'github.com|googletagmanager' --timeout 10000",
     "lint:html": "npx html-validate '*.html' 'docs/*.html' || true",
     "lighthouse": "npx @lhci/cli collect --url=http://localhost:8080/index.html --settings.preset=desktop",
-    "audit": "npm run test && npm run check:links"
+    "audit": "npm run test && npm run check:links",
+    "build": "python3 scripts/build-deploy.py"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.0",

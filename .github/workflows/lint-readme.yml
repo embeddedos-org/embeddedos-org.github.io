@@ -1,0 +1,42 @@
+name: lint-readme
+
+on:
+  push:
+    paths:
+      - '**/*.md'
+  pull_request:
+    paths:
+      - '**/*.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  markdownlint:
+    name: markdownlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run markdownlint
+        run: npx --yes markdownlint-cli '**/*.md' --ignore node_modules
+
+  lychee:
+    name: lychee link check (offline)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: lychee --offline
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --no-progress --verbose './**/*.md'
+          fail: true
