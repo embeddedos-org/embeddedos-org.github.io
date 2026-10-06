@@ -26,7 +26,7 @@ CSS, and vanilla JavaScript, no build step required. Package name:
 
 Supporting content:
 
-```
+```text
 js/          animations.js, ebot-chat.js, search.js, site-chrome.js
 stacks/      Technology stack pages (eai-edge.html, index.html)
 eApps/       eApps index + icons
@@ -55,7 +55,7 @@ Serve the site locally (static file server on port 8080):
 npm run serve      # npx http-server . -p 8080 -s
 ```
 
-Then open http://localhost:8080.
+Then open <http://localhost:8080>.
 
 ## Test
 

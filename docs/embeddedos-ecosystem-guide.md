@@ -6,10 +6,7 @@ version: "1.0.0"
 license: "MIT"
 ---
 
-# The EmbeddedOS Ecosystem — Complete Product Guide
-
-**By Srikanth Patchava & EmbeddedOS Contributors**
-
+**By Srikanth Patchava & EmbeddedOS Contributors**\
 **First Edition — April 2026**
 
 ---
@@ -62,22 +59,23 @@ license: "MIT"
 
 ### The EmbeddedOS Vision
 
-EmbeddedOS began with a simple but audacious goal: create a fully integrated ecosystem
-that spans from bare-metal firmware to cloud-connected applications, from wearable health
-sensors to suborbital spacecraft. What started as a real-time operating system kernel has
-grown into a 16-repository organization that covers the entire stack of modern embedded
-and intelligent systems.
+EmbeddedOS began with a simple but audacious goal: create a fully integrated
+ecosystem that spans from bare-metal firmware to cloud-connected applications,
+from wearable health sensors to suborbital spacecraft. What started as a
+real-time operating system kernel has grown into a 16-repository organization
+that covers the entire stack of modern embedded and intelligent systems.
 
-This guide serves as the **omnibus reference** for the entire EmbeddedOS ecosystem. Whether
-you are a firmware engineer working on device drivers, a web developer building office
-productivity tools, a data scientist training on-device ML models, or a hardware designer
-laying out PCBs -- this book is your comprehensive companion.
+This guide serves as the **omnibus reference** for the entire EmbeddedOS
+ecosystem. Whether you are a firmware engineer working on device drivers, a web
+developer building office productivity tools, a data scientist training
+on-device ML models, or a hardware designer laying out PCBs -- this book is your
+comprehensive companion.
 
 ### How the Products Connect
 
 The EmbeddedOS ecosystem is organized in **concentric layers**:
 
-```
+```text
 +------------------------------------------------------------------+
 |                    HARDWARE PRODUCTS                              |
 |         eRadar360 - eHealth365 - ePAM Vehicles                   |
@@ -125,13 +123,13 @@ The EmbeddedOS ecosystem is organized in **concentric layers**:
 
 ---
 
-# Part I: Platform Foundation
+## Part I: Platform Foundation
 
 ---
 
-## Chapter 1: eos -- The Embedded Operating System
+### Chapter 1: eos — The Embedded Operating System
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eos`
 **Language:** C/C++
@@ -143,25 +141,26 @@ ecosystem. It provides a preemptive RTOS kernel, hardware abstraction layer (HAL
 device drivers, and system services designed for deterministic, low-latency operation
 on resource-constrained embedded devices.
 
-### Key Features
+#### Key Features
 
 - **Preemptive RTOS Kernel** -- Priority-based preemptive scheduling with configurable
   tick rate (1 kHz default), supporting up to 256 priority levels
 - **Hardware Abstraction Layer (HAL)** -- Uniform API across ARM Cortex-M, Cortex-A,
   RISC-V, and x86 architectures
-- **Device Driver Framework** -- Modular driver model for GPIO, UART, SPI, I2C, ADC,
-  DAC, PWM, CAN, Ethernet, USB, and custom peripherals
+- **Device Driver Framework** -- Modular driver model for GPIO, UART, SPI, I2C,
+  ADC, DAC, PWM, CAN, Ethernet, USB, and custom peripherals
 - **Memory Management** -- Static and dynamic allocation with memory pools, heap
   management with fragmentation protection, and MPU support
 - **Power Management** -- Tickless idle, deep sleep modes, peripheral clock gating,
   and dynamic voltage/frequency scaling (DVFS)
 - **File System Support** -- FAT32, LittleFS, and custom flash-optimized file systems
 - **Networking Stack** -- lwIP integration with TCP/UDP/IPv4/IPv6, TLS 1.3 via mbedTLS
-- **POSIX Compatibility Layer** -- Subset of POSIX API for portable application code
+- **POSIX Compatibility Layer** -- Subset of POSIX API for portable application
+  code
 
-### Architecture
+#### Architecture
 
-```
+```text
 +-------------------------------------------------------+
 |                   User Applications                    |
 +-------------------------------------------------------+
@@ -181,7 +180,7 @@ on resource-constrained embedded devices.
 +-------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```c
 #include <eos/kernel.h>
@@ -210,9 +209,9 @@ int main(void) {
 }
 ```
 
-### API Highlights
+#### API Highlights
 
-#### Kernel API
+##### Kernel API
 
 | Function | Description |
 |----------|-------------|
@@ -222,7 +221,7 @@ int main(void) {
 | `eos_kernel_enter_critical()` | Disable interrupts, enter critical section |
 | `eos_kernel_exit_critical()` | Re-enable interrupts, exit critical section |
 
-#### Task API
+##### Task API
 
 | Function | Description |
 |----------|-------------|
@@ -233,7 +232,7 @@ int main(void) {
 | `eos_task_resume()` | Resume a suspended task |
 | `eos_task_yield()` | Yield CPU to next ready task |
 
-#### HAL GPIO API
+##### HAL GPIO API
 
 | Function | Description |
 |----------|-------------|
@@ -243,7 +242,7 @@ int main(void) {
 | `gpio_toggle()` | Toggle pin state |
 | `gpio_set_interrupt()` | Configure pin interrupt with callback |
 
-### Supported Platforms
+#### Supported Platforms
 
 | Platform | Architecture | Status |
 |----------|-------------|--------|
@@ -257,20 +256,21 @@ int main(void) {
 
 ---
 
-## Chapter 2: eBoot -- Secure Bootloader
+### Chapter 2: eBoot — Secure Bootloader
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eBoot`
 **Language:** C/Assembly
 **License:** MIT
 **Status:** Active Development
 
-eBoot is a secure bootloader designed to establish a hardware root of trust for all
-EmbeddedOS-powered devices. It implements verified boot chains, firmware update
-mechanisms, and board-specific port layers for diverse hardware platforms.
+eBoot is a secure bootloader designed to establish a hardware root of trust for
+all EmbeddedOS-powered devices. It implements verified boot chains, firmware
+update mechanisms, and board-specific port layers for diverse hardware
+platforms.
 
-### Key Features
+#### Key Features
 
 - **Secure Boot Chain** -- Multi-stage verified boot with RSA-2048/Ed25519 signature
   verification at each stage
@@ -280,14 +280,15 @@ mechanisms, and board-specific port layers for diverse hardware platforms.
   TPM 2.0, and ARM TrustZone
 - **Board-Specific Ports** -- Modular port architecture supporting STM32, nRF, ESP32,
   RISC-V, and custom SoCs
-- **Minimal Footprint** -- Stage 1 bootloader fits in 8 KB; full bootloader under 64 KB
+- **Minimal Footprint** -- Stage 1 bootloader fits in 8 KB; full bootloader
+  under 64 KB
 - **Anti-Rollback Protection** -- Monotonic version counters stored in OTP fuses
 - **Recovery Mode** -- Failsafe recovery via UART/USB when primary firmware is corrupted
 - **Encryption Support** -- AES-256-GCM firmware image encryption at rest
 
-### Architecture
+#### Architecture
 
-```
+```text
 +--------------------------------------------------+
 |              Power On / Reset                     |
 +--------------------------------------------------+
@@ -324,7 +325,7 @@ mechanisms, and board-specific port layers for diverse hardware platforms.
 +--------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```c
 /* eBoot board port configuration -- board_config.h */
@@ -344,7 +345,7 @@ mechanisms, and board-specific port layers for diverse hardware platforms.
 #define EBOOT_RECOVERY_BAUD     115200
 ```
 
-### API Highlights
+#### API Highlights
 
 | Function | Description |
 |----------|-------------|
@@ -358,9 +359,9 @@ mechanisms, and board-specific port layers for diverse hardware platforms.
 
 ---
 
-## Chapter 3: ebuild -- Build System
+### Chapter 3: ebuild — Build System
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/ebuild`
 **Language:** Python, CMake, Make
@@ -371,12 +372,13 @@ ebuild is the unified build system for the EmbeddedOS ecosystem. It orchestrates
 compilation of C/C++ firmware, packaging of web applications, and analysis of KiCad
 hardware designs -- all from a single command-line interface.
 
-### Key Features
+#### Key Features
 
-- **Multi-Target Build** -- Build firmware for multiple architectures and boards in
-  parallel from a single configuration
-- **KiCad Hardware Analyzer** -- Parse KiCad schematics and PCB layouts to extract BOM,
-  netlist, design rule checks, and cross-reference with firmware pin assignments
+- **Multi-Target Build** -- Build firmware for multiple architectures and boards
+  in parallel from a single configuration
+- **KiCad Hardware Analyzer** -- Parse KiCad schematics and PCB layouts to
+  extract BOM, netlist, design rule checks, and cross-reference with firmware
+  pin assignments
 - **Dependency Management** -- Automatic resolution of inter-repository dependencies
   with version pinning and lockfiles
 - **Toolchain Management** -- Auto-download and configure ARM GCC, RISC-V GCC, Clang,
@@ -386,9 +388,9 @@ hardware designs -- all from a single command-line interface.
 - **CI/CD Integration** -- GitHub Actions, GitLab CI, and Jenkins pipeline generators
 - **Flash and Debug** -- Integrated flashing via OpenOCD, J-Link, and vendor tools
 
-### Architecture
+#### Architecture
 
-```
+```text
 +------------------------------------------------------+
 |                ebuild CLI (Python)                    |
 |  ebuild config | build | flash | test | analyze      |
@@ -405,7 +407,7 @@ hardware designs -- all from a single command-line interface.
 +------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```yaml
 # ebuild.yaml -- project configuration
@@ -456,7 +458,7 @@ ebuild analyze --kicad smart_ring
 ebuild flash smart_ring --probe jlink
 ```
 
-### API Highlights -- KiCad Analyzer
+#### API Highlights -- KiCad Analyzer
 
 | Command | Description |
 |---------|-------------|
@@ -469,9 +471,9 @@ ebuild flash smart_ring --probe jlink
 
 ---
 
-## Chapter 4: eIPC -- Inter-Process Communication
+### Chapter 4: eIPC — Inter-Process Communication
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eIPC`
 **Language:** C/C++
@@ -483,7 +485,7 @@ embedded systems. It provides zero-copy message passing, shared memory regions,
 publish-subscribe patterns, and remote procedure calls (RPC) -- all with minimal
 overhead suitable for real-time applications.
 
-### Key Features
+#### Key Features
 
 - **Zero-Copy Message Passing** -- Lock-free ring buffers for inter-task communication
   with zero memory copies on shared-memory architectures
@@ -498,9 +500,9 @@ overhead suitable for real-time applications.
   (Unix sockets/pipes), network (TCP/UDP), and serial (UART/SPI)
 - **Discovery Service** -- Automatic service discovery for dynamic system topologies
 
-### Architecture
+#### Architecture
 
-```
+```text
 +-----------------------------------------------------+
 |              Application Layer                       |
 |   Publisher | Subscriber | RPC Client | RPC Server   |
@@ -513,7 +515,7 @@ overhead suitable for real-time applications.
 +-------------+------------+------------+-------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```c
 #include <eipc/eipc.h>
@@ -543,7 +545,7 @@ void health_monitor(void) {
 }
 ```
 
-### API Highlights
+#### API Highlights
 
 | Function | Description |
 |----------|-------------|
@@ -559,9 +561,9 @@ void health_monitor(void) {
 
 ---
 
-## Chapter 5: eDB -- Embedded Database
+### Chapter 5: eDB — Embedded Database
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eDB`
 **Language:** C
@@ -573,7 +575,7 @@ on resource-constrained devices. It provides key-value storage, document storage
 with JSON-like queries, and time-series data management -- all with ACID guarantees
 and wear-leveling for flash memory.
 
-### Key Features
+#### Key Features
 
 - **Key-Value Store** -- O(log n) lookups with B+ tree indexing on flash
 - **Document Store** -- BSON document storage with query support for nested fields
@@ -585,9 +587,9 @@ and wear-leveling for flash memory.
 - **Encryption at Rest** -- AES-256 transparent encryption for stored data
 - **Replication** -- Optional master-replica replication over eIPC for redundancy
 
-### Architecture
+#### Architecture
 
-```
+```text
 +-------------------------------------------------+
 |             Application Interface                |
 |   KV API | Document API | Time-Series API        |
@@ -605,7 +607,7 @@ and wear-leveling for flash memory.
 +-------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```c
 #include <edb/edb.h>
@@ -632,7 +634,7 @@ int main(void) {
 }
 ```
 
-### API Highlights
+#### API Highlights
 
 | Function | Description |
 |----------|-------------|
@@ -649,13 +651,13 @@ int main(void) {
 
 ---
 
-# Part II: Application Layer
+## Part II: Application Layer
 
 ---
 
-## Chapter 6: eBrowser -- Embedded Web Browser
+### Chapter 6: eBrowser — Embedded Web Browser
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eBrowser`
 **Language:** C/C++
@@ -664,13 +666,13 @@ int main(void) {
 **License:** MIT
 **Status:** Active Development
 
-eBrowser is a lightweight web browser purpose-built for embedded and IoT devices.
-Unlike desktop browsers that require gigabytes of RAM, eBrowser is designed to render
-modern web content on devices with as little as 16 MB of RAM, making it suitable for
-kiosks, automotive infotainment, smart home panels, industrial HMIs, and embedded
-dashboard displays.
+eBrowser is a lightweight web browser purpose-built for embedded and IoT
+devices. Unlike desktop browsers that require gigabytes of RAM, eBrowser is
+designed to render modern web content on devices with as little as 16 MB of RAM,
+making it suitable for kiosks, automotive infotainment, smart home panels,
+industrial HMIs, and embedded dashboard displays.
 
-### Key Features
+#### Key Features
 
 - **HTML5/CSS3 Rendering** -- Core HTML5 elements, CSS3 flexbox/grid layout
 - **JavaScript Engine** -- Lightweight JS interpreter with ES6+ support
@@ -681,9 +683,9 @@ dashboard displays.
 - **Platform Abstraction Layer** -- Linux FB, X11, Wayland, SDL2, eos framebuffer
 - **7 Test Suites, 130+ Tests** -- Comprehensive test coverage
 
-### Architecture
+#### Architecture
 
-```
+```text
 +--------------------------------------------------------------+
 |                    User Interface Layer                        |
 |   Tab Manager | Address Bar | Bookmarks | Settings | DevTools |
@@ -710,7 +712,7 @@ dashboard displays.
 +--------------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```bash
 git clone https://github.com/embeddedos-org/eBrowser.git
@@ -725,7 +727,7 @@ make -j$(nproc)
 ctest --output-on-failure
 ```
 
-### Embedding API (C++)
+#### Embedding API (C++)
 
 ```cpp
 #include <ebrowser/engine.h>
@@ -749,7 +751,7 @@ view->on_load([](ebrowser::View& v) {
 engine.run();
 ```
 
-### Test Coverage Summary
+#### Test Coverage Summary
 
 | Test Suite | Tests | Coverage Area |
 |-----------|-------|---------------|
@@ -764,9 +766,9 @@ engine.run();
 
 ---
 
-## Chapter 7: eOffice -- Office Productivity Suite
+### Chapter 7: eOffice — Office Productivity Suite
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eOffice`
 **Language:** TypeScript, JavaScript
@@ -779,7 +781,7 @@ engine.run();
 eOffice is a complete, AI-powered office productivity suite comprising 12 integrated
 applications enhanced by eBot, an AI assistant with 33+ intelligent actions.
 
-### The 12 Applications
+#### The 12 Applications
 
 | # | App | Description |
 |---|-----|-------------|
@@ -796,7 +798,7 @@ applications enhanced by eBot, an AI assistant with 33+ intelligent actions.
 | 11 | **ePlanner** | Project management with Kanban, Gantt, and calendars |
 | 12 | **Launcher** | Unified dashboard and application launcher |
 
-### Key Features
+#### Key Features
 
 - **eBot AI Assistant** -- 33+ AI-powered actions including document summarization,
   data analysis, email drafting, meeting scheduling, and code generation
@@ -808,9 +810,9 @@ applications enhanced by eBot, an AI assistant with 33+ intelligent actions.
 - **75+ Tests** -- Unit, integration, and end-to-end test coverage
 - **Plugin Architecture** -- Extensible through plugins
 
-### Architecture
+#### Architecture
 
-```
+```text
 +--------------------------------------------------------------+
 |                     Electron Shell                            |
 |               (Desktop: Win / macOS / Linux)                  |
@@ -835,7 +837,7 @@ applications enhanced by eBot, an AI assistant with 33+ intelligent actions.
 +--------------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```bash
 git clone https://github.com/embeddedos-org/eOffice.git
@@ -848,7 +850,7 @@ npm run electron:dev # Desktop app
 npm test             # All 75+ tests
 ```
 
-### eBot AI Actions
+#### eBot AI Actions
 
 | Category | Actions | Description |
 |----------|---------|-------------|
@@ -860,9 +862,9 @@ npm test             # All 75+ tests
 | General | `search_across_apps`, `create_workflow`, `export_report` | Cross-app AI features |
 | Code | `generate_code`, `explain_code`, `debug_assist` | Developer tools via eBot |
 
-### Authentication Flow
+#### Authentication Flow
 
-```
+```text
 Client                    Server                    Database
   |                         |                         |
   |  POST /auth/login       |                         |
@@ -886,9 +888,9 @@ Client                    Server                    Database
 
 ---
 
-## Chapter 8: eVera -- AI Virtual Assistant
+### Chapter 8: eVera — AI Virtual Assistant
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eVera`
 **Backend:** Python (FastAPI + LangGraph)
@@ -902,7 +904,7 @@ eVera is a voice-first AI assistant with 24+ specialized agents and 183+ tools.
 It features a 3D holographic avatar, multi-modal interaction, and a sophisticated
 4-layer memory system.
 
-### Key Features
+#### Key Features
 
 - **24+ Specialized Agents** -- Domain-specific agents for productivity, health,
   finance, home automation, entertainment, coding, research, and more
@@ -914,9 +916,9 @@ It features a 3D holographic avatar, multi-modal interaction, and a sophisticate
 - **Multi-Platform** -- FastAPI backend, Electron desktop, React Native mobile
 - **Privacy-First** -- Local processing with Ollama for sensitive data
 
-### Architecture
+#### Architecture
 
-```
+```text
 +--------------------------------------------------------------+
 |                    Client Applications                        |
 |  +----------+    +--------------+    +---------------+       |
@@ -951,7 +953,7 @@ It features a 3D holographic avatar, multi-modal interaction, and a sophisticate
 +--------------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```bash
 git clone https://github.com/embeddedos-org/eVera.git
@@ -968,7 +970,7 @@ cd ../desktop && npm install && npm run dev
 cd ../mobile && npm install && npx expo start
 ```
 
-### Agent Registry
+#### Agent Registry
 
 | Agent | Domain | Key Tools |
 |-------|--------|-----------|
@@ -985,7 +987,7 @@ cd ../mobile && npm install && npx expo start
 | `creative_agent` | Writing/Art/Music Gen | 8 tools |
 | `social_agent` | Messaging/Social Media | 6 tools |
 
-### Memory System API
+#### Memory System API
 
 ```python
 from evera.memory import MemoryManager
@@ -1010,9 +1012,9 @@ context = memory.recall("What is the weather like?", top_k=5)
 
 ---
 
-## Chapter 9: eApps -- Mobile App Platform
+### Chapter 9: eApps — Mobile App Platform
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eApps`
 **Language:** TypeScript, React Native
@@ -1024,7 +1026,7 @@ React Native, it provides companion apps for EmbeddedOS hardware products, mobil
 interfaces for eOffice and eVera, and a framework for building custom embedded
 device companion applications.
 
-### Key Features
+#### Key Features
 
 - **Cross-Platform** -- Single codebase for iOS and Android
 - **BLE Device Manager** -- Bluetooth Low Energy for EmbeddedOS hardware
@@ -1034,9 +1036,9 @@ device companion applications.
 - **Biometric Auth** -- Face ID, Touch ID, fingerprint
 - **Theming Engine** -- Dynamic themes with WCAG 2.1 AA accessibility
 
-### Architecture
+#### Architecture
 
-```
+```text
 +------------------------------------------------------+
 |                 eApps Mobile Platform                 |
 |  +----------+ +----------+ +------------------+      |
@@ -1055,7 +1057,7 @@ device companion applications.
 +------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```bash
 git clone https://github.com/embeddedos-org/eApps.git
@@ -1064,7 +1066,7 @@ npx react-native run-ios     # iOS
 npx react-native run-android  # Android
 ```
 
-### API Highlights
+#### API Highlights
 
 | Module | API | Description |
 |--------|-----|-------------|
@@ -1076,9 +1078,9 @@ npx react-native run-android  # Android
 
 ---
 
-## Chapter 10: EoStudio -- Development Environment
+### Chapter 10: EoStudio — Development Environment
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/EoStudio`
 **Language:** TypeScript, Electron
@@ -1088,7 +1090,7 @@ npx react-native run-android  # Android
 EoStudio is the integrated development environment (IDE) for the EmbeddedOS ecosystem,
 providing firmware development, hardware design review, and device debugging.
 
-### Key Features
+#### Key Features
 
 - **Multi-Language Editor** -- C, C++, Python, TypeScript, Pine Script support
 - **Integrated Terminal** -- ebuild, OpenOCD, GDB integration
@@ -1099,9 +1101,9 @@ providing firmware development, hardware design review, and device debugging.
 - **eBot Code Assistant** -- AI-powered code completion
 - **Project Templates** -- Pre-configured for each EmbeddedOS repo
 
-### Architecture
+#### Architecture
 
-```
+```text
 +----------------------------------------------------------+
 |                   EoStudio IDE (Electron)                 |
 |  +--------+ +------------+ +----------+ +------------+   |
@@ -1116,7 +1118,7 @@ providing firmware development, hardware design review, and device debugging.
 +----------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```bash
 git clone https://github.com/embeddedos-org/EoStudio.git
@@ -1125,13 +1127,13 @@ cd EoStudio && npm install && npm run build && npm run start
 
 ---
 
-# Part III: Intelligence Layer
+## Part III: Intelligence Layer
 
 ---
 
-## Chapter 11: eAI -- AI/ML Inference Engine
+### Chapter 11: eAI — AI/ML Inference Engine
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eAI`
 **Language:** C/C++, Python (training tools)
@@ -1141,19 +1143,20 @@ cd EoStudio && npm install && npm run build && npm run start
 eAI is an AI/ML inference engine optimized for embedded devices, enabling on-device
 ML inference without cloud connectivity.
 
-### Key Features
+#### Key Features
 
 - **Tiny Inference Runtime** -- Core under 64 KB ROM
 - **Model Formats** -- TFLite Micro, ONNX Micro, custom eAI binary (INT8, FP16)
 - **HW Acceleration** -- CMSIS-NN (Cortex-M), NEON (Cortex-A), RISC-V vector
-- **Model Zoo** -- Keyword spotting, anomaly detection, image classification, health scoring
+- **Model Zoo** -- Keyword spotting, anomaly detection, image classification,
+  health scoring
 - **On-Device Training** -- Federated and transfer learning
 - **Profiler** -- Per-layer timing, memory, accuracy metrics
 - **Training Pipeline** -- PyTorch/TensorFlow with auto-quantization
 
-### Architecture
+#### Architecture
 
-```
+```text
 +----------------------------------------------------------+
 |              Python Training Pipeline                     |
 |  PyTorch/TensorFlow | Quantization | Model Export         |
@@ -1172,7 +1175,7 @@ ML inference without cloud connectivity.
 +----------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```c
 #include <eai/eai.h>
@@ -1184,7 +1187,9 @@ int main(void) {
 
     float ppg_data[128];
     read_ppg_sensor(ppg_data, 128);
-    eai_tensor_t input = { .data = ppg_data, .shape = {1, 128}, .dtype = EAI_FLOAT32 };
+    eai_tensor_t input = {
+        .data = ppg_data, .shape = {1, 128}, .dtype = EAI_FLOAT32
+    };
     eai_tensor_t output;
     eai_infer(model, &input, &output);
 
@@ -1194,7 +1199,7 @@ int main(void) {
 }
 ```
 
-### API Highlights
+#### API Highlights
 
 | Function | Description |
 |----------|-------------|
@@ -1205,7 +1210,7 @@ int main(void) {
 | `eai_profile()` | Profile inference performance |
 | `eai_quantize()` | Dynamic quantization FP32 to INT8 |
 
-### Ecosystem Use Cases
+#### Ecosystem Use Cases
 
 | Product | Use Case | Model Type |
 |---------|----------|------------|
@@ -1218,9 +1223,9 @@ int main(void) {
 
 ---
 
-## Chapter 12: eNI -- Neural Interface
+### Chapter 12: eNI — Neural Interface
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eNI`
 **Language:** C/C++, Python
@@ -1230,7 +1235,7 @@ int main(void) {
 eNI is a biosignal processing library for neural and physiological signal acquisition,
 filtering, feature extraction, and classification targeting EEG, EMG, ECG modalities.
 
-### Key Features
+#### Key Features
 
 - **Multi-Modal Acquisition** -- EEG (256 ch), EMG (16 ch), ECG (12 leads), EOG
 - **Real-Time DSP** -- IIR/FIR filtering, FFT, wavelet transforms at 1 kHz
@@ -1240,9 +1245,9 @@ filtering, feature extraction, and classification targeting EEG, EMG, ECG modali
 - **Artifact Rejection** -- Eye-blink, muscle, motion artifact removal
 - **Data Export** -- EDF+, BDF, CSV, HDF5
 
-### Architecture
+#### Architecture
 
-```
+```text
 +----------------------------------------------------------+
 |                Application Layer                          |
 |  BCI Control | Neurofeedback | Prosthetic Control | HMI  |
@@ -1261,7 +1266,7 @@ filtering, feature extraction, and classification targeting EEG, EMG, ECG modali
 +----------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```c
 #include <eni/eni.h>
@@ -1284,7 +1289,7 @@ void bci_pipeline(void) {
 }
 ```
 
-### API Highlights
+#### API Highlights
 
 | Function | Description |
 |----------|-------------|
@@ -1299,9 +1304,9 @@ void bci_pipeline(void) {
 
 ---
 
-## Chapter 13: eStocks -- Algorithmic Trading
+### Chapter 13: eStocks — Algorithmic Trading
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eStocks_Trading_Scripts`
 **Language:** Python, Pine Script, thinkScript, EasyLanguage
@@ -1311,7 +1316,7 @@ void bci_pipeline(void) {
 eStocks is a comprehensive algorithmic trading system with 15 strategies, 7-layer
 risk management, 7 data sources, 4 trading platforms, and 288+ tests.
 
-### The 15 Strategies
+#### The 15 Strategies
 
 | # | Strategy | Type | Description |
 |---|----------|------|-------------|
@@ -1331,9 +1336,9 @@ risk management, 7 data sources, 4 trading platforms, and 288+ tests.
 | 14 | sector_rotation | Macro | Economic cycle rotation |
 | 15 | meta_ensemble | Ensemble | Meta-learner combining signals |
 
-### 7-Layer Risk Management
+#### 7-Layer Risk Management
 
-```
+```text
 +----------------------------------------------------------+
 | Layer 7: Meta-Risk Orchestrator                          |
 |   Circuit breakers, kill switch, cross-layer coordination |
@@ -1358,7 +1363,7 @@ risk management, 7 data sources, 4 trading platforms, and 288+ tests.
 +----------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```python
 from estocks import TradingEngine, Strategy, RiskManager
@@ -1387,7 +1392,7 @@ results = engine.backtest(start='2020-01-01', end='2026-04-01', initial_capital=
 print(f"Sharpe: {results.sharpe_ratio:.2f}, Return: {results.total_return:.2%}")
 ```
 
-### Platform Deployment
+#### Platform Deployment
 
 | Platform | Language | Features |
 |----------|----------|----------|
@@ -1396,7 +1401,7 @@ print(f"Sharpe: {results.sharpe_ratio:.2f}, Return: {results.total_return:.2%}")
 | Interactive Brokers | Python (ibapi) | Full API, multi-asset, algo execution |
 | TradeStation | EasyLanguage | RadarScreen, walk-forward optimization |
 
-### Test Coverage: 288+ Tests
+#### Test Coverage: 288+ Tests
 
 | Category | Tests |
 |----------|-------|
@@ -1409,13 +1414,13 @@ print(f"Sharpe: {results.sharpe_ratio:.2f}, Return: {results.total_return:.2%}")
 
 ---
 
-# Part IV: Hardware Products
+## Part IV: Hardware Products
 
 ---
 
-## Chapter 14: eRadar360 -- Automotive Radar
+### Chapter 14: eRadar360 — Automotive Radar
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eHardware-Designs-Products`
 **Path:** `eHardware-Designs-Products/eRadar360/`
@@ -1427,7 +1432,7 @@ eRadar360 is an automotive-grade ADAS radar module designed for 360-degree
 environmental sensing using 77 GHz FMCW radar on a compact 120mm x 85mm
 10-layer hybrid PCB.
 
-### Key Specifications
+#### Key Specifications
 
 | Parameter | Value |
 |-----------|-------|
@@ -1446,9 +1451,9 @@ environmental sensing using 77 GHz FMCW radar on a compact 120mm x 85mm
 | Power | 4W typical, 6W peak |
 | Temperature | -40C to +105C (AEC-Q100 Grade 1) |
 
-### Architecture
+#### Architecture
 
-```
+```text
 +----------------------------------------------------------+
 |                    eRadar360 Module                       |
 |                                                          |
@@ -1469,7 +1474,7 @@ environmental sensing using 77 GHz FMCW radar on a compact 120mm x 85mm
 +----------------------------------------------------------+
 ```
 
-### Software Stack
+#### Software Stack
 
 The eRadar360 runs a complete EmbeddedOS software stack:
 
@@ -1479,7 +1484,7 @@ The eRadar360 runs a complete EmbeddedOS software stack:
 4. **eIPC** -- Communication between radar processing and vehicle bus
 5. **eDB** -- Configuration storage and calibration data
 
-### Getting Started
+#### Getting Started
 
 ```bash
 cd eHardware-Designs-Products/eRadar360
@@ -1492,9 +1497,9 @@ ebuild flash eRadar360_firmware --probe jlink       # Flash via JTAG
 
 ---
 
-## Chapter 15: eHealth365 -- Health Monitoring
+### Chapter 15: eHealth365 — Health Monitoring
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eHardware-Designs-Products`
 **Path:** `eHardware-Designs-Products/eHealth365/`
@@ -1502,11 +1507,11 @@ ebuild flash eRadar360_firmware --probe jlink       # Flash via JTAG
 **License:** MIT
 **Status:** Development
 
-eHealth365 is a comprehensive health monitoring ecosystem achieving approximately
-90% coverage of clinically relevant health metrics through two wearable devices and
-a companion mobile application.
+eHealth365 is a comprehensive health monitoring ecosystem achieving
+approximately 90% coverage of clinically relevant health metrics through two
+wearable devices and a companion mobile application.
 
-### Smart Ring Pro
+#### Smart Ring Pro
 
 | Parameter | Value |
 |-----------|-------|
@@ -1523,7 +1528,7 @@ a companion mobile application.
 SpO2, Skin Temperature, Sleep Stages (wake/light/deep/REM), Activity Tracking,
 Respiratory Rate, Readiness Score.
 
-### Smart Patch Pro
+#### Smart Patch Pro
 
 | Parameter | Value |
 |-----------|-------|
@@ -1538,9 +1543,9 @@ Respiratory Rate, Readiness Score.
 (Na/K/Cl/lactate), Monthly Blood Panel (lipids, HbA1c, CRP, vitamin D, CBC),
 Hydration Level, Metabolic Rate.
 
-### Combined Health Coverage (~90%)
+#### Combined Health Coverage (~90%)
 
-```
+```text
 +--------------------------------------------------------------+
 |                    eHealth365 Ecosystem                       |
 |                                                              |
@@ -1564,7 +1569,7 @@ Hydration Level, Metabolic Rate.
 +--------------------------------------------------------------+
 ```
 
-### Pricing
+#### Pricing
 
 | Item | Price |
 |------|-------|
@@ -1574,7 +1579,7 @@ Hydration Level, Metabolic Rate.
 | Blood Cartridge (monthly, 1-pack) | $49 |
 | **First Year Total** | **~$1,100** |
 
-### Software Stack
+#### Software Stack
 
 Each eHealth365 device runs the full EmbeddedOS platform stack:
 
@@ -1585,7 +1590,7 @@ Each eHealth365 device runs the full EmbeddedOS platform stack:
 - **eDB** -- Local health data storage with encryption at rest
 - **eApps** -- React Native companion app (Chapter 9)
 
-### Getting Started
+#### Getting Started
 
 ```bash
 ebuild build smart_ring --target nrf52840    # Build ring firmware
@@ -1596,9 +1601,9 @@ npx react-native run-ios
 
 ---
 
-## Chapter 16: ePAM -- Personal Air Mobility
+### Chapter 16: ePAM — Personal Air Mobility
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/eHardware-Designs-Products`
 **Path:** `eHardware-Designs-Products/ePAM/`
@@ -1610,9 +1615,9 @@ ePAM (Personal Air Mobility) is EmbeddedOS's most ambitious hardware project:
 a family of 4 vehicles spanning ground, air, and space transportation powered
 by hybrid renewable energy and running EmbeddedOS for autonomous operation.
 
-### Vehicle Lineup
+#### Vehicle Lineup
 
-#### 1. Eco Car ($28,000 - $45,000)
+##### 1. Eco Car ($28,000 - $45,000)
 
 | Parameter | Value |
 |-----------|-------|
@@ -1624,7 +1629,7 @@ by hybrid renewable energy and running EmbeddedOS for autonomous operation.
 | Passengers | 4-5 |
 | Energy Recovery | Regen braking + kinetic recovery |
 
-#### 2. Urban Drone eVTOL ($85,000 - $120,000)
+##### 2. Urban Drone eVTOL ($85,000 - $120,000)
 
 | Parameter | Value |
 |-----------|-------|
@@ -1637,7 +1642,7 @@ by hybrid renewable energy and running EmbeddedOS for autonomous operation.
 | Passengers | 1-2 |
 | Rotors | 8 (octocopter, redundant) |
 
-#### 3. Space Shuttle -- Suborbital ($2M - $4M)
+##### 3. Space Shuttle -- Suborbital ($2M - $4M)
 
 | Parameter | Value |
 |-----------|-------|
@@ -1649,7 +1654,7 @@ by hybrid renewable energy and running EmbeddedOS for autonomous operation.
 | Reusability | Fully reusable, vertical landing |
 | G-Forces | Max 3.5g ascent, 1.5g descent |
 
-#### 4. Combo Unit -- Trans-Atmospheric ($5M - $9M)
+##### 4. Combo Unit -- Trans-Atmospheric ($5M - $9M)
 
 | Parameter | Value |
 |-----------|-------|
@@ -1662,9 +1667,9 @@ by hybrid renewable energy and running EmbeddedOS for autonomous operation.
 | Passengers | 2-4 |
 | Transformation | Automated mode switching (ground/air/space) |
 
-### Power System Architecture
+#### Power System Architecture
 
-```
+```text
 +--------------------------------------------------------------+
 |                  ePAM Hybrid Power System                     |
 |                                                              |
@@ -1691,7 +1696,7 @@ by hybrid renewable energy and running EmbeddedOS for autonomous operation.
 +--------------------------------------------------------------+
 ```
 
-### Software Stack
+#### Software Stack
 
 All ePAM vehicles run EmbeddedOS with safety-critical extensions:
 
@@ -1703,7 +1708,7 @@ All ePAM vehicles run EmbeddedOS with safety-critical extensions:
 - **eDB** -- Flight data recording, telemetry storage
 - **eApps** -- Passenger mobile app for vehicle control
 
-### Getting Started
+#### Getting Started
 
 ```bash
 cd eHardware-Designs-Products/ePAM
@@ -1714,13 +1719,13 @@ ebuild build epam_flight_ctrl --target cortex-r5 --safety asil-d
 
 ---
 
-# Part V: Development and Operations
+## Part V: Development and Operations
 
 ---
 
-## Chapter 17: EoSim -- Simulation Environment
+### Chapter 17: EoSim — Simulation Environment
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/EoSim`
 **Language:** C++, Python
@@ -1731,7 +1736,7 @@ EoSim is a comprehensive hardware-software co-simulation environment for the
 EmbeddedOS ecosystem. It enables developers to test firmware, validate hardware
 designs, and simulate complete systems before physical prototyping.
 
-### Key Features
+#### Key Features
 
 - **Instruction-Set Simulation** -- Cycle-accurate ARM Cortex-M/R/A and RISC-V ISS
   with peripheral modeling
@@ -1741,13 +1746,14 @@ designs, and simulate complete systems before physical prototyping.
   glucose, radar returns
 - **Vehicle Dynamics** -- Physics-based simulation for ePAM ground, air, space vehicles
 - **Network Simulation** -- BLE, Wi-Fi, CAN, Ethernet with configurable parameters
-- **Power Modeling** -- Estimate power consumption and battery life from execution traces
+- **Power Modeling** -- Estimate power consumption and battery life from
+  execution traces
 - **Fault Injection** -- Simulate bit flips, stuck pins, sensor drift for reliability
 - **Visualization** -- Real-time 3D visualization of simulated devices and environments
 
-### Architecture
+#### Architecture
 
-```
+```text
 +--------------------------------------------------------------+
 |                    EoSim Framework                            |
 |  +----------------------------------------------------------+|
@@ -1770,7 +1776,7 @@ designs, and simulate complete systems before physical prototyping.
 +--------------------------------------------------------------+
 ```
 
-### Getting Started
+#### Getting Started
 
 ```bash
 git clone https://github.com/embeddedos-org/EoSim.git
@@ -1780,7 +1786,7 @@ make -j$(nproc)
 eosim launch --config scenarios/eHealth365_ring.yaml
 ```
 
-### Example Scenario Configuration
+#### Example Scenario Configuration
 
 ```yaml
 scenario:
@@ -1816,7 +1822,7 @@ faults:
     magnitude: 0.1
 ```
 
-### API Highlights
+#### API Highlights
 
 | Function | Description |
 |----------|-------------|
@@ -1830,17 +1836,17 @@ faults:
 
 ---
 
-## Chapter 18: Cross-Product Integration
+### Chapter 18: Cross-Product Integration
 
-### Overview
+#### Overview
 
 The true power of EmbeddedOS emerges when products work together. This chapter
 documents the integration points, dependency relationships, and data flows
 between all 16 repositories.
 
-### Dependency Graph
+#### Dependency Graph
 
-```
+```text
                     +---------------------+
                     |  embeddedos-org      |
                     |  .github.io (docs)   |
@@ -1884,13 +1890,13 @@ between all 16 repositories.
 +--------------------------------------------------------------+
 ```
 
-### Key Integration Patterns
+#### Key Integration Patterns
 
-#### 1. Hardware Product Stack
+##### 1. Hardware Product Stack
 
 Every EmbeddedOS hardware product uses this foundational stack:
 
-```
+```text
 Application Code (product-specific)
         |
         v
@@ -1909,9 +1915,9 @@ Application Code (product-specific)
     Hardware (PCB designed in eHardware-Designs-Products)
 ```
 
-#### 2. AI Pipeline Integration
+##### 2. AI Pipeline Integration
 
-```
+```text
 Raw Sensor Data (eHealth365 / eRadar360 / eNI)
         |
         v
@@ -1931,9 +1937,9 @@ Result Publication (via eIPC)
         +---> eVera (voice alerts)
 ```
 
-#### 3. Development Workflow Integration
+##### 3. Development Workflow Integration
 
-```
+```text
 Developer writes code
         |
         v
@@ -1952,9 +1958,9 @@ ebuild flash (deploy to real hardware)
 EoStudio debug (JTAG/SWD live debug)
 ```
 
-#### 4. eVera Cross-Product Voice Control
+##### 4. eVera Cross-Product Voice Control
 
-```
+```text
 User Voice Command
         |
         v
@@ -1968,7 +1974,7 @@ eVera Voice Pipeline (STT -> NLU -> Intent)
         +---> "Run simulation"     -> EoSim
 ```
 
-### Integration Matrix
+#### Integration Matrix
 
 | From / To | eos | eBoot | eAI | eIPC | eDB |
 |-----------|-----|-------|-----|------|-----|
@@ -1981,13 +1987,13 @@ eVera Voice Pipeline (STT -> NLU -> Intent)
 
 ---
 
-# Part VI: Organization
+## Part VI: Organization
 
 ---
 
-## Chapter 19: Governance and Contribution Model
+### Chapter 19: Governance and Contribution Model
 
-### Organization Structure
+#### Organization Structure
 
 | Role | Responsibilities |
 |------|-----------------|
@@ -1997,9 +2003,9 @@ eVera Voice Pipeline (STT -> NLU -> Intent)
 | **Contributors** | Anyone who submits PRs, bug reports, or documentation |
 | **Community Members** | Users, testers, discussion participants |
 
-### Contribution Workflow
+#### Contribution Workflow
 
-```
+```text
 1. Fork the repository
 2. Create a feature branch: git checkout -b feature/my-feature
 3. Make changes following coding standards
@@ -2011,7 +2017,7 @@ eVera Voice Pipeline (STT -> NLU -> Intent)
 9. Maintainer merges after approval
 ```
 
-### Coding Standards
+#### Coding Standards
 
 | Language | Style Guide | Formatter | Linter |
 |----------|------------|-----------|--------|
@@ -2020,7 +2026,7 @@ eVera Voice Pipeline (STT -> NLU -> Intent)
 | TypeScript | ESLint + Prettier | Prettier | ESLint |
 | Pine Script | EmbeddedOS Pine Style | -- | Custom linter |
 
-### Versioning
+#### Versioning
 
 All repositories follow Semantic Versioning (SemVer):
 
@@ -2028,7 +2034,7 @@ All repositories follow Semantic Versioning (SemVer):
 - **MINOR** -- New features, backward-compatible
 - **PATCH** -- Bug fixes, backward-compatible
 
-### Communication Channels
+#### Communication Channels
 
 | Channel | Purpose |
 |---------|---------|
@@ -2038,15 +2044,15 @@ All repositories follow Semantic Versioning (SemVer):
 | Monthly Dev Call | Architecture review, roadmap planning |
 | Blog (GitHub Pages) | Release announcements, tutorials |
 
-### License
+#### License
 
 All repositories are released under the **MIT License**.
 
 ---
 
-## Chapter 20: embeddedos-org.github.io -- The Documentation Hub
+### Chapter 20: embeddedos-org.github.io — The Documentation Hub
 
-### Overview
+#### Overview
 
 **Repository:** `embeddedos-org/embeddedos-org.github.io`
 **Technology:** GitHub Pages, Markdown, Jekyll/Hugo
@@ -2056,7 +2062,7 @@ All repositories are released under the **MIT License**.
 The documentation hub is the central website and documentation portal for the
 entire EmbeddedOS ecosystem, aggregating docs from all 16 repositories.
 
-### Key Features
+#### Key Features
 
 - **Unified Documentation** -- All product docs in one place
 - **API Reference** -- Auto-generated from source code
@@ -2067,9 +2073,9 @@ entire EmbeddedOS ecosystem, aggregating docs from all 16 repositories.
 - **Blog** -- Release notes, engineering posts
 - **Community Showcase** -- Projects built with EmbeddedOS
 
-### Site Structure
+#### Site Structure
 
-```
+```text
 embeddedos-org.github.io/
 |-- index.html                  # Landing page
 |-- docs/
@@ -2095,7 +2101,7 @@ embeddedos-org.github.io/
 +-- community/                  # Community projects
 ```
 
-### Getting Started
+#### Getting Started
 
 ```bash
 git clone https://github.com/embeddedos-org/embeddedos-org.github.io.git
@@ -2107,11 +2113,11 @@ bundle exec jekyll serve --livereload
 
 ---
 
-# Appendices
+## Appendices
 
 ---
 
-## Appendix A: Repository Quick Reference
+### Appendix A: Repository Quick Reference
 
 | # | Repository | Language(s) | Description | Status |
 |---|-----------|-------------|-------------|--------|
@@ -2134,9 +2140,9 @@ bundle exec jekyll serve --livereload
 
 ---
 
-## Appendix B: Technology Stack Summary
+### Appendix B: Technology Stack Summary
 
-### Languages
+#### Languages
 
 | Language | Usage | Repositories |
 |----------|-------|-------------|
@@ -2150,7 +2156,7 @@ bundle exec jekyll serve --livereload
 | thinkScript | thinkorswim strategies | eStocks |
 | EasyLanguage | TradeStation strategies | eStocks |
 
-### Key Frameworks and Libraries
+#### Key Frameworks and Libraries
 
 | Framework/Library | Version | Used By |
 |-------------------|---------|---------|
@@ -2171,7 +2177,7 @@ bundle exec jekyll serve --livereload
 | CMake | 3.20+ | eos, eBoot, eBrowser, eAI, eNI, EoSim |
 | Protocol Buffers | 3.x | eIPC |
 
-### Testing Frameworks
+#### Testing Frameworks
 
 | Framework | Language | Used By | Tests |
 |-----------|----------|---------|-------|
@@ -2184,9 +2190,9 @@ bundle exec jekyll serve --livereload
 
 ---
 
-## Appendix C: Getting Started Guide
+### Appendix C: Getting Started Guide
 
-### Prerequisites
+#### Prerequisites
 
 - **Git** (2.30+)
 - **Python** (3.10+)
@@ -2195,7 +2201,7 @@ bundle exec jekyll serve --livereload
 - **C/C++ Compiler** -- GCC 12+ or Clang 15+
 - **ARM Toolchain** -- arm-none-eabi-gcc 13+ (for embedded targets)
 
-### Per-Repository Quickstart
+#### Per-Repository Quickstart
 
 ```bash
 # eos -- Embedded OS
@@ -2279,7 +2285,7 @@ bundle install && bundle exec jekyll serve --livereload
 
 ---
 
-## Glossary
+### Glossary
 
 | Term | Definition |
 |------|-----------|
@@ -2348,8 +2354,7 @@ bundle install && bundle exec jekyll serve --livereload
 
 ---
 
-*End of The EmbeddedOS Ecosystem -- Complete Product Guide*
-
+*End of The EmbeddedOS Ecosystem — Complete Product Guide*\
 *First Edition, April 2026*
 
 *Copyright 2026 EmbeddedOS Contributors. MIT License.*
