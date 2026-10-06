@@ -2,7 +2,6 @@
 # Exclude root-relative paths that the offline checker cannot resolve
 # (these are valid paths on the live GitHub Pages site)
 
-[lychee]
 # Exclude patterns for offline checking
 exclude = [
   # Root-relative assets (valid on live site, unresolvable offline)
