@@ -20,7 +20,9 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: npx playwright install --with-deps chromium
+      # playwright.config.js runs chromium, firefox and webkit; installing only
+      # chromium made every firefox/webkit test fail at launch on every PR.
+      - run: npx playwright install --with-deps chromium firefox webkit
 
       - name: HTML validation
         run: |
