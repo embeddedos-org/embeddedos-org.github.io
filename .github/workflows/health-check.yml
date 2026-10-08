@@ -17,6 +17,7 @@ jobs:
   linkinator:
     name: Crawl live sites for broken links
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - name: Setup Node
         uses: actions/setup-node@v4
