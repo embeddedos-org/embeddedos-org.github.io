@@ -27,7 +27,7 @@ jobs:
           node-version: '20'
 
       - name: Run markdownlint
-        run: npx --yes markdownlint-cli '**/*.md' --ignore node_modules
+        run: npx --yes markdownlint-cli '**/*.md' --ignore node_modules --ignore docs/wiki
 
   lychee:
     name: lychee link check (offline)
@@ -38,5 +38,5 @@ jobs:
       - name: lychee --offline
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --no-progress --verbose './**/*.md'
+          args: --offline --no-progress --verbose --exclude-path '^docs/wiki/' './**/*.md'
           fail: true

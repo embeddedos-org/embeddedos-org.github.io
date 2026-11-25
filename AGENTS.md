@@ -1,98 +1,51 @@
-<!-- generated: eos-ai-scaffold -->
-# Agent Responsibilities
+# Repository Agent Guide
 
-Each role owns a slice of the work and does only that slice. Full briefs are in
-[.ai/](./.ai/). These are responsibilities, not a required agent count — one
-agent may hold several roles on a small change. Split when the roles need
-genuinely different context, not by default.
+## Scope
 
-One rule is structural rather than stylistic: **whoever implements does not
-approve.** Review is a separate role because self-review reliably misses the
-thing the implementer already believes is correct.
+This repository is the source for the EmbeddedOS GitHub Pages site at
+<https://embeddedos-org.github.io/>. It is a static site built from HTML, CSS,
+and vanilla JavaScript; there is no application build step.
 
-## Planner — [.ai/planner.md](./.ai/planner.md)
+## Structure
 
-- Understand the request.
-- Break work into tasks.
-- Assign work.
+- Root `*.html` files are the primary public pages.
+- `docs/`, `stacks/`, `eApps/`, and `downloads/` contain additional site pages.
+- `docs/wiki/` mirrors the six published repository Wiki pages in source control.
+- `style.css` contains global styles.
+- `js/site-chrome.js` is the shared source of truth for navigation and footer
+  markup. Update it when changing site-wide community links.
+- `tests/` contains Playwright and Python test suites.
+- `.github/workflows/` contains CI and deployment automation.
 
-## Architect — [.ai/architect.md](./.ai/architect.md)
+## Working Safely
 
-- Design structure.
-- Choose patterns.
-- Own dependencies, scalability and maintainability.
+- Start changes from the protected `master` branch and work on a feature branch.
+- Keep edits focused. Do not modify generated artifacts or unrelated content.
+- Preserve the static-site structure and existing accessibility attributes.
+- Do not add secrets, credentials, internal hostnames, or production data.
+- Treat the checked-in files as authoritative. The GitHub Wiki is a published
+  navigation layer, not the source of truth for code or policy.
+- Pull requests must use a closing keyword for an issue in this repository,
+  such as `Fixes #123`.
 
-## Backend — [.ai/backend.md](./.ai/backend.md)
+## Validation
 
-- APIs
-- Database
-- Business logic
+Install dependencies with `npm install` when needed, then serve the repository
+root with `npm run serve`. Run checks appropriate to the change:
 
-## Frontend — [.ai/frontend.md](./.ai/frontend.md)
+```bash
+npm run test:chromium
+npm run test:links
+npm run lint:html
+```
 
-- UI
-- Components
-- Accessibility
+For documentation and workflow changes, also validate YAML syntax, Markdown
+links, and relative file targets. Review `git diff --check` before committing.
+Document every command run and any check that could not be completed in the
+pull request.
 
-## Testing — [.ai/testing.md](./.ai/testing.md)
+## Contributions
 
-- Unit tests
-- Integration tests
-- Regression tests
-
-## Security — [.ai/security.md](./.ai/security.md)
-
-- Authentication and authorization
-- Validation
-- Secrets
-- Dependency review
-
-## Performance — [.ai/performance.md](./.ai/performance.md)
-
-- Profiling
-- Optimization
-- Scalability
-
-## Reviewer — [.ai/reviewer.md](./.ai/reviewer.md)
-
-- Final review
-- Verify requirements
-- Merge findings
-
-## Documentation — [.ai/docs.md](./.ai/docs.md)
-
-- README
-- API docs
-- Changelog
-- Migration and architecture notes
-
-## Release — [.ai/release.md](./.ai/release.md)
-
-- Release notes
-- Deployment preparation
-- Rollback guidance
-
----
-
-## Switching roles
-
-Switch when the task changes domain, when specialist knowledge is required,
-when independent review is required, or when the context has grown past what
-one agent can hold accurately. Every switch runs the protocol in
-[HANDOFF.md](./HANDOFF.md).
-
-## Finding work that is not yours
-
-You will. The rule is: **record it, do not absorb it, do not drop it.**
-
-| What you found | Do |
-|----------------|-----|
-| A defect unrelated to your task | Note it in [TASKS.md](./TASKS.md) and keep going. |
-| A defect your change would sit on top of | Stop; say it blocks you; propose fixing it as its own task. |
-| A security issue | Report immediately, whatever role you hold. This one never waits for a handoff. |
-| A design decision missing from the plan | Return to the architect rather than deciding it inside an implementation. |
-| Work that belongs to a role nobody assigned | Say so. An unowned task is how requirements go missing. |
-
-Silently fixing something outside your task makes the diff unreviewable.
-Silently ignoring it means nobody ever looks again. Neither is acceptable; the
-note is what makes the difference.
+Follow [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and the
+pull request template. Report suspected vulnerabilities through the private
+channel described in `SECURITY.md`, never through a public issue.

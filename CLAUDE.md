@@ -96,7 +96,7 @@ Format and worked examples: [VERIFY.md](./VERIFY.md).
 
 ---
 
-# Repository
+## Repository
 
 EoS Website
 
@@ -131,7 +131,6 @@ When two of these documents conflict, the earlier wins:
 
 Say that a conflict exists rather than resolving it silently. A rule two people
 read differently is a defect in the rule, and it will recur until it is fixed.
-
 
 ## Node
 

@@ -8,7 +8,8 @@ Do not report success without evidence. This file defines what counts.
 - `PASS` — the check ran and succeeded; the output was seen.
 - `FAIL` — the check ran and failed; quote the actual output.
 - `NOT RUN` — the check was not executed.
-- `UNKNOWN` — the check cannot be run in this environment, or its result cannot be interpreted.
+- `UNKNOWN` — the check cannot be run in this environment, or its result cannot
+  be interpreted.
 
 `NOT RUN` and `UNKNOWN` are acceptable answers, and reporting one honestly is
 never a failure. A guess dressed as `PASS` is.
@@ -37,26 +38,26 @@ Anything short of that is `NOT RUN` or `UNKNOWN`.
 
 > `pnpm test:unit` — exit 0. 142 passed, 0 failed, 3 skipped. The 3 skips are
 > pre-existing and unrelated to this change. → `PASS`
-
+>
 > `pnpm check` — exit 2. `src/api/user.ts(41,7): error TS2345: Argument of type
 > 'string | undefined' is not assignable to parameter of type 'string'.`
 > → `FAIL`
-
+>
 > No linter is configured in this repository. → `NOT RUN`
-
+>
 > The e2e suite needs a running database, which is not available here.
 > → `UNKNOWN` — e2e behaviour is unverified.
 
 ### Not valid
 
 > The tests should pass now.
-
+>
 > I've made the change, so the build will work.
-
+>
 > Everything looks good.
-
+>
 > `PASS` (no command, no output)
-
+>
 > Tests pass — *(when the suite was never run, only written)*
 
 The difference is not tone. The first set can be checked by someone else; the

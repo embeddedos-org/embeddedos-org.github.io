@@ -1,8 +1,8 @@
 <!-- generated: eos-ai-scaffold -->
 # Memory
 
-Durable context for `embeddedos-org.github.io` — decisions and constraints that outlive one
-session and are not recoverable from the code or the git history.
+Durable context for `embeddedos-org.github.io` — decisions and constraints that
+outlive one session and are not recoverable from the code or the git history.
 
 Write here when a future reader would otherwise repeat an argument that was
 already settled, or repeat a mistake that was already made.
@@ -34,10 +34,11 @@ notices the obvious-looking alternative.
 | —    | None recorded yet. | — | — |
 
 <!-- Example of the level of detail worth recording:
-| 2026-03-14 | Queue writes in-process rather than via Redis | Deploy target has no
-network sidecar; measured throughput was sufficient at 4x expected peak |
-Redis Streams — rejected on operational cost, not on capability. Revisit if
-peak exceeds 8x. |
+     2026-03-14 — Queue writes in-process rather than via Redis.
+     Reason: the deploy target has no network sidecar, and in-process
+     throughput measured fine at 4x expected peak.
+     Rejected alternative: Redis Streams (operational cost, not capability).
+     Revisit if peak exceeds 8x.
 -->
 
 ## Constraints

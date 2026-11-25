@@ -8,7 +8,7 @@
 
 ## Reporting a Vulnerability
 
-**Email:** security@embeddedos.org
+**Email:** <security@embeddedos.org>
 
 > Do **NOT** open public GitHub issues for security vulnerabilities.
 
@@ -29,4 +29,6 @@
 
 ## Safe Harbor
 
-We consider security research conducted in good faith to be authorized and will not pursue legal action against researchers who follow responsible disclosure practices.
+We consider security research conducted in good faith to be authorized and will
+not pursue legal action against researchers who follow responsible disclosure
+practices.

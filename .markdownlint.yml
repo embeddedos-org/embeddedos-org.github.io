@@ -1,0 +1,19 @@
+# markdownlint configuration, ported from embeddedos-org/embeddedos-org
+# (9475a30) together with the lint-readme workflow it belongs to (6fc5b85).
+# markdownlint-cli auto-discovers this file, so the workflow needs no flags.
+
+# MD013 (line-length): prose stays at the 80-column guideline; tables are
+# exempt because index/reference rows are inherently long.
+MD013:
+  line_length: 80
+  tables: false
+
+# MD060 (table-column-style): any one pipe style per table, consistently.
+MD060:
+  style: consistent
+
+# MD024 (no-duplicate-heading): the ecosystem guide repeats the same
+# subsection set (Overview, Key Features, Architecture, ...) under every
+# chapter. Duplicates are still reported among siblings of one parent.
+MD024:
+  siblings_only: true

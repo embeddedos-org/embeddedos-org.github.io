@@ -143,9 +143,14 @@ test.describe('SEO: Robots & Sitemap', () => {
     await ctx.close();
   });
 
+  // Fetched as a document, not rendered: Firefox shows XML in its own viewer,
+  // where page.textContent('body') never resolves, and that failed on every
+  // run once Firefox was actually installed.
   test('sitemap.xml is valid', async ({ request }) => {
     const response = await request.get(`${BASE}/sitemap.xml`);
     expect(response.status()).toBe(200);
-    expect(await response.text()).toContain('embeddedos-org.github.io');
+    const xml = await response.text();
+    expect(xml).toContain('<urlset');
+    expect(xml).toContain('embeddedos-org.github.io');
   });
 });

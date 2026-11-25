@@ -1,9 +1,10 @@
 <!-- generated: eos-ai-scaffold -->
 # Tasks
 
-Working ledger for `embeddedos-org.github.io`. The planner writes entries; each owning role
-updates its own row. Roles are in [AGENTS.md](./AGENTS.md), the workflow in
-[ORCHESTRATION.md](./ORCHESTRATION.md), the gate in [VERIFY.md](./VERIFY.md).
+Working ledger for `embeddedos-org.github.io`. The planner writes entries; each
+owning role updates its own row. Roles are in [AGENTS.md](./AGENTS.md), the
+workflow in [ORCHESTRATION.md](./ORCHESTRATION.md), the gate in
+[VERIFY.md](./VERIFY.md).
 
 Status is one of: `todo`, `in-progress`, `blocked`, `review`, `done`.
 
@@ -55,7 +56,8 @@ Verification
 
 ## Verification commands for this repository
 
-These commands were derived from the manifests at the repository root. Confirm one works before relying on it; a listed script may still be a stub.
+These commands were derived from the manifests at the repository root. Confirm
+one works before relying on it; a listed script may still be a stub.
 
 | Check | Command | Default state |
 |-------|---------|---------------|

@@ -1,58 +1,52 @@
+## Closing Issue
+
+<!-- Required for human-authored pull requests. Use a GitHub closing keyword and an issue in THIS repository. Cross-repository links, plain mentions, and placeholders do not satisfy policy. -->
+
+Fixes #<same-repository issue number>
+
+> Replace the placeholder above with a real issue number before requesting review. The exact trusted automation identities listed in `governance/repositories.json` are exempt.
+
 ## Summary
 
-<!-- Brief description of what this PR does. -->
-
+<!-- Briefly describe what changed and why. -->
 
 ## Type of Change
 
-<!-- Check all that apply -->
+<!-- Check all that apply. -->
 
-- [ ] eat — New feature
-- [ ] ix — Bug fix
-- [ ] docs — Documentation only
-- [ ] style — Formatting, no code change
-- [ ] efactor — Code restructuring without behavior change
-- [ ] 	est — Add or fix tests
-- [ ] uild — Build system or dependency changes
-- [ ] ci — CI/CD pipeline changes
-- [ ] perf — Performance improvement
+- [ ] feat - New feature
+- [ ] fix - Bug fix
+- [ ] docs - Documentation only
+- [ ] style - Formatting, no behavior change
+- [ ] refactor - Code restructuring without behavior change
+- [ ] test - Add or fix tests
+- [ ] build - Build system or dependency changes
+- [ ] ci - CI/CD pipeline changes
+- [ ] perf - Performance improvement
 
 ## Changes
 
-<!-- List each change made in this PR -->
+<!-- List the meaningful changes in this pull request. -->
 
-- 
-- 
+-
 
-## Testing
+## Validation
 
-<!-- How was this tested? Which test suites were run? -->
+<!-- List exact commands or manual checks and their results. -->
 
-- [ ] Unit tests pass (ctest --test-dir build --output-on-failure)
-- [ ] Integration tests pass
-- [ ] Manual testing performed
-- [ ] New tests added for new functionality
+- [ ] Relevant Playwright, Python, link, and markup checks pass.
+- [ ] Manual browser testing was performed when site behavior changed.
+- [ ] No secrets, credentials, internal hostnames, or production data are included.
+- [ ] User-facing documentation is updated when behavior changes.
 
-## Pre-Submission Checklist
+## Risk and Rollout
 
-- [ ] Code compiles without warnings (-Wall -Wextra -Werror for C)
-- [ ] All existing tests pass
-- [ ] New tests added for new functionality
-- [ ] Documentation updated if API changed
-- [ ] Commit messages follow <type>(<scope>): <description> convention
-- [ ] Branch is rebased on latest master
+<!-- Describe compatibility concerns, deployment impact, and rollback. Write "None" only when genuinely not applicable. -->
 
-## Related Issues
+## Screenshots or Logs
 
-<!-- Reference related issues: Closes #XX, Fixes #YY -->
-
-
-## Screenshots / Logs
-
-<!-- If applicable, add screenshots or relevant log output -->
-
+<!-- Add screenshots or relevant output when the change affects the rendered site. -->
 
 ## Additional Notes
 
-<!-- Any other context reviewers should know -->
-
+<!-- Add any other context reviewers should know. -->
