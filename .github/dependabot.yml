@@ -20,7 +20,7 @@ updates:
       - srpatcha
     labels:
       - dependencies
-      - github-actions
+      - github_actions
 
   # Python — uncomment in repos with pyproject.toml or requirements.txt.
   # - package-ecosystem: pip
